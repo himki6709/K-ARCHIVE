@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - ESTATE NOT FOUND | K ARCHIVE</title>
+    <style>
+        :root {
+            --black: #000;
+            --white: #fff;
+            --gold: #FCD535; /* আপনার থিমের গোল্ড কালার */
+            --grey: #666;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Times New Roman', serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Luxury Error Code Styling */
+        .error-code {
+            font-size: clamp(100px, 15vw, 150px);
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 20px;
+            background: linear-gradient(90deg, #9E7E45, var(--gold), #9E7E45);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 4s linear infinite;
+            line-height: 1;
+        }
+
+        @keyframes glow {
+            0% { filter: hue-rotate(0deg) brightness(1); }
+            50% { filter: hue-rotate(10deg) brightness(1.2); }
+            100% { filter: hue-rotate(0deg) brightness(1); }
+        }
+
+        h1 {
+            font-size: 20px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            font-weight: 300;
+            color: var(--white);
+        }
+
+        .message {
+            color: var(--grey);
+            letter-spacing: 2px;
+            font-size: 13px;
+            margin: 30px 20px;
+            line-height: 1.8;
+            max-width: 500px;
+            text-transform: uppercase;
+        }
+
+        .countdown-container {
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--gold);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        #timer {
+            font-weight: bold;
+            font-size: 18px;
+            margin: 0 5px;
+        }
+
+        /* Rolls-Royce Style Button */
+        .home-btn {
+            padding: 18px 45px;
+            border: 0.5px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 5px;
+            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative;
+            background: transparent;
+        }
+
+        .home-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+            box-shadow: 0 0 20px rgba(252, 213, 53, 0.2);
+        }
+
+        /* Background Motif */
+        .k-watermark {
+            position: absolute;
+            font-size: 40vh;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            z-index: -1;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="k-watermark">K</div>
+
+    <div class="error-code">404</div>
+    <h1>Estate Not Found</h1>
+    
+    <p class="message">
+        The sovereign digital asset you are looking for does not exist or has been moved to a private archive.
+    </p>
+
+    <div class="countdown-container">
+        Restoring connection in <span id="timer">5</span> seconds...
+    </div>
+    
+    <a href="index.html" class="home-btn">Return to Archive</a>
+
+    <script>
+        // ৫ সেকেন্ড কাউন্টডাউন এবং অটো রিডাইরেক্ট লজিক
+        let count = 5;
+        const timerElement = document.getElementById('timer');
+
+        const countdown = setInterval(() => {
+            count--;
+            timerElement.innerText = count;
+            
+            if (count <= 0) {
+                clearInterval(countdown);
+                window.location.href = "index.html"; 
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
