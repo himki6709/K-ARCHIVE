@@ -3,258 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAMERS HAVEN | 1000 ELITE PLOTS</title>
+    <title>GAMERS HAVEN | THE EXCLUSIVE ARCHIVE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         :root { 
             --gold: #C5A059; 
-            --black-bg: #050505;
-            --plot-size: 60px; /* আপনার চাহিদা অনুযায়ী ৬০ পিক্সেল */
+            --black: #000000;
+            --plot-dim: 60px; /* আপনার চাহিদা অনুযায়ী ৬০x৬০ পিক্সেল */
         }
 
         body { 
             margin: 0; 
-            background: #000; 
+            background: var(--black); 
             color: #fff; 
             font-family: 'Cinzel', serif; 
-            overflow-x: auto; 
+            overflow-x: hidden;
         }
 
-        /* প্রমিয়াম নেভিগেশন */
-        .premium-nav {
-            position: fixed;
-            top: 0; width: 100%;
-            background: rgba(0,0,0,0.95);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            z-index: 1000;
-            border-bottom: 1px solid #222;
-        }
-
-        .nav-group { display: flex; gap: 20px; }
-
-        .btn-luxury {
-            background: transparent;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 10px 25px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: 0.5s;
-        }
-
-        .btn-luxury:hover {
-            background: var(--gold);
-            color: #000;
-        }
-
-        /* হেডার এরিয়া */
-        .header-content {
-            padding: 160px 20px 60px;
+        /* Rolls-Royce Style Header */
+        header {
             text-align: center;
+            padding: 120px 20px 60px;
+            background: linear-gradient(to bottom, #0a0a0a, #000);
+            border-bottom: 1px solid #1a1a1a;
         }
 
-        .title-gaming {
-            font-size: 70px;
-            margin: 0;
-            background: linear-gradient(to right, #C5A059, #FFF, #C5A059);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 15px;
+        .section-title {
+            font-size: clamp(30px, 6vw, 65px);
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 10px;
         }
 
-        /* ১০০০ প্লটের গ্রিড সিস্টেম */
-        .master-container {
+        /* বিশাল ১০০০ প্লটের কন্টেইনার */
+        .canvas-wrapper {
             display: flex;
-            justify-content: center;
-            padding: 40px;
-            min-width: 1600px; /* ফাইল বড় দেখানোর জন্য এবং স্ক্রলিং এর জন্য */
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 0;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
         }
 
         #pixel-canvas {
             display: grid;
-            /* ২৫টি কলাম এবং ৪০টি রো = ১০০০টি প্লট */
-            grid-template-columns: repeat(25, var(--plot-size)); 
-            gap: 2px;
+            /* প্রতি সারিতে ২৫টি করে প্লট (২৫ x ৪০ = ১০০০টি) */
+            grid-template-columns: repeat(25, var(--plot-dim));
+            gap: 4px;
             background: #111;
-            padding: 10px;
-            border: 5px solid var(--gold);
-            box-shadow: 0 0 50px rgba(197, 160, 89, 0.2);
+            padding: 15px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 40px rgba(197, 160, 89, 0.1);
         }
 
-        .plot-unit {
-            width: var(--plot-size);
-            height: var(--plot-size);
+        .plot-box {
+            width: var(--plot-dim);
+            height: var(--plot-dim);
             background: #000;
-            border: 1px solid #222;
+            border: 0.5px solid #222;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+        }
+
+        .plot-box:hover {
+            transform: scale(1.3);
+            z-index: 100;
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+            background: var(--gold);
+        }
+
+        .plot-box:hover span { color: #000; }
+
+        .plot-idx { font-size: 8px; position: absolute; top: 3px; left: 3px; opacity: 0.4; color: var(--gold); }
+        .plot-val { font-size: 10px; font-weight: bold; }
+
+        /* ইনফরমেশন এরিয়া - যা আপনি চেয়েছেন */
+        .info-block {
+            max-width: 900px;
+            margin: 60px auto;
+            text-align: center;
+            border-top: 1px solid #222;
+            padding-top: 40px;
+        }
+
+        .info-block h3 { color: var(--gold); letter-spacing: 5px; font-size: 18px; }
+        .info-block p { color: #666; font-size: 14px; line-height: 1.8; letter-spacing: 1px; }
+
+        /* Floating Support - WhatsApp */
+        .support-btn {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            background: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            position: relative;
-            transition: 0.3s;
-        }
-
-        .plot-unit:hover {
-            border-color: #fff;
-            transform: scale(1.2);
-            z-index: 50;
-            box-shadow: 0 0 15px #fff;
-        }
-
-        .plot-number {
-            font-size: 8px;
-            position: absolute;
-            top: 2px; left: 2px;
-            color: var(--gold);
-            opacity: 0.5;
-        }
-
-        .price-tag {
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        /* নিচে কাস্টমার সার্ভিস ইনফো */
-        .info-footer {
-            text-align: center;
-            padding: 100px 20px;
-            color: #888;
-        }
-
-        .whatsapp-contact {
-            position: fixed;
-            bottom: 40px;
-            left: 40px;
-            background: #25D366;
-            padding: 15px;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             z-index: 1000;
         }
 
-        /* Modal / Order Form */
-        .modal-overlay {
+        /* Order Modal */
+        .order-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0,0,0,0.98);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 9999;
         }
 
-        .order-card {
+        .order-modal {
             background: #fff;
             color: #000;
             padding: 50px;
-            width: 400px;
+            width: 100%;
+            max-width: 450px;
             text-align: center;
-            border-radius: 2px;
+            border-radius: 3px;
         }
 
-        .order-card input {
+        .order-modal input {
             width: 100%;
             padding: 15px;
             margin: 20px 0;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .confirm-btn {
+            background: #000;
+            color: #fff;
+            padding: 15px 40px;
+            border: none;
+            width: 100%;
+            letter-spacing: 3px;
+            cursor: pointer;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <nav class="premium-nav">
-        <div class="nav-group">
-            <button class="btn-luxury" onclick="window.location.href='index.html'">Main Archive</button>
-            <button class="btn-luxury" onclick="takeScreenshot()">Download HD Map</button>
+    <header>
+        <div class="section-title">Gamers Haven</div>
+        <p style="letter-spacing: 4px; opacity: 0.6;">A Digital Sanctuary for Gaming Legends</p>
+    </header>
+
+    <div class="canvas-wrapper">
+        <div id="pixel-canvas">
+            </div>
+
+        <div class="info-block">
+            <h3>SECURE YOUR LEGACY</h3>
+            <p>
+                The sovereign digital asset you are looking for is now within reach. <br>
+                ১০০০টি প্লট এবং ৬০x৬০ পিক্সেল সমৃদ্ধ এই সেকশনটি গেমারদের জন্য বিশেষ ভাবে সংরক্ষিত। <br>
+                একবার আপনার স্থান দখল করে নিন, যা চিরস্থায়ী ডিজিটাল ইতিহাসে লিপিবদ্ধ থাকবে।
+            </p>
         </div>
-        <div style="color: var(--gold); letter-spacing: 2px;">
-            PLOTS SOLD: <span id="sold">0</span> / 1000
-        </div>
-    </nav>
-
-    <div class="header-content">
-        <h1 class="title-gaming">GAMERS HAVEN</h1>
-        <p style="letter-spacing: 5px; color: var(--gold);">SECURE YOUR LEGACY • $360 PER UNIT</p>
-        <p style="max-width: 600px; margin: 20px auto; font-style: italic; opacity: 0.7;">
-            "The battlefield is limited. 1,000 plots for 1,000 legends. Once gone, they are gone forever."
-        </p>
     </div>
 
-    <div class="master-container">
-        <div id="pixel-canvas"></div>
+    <div class="support-btn" onclick="window.open('https://wa.me/8801576940717')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="30" alt="Support">
     </div>
 
-    <div class="info-footer">
-        <p>OWNED BY KAWSAR | THE EXCLUSIVE ARCHIVE © 2026</p>
-        <p>Data Update: $7 Administrative Fee | 24h Support Active</p>
-    </div>
-
-    <div class="whatsapp-contact" onclick="window.open('https://wa.me/8801576940717')">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="30">
-    </div>
-
-    <div class="modal-overlay" id="modal">
-        <div class="order-card">
-            <h4 style="letter-spacing: 3px;">ACQUISITION</h4>
-            <h2 id="plot-title">PLOT #--</h2>
-            <p>PRICE: $360</p>
-            <input type="text" id="buyer-name" placeholder="YOUR NAME / BRAND">
-            <button class="btn-luxury" style="background:#000; width: 100%;" onclick="confirmOrder()">Confirm Order</button>
-            <p style="font-size: 10px; margin-top: 15px; cursor: pointer;" onclick="document.getElementById('modal').style.display='none'">CANCEL</p>
+    <div class="order-overlay" id="orderModal">
+        <div class="order-modal">
+            <h4 style="color: var(--gold); letter-spacing: 4px;">ACQUISITION</h4>
+            <h1 id="selectedID" style="font-size: 30px; margin: 10px 0;">PLOT #000</h1>
+            <p>Fixed Price: <strong>$360</strong></p>
+            <input type="text" id="playerName" placeholder="ENTER YOUR GAMER TAG">
+            <button class="confirm-btn" onclick="processOrder()">ACQUIRE PLOT</button>
+            <p style="font-size: 10px; margin-top: 20px; cursor: pointer; opacity: 0.5;" onclick="closeModal()">CANCEL</p>
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('pixel-canvas');
-        let selectedID = 0;
+        const grid = document.getElementById('pixel-canvas');
+        let currentPlot = 0;
 
-        // ১০০০ টি প্লট তৈরির বিস্তারিত লজিক
+        // ১০০০টি প্লট জেনারেট করার বিস্তারিত লুপ
         for (let i = 1; i <= 1000; i++) {
             const plot = document.createElement('div');
-            plot.className = 'plot-unit';
+            plot.className = 'plot-box';
             plot.innerHTML = `
-                <span class="plot-number">#${i}</span>
-                <span class="price-tag">$360</span>
+                <span class="plot-idx">#${i}</span>
+                <span class="plot-val">$360</span>
             `;
-            
-            plot.onclick = function() {
-                selectedID = i;
-                document.getElementById('plot-title').innerText = "PLOT #" + i;
-                document.getElementById('modal').style.display = 'flex';
-            };
-            
-            canvas.appendChild(plot);
+            plot.onclick = () => openOrder(i);
+            grid.appendChild(plot);
         }
 
-        function confirmOrder() {
-            const name = document.getElementById('buyer-name').value;
-            if(!name) { alert("Please enter a name"); return; }
-            
-            // রঙিন কাগজ ছেটানো (Celebration)
+        function openOrder(id) {
+            currentPlot = id;
+            document.getElementById('selectedID').innerText = "PLOT #" + id;
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        function processOrder() {
+            const name = document.getElementById('playerName').value;
+            if(!name) return alert("Please enter your tag.");
+
+            // রঙিন কাগজ ছেটানো (Confetti)
             confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 }
+                particleCount: 200,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ['#C5A059', '#FFFFFF', '#000000']
             });
 
-            const message = `Hello, I want to buy Plot #${selectedID} in Gamers Haven. My name is ${name}.`;
-            window.open(`https://wa.me/8801576940717?text=${encodeURIComponent(message)}`);
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        function takeScreenshot() {
-            html2canvas(document.querySelector("#pixel-canvas")).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Gamers-Haven-Map.png';
-                link.href = canvas.toDataURL();
-                link.click();
-            });
+            // হোয়াটসঅ্যাপ মেসেজ পাঠানো
+            const msg = `Hello Kawsar, I am ${name}. I want to acquire Plot #${currentPlot} in Gamers Haven for $360.`;
+            setTimeout(() => {
+                window.open(`https://wa.me/8801576940717?text=${encodeURIComponent(msg)}`);
+                closeModal();
+            }, 2500);
         }
     </script>
 </body>
