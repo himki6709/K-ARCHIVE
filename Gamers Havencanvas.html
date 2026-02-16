@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GAMERS HAVEN | K ARCHIVE</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root { --neon-green: #39FF14; --gold: #FCD535; --dark-bg: #050505; }
+        body { margin: 0; background: var(--dark-bg); color: #fff; font-family: 'Courier New', monospace; overflow-x: hidden; }
+
+        /* Navigation */
+        .top-nav { position: fixed; top: 0; width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.9); border-bottom: 1px solid #222; box-sizing: border-box; }
+        .nav-btn { background: none; border: 1px solid #444; color: #fff; padding: 10px 18px; font-size: 11px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .nav-btn:hover { background: var(--neon-green); color: #000; border-color: var(--neon-green); }
+
+        /* Header & Order Section */
+        .header-area { text-align: center; padding-top: 120px; margin-bottom: 30px; }
+        .section-name { 
+            font-size: clamp(30px, 7vw, 70px); letter-spacing: 8px; text-transform: uppercase; font-weight: 900; 
+            color: var(--neon-green); text-shadow: 0 0 20px rgba(57, 255, 20, 0.4); margin-bottom: 10px;
+        }
+
+        /* Search & Order Box */
+        .order-panel { background: #111; max-width: 500px; margin: 0 auto 40px; padding: 25px; border: 1px solid #222; border-radius: 4px; }
+        .order-input-group { display: flex; gap: 10px; flex-direction: column; }
+        .plot-input { background: #000; border: 1px solid #333; color: var(--neon-green); padding: 15px; text-align: center; font-size: 18px; outline: none; }
+        .plot-input:focus { border-color: var(--neon-green); }
+        #msg-box { font-size: 12px; margin-top: 10px; min-height: 15px; letter-spacing: 1px; }
+
+        /* Grid System */
+        #capture-area { display: flex; flex-direction: column; align-items: center; width: 100%; padding-bottom: 50px; }
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(20, 60px); 
+            gap: 8px; padding: 20px; 
+            background: rgba(255,255,255,0.02);
+        }
+
+        .plot { 
+            width: 60px; height: 60px; background: #000; border: 1px solid #1a1a1a; 
+            position: relative; cursor: pointer; transition: 0.3s; 
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        .plot:hover { border-color: var(--neon-green); transform: scale(1.1); z-index: 100; box-shadow: 0 0 15px var(--neon-green); }
+        .plot img { width: 100%; height: 100%; object-fit: cover; }
+        .plot-id { position: absolute; top: 2px; left: 2px; font-size: 8px; color: #444; z-index: 5; }
+
+        /* Modals */
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:9000; padding: 15px; }
+        .card { background: #fff; color:#000; padding:40px; width:100%; max-width:500px; text-align:center; border-radius: 4px; }
+        .premium-btn { background: #000; color: #fff; width: 100%; padding: 18px; border: none; font-weight: bold; letter-spacing: 2px; cursor: pointer; margin-top: 15px; }
+
+        @media (max-width: 1200px) { .grid-container { grid-template-columns: repeat(10, 60px); } }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <button class="nav-btn" onclick="window.location.href='index.html'">BACK</button>
+        <div style="color: var(--neon-green); font-size: 12px;">LIVE ARCHIVE ONLINE</div>
+        <button class="nav-btn" style="border-color: var(--neon-green); color: var(--neon-green);" onclick="downloadMap()">HD CAPTURE</button>
+    </div>
+
+    <div class="header-area">
+        <h1 class="section-name">Gamers Haven</h1>
+        <div class="order-panel">
+            <div class="order-input-group">
+                <input type="number" id="plot-search" class="plot-input" placeholder="ENTER PLOT NUMBER (1-1000)">
+                <div id="msg-box"></div>
+                <button id="order-start-btn" class="nav-btn" style="display: none; width: 100%;" onclick="openOrderModal()">ACQUIRE THIS PLOT</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="capture-area">
+        <div class="grid-container" id="main-grid"></div>
+    </div>
+
+    <div id="order-modal" class="modal">
+        <div class="card">
+            <h2 id="modal-plot-title" style="letter-spacing: 3px;">PLOT #000</h2>
+            <p style="font-size: 12px; color: #666;">GAMING SECTOR REGISTRATION</p>
+            <input type="text" id="gamer-name" placeholder="GAMER ID / BRAND NAME" style="width:100%; padding:15px; margin:20px 0; border:1px solid #ddd; text-align:center;">
+            <button class="premium-btn" onclick="confirmOrder()">SUBMIT ORDER</button>
+            <p onclick="closeModal()" style="cursor:pointer; font-size:10px; margin-top:15px; text-decoration: underline;">CANCEL</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db, ref, get, set, child, onValue } from "./Gamers Haven_firebase-config.js";
+
+        const grid = document.getElementById('main-grid');
+        const searchInput = document.getElementById('plot-search');
+        const msgBox = document.getElementById('msg-box');
+        const orderBtn = document.getElementById('order-start-btn');
+        let selectedPlot = null;
+
+        // 1. Generate 1000 Plots
+        for (let i = 1; i <= 1000; i++) {
+            const plot = document.createElement('div');
+            plot.className = 'plot';
+            plot.id = `plot-${i}`;
+            plot.innerHTML = `<span class="plot-id">#${i}</span>`;
+            grid.appendChild(plot);
+        }
+
+        // 2. Load Existing Data (Pixels)
+        onValue(ref(db, 'pixels'), (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                Object.keys(data).forEach(id => {
+                    const el = document.getElementById(`plot-${id}`);
+                    if (el) {
+                        el.innerHTML = `<img src="${data[id].image}" title="${data[id].name}">`;
+                        el.onclick = () => window.open(data[id].url, '_blank');
+                    }
+                });
+            }
+        });
+
+        // 3. Real-time Duplicate Check Logic
+        searchInput.addEventListener('input', async (e) => {
+            const val = e.target.value;
+            if (!val || val < 1 || val > 1000) {
+                msgBox.innerText = "";
+                orderBtn.style.display = "none";
+                return;
+            }
+
+            const plotID = val;
+            // Check in 'pixels' (Already sold) and 'orders' (Pending)
+            const pixelCheck = await get(child(ref(db), `pixels/${plotID}`));
+            const orderCheck = await get(child(ref(db), `orders/${plotID}`));
+
+            if (pixelCheck.exists() || orderCheck.exists()) {
+                msgBox.innerText = "❌ THIS PLOT IS ALREADY TAKEN!";
+                msgBox.style.color = "#ff4444";
+                orderBtn.style.display = "none";
+                
+                // Auto-clear after 2 seconds if they keep trying
+                setTimeout(() => { 
+                    if(searchInput.value == val) {
+                        searchInput.value = ""; 
+                        msgBox.innerText = "";
+                    }
+                }, 2000);
+            } else {
+                msgBox.innerText = "✅ PLOT IS AVAILABLE!";
+                msgBox.style.color = var(--neon-green);
+                orderBtn.style.display = "block";
+                selectedPlot = plotID;
+            }
+        });
+
+        // 4. Order Management
+        window.openOrderModal = () => {
+            document.getElementById('modal-plot-title').innerText = `PLOT #${selectedPlot}`;
+            document.getElementById('order-modal').style.display = "flex";
+        };
+
+        window.confirmOrder = async () => {
+            const name = document.getElementById('gamer-name').value;
+            if (!name) return alert("Enter your Name/Brand!");
+
+            try {
+                await set(ref(db, 'orders/' + selectedPlot), {
+                    plotID: selectedPlot,
+                    brandName: name,
+                    status: "pending",
+                    timestamp: Date.now()
+                });
+
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                alert("ORDER SUBMITTED! Contact Support for Payment.");
+                window.location.reload();
+            } catch (e) {
+                alert("Error submitting order.");
+            }
+        };
+
+        window.closeModal = () => document.getElementById('order-modal').style.display = "none";
+
+        // 5. Download Map Function
+        window.downloadMap = () => {
+            html2canvas(document.getElementById('capture-area'), { backgroundColor: "#000", scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Gamers_Haven_Map.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        };
+    </script>
+</body>
+</html>
