@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GAMERS HAVEN | THE EXCLUSIVE ARCHIVE</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root { --gold: #C5A059; --white: #ffffff; }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Times New Roman', serif; overflow-x: hidden; touch-action: pan-x pan-y; }
+
+        /* Navigation (Millionaire Style) */
+        .top-nav { position: fixed; top: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.95); border-bottom: 1px solid #222; box-sizing: border-box; }
+        .nav-left { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .nav-btn { background: none; border: 1px solid #444; color: #fff; padding: 12px 20px; font-size: 11px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .nav-btn:hover { background: #fff; color: #000; border-color: #fff; }
+        .pay-gateway-btn { border-color: var(--gold) !important; color: var(--gold) !important; font-weight: bold; }
+
+        .live-counter { text-align: right; border-left: 2px solid var(--gold); padding-left: 15px; }
+        .live-counter span { display: block; font-size: 10px; letter-spacing: 2px; font-weight: bold; }
+        .count-val { color: var(--gold); font-size: 14px !important; }
+
+        /* Header Animation */
+        .header-area { text-align: center; padding-top: 150px; margin-bottom: 50px; }
+        .section-name { 
+            font-size: clamp(35px, 8vw, 85px); 
+            letter-spacing: 12px; text-transform: uppercase; font-weight: 900; 
+            background: linear-gradient(90deg, #C5A059, #F5E6AD, #C5A059); 
+            background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            animation: fullColorShift 8s linear infinite; margin-bottom: 10px; 
+        }
+        @keyframes fullColorShift { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
+        .sub-slogan { font-size: 14px; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; opacity: 0.8; }
+
+        /* Grid - 1000 Plots (60x60) */
+        #capture-area { display: flex; flex-direction: column; align-items: center; width: 100%; padding-bottom: 20px; background: #000; }
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(25, 60px); /* 40 rows x 25 cols = 1000 plots */
+            gap: 5px; 
+            padding: 40px; 
+            background: #050505;
+            border: 1px solid #111;
+        }
+        
+        .plot { 
+            width: 60px; height: 60px; 
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid rgba(197, 160, 89, 0.2); 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            transition: 0.3s; position: relative; cursor: pointer; 
+        }
+        .plot:hover { transform: scale(1.15); border-color: var(--gold); z-index: 100; box-shadow: 0 0 20px var(--gold); }
+        .plot-id { position: absolute; top: 4px; left: 4px; font-size: 7px !important; opacity: 0.3; }
+        .plot-price { font-size: 10px; color: var(--gold); font-weight: bold; }
+
+        /* Footer */
+        .footer-container { text-align: center; padding: 60px 20px; border-top: 1px solid #222; margin-top: 50px; background: #000; }
+        .footer-text { color: #555; font-size: 11px; letter-spacing: 1.5px; line-height: 1.8; max-width: 800px; margin: 0 auto; }
+
+        /* WhatsApp Support */
+        .fixed-support { position: fixed; bottom: 30px; left: 30px; z-index: 5000; background: #25D366; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .fixed-support svg { width: 30px; height: 30px; fill: #fff; }
+
+        /* Modals (Millionaire Style) */
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:9000; padding: 15px; box-sizing: border-box; }
+        .card { background: #fff; color:#000; padding:40px; width:100%; max-width:550px; text-align:center; border-radius: 4px; }
+        .premium-btn { background: #000; color: #fff; width: 100%; padding: 18px; border: none; font-weight: bold; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; margin-top: 15px; }
+
+        @media (max-width: 1550px) { .grid-container { grid-template-columns: repeat(10, 60px); } }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <div class="nav-left">
+            <button class="nav-btn" onclick="downloadMap()">HD CAPTURE</button>
+            <button class="nav-btn" onclick="window.location.href='index.html'">BACK TO ARCHIVE</button>
+        </div>
+        <div class="live-counter">
+            <span>SOLD: <span class="count-val" id="sold-count">0</span></span>
+            <span>AVAILABLE: <span class="count-val" id="avail-count">1000</span></span>
+        </div>
+    </div>
+
+    <div class="header-area">
+        <h1 class="section-name">Gamers Haven</h1>
+        <div class="sub-slogan">1,000 Tactical Plots • $360 Each</div>
+    </div>
+    
+    <div id="capture-area">
+        <div class="grid-container" id="pixel-grid"></div>
+    </div>
+
+    <div class="footer-container">
+        <p class="footer-text">
+            <b>THE EXCLUSIVE ARCHIVE | GAMERS HAVEN</b><br>
+            A dedicated sanctuary for gaming legends. Secure your 60x60 plot today.<br>
+            All placements are permanent. One-time acquisition fee applies.
+        </p>
+    </div>
+
+    <div class="fixed-support" onclick="window.open('https://wa.me/8801576940717', '_blank')">
+        <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-2.32 0-4.518.953-6.19 2.682-1.672 1.73-2.593 4.032-2.593 6.483 0 2.451.921 4.753 2.593 6.483 1.672 1.73 3.87 2.683 6.19 2.683 2.32 0 4.518-.953 6.19-2.683 1.672-1.73 2.593-4.032 2.593-6.483 0-2.451-.921-4.753-2.593-6.483-1.672-1.73-3.87-2.682-6.19-2.682zm4.183 13.153c-.198.555-1.168 1.012-1.605 1.076-.381.056-.874.088-1.393-.076-.327-.104-.738-.24-1.25-.45-2.185-.898-3.605-3.134-3.714-3.282-.109-.148-.89-1.185-.89-2.26s.557-1.604.754-1.825c.197-.221.428-.276.57-.276s.284.002.408.008c.129.006.303-.049.475.367.173.417.589 1.442.639 1.545.05.103.083.223.016.357-.066.134-.1.223-.198.337-.099.113-.208.253-.296.347-.099.103-.203.216-.087.414.116.198.514.851 1.103 1.378.758.677 1.396.887 1.593.986.197.099.311.083.428-.05.116-.134.502-.584.639-.784.136-.2.273-.167.46-.099.187.067 1.18.557 1.384.66.204.103.34.153.39.239.05.087.05.503-.148 1.058z"/></svg>
+    </div>
+
+    <div id="order-modal" class="modal">
+        <div class="card">
+            <h2 id="disp-id" style="font-size:11px; letter-spacing:4px; color:var(--gold);">PLOT ACQUISITION</h2>
+            <h1 id="disp-price" style="font-size: 45px; margin: 10px 0;">$360</h1>
+            <input type="text" id="brand-input" placeholder="ENTER YOUR GAMER ID" style="width:100%; padding:20px; border:1px solid #ddd; text-align:center; font-size:16px; margin:20px 0; outline: none;">
+            <button class="premium-btn" onclick="submitOrder()">SEND ACQUISITION REQUEST</button>
+            <p onclick="closeModals()" style="cursor:pointer; font-size:10px; margin-top:20px; opacity:0.5; text-decoration: underline;">BACK TO MAP</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db, ref, push, onValue } from "./gamers_firebase-config.js";
+
+        const grid = document.getElementById('pixel-grid');
+        let activeID;
+
+        // Create 1000 Plots
+        for (let i = 1; i <= 1000; i++) {
+            const plot = document.createElement('div');
+            plot.className = 'plot';
+            plot.innerHTML = `<span class="plot-id">#${i}</span><span class="plot-price">$360</span>`;
+            plot.onclick = () => {
+                activeID = i;
+                document.getElementById('disp-id').innerText = `PLOT #${i} ACQUISITION`;
+                document.getElementById('order-modal').style.display = 'flex';
+            };
+            grid.appendChild(plot);
+        }
+
+        window.submitOrder = async () => {
+            const name = document.getElementById('brand-input').value;
+            if(!name) return alert("Please enter your name/ID");
+            
+            // Firebase Logic
+            try {
+                await push(ref(db, 'pending_orders'), {
+                    plotID: activeID,
+                    price: 360,
+                    gamerID: name,
+                    timestamp: Date.now()
+                });
+                
+                // Success UI
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                alert("Request Sent! Please contact support for payment verification.");
+                closeModals();
+            } catch (e) { alert("Connection Error!"); }
+        };
+
+        window.closeModals = () => document.getElementById('order-modal').style.display = 'none';
+
+        window.downloadMap = () => {
+            const btn = event.target;
+            btn.innerText = "CAPTURING...";
+            html2canvas(document.getElementById('capture-area'), { backgroundColor: "#000", scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Gamers_Haven_Map.png';
+                link.href = canvas.toDataURL();
+                link.click();
+                btn.innerText = "HD CAPTURE";
+            });
+        };
+    </script>
+</body>
+</html>
