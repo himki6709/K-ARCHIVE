@@ -1,0 +1,74 @@
+/* THE LITTLE HOUSE - GLOBAL STYLES */
+:root {
+    --gold: #9E7E45;
+    --black: #050505;
+    --dark-grey: #111111;
+    --white: #ffffff;
+    --transition: all 0.3s ease;
+}
+
+body {
+    margin: 0;
+    background-color: var(--black);
+    color: var(--white);
+    font-family: 'Times New Roman', serif;
+    line-height: 1.6;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+/* Buttons & Inputs */
+.btn-premium {
+    background: var(--gold);
+    color: #000;
+    border: none;
+    padding: 15px 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: var(--transition);
+    border-radius: 2px;
+}
+
+.btn-premium:hover {
+    background: var(--white);
+    transform: translateY(-2px);
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: #fff;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Container Styles */
+.container-box {
+    max-width: 500px;
+    margin: 100px auto;
+    background: #0a0a0a;
+    padding: 40px;
+    border: 1px solid #222;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.shimmer-text {
+    background: linear-gradient(90deg, var(--gold), #fff, var(--gold));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+    to { background-position: 200% center; }
+}
