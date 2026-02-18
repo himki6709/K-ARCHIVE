@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DASHBOARD | THE LITTLE HOUSE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container-box">
+        <h2 style="color: var(--gold);">OWNERSHIP TRACKER</h2>
+        <p>Check the status of your Plot ID</p>
+        
+        <input type="number" id="searchID" placeholder="ENTER YOUR PLOT ID">
+        <button class="btn-premium" onclick="checkStatus()">TRACK STATUS</button>
+
+        <div id="result" style="margin-top: 30px; padding: 20px; background: #111; border-radius: 4px; display: none;">
+            <p id="statusTxt"></p>
+        </div>
+        
+        <a href="index.html" style="color: #666; text-decoration: none; display: block; margin-top: 20px;">← Back to Home</a>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script>
+        firebase.initializeApp({
+            databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com"
+        });
+        const db = firebase.database();
+
+        function checkStatus() {
+            const id = document.getElementById('searchID').value;
+            if(!id) return;
+
+            db.ref('pixels/' + id).once('value', snap => {
+                const res = document.getElementById('result');
+                const txt = document.getElementById('statusTxt');
+                res.style.display = 'block';
+
+                if(snap.exists()) {
+                    txt.innerHTML = `<span style="color: #2ebd85;">LIVE:</span> Owned by ${snap.val().name}`;
+                } else {
+                    txt.innerHTML = `<span style="color: var(--gold);">VACANT:</span> This plot is available for purchase.`;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
