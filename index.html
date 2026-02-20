@@ -4,6 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K ARCHIVE | THE SOVEREIGN ESTATE</title>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
+            authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
+            databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
+            projectId: "milliondollarhomepage2-71ba3",
+            storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
+            messagingSenderId: "895107568682",
+            appId: "1:895107568682:web:d48003f71701005f3d5f53",
+            measurementId: "G-RG50BVDLTX"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+
     <style>
         :root { 
             --black: #000000; 
@@ -18,7 +38,6 @@
             font-family: 'Times New Roman', serif; overflow-x: hidden; cursor: none; 
         }
 
-        /* Cursor Customization */
         #cursor-outline { 
             position: fixed; width: 10px; height: 10px; border: 1px solid var(--black); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
@@ -26,7 +45,6 @@
         }
         @media (max-width: 768px) { #cursor-outline { display: none; } body { cursor: auto; } }
 
-        /* Navigation Header */
         .nav-bar {
             position: fixed; top: 0; width: 100%; height: 180px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -46,13 +64,6 @@
         .k-back { top: 10px; left: 10px; opacity: 0.15; z-index: 1; }
         .brand-subtitle { font-size: 11px; letter-spacing: 14px; font-weight: 300; margin-top: 15px; color: var(--black); text-transform: uppercase; }
 
-        @media (max-width: 768px) {
-            .nav-bar { height: 140px; }
-            .buy-trigger { left: 20px; top: 60px; font-size: 8px; letter-spacing: 2px; }
-            .brand-subtitle { font-size: 8px; letter-spacing: 6px; }
-        }
-
-        /* Payment Drawer */
         #payment-drawer {
             position: fixed; top: 0; left: -100%; width: 400px; height: 100vh;
             background: var(--white); border-right: 1px solid #eee; z-index: 5000;
@@ -63,7 +74,6 @@
         .pay-item h4 { font-size: 9px; letter-spacing: 2px; color: var(--grey); margin-bottom: 8px; text-transform: uppercase; }
         .pay-item p { font-size: 11px; word-break: break-all; margin: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; color: #000; font-weight: bold; }
 
-        /* Full Screen Overlays for Sub-sections */
         .sub-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: var(--white); z-index: 4500; display: none;
@@ -71,31 +81,14 @@
             overflow-y: auto; padding: 120px 0; box-sizing: border-box;
         }
         .sub-overlay.active { display: flex; }
-        
         .overlay-title { font-size: 24px; letter-spacing: 12px; font-weight: 100; text-transform: uppercase; margin-bottom: 10px; }
         .overlay-label { font-size: 9px; letter-spacing: 6px; color: var(--grey); text-transform: uppercase; margin-bottom: 40px; }
-        
-        .grid-layout {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
-            width: 85%; max-width: 1000px; margin-bottom: 60px;
-        }
-        .grid-box {
-            border: 0.5px solid #e0e0e0; padding: 30px; text-align: center;
-            cursor: pointer; transition: 0.4s; text-transform: uppercase;
-            font-size: 11px; letter-spacing: 3px; color: var(--black); background: #fafafa;
-        }
+        .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 85%; max-width: 1000px; margin-bottom: 60px; }
+        .grid-box { border: 0.5px solid #e0e0e0; padding: 30px; text-align: center; cursor: pointer; transition: 0.4s; text-transform: uppercase; font-size: 11px; letter-spacing: 3px; color: var(--black); background: #fafafa; }
         .grid-box:hover { background: var(--black); color: var(--white); border-color: var(--black); transform: translateY(-5px); }
-        
-        .back-btn { 
-            margin-top: 20px; padding: 15px 50px; border: 0.5px solid #000; 
-            font-size: 10px; letter-spacing: 5px; cursor: pointer; transition: 0.3s;
-            text-transform: uppercase; background: none; margin-bottom: 100px;
-        }
+        .back-btn { margin-top: 20px; padding: 15px 50px; border: 0.5px solid #000; font-size: 10px; letter-spacing: 5px; cursor: pointer; transition: 0.3s; text-transform: uppercase; background: none; margin-bottom: 100px; }
         .back-btn:hover { background: #000; color: #fff; }
 
-        @media (max-width: 600px) { .grid-layout { grid-template-columns: 1fr; } }
-
-        /* Snap Sections - Main Layout */
         .snap-section { 
             height: 100vh; width: 100%; scroll-snap-align: start; 
             display: flex; flex-direction: column; justify-content: center; 
@@ -112,21 +105,29 @@
         .btn-action { padding: 20px 90px; border: 0.5px solid var(--black); text-decoration: none; color: var(--black); font-size: 10px; letter-spacing: 8px; transition: 0.5s; text-transform: uppercase; cursor: pointer; background: transparent; }
         .btn-action:hover { background: var(--black); color: var(--white); letter-spacing: 12px; }
 
-        /* Side Buttons */
+        /* Custom Footer Section Styles */
+        .policy-container {
+            background: var(--white); padding: 100px 10%; text-align: left;
+            scroll-snap-align: end; border-top: 1px solid #f0f0f0;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+        }
+        .policy-box h3 { font-size: 12px; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .policy-list { list-style: none; padding: 0; margin: 0; }
+        .policy-list li { font-size: 11px; letter-spacing: 2px; color: #666; margin-bottom: 15px; line-height: 1.6; }
+        .policy-list b { color: #000; }
+
+        .footer { background: var(--white); padding: 60px 0; text-align: center; border-top: 1px solid #fafafa; scroll-snap-align: end;}
+        .copyright { font-size: 10px; letter-spacing: 4px; opacity: 0.6; text-transform: uppercase; }
+
         .support-btn, .twitter-btn { position: fixed; bottom: 40px; width: 50px; height: 50px; border: 0.5px solid var(--black); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2500; background: #fff; transition: 0.4s; }
         .support-btn { left: 40px; } .twitter-btn { right: 40px; }
-        .support-btn svg { width: 22px; } .twitter-btn svg { width: 20px; }
         .twitter-btn:hover { background: var(--black); } .twitter-btn:hover svg { fill: var(--white); }
 
-        /* Footer */
-        .footer { background: var(--white); padding: 150px 10% 80px 10%; scroll-snap-align: end; border-top: 1px solid #f0f0f0; text-align: center; }
-        .copyright { font-size: 11px; letter-spacing: 5px; opacity: 0.7; border-top: 1px solid #eee; padding-top: 50px; }
-
-        /* Loader */
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 1s; }
         .loader-logo { font-size: 100px; font-weight: 900; color: var(--gold); animation: pulse 2s infinite; }
         .fade-out { opacity: 0; pointer-events: none; }
         @keyframes pulse { 0% { transform: scale(0.8); opacity: 0.4; } 50% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.8); opacity: 0.4; } }
+        @media (max-width: 768px) { .policy-container { grid-template-columns: 1fr; gap: 40px; } }
     </style>
 </head>
 <body>
@@ -166,7 +167,6 @@
 
     <div id="social-overlay" class="sub-overlay">
         <h2 class="overlay-title">Social Heritage</h2>
-        <p class="overlay-label">Top 10 Global Platforms - Select to Claim</p>
         <div class="grid-layout">
             <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=YouTube')">01. YouTube Realm</div>
             <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=Facebook')">02. Facebook Realm</div>
@@ -184,7 +184,6 @@
 
     <div id="gaming-overlay" class="sub-overlay">
         <h2 class="overlay-title">Gaming Sovereignty</h2>
-        <p class="overlay-label">Top 20 Global Games - Select Your Battlefield</p>
         <div class="grid-layout">
             <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=PUBG')">01. PUBG Mobile</div>
             <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=FreeFire')">02. Free Fire</div>
@@ -214,11 +213,7 @@
         <div class="reveal active">
             <span class="label">Elite Tier</span>
             <h2 class="title">Millionaires Club</h2>
-            <p class="sub-desc">
-                The summit of digital prestige. A 7-tier glowing masterpiece reserved for the world's most influential figures. 
-                Exclusivity is absolute: strictly limited to <span class="plot-highlight">100 ELITE PLOTS</span> only. 
-                Once the grid is filled, no further entry will ever be possible.
-            </p>
+            <p class="sub-desc">Summit of digital prestige. Reserved for the summit. Strictly limited to <span class="plot-highlight">100 ELITE PLOTS</span>.</p>
             <a href="millionaire_canvas.html" class="btn-action interactive">Enter Elite Estate</a>
         </div>
     </section>
@@ -227,11 +222,7 @@
         <div class="reveal">
             <span class="label">Identity Heritage</span>
             <h2 class="title">Social Creators</h2>
-            <p class="sub-desc">
-                Immortalize your digital influence. A dedicated archive for creators with 1M+ legacy. 
-                Split into <span class="plot-highlight">10 GLOBAL PLATFORMS</span> (YouTube, FB, etc.). 
-                Each platform sub-section is strictly limited to 100 heritage plots to preserve value.
-            </p>
+            <p class="sub-desc">Archive for influencers with 1M+ legacy. <span class="plot-highlight">10 GLOBAL PLATFORMS</span>. 100 plots each.</p>
             <div class="btn-action interactive" onclick="toggleSubOverlay('social-overlay')">Claim Creator Space</div>
         </div>
     </section>
@@ -240,11 +231,7 @@
         <div class="reveal">
             <span class="label">The Leaderboard</span>
             <h2 class="title">Gaming Realm</h2>
-            <p class="sub-desc">
-                Where professional rank meets eternal sovereignty. Explore the worlds <span class="plot-highlight">TOP 20 GLOBAL GAMES</span>. 
-                Each game features its own unique leaderboard canvas, limited to exactly 100 legendary plots per realm. 
-                Establish your dominance today.
-            </p>
+            <p class="sub-desc">Where rank meets sovereignty. <span class="plot-highlight">TOP 20 GLOBAL GAMES</span>. Exactly 100 plots per realm.</p>
             <div class="btn-action interactive" onclick="toggleSubOverlay('gaming-overlay')">View Game Rankings</div>
         </div>
     </section>
@@ -253,12 +240,8 @@
         <div class="reveal">
             <span class="label">Geographical Pride</span>
             <h2 class="title">Nations Grid</h2>
-            <p class="sub-desc">
-                The global digital map redefined. 195,000 plots allocated by sovereign national borders. 
-                Represent your country on the ultimate grid. Each nation is limited to only 
-                <span class="plot-highlight">200 SOVEREIGN PLOTS</span>. Claim your spot under your flag.
-            </p>
-            <a href="nations_canvas.html" class="btn-action interactive">Explore National Borders</a>
+            <p class="sub-desc">Digital map redefined. Limited to <span class="plot-highlight">200 SOVEREIGN PLOTS</span> per nation flag.</p>
+            <a href="nations_canvas.html" class="btn-action interactive">Explore Borders</a>
         </div>
     </section>
 
@@ -266,12 +249,8 @@
         <div class="reveal">
             <span class="label">Next Generation</span>
             <h2 class="title">Little Stars</h2>
-            <p class="sub-desc">
-                The most precious digital legacy for children. Immortalize their names, first steps, and memories forever. 
-                This archive is classically preserved with a limited availability of 
-                <span class="plot-highlight">365 ETERNAL PLOTS</span>—one for each day of the year.
-            </p>
-            <a href="children_canvas.html" class="btn-action interactive">Store Memory Forever</a>
+            <p class="sub-desc">Precious legacy for children. Immortalized in <span class="plot-highlight">365 ETERNAL PLOTS</span>.</p>
+            <a href="children_canvas.html" class="btn-action interactive">Store Memory</a>
         </div>
     </section>
 
@@ -279,11 +258,7 @@
         <div class="reveal">
             <span class="label">Ancestral Tribute</span>
             <h2 class="title">Eternal Roots</h2>
-            <p class="sub-desc">
-                A royal tribute to our parents and ancestors. Honour the ones who gave us life with a 
-                classically preserved monument. This sacred section of the archive is limited to 
-                <span class="plot-highlight">365 ANCESTRAL PLOTS</span> for global families.
-            </p>
+            <p class="sub-desc">Royal tribute to parents. Limited to <span class="plot-highlight">365 ANCESTRAL PLOTS</span>.</p>
             <a href="parents_canvas.html" class="btn-action interactive">Honour Ancestors</a>
         </div>
     </section>
@@ -292,12 +267,8 @@
         <div class="reveal">
             <span class="label">Romance & Unity</span>
             <h2 class="title">The Union Wall</h2>
-            <p class="sub-desc">
-                Celebrate eternal love and lifetime milestones. A dedicated space for couples to lock 
-                their souls into the archive together. Exclusivity is maintained with only 
-                <span class="plot-highlight">365 UNION PLOTS</span> available globally.
-            </p>
-            <a href="couples_canvas.html" class="btn-action interactive">Join Your Souls</a>
+            <p class="sub-desc">Celebrate eternal love. Dedicated space with <span class="plot-highlight">365 UNION PLOTS</span> globally.</p>
+            <a href="couples_canvas.html" class="btn-action interactive">Join Souls</a>
         </div>
     </section>
 
@@ -305,14 +276,30 @@
         <div class="reveal">
             <span class="label">Loyal Companions</span>
             <h2 class="title">Pet Paradise</h2>
-            <p class="sub-desc">
-                Because loyalty deserves a permanent place in the archive. A paradise for our silent friends 
-                who loved us unconditionally. Only <span class="plot-highlight">365 LOYALTY PLOTS</span> 
-                are reserved for these beloved companions.
-            </p>
-            <a href="pets_canvas.html" class="btn-action interactive">Enter Paradise Grid</a>
+            <p class="sub-desc">Loyalty archived. Paradise reserved in <span class="plot-highlight">365 LOYALTY PLOTS</span>.</p>
+            <a href="pets_canvas.html" class="btn-action interactive">Enter Paradise</a>
         </div>
     </section>
+
+    <div class="policy-container reveal">
+        <div class="policy-box">
+            <h3>Policies & Modification</h3>
+            <ul class="policy-list">
+                <li>• <b>Renewal Policy:</b> All plots are archived permanently; however, active link validation is required annually.</li>
+                <li>• <b>Data Modification:</b> <b>$7 administrative fee</b> for any media, display name, or target URL updates post-approval.</li>
+                <li>• <b>Service Window:</b> Dedicated Concierge active 24h: <b>Thursday, Friday, Saturday</b>.</li>
+            </ul>
+        </div>
+        <div class="policy-box">
+            <h3>Acquisition Steps</h3>
+            <ul class="policy-list">
+                <li><b>01</b> Complete payment via the <b>Acquisition Drawer</b>.</li>
+                <li><b>02</b> Prepare 4K Photo, Display Name, and Target URL.</li>
+                <li><b>03</b> Submit assets to <b>WhatsApp Support</b> for verification.</li>
+                <li><b>04</b> Live sync completed within <b>48 hours</b> post-approval.</li>
+            </ul>
+        </div>
+    </div>
 
     <a href="https://wa.me/8801576940717" target="_blank" class="support-btn interactive">
         <svg viewBox="0 0 24 24" fill="#000"><path d="M12.004 2C6.48 2 2 6.48 2 12C2 13.59 2.37 15.12 3.08 16.46L2 22L7.69 20.91C8.99 21.61 10.45 22 12.004 22C17.524 22 22.004 17.52 22.004 12C22.004 6.48 17.524 2 12.004 2ZM12.004 20.18C10.634 20.18 9.334 19.83 8.194 19.22L7.854 19.04L4.544 19.67L5.194 16.46L4.994 16.14C4.294 15.01 3.924 13.72 3.924 12.38C3.924 7.91 7.554 4.28 12.024 4.28C16.494 4.28 20.124 7.91 20.124 12.38C20.124 16.85 16.474 20.18 12.004 20.18Z"/></svg>
@@ -327,23 +314,15 @@
     </footer>
 
     <script>
-        // Smooth Custom Cursor
         const outline = document.getElementById('cursor-outline');
         document.addEventListener('mousemove', (e) => {
             outline.style.left = e.clientX + 'px';
             outline.style.top = e.clientY + 'px';
         });
 
-        // Toggle Drawer (Payment)
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
-        
-        // Copy Value function
-        function copyValue(text) {
-            navigator.clipboard.writeText(text);
-            alert("Copied to clipboard: " + text);
-        }
+        function copyValue(text) { navigator.clipboard.writeText(text); alert("Copied: " + text); }
 
-        // Sub-Overlay Logic (Social & Gaming)
         function toggleSubOverlay(id) {
             const overlay = document.getElementById(id);
             if(overlay.style.display === "flex") {
@@ -355,40 +334,20 @@
             }
         }
 
-        // Navigation
         function navTo(url) { window.location.href = url; }
 
-        // Loader logic
         window.addEventListener("load", () => {
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('fade-out');
-            }, 1500);
+            setTimeout(() => { document.getElementById('loader').classList.add('fade-out'); }, 1500);
         });
 
-        // Intersection Observer for Animations
-        const observerOptions = { threshold: 0.2 };
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, observerOptions);
-
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Interactive elements cursor effect
         document.querySelectorAll('.interactive').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                outline.style.width = '30px';
-                outline.style.height = '30px';
-                outline.style.backgroundColor = 'rgba(0,0,0,0.05)';
-            });
-            el.addEventListener('mouseleave', () => {
-                outline.style.width = '10px';
-                outline.style.height = '10px';
-                outline.style.backgroundColor = 'transparent';
-            });
+            el.addEventListener('mouseenter', () => { outline.style.width = '30px'; outline.style.height = '30px'; outline.style.backgroundColor = 'rgba(0,0,0,0.05)'; });
+            el.addEventListener('mouseleave', () => { outline.style.width = '10px'; outline.style.height = '10px'; outline.style.backgroundColor = 'transparent'; });
         });
     </script>
 </body>
