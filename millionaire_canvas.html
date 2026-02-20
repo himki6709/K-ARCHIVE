@@ -7,85 +7,131 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --gold: #FCD535; --black: #000000; --white: #ffffff; }
-        body { margin: 0; padding: 0; background: var(--white); font-family: 'Times New Roman', serif; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
-        
-        /* Side Controls */
-        .side-nav { position: fixed; left: 30px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 20px; z-index: 100; }
-        .control-btn { writing-mode: vertical-rl; text-orientation: mixed; padding: 20px 10px; border: 1px solid var(--black); background: none; font-size: 10px; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .control-btn:hover { background: var(--black); color: var(--white); }
+        :root { --gold: #FCD535; --black: #000000; --white: #ffffff; --silver: #e0e0e0; }
+        body { margin: 0; padding: 0; background: var(--white); font-family: 'Times New Roman', serif; display: flex; flex-direction: column; align-items: center; }
 
-        /* Header */
-        header { width: 100%; padding: 40px 0; text-align: center; border-bottom: 1px solid #eee; margin-bottom: 50px; }
-        .back-home { position: absolute; top: 40px; right: 50px; text-decoration: none; color: #000; font-size: 10px; letter-spacing: 3px; border: 1px solid #000; padding: 10px 20px; }
+        /* Navigation Header */
+        .top-nav {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100px;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 50px; box-sizing: border-box; z-index: 2000; border-bottom: 1px solid #eee;
+        }
+        .action-group { display: flex; gap: 30px; }
+        .nav-btn { font-size: 10px; letter-spacing: 3px; font-weight: bold; border-bottom: 1px solid #000; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .nav-btn:hover { color: var(--gold); border-color: var(--gold); }
+        .back-home { text-decoration: none; color: #000; font-size: 10px; letter-spacing: 3px; border: 1px solid #000; padding: 8px 15px; }
 
-        /* Canvas Grid */
-        #capture-area { padding: 20px; background: white; }
+        /* Payment Drawer (Same as Home) */
+        #payment-drawer {
+            position: fixed; top: 0; left: -100%; width: 400px; height: 100vh;
+            background: var(--white); border-right: 1px solid #eee; z-index: 5000;
+            transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); padding: 80px 50px; box-sizing: border-box;
+        }
+        #payment-drawer.open { left: 0; }
+        .pay-item { margin-bottom: 40px; cursor: pointer; }
+        .pay-item h4 { font-size: 9px; letter-spacing: 2px; color: #888; margin-bottom: 8px; text-transform: uppercase; }
+        .pay-item p { font-size: 11px; word-break: break-all; margin: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; color: #000; font-weight: bold; }
+
+        /* Grid Styling with Metal Effects */
+        .canvas-wrapper { margin-top: 150px; padding: 50px; background: #fff; }
         .grid-container { 
             display: grid; 
-            grid-template-columns: repeat(10, 100px); 
-            grid-template-rows: repeat(10, 100px); 
-            gap: 0px; 
-            border: 2px solid var(--black);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            grid-template-columns: repeat(10, 150px); /* প্রতিটি প্লট ১৫০ পিক্সেল */
+            gap: 5px; 
+            background: #f0f0f0; padding: 5px;
         }
         .plot { 
-            width: 100px; height: 100px; border: 0.1px solid #e0e0e0; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            font-size: 9px; color: #888; transition: 0.3s; position: relative; cursor: crosshair;
+            width: 150px; height: 150px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-size: 10px; letter-spacing: 1px; transition: 0.5s; cursor: crosshair;
+            position: relative; overflow: hidden; border: 1px solid rgba(0,0,0,0.05);
         }
-        .plot:hover { background: #f9f9f9; color: #000; border-color: #000; z-index: 10; transform: scale(1.05); }
-        .plot b { font-size: 11px; color: #000; margin-top: 5px; }
 
-        /* Purchase Modal */
-        #purchase-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .modal-content { max-width: 500px; padding: 40px; }
+        /* Metallic Effects */
+        .plot:nth-child(odd) { background: linear-gradient(145deg, #ffffff, #e6e6e6); color: #555; } /* Silver Look */
+        .plot:nth-child(even) { background: linear-gradient(145deg, #fff7d6, #fcd53522); color: #8a6d3b; } /* Gold Hint */
+        
+        .plot:hover { 
+            transform: scale(1.05); z-index: 10; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: var(--black); color: var(--white);
+        }
+        .plot b { font-size: 14px; margin-top: 8px; letter-spacing: 2px; }
+
+        /* Modals & Popups */
+        #purchase-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); z-index: 5500; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .modal-content { max-width: 400px; width: 90%; }
         input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #000; font-family: serif; outline: none; text-align: center; }
-        .submit-btn { width: 100%; padding: 15px; background: #000; color: #fff; border: none; letter-spacing: 5px; cursor: pointer; margin-top: 20px; }
+        .submit-btn { width: 100%; padding: 18px; background: #000; color: #fff; border: none; letter-spacing: 5px; cursor: pointer; margin-top: 20px; text-transform: uppercase; }
 
-        /* Success Popup */
-        #success-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; background: #000; color: #fff; padding: 40px; z-index: 6000; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
-        .whatsapp-link { display: inline-block; margin-top: 25px; padding: 12px 30px; background: #25D366; color: white; text-decoration: none; font-weight: bold; font-size: 12px; letter-spacing: 2px; }
+        #success-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; background: #000; color: #fff; padding: 40px; z-index: 6000; display: none; text-align: center; box-shadow: 0 40px 100px rgba(0,0,0,0.5); }
+        .whatsapp-link { display: inline-block; margin-top: 25px; padding: 12px 30px; background: #25D366; color: white; text-decoration: none; font-weight: bold; font-size: 11px; letter-spacing: 2px; }
+
+        /* Support Button (Same as Home) */
+        .support-btn { position: fixed; bottom: 40px; left: 40px; width: 50px; height: 50px; border: 0.5px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2500; background: #fff; transition: 0.4s; }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="back-home">[ BACK TO HOME ]</a>
-
-    <header>
-        <h1 style="letter-spacing: 15px; font-weight: 100; text-transform: uppercase;">Millionaires Club</h1>
-        <p style="letter-spacing: 3px; font-size: 11px; color: #888;">THE ELITE GRID : 100 SOVEREIGN PLOTS</p>
+    <header class="top-nav">
+        <div class="action-group">
+            <div class="nav-btn" onclick="toggleDrawer()">ACQUISITION</div>
+            <div class="nav-btn" onclick="openPurchase()">BUY PLOT</div>
+            <div class="nav-btn" onclick="downloadCanvas()">DOWNLOAD MAP</div>
+        </div>
+        <a href="index.html" class="back-home">[ HOME ]</a>
     </header>
 
-    <div class="side-nav">
-        <button class="control-btn" onclick="openPurchase()">Acquire Plot</button>
-        <button class="control-btn" onclick="downloadCanvas()">Download Map</button>
+    <div id="payment-drawer">
+        <h2 style="letter-spacing: 5px; font-size: 14px; margin-bottom: 60px; font-weight: bold; text-transform: uppercase;">Secure Acquisition Center</h2>
+        <div class="pay-item" onclick="copyValue('912221034')">
+            <h4>Binance UID (User: KAWSAR6700)</h4>
+            <p>912221034</p>
+        </div>
+        <div class="pay-item" onclick="copyValue('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
+            <h4>USDT Network (TRC20)</h4>
+            <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
+        </div>
+        <div class="pay-item" onclick="copyValue('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
+            <h4>Metamask (ETH / BNB / Polygon)</h4>
+            <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
+        </div>
+        <button onclick="toggleDrawer()" style="margin-top: 40px; border: none; background: none; cursor: pointer; letter-spacing: 4px; font-size: 10px; border-bottom: 1px solid #000; font-weight: bold;">[ CLOSE WINDOW ]</button>
     </div>
 
-    <div id="capture-area">
+    <div class="canvas-wrapper" id="capture-area">
+        <div style="text-align:center; margin-bottom:40px;">
+            <h1 style="letter-spacing: 20px; font-weight: 100; text-transform: uppercase; margin:0;">Millionaires Club</h1>
+            <div style="font-size:10px; letter-spacing:8px; color:#888; margin-top:10px;">100 SOVEREIGN PLOTS • 150X150 PX</div>
+        </div>
         <div class="grid-container" id="main-grid">
             </div>
     </div>
 
     <div id="purchase-modal">
         <div class="modal-content">
-            <h2 style="letter-spacing: 8px;">ACQUISITION</h2>
+            <h2 style="letter-spacing: 8px; text-align:center;">ACQUISITION</h2>
             <input type="text" id="brandName" placeholder="ENTER BRAND NAME">
-            <input type="number" id="plotNumber" placeholder="PLOT NUMBER (1-100)" min="1" max="100">
-            <button class="submit-btn" onclick="processPurchase()">CONFIRM SELECTION</button>
-            <p onclick="closePurchase()" style="margin-top:20px; cursor:pointer; font-size:10px; letter-spacing:2px;">[ CANCEL ]</p>
+            <input type="number" id="plotNumber" placeholder="PLOT NUMBER (1-100)">
+            <button class="submit-btn" onclick="processPurchase()">Proceed to Verify</button>
+            <p onclick="closePurchase()" style="text-align:center; margin-top:20px; cursor:pointer; font-size:10px; letter-spacing:2px;">[ CANCEL ]</p>
         </div>
     </div>
 
     <div id="success-popup">
-        <h3 id="congrats-msg" style="letter-spacing: 5px; line-height: 1.5;"></h3>
-        <p style="font-size: 11px; opacity: 0.8; line-height: 1.8; margin-top: 20px;">
-            To make your plot live, please send your 4K image and proof of payment to our Concierge. Your spot will be updated within 48 hours.
+        <h3 id="congrats-msg" style="letter-spacing: 5px;"></h3>
+        <p style="font-size: 11px; opacity: 0.8; line-height: 1.8;">
+            Acquisition request logged. Please submit your 4K visual assets and payment hash to the Concierge for live synchronization.
         </p>
-        <a id="wa-btn" href="#" target="_blank" class="whatsapp-link">CHAT WITH CONCIERGE</a>
+        <a id="wa-btn" href="#" target="_blank" class="whatsapp-link">WHATSAPP CONCIERGE</a>
         <br>
-        <button onclick="location.reload()" style="background:none; border:none; color:#fff; margin-top:20px; cursor:pointer; font-size:10px; border-bottom:1px solid #fff;">CLOSE</button>
+        <button onclick="location.reload()" style="background:none; border:none; color:#fff; margin-top:25px; cursor:pointer; font-size:9px; border-bottom:1px solid #fff; letter-spacing:2px;">DISMISS</button>
     </div>
+
+    <a href="https://wa.me/8801576940717" target="_blank" class="support-btn">
+        <svg viewBox="0 0 24 24" width="22" fill="#000"><path d="M12.004 2C6.48 2 2 6.48 2 12C2 13.59 2.37 15.12 3.08 16.46L2 22L7.69 20.91C8.99 21.61 10.45 22 12.004 22C17.524 22 22.004 17.52 22.004 12C22.004 6.48 17.524 2 12.004 2ZM12.004 20.18C10.634 20.18 9.334 19.83 8.194 19.22L7.854 19.04L4.544 19.67L5.194 16.46L4.994 16.14C4.294 15.01 3.924 13.72 3.924 12.38C3.924 7.91 7.554 4.28 12.024 4.28C16.494 4.28 20.124 7.91 20.124 12.38C20.124 16.85 16.474 20.18 12.004 20.18Z"/></svg>
+    </a>
 
     <script>
         // Generate Grid
@@ -94,45 +140,37 @@
             const price = 100 + (i - 1) * 10;
             const plot = document.createElement('div');
             plot.className = 'plot';
-            plot.innerHTML = `<span>#${i}</span><b>$${price}</b>`;
+            plot.innerHTML = `<span>#${String(i).padStart(3, '0')}</span><b>$${price}</b>`;
             grid.appendChild(plot);
         }
 
+        function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
+        function copyValue(text) { navigator.clipboard.writeText(text); alert("Address Copied: " + text); }
         function openPurchase() { document.getElementById('purchase-modal').style.display = 'flex'; }
         function closePurchase() { document.getElementById('purchase-modal').style.display = 'none'; }
 
         function processPurchase() {
             const brand = document.getElementById('brandName').value;
             const plotNum = document.getElementById('plotNumber').value;
-            
-            if(!brand || !plotNum || plotNum < 1 || plotNum > 100) {
-                alert("Please enter valid Brand Name and Plot Number (1-100)");
-                return;
-            }
+            if(!brand || !plotNum) { alert("Incomplete Details"); return; }
 
             const finalPrice = 100 + (plotNum - 1) * 10;
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#000000', '#ffffff', '#FCD535'] });
 
-            // Confetti Effect
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#000000', '#ffffff', '#FCD535'] });
-
-            // Show Success
             document.getElementById('purchase-modal').style.display = 'none';
             const popup = document.getElementById('success-popup');
-            const msg = document.getElementById('congrats-msg');
-            msg.innerText = `CONGRATULATIONS, ${brand.toUpperCase()}!`;
+            document.getElementById('congrats-msg').innerText = `WELCOME, ${brand.toUpperCase()}`;
             
-            // Set WhatsApp Link
-            const waMsg = encodeURIComponent(`Hello K Archive Concierge,\n\nI want to acquire Millionaire Plot #${plotNum}.\nBrand: ${brand}\nPrice: $${finalPrice}\n\nPlease guide me for asset submission.`);
+            const waMsg = encodeURIComponent(`I want to acquire Millionaire Plot #${plotNum}.\nBrand: ${brand}\nInvestment: $${finalPrice}`);
             document.getElementById('wa-btn').href = `https://wa.me/8801576940717?text=${waMsg}`;
-
             popup.style.display = 'block';
         }
 
         function downloadCanvas() {
             const area = document.getElementById('capture-area');
-            html2canvas(area, { scale: 3 }).then(canvas => {
+            html2canvas(area, { scale: 2, useCORS: true }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'Millionaires_Club_Map.png';
+                link.download = `K_Archive_Millionaires_Map.png`;
                 link.href = canvas.toDataURL();
                 link.click();
             });
