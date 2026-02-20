@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MILLIONAIRES CLUB | K ARCHIVE</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { --gold: #FCD535; --black: #000000; --white: #ffffff; }
+        body { margin: 0; padding: 0; background: var(--white); font-family: 'Times New Roman', serif; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        
+        /* Side Controls */
+        .side-nav { position: fixed; left: 30px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 20px; z-index: 100; }
+        .control-btn { writing-mode: vertical-rl; text-orientation: mixed; padding: 20px 10px; border: 1px solid var(--black); background: none; font-size: 10px; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .control-btn:hover { background: var(--black); color: var(--white); }
+
+        /* Header */
+        header { width: 100%; padding: 40px 0; text-align: center; border-bottom: 1px solid #eee; margin-bottom: 50px; }
+        .back-home { position: absolute; top: 40px; right: 50px; text-decoration: none; color: #000; font-size: 10px; letter-spacing: 3px; border: 1px solid #000; padding: 10px 20px; }
+
+        /* Canvas Grid */
+        #capture-area { padding: 20px; background: white; }
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(10, 100px); 
+            grid-template-rows: repeat(10, 100px); 
+            gap: 0px; 
+            border: 2px solid var(--black);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+        .plot { 
+            width: 100px; height: 100px; border: 0.1px solid #e0e0e0; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            font-size: 9px; color: #888; transition: 0.3s; position: relative; cursor: crosshair;
+        }
+        .plot:hover { background: #f9f9f9; color: #000; border-color: #000; z-index: 10; transform: scale(1.05); }
+        .plot b { font-size: 11px; color: #000; margin-top: 5px; }
+
+        /* Purchase Modal */
+        #purchase-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .modal-content { max-width: 500px; padding: 40px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #000; font-family: serif; outline: none; text-align: center; }
+        .submit-btn { width: 100%; padding: 15px; background: #000; color: #fff; border: none; letter-spacing: 5px; cursor: pointer; margin-top: 20px; }
+
+        /* Success Popup */
+        #success-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; background: #000; color: #fff; padding: 40px; z-index: 6000; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .whatsapp-link { display: inline-block; margin-top: 25px; padding: 12px 30px; background: #25D366; color: white; text-decoration: none; font-weight: bold; font-size: 12px; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-home">[ BACK TO HOME ]</a>
+
+    <header>
+        <h1 style="letter-spacing: 15px; font-weight: 100; text-transform: uppercase;">Millionaires Club</h1>
+        <p style="letter-spacing: 3px; font-size: 11px; color: #888;">THE ELITE GRID : 100 SOVEREIGN PLOTS</p>
+    </header>
+
+    <div class="side-nav">
+        <button class="control-btn" onclick="openPurchase()">Acquire Plot</button>
+        <button class="control-btn" onclick="downloadCanvas()">Download Map</button>
+    </div>
+
+    <div id="capture-area">
+        <div class="grid-container" id="main-grid">
+            </div>
+    </div>
+
+    <div id="purchase-modal">
+        <div class="modal-content">
+            <h2 style="letter-spacing: 8px;">ACQUISITION</h2>
+            <input type="text" id="brandName" placeholder="ENTER BRAND NAME">
+            <input type="number" id="plotNumber" placeholder="PLOT NUMBER (1-100)" min="1" max="100">
+            <button class="submit-btn" onclick="processPurchase()">CONFIRM SELECTION</button>
+            <p onclick="closePurchase()" style="margin-top:20px; cursor:pointer; font-size:10px; letter-spacing:2px;">[ CANCEL ]</p>
+        </div>
+    </div>
+
+    <div id="success-popup">
+        <h3 id="congrats-msg" style="letter-spacing: 5px; line-height: 1.5;"></h3>
+        <p style="font-size: 11px; opacity: 0.8; line-height: 1.8; margin-top: 20px;">
+            To make your plot live, please send your 4K image and proof of payment to our Concierge. Your spot will be updated within 48 hours.
+        </p>
+        <a id="wa-btn" href="#" target="_blank" class="whatsapp-link">CHAT WITH CONCIERGE</a>
+        <br>
+        <button onclick="location.reload()" style="background:none; border:none; color:#fff; margin-top:20px; cursor:pointer; font-size:10px; border-bottom:1px solid #fff;">CLOSE</button>
+    </div>
+
+    <script>
+        // Generate Grid
+        const grid = document.getElementById('main-grid');
+        for (let i = 1; i <= 100; i++) {
+            const price = 100 + (i - 1) * 10;
+            const plot = document.createElement('div');
+            plot.className = 'plot';
+            plot.innerHTML = `<span>#${i}</span><b>$${price}</b>`;
+            grid.appendChild(plot);
+        }
+
+        function openPurchase() { document.getElementById('purchase-modal').style.display = 'flex'; }
+        function closePurchase() { document.getElementById('purchase-modal').style.display = 'none'; }
+
+        function processPurchase() {
+            const brand = document.getElementById('brandName').value;
+            const plotNum = document.getElementById('plotNumber').value;
+            
+            if(!brand || !plotNum || plotNum < 1 || plotNum > 100) {
+                alert("Please enter valid Brand Name and Plot Number (1-100)");
+                return;
+            }
+
+            const finalPrice = 100 + (plotNum - 1) * 10;
+
+            // Confetti Effect
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#000000', '#ffffff', '#FCD535'] });
+
+            // Show Success
+            document.getElementById('purchase-modal').style.display = 'none';
+            const popup = document.getElementById('success-popup');
+            const msg = document.getElementById('congrats-msg');
+            msg.innerText = `CONGRATULATIONS, ${brand.toUpperCase()}!`;
+            
+            // Set WhatsApp Link
+            const waMsg = encodeURIComponent(`Hello K Archive Concierge,\n\nI want to acquire Millionaire Plot #${plotNum}.\nBrand: ${brand}\nPrice: $${finalPrice}\n\nPlease guide me for asset submission.`);
+            document.getElementById('wa-btn').href = `https://wa.me/8801576940717?text=${waMsg}`;
+
+            popup.style.display = 'block';
+        }
+
+        function downloadCanvas() {
+            const area = document.getElementById('capture-area');
+            html2canvas(area, { scale: 3 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Millionaires_Club_Map.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
