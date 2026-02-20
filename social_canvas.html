@@ -7,8 +7,6 @@
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-
         const firebaseConfig = {
             apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
             authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
@@ -19,9 +17,7 @@
             appId: "1:895107568682:web:d48003f71701005f3d5f53",
             measurementId: "G-RG50BVDLTX"
         };
-
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -29,10 +25,9 @@
 
     <style>
         :root { 
-            --gold: #FCD535; 
             --black: #000000; 
             --white: #ffffff;
-            --silver: linear-gradient(145deg, #c0c0c0, #ffffff, #8e8e8e);
+            --silver: linear-gradient(to right, #000 0%, #8e8e8e 50%, #000 100%);
         }
 
         body { 
@@ -44,120 +39,140 @@
         /* Navigation */
         .top-nav {
             position: fixed; top: 0; left: 0; width: 100%; height: 70px;
-            background: rgba(255,255,255,0.9); backdrop-filter: blur(15px);
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 4%; box-sizing: border-box; z-index: 2000; border-bottom: 0.5px solid #eee;
         }
-        .nav-group { display: flex; gap: 15px; }
-        .nav-btn { font-size: 10px; letter-spacing: 2px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 1px solid #000; padding: 8px 15px; transition: 0.3s; }
+        .nav-btn { font-size: 10px; letter-spacing: 2px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 0.5px solid #000; padding: 8px 15px; transition: 0.3s; background: none; }
         .nav-btn:hover { background: #000; color: #fff; }
 
-        /* Silver Title Effect */
+        /* Silver/Black/White Title */
         .premium-title {
-            margin-top: 120px; font-size: clamp(30px, 8vw, 70px); font-weight: 900;
-            text-transform: uppercase; letter-spacing: 10px; text-align: center;
+            margin-top: 120px; font-size: clamp(32px, 7vw, 75px); font-weight: 900;
+            text-transform: uppercase; letter-spacing: 12px; text-align: center;
             background: var(--silver); -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; filter: drop-shadow(2px 2px 0px rgba(0,0,0,1));
+            -webkit-text-fill-color: transparent; filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.2));
         }
 
         /* Acquisition Drawer */
         #payment-drawer {
             position: fixed; top: 0; left: -100%; width: 100%; max-width: 380px; height: 100vh;
-            background: var(--white); border-right: 1px solid #eee; z-index: 5000;
+            background: var(--white); border-right: 0.5px solid #eee; z-index: 5000;
             transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); padding: 60px 40px; box-sizing: border-box;
         }
         #payment-drawer.open { left: 0; }
-        .pay-item { margin-bottom: 30px; cursor: pointer; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px; }
-        .pay-item h4 { font-size: 9px; color: #888; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .pay-item { margin-bottom: 30px; cursor: pointer; border-bottom: 0.5px solid #f0f0f0; padding-bottom: 15px; }
+        .pay-item h4 { font-size: 9px; color: #888; margin: 0 0 8px 0; text-transform: uppercase; }
         .pay-item p { font-size: 11px; word-break: break-all; margin: 0; font-weight: bold; color: #000; }
 
-        /* Grid System - 14 Plots per row */
+        /* Grid System */
         .canvas-container { padding: 40px 20px; width: 100%; display: flex; flex-direction: column; align-items: center; }
         .grid-wrapper { 
-            display: grid; 
-            grid-template-columns: repeat(14, 1fr); 
-            gap: 4px; background: #000; padding: 4px; 
-            width: 100%; max-width: 1400px; box-sizing: border-box;
+            display: grid; grid-template-columns: repeat(14, 1fr); 
+            gap: 2px; background: #eee; padding: 2px; 
+            width: 100%; max-width: 1400px; box-sizing: border-box; border: 0.5px solid #000;
         }
         .plot { 
             aspect-ratio: 1/1; background: #fff; display: flex; flex-direction: column; 
             justify-content: center; align-items: center; font-size: clamp(7px, 0.8vw, 10px); 
-            transition: 0.2s; cursor: pointer; border: 0.1px solid #eee;
+            transition: 0.2s; cursor: pointer; border: 0.1px solid #f0f0f0;
         }
         .plot:hover { background: #000; color: #fff; }
         .plot b { font-size: clamp(9px, 1vw, 12px); margin-top: 2px; }
 
-        /* Responsive Grid for Mobile */
         @media (max-width: 1024px) { .grid-wrapper { grid-template-columns: repeat(7, 1fr); } }
         @media (max-width: 600px) { .grid-wrapper { grid-template-columns: repeat(5, 1fr); } }
 
-        /* Modal Styles */
-        #purchase-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-box { width: 90%; max-width: 400px; background: #fff; padding: 40px; text-align: center; border-radius: 2px; }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ccc; font-family: serif; outline: none; box-sizing: border-box; }
+        /* Footer Section Styling */
+        .footer-info {
+            width: 100%; max-width: 1200px; padding: 80px 20px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px;
+            border-top: 0.5px solid #eee; margin-top: 50px;
+        }
+        .info-block h3 { font-size: 12px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 25px; border-bottom: 0.5px solid #000; padding-bottom: 10px; }
+        .info-block p, .info-block li { font-size: 11px; line-height: 2; color: #555; list-style: none; padding: 0; }
+        .info-block b { color: #000; }
+
+        .copyright-bar {
+            width: 100%; padding: 40px 20px; text-align: center; 
+            border-top: 0.5px solid #f9f9f9; background: #fafafa;
+            font-size: 10px; letter-spacing: 2px; color: #999; line-height: 1.8;
+        }
+
+        /* Modal */
+        #purchase-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 5500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-box { width: 90%; max-width: 400px; background: #fff; padding: 40px; text-align: center; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 0.5px solid #ccc; outline: none; box-sizing: border-box; }
         .confirm-btn { width: 100%; padding: 15px; background: #000; color: #fff; border: none; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; font-weight: bold; }
 
-        #success-pop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; max-width: 350px; background: #000; color: #fff; padding: 30px; z-index: 6000; display: none; text-align: center; border: 2px solid var(--gold); }
+        #success-pop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; max-width: 350px; background: #000; color: #fff; padding: 30px; z-index: 6000; display: none; text-align: center; }
     </style>
 </head>
 <body>
 
     <header class="top-nav">
-        <div class="nav-group">
+        <button class="nav-btn" onclick="window.location.href='index.html'">← BACK</button>
+        <div style="display: flex; gap: 10px;">
             <div class="nav-btn" onclick="toggleDrawer()">Acquisition</div>
             <div class="nav-btn" onclick="openModal()">Secure Plot</div>
         </div>
-        <div class="nav-btn" onclick="downloadArchive()">Download</div>
     </header>
 
     <div id="payment-drawer">
-        <h2 style="font-size: 16px; letter-spacing: 4px; margin-bottom: 50px; border-bottom: 2px solid #000; padding-bottom: 10px;">ACQUISITION CENTER</h2>
-        
-        <div class="pay-item" onclick="copyText('912221034')">
-            <h4>Binance UID (User: KAWSAR6700)</h4>
-            <p>912221034</p>
-        </div>
-
-        <div class="pay-item" onclick="copyText('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-            <h4>USDT Address (Network: TRC20)</h4>
-            <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
-        </div>
-
-        <div class="pay-item" onclick="copyText('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-            <h4>Metamask (ETH/BNB/Polygon)</h4>
-            <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
-        </div>
-
-        <button onclick="toggleDrawer()" style="margin-top: 30px; background:none; border:none; border-bottom:1px solid #000; cursor:pointer; font-size:10px; letter-spacing:2px;">[ CLOSE WINDOW ]</button>
+        <h2 style="font-size: 14px; letter-spacing: 4px; margin-bottom: 40px; border-bottom: 1px solid #000; padding-bottom: 10px;">ACQUISITION DRAWER</h2>
+        <div class="pay-item" onclick="copyT('912221034')"><h4>Binance UID</h4><p>912221034</p></div>
+        <div class="pay-item" onclick="copyT('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')"><h4>USDT (TRC20)</h4><p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p></div>
+        <div class="pay-item" onclick="copyT('0x443792A4884e8e855f954ccEF910778Aff1eb78E')"><h4>Metamask</h4><p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p></div>
+        <button onclick="toggleDrawer()" style="background:none; border:none; border-bottom:0.5px solid #000; cursor:pointer; font-size:10px;">[ CLOSE ]</button>
     </div>
 
     <div class="canvas-container" id="capture-zone">
         <h1 class="premium-title">Social Creators</h1>
-        <p style="font-size: 11px; letter-spacing: 6px; color: #888; margin-bottom: 50px; text-transform: uppercase;">The Digital Heritage Archive • 300 Plots</p>
+        <p style="font-size: 10px; letter-spacing: 8px; color: #aaa; margin-bottom: 50px;">300 SOVEREIGN PLOTS ARCHIVE</p>
 
-        <div class="grid-wrapper" id="main-grid">
+        <div class="grid-wrapper" id="main-grid"></div>
+
+        <div class="footer-info">
+            <div class="info-block">
+                <h3>Acquisition Steps</h3>
+                <p>
+                    <b>01</b> Complete payment via the Acquisition Drawer.<br>
+                    <b>02</b> Prepare 4K Photo, Display Name, and Target URL.<br>
+                    <b>03</b> Submit assets to WhatsApp Support for verification.<br>
+                    <b>04</b> Live sync completed within 48 hours post-approval.
+                </p>
             </div>
+            <div class="info-block">
+                <h3>Policies & Modification</h3>
+                <li>• <b>Renewal:</b> Plots are archived permanently; annual link validation required.</li>
+                <li>• <b>Update Fee:</b> $7 for any modification post-approval.</li>
+                <li>• <b>Support:</b> Concierge active Thu, Fri, Sat (24h).</li>
+            </div>
+        </div>
+
+        <div class="copyright-bar">
+            K ARCHIVE OWNER KAWSAR TM | Millionaires Club © 2026 K ARCHIVE.<br>
+            All rights reserved. Not responsible for external content.
+        </div>
     </div>
 
     <div id="purchase-modal">
         <div class="modal-box">
-            <h2 style="letter-spacing: 3px; font-size: 18px; margin-bottom: 20px;">SECURE YOUR PLOT</h2>
-            <input type="text" id="nameInput" placeholder="CREATOR NAME / HANDLE">
-            <input type="number" id="plotInput" placeholder="PLOT NUMBER (1-300)" min="1" max="300">
-            <p id="priceDisplay" style="font-size: 12px; margin: 10px 0; font-weight: bold; color: #d4af37;">Price: $0.00</p>
-            <button class="confirm-btn" onclick="submitPurchase()">Verify & Acquire</button>
-            <p onclick="closeModal()" style="cursor:pointer; font-size:10px; margin-top:20px; opacity:0.6;">[ CANCEL ]</p>
+            <h2 style="letter-spacing: 3px; font-size: 18px;">SECURE PLOT</h2>
+            <input type="text" id="nameIn" placeholder="CREATOR NAME">
+            <input type="number" id="plotIn" placeholder="PLOT # (1-300)" min="1" max="300">
+            <button class="confirm-btn" onclick="confirmPurchase()">Verify & Acquire</button>
+            <p onclick="closeModal()" style="cursor:pointer; font-size:10px; margin-top:20px; opacity:0.5;">[ CANCEL ]</p>
         </div>
     </div>
 
     <div id="success-pop">
-        <h2 style="color: var(--gold); letter-spacing: 2px;">CONGRATULATIONS</h2>
-        <p id="pop-details" style="font-size: 12px; line-height: 1.6;"></p>
-        <a id="wa-link" href="#" target="_blank" style="display:inline-block; margin-top:15px; color:#fff; border:1px solid #fff; padding:10px 20px; text-decoration:none; font-size:11px; letter-spacing:2px;">CONTACT CONCIERGE</a>
+        <h2 style="color:#FCD535;">VERIFIED</h2>
+        <p id="pop-text"></p>
+        <a id="wa-link" href="#" target="_blank" style="color:#fff; border:1px solid #fff; padding:10px 20px; text-decoration:none; font-size:11px; display:inline-block; margin-top:10px;">WHATSAPP SUPPORT</a>
     </div>
 
     <script>
-        // Generate 300 Plots
         const grid = document.getElementById('main-grid');
         for (let i = 1; i <= 300; i++) {
             const plot = document.createElement('div');
@@ -166,46 +181,23 @@
             grid.appendChild(plot);
         }
 
-        // Functions
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
-        function copyText(t) { navigator.clipboard.writeText(t); alert("Address Copied: " + t); }
+        function copyT(t) { navigator.clipboard.writeText(t); alert("Address Copied"); }
         function openModal() { document.getElementById('purchase-modal').style.display = 'flex'; }
         function closeModal() { document.getElementById('purchase-modal').style.display = 'none'; }
 
-        // Price Update Logic
-        document.getElementById('plotInput').addEventListener('input', function(e) {
-            const val = e.target.value;
-            document.getElementById('priceDisplay').innerText = val > 0 ? `Price: $${val}.00` : "Price: $0.00";
-        });
-
-        function submitPurchase() {
-            const name = document.getElementById('nameInput').value;
-            const plotNum = document.getElementById('plotInput').value;
-
-            if(!name || plotNum < 1 || plotNum > 300) {
-                alert("Please enter a valid Creator Name and Plot Number (1-300).");
-                return;
-            }
-
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        function confirmPurchase() {
+            const n = document.getElementById('nameIn').value;
+            const p = document.getElementById('plotIn').value;
+            if(!n || p<1 || p>300) return alert("Valid Name & Plot (1-300) required");
             
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
             document.getElementById('purchase-modal').style.display = 'none';
-            document.getElementById('pop-details').innerHTML = `<b>PLOT #${plotNum}</b> RESERVED FOR <b>${name.toUpperCase()}</b>.<br>TOTAL PAYABLE: <b>$${plotNum}</b>`;
+            document.getElementById('pop-text').innerHTML = `Plot #${p} for ${n.toUpperCase()}. Total: $${p}`;
             
-            const msg = encodeURIComponent(`Hello K ARCHIVE,\n\nI want to acquire Plot #${plotNum} for "${name}".\nAgreed Price: $${plotNum}.\nPayment Status: [Pending]`);
+            const msg = encodeURIComponent(`Hello K ARCHIVE,\nI am acquiring Social Plot #${p} for ${n}.\nPrice: $${p}\nPayment completed.`);
             document.getElementById('wa-link').href = `https://wa.me/8801576940717?text=${msg}`;
-            
             document.getElementById('success-pop').style.display = 'block';
-        }
-
-        function downloadArchive() {
-            const zone = document.getElementById('capture-zone');
-            html2canvas(zone, { scale: 2 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Social_Creators_Map.png';
-                link.href = canvas.toDataURL();
-                link.click();
-            });
         }
     </script>
 </body>
