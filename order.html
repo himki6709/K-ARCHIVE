@@ -2,31 +2,126 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>RESERVE PLOTS | THE LITTLE HOUSE</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACQUISITION REQUEST | K ARCHIVE</title>
+    
+    <style>
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gold: #D4AF37;
+            --grey: #888888;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--white);
+            color: var(--black);
+            font-family: 'Times New Roman', serif;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        .container-box {
+            width: 90%; max-width: 450px;
+            padding: 60px 40px;
+            text-align: center;
+            border: 0.5px solid #eee;
+            background: #fff;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.03);
+        }
+
+        /* Inner border design */
+        .container-box::after {
+            content: ""; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 0.5px solid #f2f2f2; pointer-events: none;
+        }
+
+        h2 {
+            font-size: 16px; letter-spacing: 5px; font-weight: 900;
+            text-transform: uppercase; margin-bottom: 10px;
+        }
+
+        .price-tag {
+            font-size: 10px; letter-spacing: 2px; color: var(--grey);
+            margin-bottom: 40px; text-transform: uppercase;
+            border-bottom: 0.5px solid #eee; padding-bottom: 15px;
+        }
+
+        input {
+            width: 100%; padding: 18px;
+            background: #fcfcfc; border: 0.5px solid #ddd;
+            color: #000; font-family: 'Times New Roman', serif;
+            font-size: 12px; letter-spacing: 2px; text-align: center;
+            outline: none; box-sizing: border-box; margin-bottom: 15px;
+            transition: 0.3s; position: relative; z-index: 10;
+        }
+
+        input:focus { border-color: var(--black); background: #fff; }
+
+        .btn-premium {
+            width: 100%; padding: 18px;
+            background: var(--black); color: var(--white);
+            border: none; font-size: 10px; letter-spacing: 4px;
+            font-weight: bold; text-transform: uppercase;
+            cursor: pointer; transition: 0.4s; position: relative; z-index: 10;
+        }
+
+        .btn-premium:hover { letter-spacing: 6px; background: #222; }
+
+        #success-msg {
+            display: none; animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .wa-link {
+            display: inline-block; margin-top: 25px;
+            color: #000; text-decoration: none; font-weight: bold;
+            font-size: 11px; letter-spacing: 2px; border: 1px solid #000;
+            padding: 15px 30px; transition: 0.3s;
+        }
+
+        .wa-link:hover { background: #000; color: #fff; }
+
+        .back-home {
+            display: block; margin-top: 30px;
+            font-size: 9px; letter-spacing: 3px; color: var(--grey);
+            text-decoration: none; text-transform: uppercase;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
+
     <div class="container-box">
-        <h2 class="shimmer-text">RESERVE YOUR LEGACY</h2>
-        <p style="font-size: 12px; color: #888; margin-bottom: 30px;">PRICE: $10 PER PLOT | MINIMUM: 10 PLOTS</p>
+        <h2>Reserve Legacy</h2>
+        <p class="price-tag">K ARCHIVE | Bulk Plot Acquisition</p>
         
         <div id="order-form">
-            <input type="text" id="brandName" placeholder="ENTER BRAND NAME">
-            <input type="number" id="plotQty" placeholder="QUANTITY (E.G. 15)" min="10">
-            <button class="btn-premium" onclick="handleOrder()">PLACE ORDER REQUEST</button>
+            <input type="text" id="brandName" placeholder="YOUR NAME / BRAND NAME">
+            <input type="number" id="plotQty" placeholder="QUANTITY (MINIMUM 10)" min="10">
+            <button class="btn-premium" onclick="handleOrder()">Initialize Request</button>
         </div>
 
-        <div id="success-msg" style="display:none;">
-            <h3 style="color: var(--gold);">ORDER SENT!</h3>
-            <p>Please contact support via WhatsApp to complete the payment and go live.</p>
-            <button class="btn-premium" onclick="window.location.href='index.html'">BACK HOME</button>
+        <div id="success-msg">
+            <h3 style="color: var(--gold); letter-spacing: 3px;">REQUEST LOGGED</h3>
+            <p style="font-size: 12px; line-height: 1.8; color: #555; padding: 0 10px;">
+                Your order has been recorded in our secure database. <br>
+                Please finalize the acquisition via WhatsApp.
+            </p>
+            <a id="wa-final" href="#" target="_blank" class="wa-link">COMPLETE VIA WHATSAPP</a>
+            <a href="index.html" class="back-home">← BACK TO HOME</a>
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
     <script>
+        // Database Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
             databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
@@ -39,17 +134,31 @@
             const name = document.getElementById('brandName').value;
             const qty = document.getElementById('plotQty').value;
 
-            if(!name || qty < 10) return alert("Please provide brand name and minimum 10 plots.");
+            if(!name || qty < 10) {
+                alert("For formal reservation, a minimum of 10 plots is required.");
+                return;
+            }
 
+            // Button loading state
+            const btn = document.querySelector('.btn-premium');
+            btn.innerText = "AUTHENTICATING...";
+
+            // Push data to Firebase
             db.ref('orders').push({
                 name: name,
                 quantity: qty,
                 timestamp: Date.now(),
                 status: 'pending'
             }).then(() => {
+                // Celebration Effect
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                
                 document.getElementById('order-form').style.display = 'none';
                 document.getElementById('success-msg').style.display = 'block';
+                
+                // Generate WhatsApp Message
+                const msg = encodeURIComponent(`Hello K ARCHIVE,\nI would like to finalize my plot acquisition.\n\nName: ${name}\nRequested Quantity: ${qty}\n\nPlease guide me with the payment steps.`);
+                document.getElementById('wa-final').href = `https://wa.me/8801576940717?text=${msg}`;
             });
         }
     </script>
