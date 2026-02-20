@@ -51,11 +51,10 @@
         .pay-item h4 { font-size: 9px; color: #888; margin-bottom: 5px; text-transform: uppercase; }
         .pay-item p { font-size: 11px; word-break: break-all; margin: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; font-weight: bold; }
 
-        /* Millionaires Club - Bold & Animated Title */
         .premium-title {
             font-size: clamp(28px, 6vw, 55px); 
             letter-spacing: clamp(5px, 2vw, 20px);
-            font-weight: 900; /* Bold/Moata Style */
+            font-weight: 900;
             text-transform: uppercase; 
             margin-top: 120px;
             background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
@@ -116,6 +115,7 @@
         <div class="action-group">
             <div class="nav-btn" onclick="toggleDrawer()">ACQUISITION</div>
             <div class="nav-btn" onclick="openPurchase()">BUY PLOT</div>
+            <div class="nav-btn" onclick="downloadMap()">DOWNLOAD MAP</div>
         </div>
         <a href="index.html" class="back-home">HOME</a>
     </header>
@@ -207,11 +207,28 @@
             const p = document.getElementById('plotNumber').value;
             if(!b || !p) return;
             
+            // Calculate specific price for auto-message
+            const price = Math.round(1000 - (p - 1) * 9.09);
+
             confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#bf953f', '#000', '#fff'] });
             document.getElementById('purchase-modal').style.display = 'none';
             document.getElementById('congrats-msg').innerText = "WELCOME, " + b.toUpperCase();
-            document.getElementById('wa-btn').href = `https://wa.me/8801576940717?text=Plot%20${p}%20Acquisition:%20${b}`;
+            
+            // Auto-message logic: Brand Name, Plot Number, and Price
+            const waMsg = encodeURIComponent(`Hello K Archive Concierge,\n\nI want to acquire Millionaire Plot #${p}.\nBrand: ${b}\nPrice: $${price}\n\nPlease guide me for the next steps.`);
+            document.getElementById('wa-btn').href = `https://wa.me/8801576940717?text=${waMsg}`;
+            
             document.getElementById('success-popup').style.display = 'block';
+        }
+
+        function downloadMap() {
+            const area = document.getElementById('capture-area');
+            html2canvas(area, { scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Millionaires_Club_Map.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
         }
     </script>
 </body>
