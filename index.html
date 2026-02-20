@@ -39,8 +39,6 @@
             cursor: pointer; transition: 0.3s;
         }
 
-        /* License Link Removed as per request */
-
         .rr-logo-container { position: relative; width: 50px; height: 60px; }
         .k-char { font-size: 55px; font-weight: 900; position: absolute; color: var(--black); line-height: 1; }
         .k-front { top: 0; left: 0; z-index: 2; }
@@ -65,6 +63,28 @@
         .pay-item h4 { font-size: 9px; letter-spacing: 2px; color: var(--grey); margin-bottom: 8px; text-transform: uppercase; }
         .pay-item p { font-size: 11px; word-break: break-all; margin: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; color: #000; font-weight: bold; }
 
+        /* Game Selection Overlay (New Section) */
+        #game-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--white); z-index: 4000; display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            overflow-y: auto; padding: 50px 0;
+        }
+        #game-overlay.active { display: flex; }
+        .game-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+            width: 80%; max-width: 800px; margin-top: 40px;
+        }
+        .game-card {
+            border: 0.5px solid #eee; padding: 25px; text-align: center;
+            cursor: pointer; transition: 0.4s; text-transform: uppercase;
+            font-size: 12px; letter-spacing: 3px; color: var(--black);
+        }
+        .game-card:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+        .close-overlay { margin-top: 50px; font-size: 10px; letter-spacing: 4px; cursor: pointer; border-bottom: 1px solid #000; }
+
+        @media (max-width: 600px) { .game-grid { grid-template-columns: 1fr; width: 90%; } }
+
         /* Snap Sections */
         .snap-section { 
             height: 100vh; width: 100%; scroll-snap-align: start; 
@@ -78,14 +98,8 @@
         .title { font-size: 32px; font-weight: 100; letter-spacing: 18px; text-transform: uppercase; margin-bottom: 15px; }
         .sub-desc { font-size: 11px; letter-spacing: 3px; color: #999; margin-bottom: 40px; font-style: italic; }
         
-        .btn-enter { padding: 18px 80px; border: 0.5px solid var(--black); text-decoration: none; color: var(--black); font-size: 10px; letter-spacing: 6px; transition: 0.4s; text-transform: uppercase; }
+        .btn-enter { padding: 18px 80px; border: 0.5px solid var(--black); text-decoration: none; color: var(--black); font-size: 10px; letter-spacing: 6px; transition: 0.4s; text-transform: uppercase; cursor: pointer; display: inline-block; }
         .btn-enter:hover { background: var(--black); color: var(--white); }
-
-        @media (max-width: 768px) {
-            .title { font-size: 20px; letter-spacing: 8px; }
-            .label { letter-spacing: 5px; }
-            .btn-enter { padding: 15px 40px; font-size: 8px; }
-        }
 
         /* Support & Twitter Buttons */
         .support-btn { 
@@ -111,18 +125,13 @@
             border-top: 1px solid #f0f0f0; display: grid; grid-template-columns: 1fr 1fr; gap: 50px;
         }
         @media (max-width: 850px) { .footer { grid-template-columns: 1fr; padding: 80px 5%; } }
-
         .footer-left h3 { font-size: 14px; letter-spacing: 6px; margin-bottom: 40px; font-weight: bold; }
         .gov-item { margin-bottom: 30px; font-size: 12px; line-height: 1.8; letter-spacing: 1px; }
         .gov-item b { color: var(--black); display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 10px; letter-spacing: 2px; }
-
         .footer-right { border-left: 1px solid #eee; padding-left: 50px; }
-        @media (max-width: 850px) { .footer-right { border-left: none; padding-left: 0; border-top: 1px solid #eee; padding-top: 40px; } }
-        
         .step-box { margin-bottom: 30px; }
         .step-num { font-family: serif; font-style: italic; font-size: 20px; color: var(--black); margin-right: 15px; }
         .step-text { font-size: 11px; letter-spacing: 1px; color: #555; }
-        
         .copyright { grid-column: 1 / -1; margin-top: 80px; font-size: 10px; letter-spacing: 4px; opacity: 0.6; text-align: center; border-top: 1px solid #fafafa; padding-top: 40px; }
 
         /* Loader */
@@ -143,7 +152,6 @@
 
     <header class="nav-bar">
         <div class="buy-trigger interactive" onclick="toggleDrawer()">ACQUISITION</div>
-        
         <div class="rr-logo-container interactive">
             <span class="k-char k-front">K</span>
             <span class="k-char k-back">K</span>
@@ -168,18 +176,28 @@
         <button onclick="toggleDrawer()" style="margin-top: 40px; border: none; background: none; cursor: pointer; letter-spacing: 3px; font-size: 9px; border-bottom: 1px solid #000;">[ CLOSE ]</button>
     </div>
 
-    <a href="https://wa.me/8801576940717" target="_blank" class="support-btn interactive">
-        <svg viewBox="0 0 24 24"><path d="M12.004 2C6.48 2 2 6.48 2 12C2 13.59 2.37 15.12 3.08 16.46L2 22L7.69 20.91C8.99 21.61 10.45 22 12.004 22C17.524 22 22.004 17.52 22.004 12C22.004 6.48 17.524 2 12.004 2ZM12.004 20.18C10.634 20.18 9.334 19.83 8.194 19.22L7.854 19.04L4.544 19.67L5.194 16.46L4.994 16.14C4.294 15.01 3.924 13.72 3.924 12.38C3.924 7.91 7.554 4.28 12.024 4.28C16.494 4.28 20.124 7.91 20.124 12.38C20.124 16.85 16.474 20.18 12.004 20.18Z"/></svg>
-    </a>
-
-    <a href="https://x.com/ARCHIVEKAWSAR" target="_blank" class="twitter-btn interactive">
-        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-    </a>
+    <div id="game-overlay">
+        <span class="label">Select Realm</span>
+        <h2 class="title" style="font-size: 22px;">TOP 10 GLOBAL GAMES</h2>
+        <div class="game-grid">
+            <div class="game-card interactive" onclick="enterGame('PUBG')">01. PUBG Mobile</div>
+            <div class="game-card interactive" onclick="enterGame('FreeFire')">02. Free Fire</div>
+            <div class="game-card interactive" onclick="enterGame('GTAVI')">03. Grand Theft Auto VI</div>
+            <div class="game-card interactive" onclick="enterGame('CallOfDuty')">04. Call of Duty</div>
+            <div class="game-card interactive" onclick="enterGame('Minecraft')">05. Minecraft</div>
+            <div class="game-card interactive" onclick="enterGame('Valorant')">06. Valorant</div>
+            <div class="game-card interactive" onclick="enterGame('LeagueOfLegends')">07. League of Legends</div>
+            <div class="game-card interactive" onclick="enterGame('Fortnite')">08. Fortnite</div>
+            <div class="game-card interactive" onclick="enterGame('Roblox')">09. Roblox</div>
+            <div class="game-card interactive" onclick="enterGame('MobileLegends')">10. Mobile Legends</div>
+        </div>
+        <div class="close-overlay interactive" onclick="toggleGameOverlay()">[ BACK TO ESTATES ]</div>
+    </div>
 
     <section class="snap-section"><div class="reveal active"><span class="label">Elite Tier</span><h2 class="title">Millionaires Club</h2><p class="sub-desc">Exclusive 7-tier glowing estates for the world's summit.</p><a href="millionaire_canvas.html" class="btn-enter interactive">Enter Estate</a></div></section>
     <section class="snap-section"><div class="reveal"><span class="label">Identity</span><h2 class="title">Social Creators</h2><p class="sub-desc">Heritage plots for influencers with 1M+ legacy.</p><a href="creator_canvas.html" class="btn-enter interactive">Claim Space</a></div></section>
     
-    <section class="snap-section"><div class="reveal"><span class="label">Leaderboard</span><h2 class="title">Gaming Realm</h2><p class="sub-desc">World's Top 10 Games Sub-sections. Where professional rank meets digital sovereignty.</p><a href="gaming_canvas.html" class="btn-enter interactive">View Rank</a></div></section>
+    <section class="snap-section"><div class="reveal"><span class="label">Leaderboard</span><h2 class="title">Gaming Realm</h2><p class="sub-desc">World's Top 10 Games Sub-sections. Where professional rank meets digital sovereignty.</p><div class="btn-enter interactive" onclick="toggleGameOverlay()">View Rank</div></div></section>
     
     <section class="snap-section"><div class="reveal"><span class="label">Geography</span><h2 class="title">Nations Grid</h2><p class="sub-desc">195,000 plots allocated by sovereign national borders.</p><a href="nations_canvas.html" class="btn-enter interactive">Explore Nations</a></div></section>
     <section class="snap-section"><div class="reveal"><span class="label">Next Gen</span><h2 class="title">Little Stars</h2><p class="sub-desc">Digital legacy for children. Immortalize their first steps with name & photo.</p><a href="children_canvas.html" class="btn-enter interactive">Store Memory</a></div></section>
@@ -201,30 +219,10 @@
             <div class="step-box"><span class="step-num">03</span><span class="step-text">Submit assets to WhatsApp Support for verification.</span></div>
             <div class="step-box"><span class="step-num">04</span><span class="step-text">Live sync completed within 48 hours post-approval.</span></div>
         </div>
-
         <div class="copyright">© 2026 K ARCHIVE. OWNED BY <b>KAWSAR</b>. ALL RIGHTS RESERVED.</div>
     </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics-compat.js"></script>
-
     <script>
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
-            authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
-            databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
-            projectId: "milliondollarhomepage2-71ba3",
-            storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
-            messagingSenderId: "895107568682",
-            appId: "1:895107568682:web:d48003f71701005f3d5f53",
-            measurementId: "G-RG50BVDLTX"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-
         // Smooth Cursor
         const outline = document.getElementById('cursor-outline');
         document.addEventListener('mousemove', (e) => {
@@ -235,6 +233,17 @@
         // Toggle Drawer
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
         function copyV(text) { navigator.clipboard.writeText(text); alert("Copied: " + text); }
+
+        // Game Overlay Logic (New)
+        function toggleGameOverlay() {
+            const overlay = document.getElementById('game-overlay');
+            overlay.classList.toggle('active');
+        }
+
+        function enterGame(gameId) {
+            // এটি কাস্টমারকে গেমের নামসহ নির্দিষ্ট ক্যানভাস পেজে নিয়ে যাবে
+            window.location.href = `gaming_canvas.html?game=${gameId}`;
+        }
 
         // Loader logic
         window.addEventListener("load", () => {
