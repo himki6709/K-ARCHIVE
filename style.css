@@ -1,74 +1,108 @@
-/* THE LITTLE HOUSE - GLOBAL STYLES */
+/* K ARCHIVE - GLOBAL LUXURY STYLES */
 :root {
-    --gold: #9E7E45;
-    --black: #050505;
-    --dark-grey: #111111;
+    --gold: #D4AF37;
+    --black: #000000;
+    --dark-grey: #0a0a0a;
+    --light-grey: #f8f8f8;
     --white: #ffffff;
-    --transition: all 0.3s ease;
+    --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    background-color: var(--black);
-    color: var(--white);
+    background-color: var(--white); /* White background for Luxury aesthetic */
+    color: var(--black);
     font-family: 'Times New Roman', serif;
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--black); }
-::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--white); }
+::-webkit-scrollbar-thumb { background: var(--black); }
 
-/* Buttons & Inputs */
+/* Standard Container for all pages */
+.container-box {
+    max-width: 450px;
+    width: 92%;
+    margin: 80px auto;
+    background: var(--white);
+    padding: 50px 30px;
+    border: 0.5px solid #eee;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+    position: relative;
+}
+
+/* Luxury Buttons */
 .btn-premium {
-    background: var(--gold);
-    color: #000;
+    background: var(--black);
+    color: var(--white);
     border: none;
-    padding: 15px 30px;
+    padding: 18px 35px;
+    font-size: 11px;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     cursor: pointer;
     transition: var(--transition);
-    border-radius: 2px;
+    width: 100%;
+    margin-top: 10px;
 }
 
 .btn-premium:hover {
-    background: var(--white);
-    transform: translateY(-2px);
+    background: #222;
+    letter-spacing: 5px;
 }
 
+/* Input Fields */
 input {
     width: 100%;
     padding: 15px;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    color: #fff;
-    margin-bottom: 15px;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-/* Container Styles */
-.container-box {
-    max-width: 500px;
-    margin: 100px auto;
-    background: #0a0a0a;
-    padding: 40px;
-    border: 1px solid #222;
+    background: #fafafa;
+    border: 0.5px solid #ddd;
+    color: #000;
+    margin-bottom: 20px;
+    font-family: 'Times New Roman', serif;
+    font-size: 13px;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    outline: none;
+    transition: 0.3s;
 }
 
+input:focus {
+    border-color: var(--black);
+    background: var(--white);
+}
+
+/* Shimmer Effect for Titles */
 .shimmer-text {
-    background: linear-gradient(90deg, var(--gold), #fff, var(--gold));
+    font-size: 18px;
+    letter-spacing: 5px;
+    font-weight: 900;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #000, var(--gold), #000);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shine 3s linear infinite;
+    animation: shine 4s linear infinite;
 }
 
 @keyframes shine {
     to { background-position: 200% center; }
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 600px) {
+    .container-box {
+        margin: 40px auto;
+        padding: 40px 20px;
+    }
+    
+    h2 { font-size: 14px; }
 }
