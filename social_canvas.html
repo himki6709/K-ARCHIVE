@@ -99,6 +99,16 @@
             font-size: 9px; letter-spacing: 2px; color: #999; line-height: 2;
         }
 
+        /* Float Chat Button Style (Home Page Style) */
+        .support-btn {
+            position: fixed; bottom: 30px; left: 30px; width: 50px; height: 50px;
+            border: 0.5px solid var(--black); border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; z-index: 2500;
+            background: #fff; transition: 0.4s; text-decoration: none;
+        }
+        .support-btn:hover { background: #000; transform: scale(1.1); }
+        .support-btn:hover svg { fill: #fff; }
+
         #purchase-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 5500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
         .modal-box { width: 90%; max-width: 380px; background: #fff; padding: 40px; text-align: center; }
         input { width: 100%; padding: 15px; margin: 10px 0; border: 0.5px solid #ccc; outline: none; box-sizing: border-box; text-align: center; font-weight: bold; }
@@ -156,6 +166,10 @@
             All rights reserved. Not responsible for external content.
         </div>
     </div>
+
+    <a href="https://wa.me/8801576940717" target="_blank" class="support-btn">
+        <svg viewBox="0 0 24 24" fill="#000" width="24"><path d="M12.004 2C6.48 2 2 6.48 2 12C2 13.59 2.37 15.12 3.08 16.46L2 22L7.69 20.91C8.99 21.61 10.45 22 12.004 22C17.524 22 22.004 17.52 22.004 12C22.004 6.48 17.524 2 12.004 2ZM12.004 20.18C10.634 20.18 9.334 19.83 8.194 19.22L7.854 19.04L4.544 19.67L5.194 16.46L4.994 16.14C4.294 15.01 3.924 13.72 3.924 12.38C3.924 7.91 7.554 4.28 12.024 4.28C16.494 4.28 20.124 7.91 20.124 12.38C20.124 16.85 16.474 20.18 12.004 20.18Z"/></svg>
+    </a>
 
     <div id="purchase-modal">
         <div class="modal-box">
