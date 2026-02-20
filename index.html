@@ -51,39 +51,27 @@
             .brand-subtitle { font-size: 8px; letter-spacing: 6px; }
         }
 
-        /* Payment Drawer */
-        #payment-drawer {
-            position: fixed; top: 0; left: -100%; width: 380px; height: 100vh;
-            background: var(--white); border-right: 1px solid #eee; z-index: 3000;
-            transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); padding: 80px 50px; box-sizing: border-box;
-        }
-        @media (max-width: 400px) { #payment-drawer { width: 100%; } }
-        #payment-drawer.open { left: 0; }
-        .pay-item { margin-bottom: 40px; cursor: pointer; }
-        .pay-item h4 { font-size: 9px; letter-spacing: 2px; color: var(--grey); margin-bottom: 8px; text-transform: uppercase; }
-        .pay-item p { font-size: 11px; word-break: break-all; margin: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; color: #000; font-weight: bold; }
-
-        /* Game Selection Overlay (Updated for 20 Games) */
-        #game-overlay {
+        /* Overlays (Common Styling) */
+        .overlay-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: var(--white); z-index: 4000; display: none;
             flex-direction: column; align-items: center; justify-content: flex-start;
             overflow-y: auto; padding: 100px 0;
         }
-        #game-overlay.active { display: flex; }
-        .game-grid {
+        .overlay-screen.active { display: flex; }
+        .grid-container {
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
             width: 85%; max-width: 900px; margin-top: 40px;
         }
-        .game-card {
+        .grid-item {
             border: 0.5px solid #eee; padding: 20px; text-align: center;
             cursor: pointer; transition: 0.4s; text-transform: uppercase;
             font-size: 11px; letter-spacing: 2px; color: var(--black);
         }
-        .game-card:hover { background: var(--black); color: var(--white); border-color: var(--black); }
-        .close-overlay { margin-top: 50px; font-size: 10px; letter-spacing: 4px; cursor: pointer; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 50px; }
+        .grid-item:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+        .close-btn { margin-top: 50px; font-size: 10px; letter-spacing: 4px; cursor: pointer; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 50px; }
 
-        @media (max-width: 600px) { .game-grid { grid-template-columns: 1fr; width: 90%; } }
+        @media (max-width: 600px) { .grid-container { grid-template-columns: 1fr; width: 90%; } }
 
         /* Snap Sections */
         .snap-section { 
@@ -96,42 +84,20 @@
 
         .label { font-size: 9px; letter-spacing: 10px; color: #888; text-transform: uppercase; margin-bottom: 25px; }
         .title { font-size: 32px; font-weight: 100; letter-spacing: 18px; text-transform: uppercase; margin-bottom: 15px; }
-        .sub-desc { font-size: 11px; letter-spacing: 3px; color: #999; margin-bottom: 40px; font-style: italic; }
-        
+        .sub-desc { font-size: 11px; letter-spacing: 2px; color: #666; margin-bottom: 40px; line-height: 1.6; max-width: 600px; }
+        .plot-count { font-weight: bold; color: var(--black); letter-spacing: 1px; }
+
         .btn-enter { padding: 18px 80px; border: 0.5px solid var(--black); text-decoration: none; color: var(--black); font-size: 10px; letter-spacing: 6px; transition: 0.4s; text-transform: uppercase; cursor: pointer; display: inline-block; }
         .btn-enter:hover { background: var(--black); color: var(--white); }
 
         /* Support & Twitter Buttons */
-        .support-btn { 
-            position: fixed; bottom: 40px; left: 40px; width: 45px; height: 45px; 
-            border: 0.5px solid var(--black); border-radius: 50%; display: flex; 
-            align-items: center; justify-content: center; z-index: 2500; background: #fff;
-        }
-        .support-btn svg { fill: var(--black); width: 20px; }
-
-        .twitter-btn { 
-            position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px; 
-            border: 0.5px solid var(--black); border-radius: 50%; display: flex; 
-            align-items: center; justify-content: center; z-index: 2500; background: #fff;
-            transition: 0.3s;
-        }
-        .twitter-btn svg { fill: var(--black); width: 18px; }
-        .twitter-btn:hover { background: var(--black); }
-        .twitter-btn:hover svg { fill: var(--white); }
+        .support-btn, .twitter-btn { position: fixed; bottom: 40px; width: 45px; height: 45px; border: 0.5px solid var(--black); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2500; background: #fff; transition: 0.3s; }
+        .support-btn { left: 40px; } .twitter-btn { right: 40px; }
+        .support-btn svg, .twitter-btn svg { fill: var(--black); width: 20px; }
+        .twitter-btn:hover { background: var(--black); } .twitter-btn:hover svg { fill: var(--white); }
 
         /* Footer */
-        .footer { 
-            background: var(--white); padding: 120px 8%; scroll-snap-align: end; 
-            border-top: 1px solid #f0f0f0; display: grid; grid-template-columns: 1fr 1fr; gap: 50px;
-        }
-        @media (max-width: 850px) { .footer { grid-template-columns: 1fr; padding: 80px 5%; } }
-        .footer-left h3 { font-size: 14px; letter-spacing: 6px; margin-bottom: 40px; font-weight: bold; }
-        .gov-item { margin-bottom: 30px; font-size: 12px; line-height: 1.8; letter-spacing: 1px; }
-        .gov-item b { color: var(--black); display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 10px; letter-spacing: 2px; }
-        .footer-right { border-left: 1px solid #eee; padding-left: 50px; }
-        .step-box { margin-bottom: 30px; }
-        .step-num { font-family: serif; font-style: italic; font-size: 20px; color: var(--black); margin-right: 15px; }
-        .step-text { font-size: 11px; letter-spacing: 1px; color: #555; }
+        .footer { background: var(--white); padding: 120px 8%; scroll-snap-align: end; border-top: 1px solid #f0f0f0; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
         .copyright { grid-column: 1 / -1; margin-top: 80px; font-size: 10px; letter-spacing: 4px; opacity: 0.6; text-align: center; border-top: 1px solid #fafafa; padding-top: 40px; }
 
         /* Loader */
@@ -159,117 +125,99 @@
         <div class="brand-subtitle">THE SOVEREIGN ESTATE</div>
     </header>
 
-    <div id="payment-drawer">
-        <h2 style="letter-spacing: 5px; font-size: 13px; margin-bottom: 60px; font-weight: bold;">SECURE ACQUISITION</h2>
-        <div class="pay-item interactive" onclick="copyV('912221034')">
-            <h4>BINANCE UID (User: KAWSAR6700)</h4>
-            <p>912221034</p>
-        </div>
-        <div class="pay-item interactive" onclick="copyV('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-            <h4>USDT TRC20</h4>
-            <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
-        </div>
-        <div class="pay-item interactive" onclick="copyV('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-            <h4>METAMASK (ETH/BNB)</h4>
-            <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
-        </div>
-        <button onclick="toggleDrawer()" style="margin-top: 40px; border: none; background: none; cursor: pointer; letter-spacing: 3px; font-size: 9px; border-bottom: 1px solid #000;">[ CLOSE ]</button>
-    </div>
-
-    <div id="game-overlay">
+    <div id="game-overlay" class="overlay-screen">
         <span class="label">Select Realm</span>
-        <h2 class="title" style="font-size: 20px; letter-spacing: 10px;">TOP 20 GLOBAL GAMES</h2>
-        <div class="game-grid">
-            <div class="game-card interactive" onclick="enterGame('PUBG')">01. PUBG Mobile</div>
-            <div class="game-card interactive" onclick="enterGame('FreeFire')">02. Free Fire</div>
-            <div class="game-card interactive" onclick="enterGame('GTAVI')">03. Grand Theft Auto VI</div>
-            <div class="game-card interactive" onclick="enterGame('CallOfDuty')">04. Call of Duty</div>
-            <div class="game-card interactive" onclick="enterGame('Minecraft')">05. Minecraft</div>
-            <div class="game-card interactive" onclick="enterGame('Valorant')">06. Valorant</div>
-            <div class="game-card interactive" onclick="enterGame('LeagueOfLegends')">07. League of Legends</div>
-            <div class="game-card interactive" onclick="enterGame('Fortnite')">08. Fortnite</div>
-            <div class="game-card interactive" onclick="enterGame('Roblox')">09. Roblox</div>
-            <div class="game-card interactive" onclick="enterGame('MobileLegends')">10. Mobile Legends</div>
-            <div class="game-card interactive" onclick="enterGame('CounterStrike')">11. Counter-Strike 2</div>
-            <div class="game-card interactive" onclick="enterGame('ApexLegends')">12. Apex Legends</div>
-            <div class="game-card interactive" onclick="enterGame('Genshin')">13. Genshin Impact</div>
-            <div class="game-card interactive" onclick="enterGame('Dota2')">14. Dota 2</div>
-            <div class="game-card interactive" onclick="enterGame('AmongUs')">15. Among Us</div>
-            <div class="game-card interactive" onclick="enterGame('EldenRing')">16. Elden Ring</div>
-            <div class="game-card interactive" onclick="enterGame('RocketLeague')">17. Rocket League</div>
-            <div class="game-card interactive" onclick="enterGame('ClashOfClans')">18. Clash of Clans</div>
-            <div class="game-card interactive" onclick="enterGame('Cyberpunk')">19. Cyberpunk 2077</div>
-            <div class="game-card interactive" onclick="enterGame('FIFA26')">20. EA Sports FC 26</div>
+        <h2 class="title" style="font-size: 20px;">TOP 20 GLOBAL GAMES</h2>
+        <div class="grid-container">
+            <div class="grid-item interactive" onclick="enterGame('PUBG')">01. PUBG Mobile</div>
+            <div class="grid-item interactive" onclick="enterGame('FreeFire')">02. Free Fire</div>
+            <div class="grid-item interactive" onclick="enterGame('GTAVI')">03. Grand Theft Auto VI</div>
+            <div class="grid-item interactive" onclick="enterGame('CallOfDuty')">04. Call of Duty</div>
+            <div class="grid-item interactive" onclick="enterGame('Minecraft')">05. Minecraft</div>
+            <div class="grid-item interactive" onclick="enterGame('Valorant')">06. Valorant</div>
+            <div class="grid-item interactive" onclick="enterGame('LeagueOfLegends')">07. League of Legends</div>
+            <div class="grid-item interactive" onclick="enterGame('Fortnite')">08. Fortnite</div>
+            <div class="grid-item interactive" onclick="enterGame('Roblox')">09. Roblox</div>
+            <div class="grid-item interactive" onclick="enterGame('MobileLegends')">10. Mobile Legends</div>
+            <div class="grid-item interactive" onclick="enterGame('CounterStrike')">11. Counter-Strike 2</div>
+            <div class="grid-item interactive" onclick="enterGame('ApexLegends')">12. Apex Legends</div>
+            <div class="grid-item interactive" onclick="enterGame('Genshin')">13. Genshin Impact</div>
+            <div class="grid-item interactive" onclick="enterGame('Dota2')">14. Dota 2</div>
+            <div class="grid-item interactive" onclick="enterGame('AmongUs')">15. Among Us</div>
+            <div class="grid-item interactive" onclick="enterGame('EldenRing')">16. Elden Ring</div>
+            <div class="grid-item interactive" onclick="enterGame('RocketLeague')">17. Rocket League</div>
+            <div class="grid-item interactive" onclick="enterGame('ClashOfClans')">18. Clash of Clans</div>
+            <div class="grid-item interactive" onclick="enterGame('Cyberpunk')">19. Cyberpunk 2077</div>
+            <div class="grid-item interactive" onclick="enterGame('FIFA26')">20. EA Sports FC 26</div>
         </div>
-        <div class="close-overlay interactive" onclick="toggleGameOverlay()">[ BACK TO ESTATES ]</div>
+        <div class="close-btn interactive" onclick="toggleOverlay('game-overlay')">[ BACK ]</div>
     </div>
 
-    <section class="snap-section"><div class="reveal active"><span class="label">Elite Tier</span><h2 class="title">Millionaires Club</h2><p class="sub-desc">Exclusive 7-tier glowing estates for the world's summit.</p><a href="millionaire_canvas.html" class="btn-enter interactive">Enter Estate</a></div></section>
-    <section class="snap-section"><div class="reveal"><span class="label">Identity</span><h2 class="title">Social Creators</h2><p class="sub-desc">Heritage plots for influencers with 1M+ legacy.</p><a href="creator_canvas.html" class="btn-enter interactive">Claim Space</a></div></section>
+    <div id="social-overlay" class="overlay-screen">
+        <span class="label">Select Platform</span>
+        <h2 class="title" style="font-size: 20px;">TOP 10 SOCIAL NETWORKS</h2>
+        <div class="grid-container">
+            <div class="grid-item interactive" onclick="enterSocial('FB')">01. Facebook</div>
+            <div class="grid-item interactive" onclick="enterSocial('YT')">02. YouTube</div>
+            <div class="grid-item interactive" onclick="enterSocial('IG')">03. Instagram</div>
+            <div class="grid-item interactive" onclick="enterSocial('X')">04. Twitter (X)</div>
+            <div class="grid-item interactive" onclick="enterSocial('TK')">05. TikTok</div>
+            <div class="grid-item interactive" onclick="enterSocial('WA')">06. WhatsApp</div>
+            <div class="grid-item interactive" onclick="enterSocial('SC')">07. Snapchat</div>
+            <div class="grid-item interactive" onclick="enterSocial('LI')">08. LinkedIn</div>
+            <div class="grid-item interactive" onclick="enterSocial('RD')">09. Reddit</div>
+            <div class="grid-item interactive" onclick="enterSocial('TG')">10. Telegram</div>
+        </div>
+        <div class="close-btn interactive" onclick="toggleOverlay('social-overlay')">[ BACK ]</div>
+    </div>
+
+    <section class="snap-section"><div class="reveal active"><span class="label">Elite Tier</span><h2 class="title">Millionaires Club</h2><p class="sub-desc">Exclusive 7-tier glowing estates for the world's summit. Limited to <span class="plot-count">100 PRESTIGE PLOTS</span> only.</p><a href="millionaire_canvas.html" class="btn-enter interactive">Enter Estate</a></div></section>
     
-    <section class="snap-section"><div class="reveal"><span class="label">Leaderboard</span><h2 class="title">Gaming Realm</h2><p class="sub-desc">World's Top 20 Games Sub-sections. Where professional rank meets digital sovereignty.</p><div class="btn-enter interactive" onclick="toggleGameOverlay()">View Rank</div></div></section>
+    <section class="snap-section"><div class="reveal"><span class="label">Identity</span><h2 class="title">Social Creators</h2><p class="sub-desc">Heritage plots for influencers with 1M+ legacy. Select your platform from <span class="plot-count">10 SUB-SECTIONS</span>. 100 plots per platform.</p><div class="btn-enter interactive" onclick="toggleOverlay('social-overlay')">Claim Space</div></div></section>
     
-    <section class="snap-section"><div class="reveal"><span class="label">Geography</span><h2 class="title">Nations Grid</h2><p class="sub-desc">195,000 plots allocated by sovereign national borders.</p><a href="nations_canvas.html" class="btn-enter interactive">Explore Nations</a></div></section>
-    <section class="snap-section"><div class="reveal"><span class="label">Next Gen</span><h2 class="title">Little Stars</h2><p class="sub-desc">Digital legacy for children. Immortalize their first steps with name & photo.</p><a href="children_canvas.html" class="btn-enter interactive">Store Memory</a></div></section>
-    <section class="snap-section"><div class="reveal"><span class="label">Heritage</span><h2 class="title">Eternal Roots</h2><p class="sub-desc">A royal tribute to parents and ancestors. Classically preserved forever.</p><a href="parents_canvas.html" class="btn-enter interactive">Honour Now</a></div></section>
-    <section class="snap-section"><div class="reveal"><span class="label">Romance</span><h2 class="title">The Union Wall</h2><p class="sub-desc">Celebrate eternal love. Dedicated space for couples and milestones.</p><a href="couples_canvas.html" class="btn-enter interactive">Join Souls</a></div></section>
-    <section class="snap-section"><div class="reveal"><span class="label">Companions</span><h2 class="title">Pet Paradise</h2><p class="sub-desc">Because loyalty deserves a place in the archive. For our silent friends.</p><a href="pets_canvas.html" class="btn-enter interactive">Enter Paradise</a></div></section>
+    <section class="snap-section"><div class="reveal"><span class="label">Leaderboard</span><h2 class="title">Gaming Realm</h2><p class="sub-desc">Where professional rank meets digital sovereignty. Explore <span class="plot-count">20 GLOBAL GAME REALMS</span>. Each realm is limited to 100 legendary plots.</p><div class="btn-enter interactive" onclick="toggleOverlay('game-overlay')">View Rank</div></div></section>
+    
+    <section class="snap-section"><div class="reveal"><span class="label">Geography</span><h2 class="title">Nations Grid</h2><p class="sub-desc">195,000 plots allocated by sovereign national borders. Limited to <span class="plot-count">200 SOVEREIGN PLOTS</span> per nation.</p><a href="nations_canvas.html" class="btn-enter interactive">Explore Nations</a></div></section>
+    
+    <section class="snap-section"><div class="reveal"><span class="label">Next Gen</span><h2 class="title">Little Stars</h2><p class="sub-desc">Digital legacy for children. Immortalize their first steps forever. Availability: <span class="plot-count">365 ETERNAL PLOTS</span>.</p><a href="children_canvas.html" class="btn-enter interactive">Store Memory</a></div></section>
+    
+    <section class="snap-section"><div class="reveal"><span class="label">Heritage</span><h2 class="title">Eternal Roots</h2><p class="sub-desc">A royal tribute to parents and ancestors. Classically preserved. Limited to <span class="plot-count">365 ANCESTRAL PLOTS</span>.</p><a href="parents_canvas.html" class="btn-enter interactive">Honour Now</a></div></section>
+    
+    <section class="snap-section"><div class="reveal"><span class="label">Romance</span><h2 class="title">The Union Wall</h2><p class="sub-desc">Celebrate eternal love and milestones. Dedicated space for couples. Only <span class="plot-count">365 UNION PLOTS</span> exist.</p><a href="couples_canvas.html" class="btn-enter interactive">Join Souls</a></div></section>
+    
+    <section class="snap-section"><div class="reveal"><span class="label">Companions</span><h2 class="title">Pet Paradise</h2><p class="sub-desc">Because loyalty deserves a place in the archive. For our silent friends. Limited to <span class="plot-count">365 LOYALTY PLOTS</span>.</p><a href="pets_canvas.html" class="btn-enter interactive">Enter Paradise</a></div></section>
 
     <footer class="footer">
-        <div class="footer-left reveal">
-            <h3>ESTATE GOVERNANCE</h3>
-            <div class="gov-item"><b>• Data Modification</b>$7 administrative fee for media, name or link updates.</div>
-            <div class="gov-item"><b>• Service Window</b>Concierge active 24h: Thursday, Friday, Saturday.</div>
-        </div>
-
-        <div class="footer-right reveal">
-            <h3>ACQUISITION STEPS</h3>
-            <div class="step-box"><span class="step-num">01</span><span class="step-text">Complete payment via the Acquisition Drawer.</span></div>
-            <div class="step-box"><span class="step-num">02</span><span class="step-text">Prepare 4K Photo, Display Name, and Target URL.</span></div>
-            <div class="step-box"><span class="step-num">03</span><span class="step-text">Submit assets to WhatsApp Support for verification.</span></div>
-            <div class="step-box"><span class="step-num">04</span><span class="step-text">Live sync completed within 48 hours post-approval.</span></div>
-        </div>
         <div class="copyright">© 2026 K ARCHIVE. OWNED BY <b>KAWSAR</b>. ALL RIGHTS RESERVED.</div>
     </footer>
 
     <script>
-        // Smooth Cursor
         const outline = document.getElementById('cursor-outline');
         document.addEventListener('mousemove', (e) => {
             outline.style.left = e.clientX + 'px';
             outline.style.top = e.clientY + 'px';
         });
 
-        // Toggle Drawer
-        function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
-        function copyV(text) { navigator.clipboard.writeText(text); alert("Copied: " + text); }
-
-        // Game Overlay Logic
-        function toggleGameOverlay() {
-            const overlay = document.getElementById('game-overlay');
+        function toggleDrawer() { document.getElementById('payment-drawer')?.classList.toggle('open'); }
+        
+        // Overlay Toggle Function
+        function toggleOverlay(id) {
+            const overlay = document.getElementById(id);
             overlay.classList.toggle('active');
         }
 
-        function enterGame(gameId) {
-            window.location.href = `gaming_canvas.html?game=${gameId}`;
-        }
+        function enterGame(id) { window.location.href = `gaming_canvas.html?game=${id}`; }
+        function enterSocial(id) { window.location.href = `creator_canvas.html?platform=${id}`; }
 
-        // Loader logic
         window.addEventListener("load", () => {
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('fade-out');
-            }, 1000);
+            setTimeout(() => { document.getElementById('loader').classList.add('fade-out'); }, 1000);
         });
 
-        // Intersection Observer for Reveal
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Interactive hover
         document.querySelectorAll('.interactive').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('hover-active'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('hover-active'));
