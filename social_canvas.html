@@ -99,7 +99,6 @@
             font-size: 9px; letter-spacing: 2px; color: #999; line-height: 2;
         }
 
-        /* Float Chat Button Style (Home Page Style) */
         .support-btn {
             position: fixed; bottom: 30px; left: 30px; width: 50px; height: 50px;
             border: 0.5px solid var(--black); border-radius: 50%; display: flex;
@@ -148,22 +147,22 @@
                 <h3>Acquisition Steps</h3>
                 <p>
                     <b>01</b> Complete payment via the Acquisition Drawer.<br>
-                    <b>02</b> Prepare 4K Photo, Display Name, and Target URL.<br>
-                    <b>03</b> Submit assets to WhatsApp Support for verification.<br>
-                    <b>04</b> Live sync completed within 48 hours post-approval.
+                    <b>02</b> Prepare 4K Creator Logo, Display Handle, and Profile URL.<br>
+                    <b>03</b> Submit assets to WhatsApp Support for identity verification.<br>
+                    <b>04</b> Creator plot live sync completed within 48 hours post-approval.
                 </p>
             </div>
             <div class="info-block">
                 <h3>Policies & Modification</h3>
-                <li>• <b>Renewal:</b> Plots are archived permanently; annual link validation required.</li>
-                <li>• <b>Update Fee:</b> $7 for any modification post-approval.</li>
-                <li>• <b>Support:</b> Concierge active Thu, Fri, Sat (24h).</li>
+                <li>• <b>Social Heritage:</b> Plots are archived permanently as digital creator assets.</li>
+                <li>• <b>Update Fee:</b> $9 for handle or link modification post-approval.</li>
+                <li>• <b>Concierge:</b> Creator support active Thu, Fri, Sat (24h).</li>
             </div>
         </div>
 
         <div class="copyright-bar">
-            K ARCHIVE OWNER KAWSAR TM | Millionaires Club © 2026 K ARCHIVE.<br>
-            All rights reserved. Not responsible for external content.
+            K ARCHIVE OWNER KAWSAR TM | Social Creators Network © 2026 K ARCHIVE.<br>
+            All rights reserved. K Archive is not responsible for external social content.
         </div>
     </div>
 
@@ -208,14 +207,11 @@
         function handlePurchase() {
             const n = document.getElementById('nameInp').value;
             let p = document.getElementById('plotInp').value;
-            
-            if(!n || p<1 || p>300) return alert("Please select a plot between 1-300.");
-            
+            if(!n || p<1 || p>300) return alert("Select plot 1-300.");
             confetti({ particleCount: 120, spread: 60, origin: { y: 0.6 } });
             document.getElementById('purchase-modal').style.display = 'none';
-            document.getElementById('pop-desc').innerHTML = `Plot #${p} for ${n.toUpperCase()}. Price: $${p}`;
-            
-            const msg = encodeURIComponent(`Hello K ARCHIVE,\nAcquiring Social Plot #${p} for ${n}.\nTotal: $${p}`);
+            document.getElementById('pop-desc').innerHTML = `Plot #${p} for ${n.toUpperCase()}. Total: $${p}`;
+            const msg = encodeURIComponent(`Hello K ARCHIVE,\nI am acquiring Social Plot #${p} for ${n}.\nPrice: $${p}`);
             document.getElementById('wa-btn').href = `https://wa.me/8801576940717?text=${msg}`;
             document.getElementById('success-pop').style.display = 'block';
         }
