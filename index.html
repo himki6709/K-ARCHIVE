@@ -74,6 +74,7 @@
         .pay-item h4 { font-size: 9px; letter-spacing: 2px; color: var(--grey); margin-bottom: 8px; text-transform: uppercase; }
         .pay-item p { font-size: 11px; word-break: break-all; margin: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; color: #000; font-weight: bold; }
 
+        /* General Overlay Style for Gaming */
         .sub-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: var(--white); z-index: 4500; display: none;
@@ -82,7 +83,6 @@
         }
         .sub-overlay.active { display: flex; }
         .overlay-title { font-size: 24px; letter-spacing: 12px; font-weight: 100; text-transform: uppercase; margin-bottom: 10px; }
-        .overlay-label { font-size: 9px; letter-spacing: 6px; color: var(--grey); text-transform: uppercase; margin-bottom: 40px; }
         .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 85%; max-width: 1000px; margin-bottom: 60px; }
         .grid-box { border: 0.5px solid #e0e0e0; padding: 30px; text-align: center; cursor: pointer; transition: 0.4s; text-transform: uppercase; font-size: 11px; letter-spacing: 3px; color: var(--black); background: #fafafa; }
         .grid-box:hover { background: var(--black); color: var(--white); border-color: var(--black); transform: translateY(-5px); }
@@ -105,7 +105,6 @@
         .btn-action { padding: 20px 90px; border: 0.5px solid var(--black); text-decoration: none; color: var(--black); font-size: 10px; letter-spacing: 8px; transition: 0.5s; text-transform: uppercase; cursor: pointer; background: transparent; }
         .btn-action:hover { background: var(--black); color: var(--white); letter-spacing: 12px; }
 
-        /* Custom Footer Section Styles */
         .policy-container {
             background: var(--white); padding: 100px 10%; text-align: left;
             scroll-snap-align: end; border-top: 1px solid #f0f0f0;
@@ -121,13 +120,12 @@
 
         .support-btn, .twitter-btn { position: fixed; bottom: 40px; width: 50px; height: 50px; border: 0.5px solid var(--black); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2500; background: #fff; transition: 0.4s; }
         .support-btn { left: 40px; } .twitter-btn { right: 40px; }
-        .twitter-btn:hover { background: var(--black); } .twitter-btn:hover svg { fill: var(--white); }
 
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 1s; }
         .loader-logo { font-size: 100px; font-weight: 900; color: var(--gold); animation: pulse 2s infinite; }
         .fade-out { opacity: 0; pointer-events: none; }
         @keyframes pulse { 0% { transform: scale(0.8); opacity: 0.4; } 50% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.8); opacity: 0.4; } }
-        @media (max-width: 768px) { .policy-container { grid-template-columns: 1fr; gap: 40px; } }
+        @media (max-width: 768px) { .policy-container { grid-template-columns: 1fr; gap: 40px; } .grid-layout { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -151,7 +149,7 @@
     <div id="payment-drawer">
         <h2 style="letter-spacing: 5px; font-size: 14px; margin-bottom: 60px; font-weight: bold; text-transform: uppercase;">Secure Acquisition Center</h2>
         <div class="pay-item interactive" onclick="copyValue('912221034')">
-            <h4>Binance UID (User: KAWSAR6700)</h4>
+            <h4>Binance UID</h4>
             <p>912221034</p>
         </div>
         <div class="pay-item interactive" onclick="copyValue('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
@@ -159,27 +157,10 @@
             <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
         </div>
         <div class="pay-item interactive" onclick="copyValue('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-            <h4>Metamask (ETH / BNB / Polygon)</h4>
+            <h4>Metamask</h4>
             <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
         </div>
         <button onclick="toggleDrawer()" style="margin-top: 40px; border: none; background: none; cursor: pointer; letter-spacing: 4px; font-size: 10px; border-bottom: 1px solid #000; font-weight: bold;">[ CLOSE WINDOW ]</button>
-    </div>
-
-    <div id="social-overlay" class="sub-overlay">
-        <h2 class="overlay-title">Social Heritage</h2>
-        <div class="grid-layout">
-            <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=YouTube')">01. YouTube Realm</div>
-            <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=Facebook')">02. Facebook Realm</div>
-            <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=Instagram')">03. Instagram Realm</div>
-            <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=Twitter')">04. Twitter (X) Realm</div>
-            <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=TikTok')">05. TikTok Realm</div>
-            <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=WhatsApp')">06. WhatsApp Realm</div>
-            <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=Snapchat')">07. Snapchat Realm</div>
-            <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=LinkedIn')">08. LinkedIn Realm</div>
-            <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=Reddit')">09. Reddit Realm</div>
-            <div class="grid-box interactive" onclick="navTo('creator_canvas.html?p=Telegram')">10. Telegram Realm</div>
-        </div>
-        <button class="back-btn interactive" onclick="toggleSubOverlay('social-overlay')">[ BACK ]</button>
     </div>
 
     <div id="gaming-overlay" class="sub-overlay">
@@ -191,20 +172,8 @@
             <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=COD')">04. Call of Duty</div>
             <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=Minecraft')">05. Minecraft</div>
             <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=Valorant')">06. Valorant</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=LOL')">07. League of Legends</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=Fortnite')">08. Fortnite</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=Roblox')">09. Roblox</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=ML')">10. Mobile Legends</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=CS2')">11. Counter-Strike 2</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=Apex')">12. Apex Legends</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=Genshin')">13. Genshin Impact</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=Dota2')">14. Dota 2</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=AmongUs')">15. Among Us</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=EldenRing')">16. Elden Ring</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=RocketLeague')">17. Rocket League</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=COC')">18. Clash of Clans</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=Cyberpunk')">19. Cyberpunk 2077</div>
-            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=FIFA')">20. EA Sports FC 26</div>
+            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=FIFA')">07. EA Sports FC 26</div>
+            <div class="grid-box interactive" onclick="navTo('gaming_canvas.html?g=COC')">08. Clash of Clans</div>
         </div>
         <button class="back-btn interactive" onclick="toggleSubOverlay('gaming-overlay')">[ BACK ]</button>
     </div>
@@ -222,8 +191,8 @@
         <div class="reveal">
             <span class="label">Identity Heritage</span>
             <h2 class="title">Social Creators</h2>
-            <p class="sub-desc">Archive for influencers with 1M+ legacy. <span class="plot-highlight">10 GLOBAL PLATFORMS</span>. 100 plots each.</p>
-            <div class="btn-action interactive" onclick="toggleSubOverlay('social-overlay')">Claim Creator Space</div>
+            <p class="sub-desc">Archive for influencers and legacies. Total available: <span class="plot-highlight">300 SOVEREIGN PLOTS</span>.</p>
+            <a href="social_canvas.html" class="btn-action interactive">Claim Creator Space</a>
         </div>
     </section>
 
@@ -231,7 +200,7 @@
         <div class="reveal">
             <span class="label">The Leaderboard</span>
             <h2 class="title">Gaming Realm</h2>
-            <p class="sub-desc">Where rank meets sovereignty. <span class="plot-highlight">TOP 20 GLOBAL GAMES</span>. Exactly 100 plots per realm.</p>
+            <p class="sub-desc">Where rank meets sovereignty. <span class="plot-highlight">TOP GLOBAL GAMES</span>. Exactly 100 plots per realm.</p>
             <div class="btn-action interactive" onclick="toggleSubOverlay('gaming-overlay')">View Game Rankings</div>
         </div>
     </section>
@@ -263,31 +232,13 @@
         </div>
     </section>
 
-    <section class="snap-section">
-        <div class="reveal">
-            <span class="label">Romance & Unity</span>
-            <h2 class="title">The Union Wall</h2>
-            <p class="sub-desc">Celebrate eternal love. Dedicated space with <span class="plot-highlight">365 UNION PLOTS</span> globally.</p>
-            <a href="couples_canvas.html" class="btn-action interactive">Join Souls</a>
-        </div>
-    </section>
-
-    <section class="snap-section">
-        <div class="reveal">
-            <span class="label">Loyal Companions</span>
-            <h2 class="title">Pet Paradise</h2>
-            <p class="sub-desc">Loyalty archived. Paradise reserved in <span class="plot-highlight">365 LOYALTY PLOTS</span>.</p>
-            <a href="pets_canvas.html" class="btn-action interactive">Enter Paradise</a>
-        </div>
-    </section>
-
     <div class="policy-container reveal">
         <div class="policy-box">
             <h3>Policies & Modification</h3>
             <ul class="policy-list">
-                <li>• <b>Renewal Policy:</b> All plots are archived permanently; however, active link validation is required annually.</li>
-                <li>• <b>Data Modification:</b> <b>$7 administrative fee</b> for any media, display name, or target URL updates post-approval.</li>
-                <li>• <b>Service Window:</b> Dedicated Concierge active 24h: <b>Thursday, Friday, Saturday</b>.</li>
+                <li>• <b>Renewal Policy:</b> All plots are archived permanently; annual link validation required.</li>
+                <li>• <b>Data Modification:</b> <b>$7 administrative fee</b> for any media or URL updates.</li>
+                <li>• <b>Service Window:</b> Concierge active 24h: <b>Thursday, Friday, Saturday</b>.</li>
             </ul>
         </div>
         <div class="policy-box">
@@ -296,21 +247,21 @@
                 <li><b>01</b> Complete payment via the <b>Acquisition Drawer</b>.</li>
                 <li><b>02</b> Prepare 4K Photo, Display Name, and Target URL.</li>
                 <li><b>03</b> Submit assets to <b>WhatsApp Support</b> for verification.</li>
-                <li><b>04</b> Live sync completed within <b>48 hours</b> post-approval.</li>
+                <li><b>04</b> Live sync completed within <b>48 hours</b>.</li>
             </ul>
         </div>
     </div>
 
     <a href="https://wa.me/8801576940717" target="_blank" class="support-btn interactive">
-        <svg viewBox="0 0 24 24" fill="#000"><path d="M12.004 2C6.48 2 2 6.48 2 12C2 13.59 2.37 15.12 3.08 16.46L2 22L7.69 20.91C8.99 21.61 10.45 22 12.004 22C17.524 22 22.004 17.52 22.004 12C22.004 6.48 17.524 2 12.004 2ZM12.004 20.18C10.634 20.18 9.334 19.83 8.194 19.22L7.854 19.04L4.544 19.67L5.194 16.46L4.994 16.14C4.294 15.01 3.924 13.72 3.924 12.38C3.924 7.91 7.554 4.28 12.024 4.28C16.494 4.28 20.124 7.91 20.124 12.38C20.124 16.85 16.474 20.18 12.004 20.18Z"/></svg>
+        <svg viewBox="0 0 24 24" fill="#000" width="24"><path d="M12.004 2C6.48 2 2 6.48 2 12C2 13.59 2.37 15.12 3.08 16.46L2 22L7.69 20.91C8.99 21.61 10.45 22 12.004 22C17.524 22 22.004 17.52 22.004 12C22.004 6.48 17.524 2 12.004 2ZM12.004 20.18C10.634 20.18 9.334 19.83 8.194 19.22L7.854 19.04L4.544 19.67L5.194 16.46L4.994 16.14C4.294 15.01 3.924 13.72 3.924 12.38C3.924 7.91 7.554 4.28 12.024 4.28C16.494 4.28 20.124 7.91 20.124 12.38C20.124 16.85 16.474 20.18 12.004 20.18Z"/></svg>
     </a>
 
     <a href="https://x.com/ARCHIVEKAWSAR" target="_blank" class="twitter-btn interactive">
-        <svg viewBox="0 0 24 24" fill="#000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        <svg viewBox="0 0 24 24" fill="#000" width="22"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
     </a>
 
     <footer class="footer">
-        <div class="copyright">© 2026 K ARCHIVE. OWNED BY <b>KAWSAR</b>. ALL RIGHTS RESERVED.</div>
+        <div class="copyright">© 2026 K ARCHIVE. OWNED BY <b>KAWSAR</b>.</div>
     </footer>
 
     <script>
