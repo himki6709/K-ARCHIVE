@@ -27,7 +27,8 @@
         :root { 
             --black: #000000; 
             --white: #ffffff;
-            --silver: linear-gradient(to right, #000 0%, #8e8e8e 50%, #000 100%);
+            --gold: #D4AF37;
+            --silver: #C0C0C0;
         }
 
         body { 
@@ -43,15 +44,30 @@
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 4%; box-sizing: border-box; z-index: 2000; border-bottom: 0.5px solid #eee;
         }
-        .nav-btn { font-size: 10px; letter-spacing: 2px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 0.5px solid #000; padding: 8px 15px; transition: 0.3s; background: none; }
+        .nav-group { display: flex; gap: 8px; }
+        .nav-btn { font-size: 9px; letter-spacing: 1px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: 0.5px solid #000; padding: 8px 12px; transition: 0.3s; background: none; white-space: nowrap; }
         .nav-btn:hover { background: #000; color: #fff; }
 
-        /* Silver/Black/White Title */
+        /* Animated Title (Black, White, Silver, Gold Video Effect) */
         .premium-title {
-            margin-top: 120px; font-size: clamp(32px, 7vw, 75px); font-weight: 900;
-            text-transform: uppercase; letter-spacing: 12px; text-align: center;
-            background: var(--silver); -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.2));
+            margin-top: 130px; font-size: clamp(35px, 8vw, 85px); font-weight: 900;
+            text-transform: uppercase; letter-spacing: 10px; text-align: center;
+            background: linear-gradient(
+                to right, 
+                #000 0%, 
+                #fff 25%, 
+                #C0C0C0 50%, 
+                #D4AF37 75%, 
+                #000 100%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 4s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
         }
 
         /* Acquisition Drawer */
@@ -66,63 +82,64 @@
         .pay-item p { font-size: 11px; word-break: break-all; margin: 0; font-weight: bold; color: #000; }
 
         /* Grid System */
-        .canvas-container { padding: 40px 20px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .canvas-container { padding: 40px 10px; width: 100%; display: flex; flex-direction: column; align-items: center; }
         .grid-wrapper { 
             display: grid; grid-template-columns: repeat(14, 1fr); 
             gap: 2px; background: #eee; padding: 2px; 
-            width: 100%; max-width: 1400px; box-sizing: border-box; border: 0.5px solid #000;
+            width: 98%; max-width: 1400px; box-sizing: border-box; border: 0.5px solid #000;
         }
         .plot { 
             aspect-ratio: 1/1; background: #fff; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; font-size: clamp(7px, 0.8vw, 10px); 
+            justify-content: center; align-items: center; font-size: clamp(6px, 0.7vw, 9px); 
             transition: 0.2s; cursor: pointer; border: 0.1px solid #f0f0f0;
         }
         .plot:hover { background: #000; color: #fff; }
-        .plot b { font-size: clamp(9px, 1vw, 12px); margin-top: 2px; }
+        .plot b { font-size: clamp(8px, 1vw, 11px); margin-top: 1px; }
 
         @media (max-width: 1024px) { .grid-wrapper { grid-template-columns: repeat(7, 1fr); } }
         @media (max-width: 600px) { .grid-wrapper { grid-template-columns: repeat(5, 1fr); } }
 
-        /* Footer Section Styling */
+        /* Footer Info */
         .footer-info {
-            width: 100%; max-width: 1200px; padding: 80px 20px;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px;
+            width: 100%; max-width: 1200px; padding: 60px 20px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;
             border-top: 0.5px solid #eee; margin-top: 50px;
         }
-        .info-block h3 { font-size: 12px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 25px; border-bottom: 0.5px solid #000; padding-bottom: 10px; }
-        .info-block p, .info-block li { font-size: 11px; line-height: 2; color: #555; list-style: none; padding: 0; }
+        .info-block h3 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; border-bottom: 0.5px solid #000; padding-bottom: 8px; }
+        .info-block p, .info-block li { font-size: 11px; line-height: 1.8; color: #555; list-style: none; padding: 0; margin: 0; }
         .info-block b { color: #000; }
 
         .copyright-bar {
             width: 100%; padding: 40px 20px; text-align: center; 
             border-top: 0.5px solid #f9f9f9; background: #fafafa;
-            font-size: 10px; letter-spacing: 2px; color: #999; line-height: 1.8;
+            font-size: 9px; letter-spacing: 2px; color: #999; line-height: 2;
         }
 
         /* Modal */
-        #purchase-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 5500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-box { width: 90%; max-width: 400px; background: #fff; padding: 40px; text-align: center; }
+        #purchase-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 5500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        .modal-box { width: 90%; max-width: 380px; background: #fff; padding: 40px; text-align: center; }
         input { width: 100%; padding: 15px; margin: 10px 0; border: 0.5px solid #ccc; outline: none; box-sizing: border-box; }
         .confirm-btn { width: 100%; padding: 15px; background: #000; color: #fff; border: none; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; font-weight: bold; }
 
-        #success-pop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; max-width: 350px; background: #000; color: #fff; padding: 30px; z-index: 6000; display: none; text-align: center; }
+        #success-pop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; max-width: 350px; background: #000; color: #fff; padding: 30px; z-index: 6000; display: none; text-align: center; border: 0.5px solid var(--gold); }
     </style>
 </head>
 <body>
 
     <header class="top-nav">
         <button class="nav-btn" onclick="window.location.href='index.html'">← BACK</button>
-        <div style="display: flex; gap: 10px;">
+        <div class="nav-group">
             <div class="nav-btn" onclick="toggleDrawer()">Acquisition</div>
             <div class="nav-btn" onclick="openModal()">Secure Plot</div>
+            <div class="nav-btn" onclick="downloadMap()">Download Map</div>
         </div>
     </header>
 
     <div id="payment-drawer">
         <h2 style="font-size: 14px; letter-spacing: 4px; margin-bottom: 40px; border-bottom: 1px solid #000; padding-bottom: 10px;">ACQUISITION DRAWER</h2>
-        <div class="pay-item" onclick="copyT('912221034')"><h4>Binance UID</h4><p>912221034</p></div>
-        <div class="pay-item" onclick="copyT('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')"><h4>USDT (TRC20)</h4><p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p></div>
-        <div class="pay-item" onclick="copyT('0x443792A4884e8e855f954ccEF910778Aff1eb78E')"><h4>Metamask</h4><p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p></div>
+        <div class="pay-item" onclick="copyC('912221034')"><h4>Binance UID</h4><p>912221034</p></div>
+        <div class="pay-item" onclick="copyC('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')"><h4>USDT (TRC20)</h4><p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p></div>
+        <div class="pay-item" onclick="copyC('0x443792A4884e8e855f954ccEF910778Aff1eb78E')"><h4>Metamask</h4><p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p></div>
         <button onclick="toggleDrawer()" style="background:none; border:none; border-bottom:0.5px solid #000; cursor:pointer; font-size:10px;">[ CLOSE ]</button>
     </div>
 
@@ -159,17 +176,17 @@
     <div id="purchase-modal">
         <div class="modal-box">
             <h2 style="letter-spacing: 3px; font-size: 18px;">SECURE PLOT</h2>
-            <input type="text" id="nameIn" placeholder="CREATOR NAME">
-            <input type="number" id="plotIn" placeholder="PLOT # (1-300)" min="1" max="300">
-            <button class="confirm-btn" onclick="confirmPurchase()">Verify & Acquire</button>
+            <input type="text" id="nameInp" placeholder="CREATOR NAME">
+            <input type="number" id="plotInp" placeholder="PLOT # (1-300)" min="1" max="300">
+            <button class="confirm-btn" onclick="handlePurchase()">Verify & Acquire</button>
             <p onclick="closeModal()" style="cursor:pointer; font-size:10px; margin-top:20px; opacity:0.5;">[ CANCEL ]</p>
         </div>
     </div>
 
     <div id="success-pop">
-        <h2 style="color:#FCD535;">VERIFIED</h2>
-        <p id="pop-text"></p>
-        <a id="wa-link" href="#" target="_blank" style="color:#fff; border:1px solid #fff; padding:10px 20px; text-decoration:none; font-size:11px; display:inline-block; margin-top:10px;">WHATSAPP SUPPORT</a>
+        <h2 style="color:var(--gold);">ARCHIVE READY</h2>
+        <p id="pop-desc"></p>
+        <a id="wa-btn" href="#" target="_blank" style="color:#fff; border:1px solid #fff; padding:10px 20px; text-decoration:none; font-size:11px; display:inline-block; margin-top:10px;">WHATSAPP SUPPORT</a>
     </div>
 
     <script>
@@ -182,22 +199,32 @@
         }
 
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
-        function copyT(t) { navigator.clipboard.writeText(t); alert("Address Copied"); }
+        function copyC(t) { navigator.clipboard.writeText(t); alert("Copied"); }
         function openModal() { document.getElementById('purchase-modal').style.display = 'flex'; }
         function closeModal() { document.getElementById('purchase-modal').style.display = 'none'; }
 
-        function confirmPurchase() {
-            const n = document.getElementById('nameIn').value;
-            const p = document.getElementById('plotIn').value;
-            if(!n || p<1 || p>300) return alert("Valid Name & Plot (1-300) required");
+        function handlePurchase() {
+            const n = document.getElementById('nameInp').value;
+            const p = document.getElementById('plotInp').value;
+            if(!n || p<1 || p>300) return alert("Fill correctly");
             
-            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            confetti({ particleCount: 120, spread: 60, origin: { y: 0.6 } });
             document.getElementById('purchase-modal').style.display = 'none';
-            document.getElementById('pop-text').innerHTML = `Plot #${p} for ${n.toUpperCase()}. Total: $${p}`;
+            document.getElementById('pop-desc').innerHTML = `Plot #${p} for ${n.toUpperCase()}. Price: $${p}`;
             
-            const msg = encodeURIComponent(`Hello K ARCHIVE,\nI am acquiring Social Plot #${p} for ${n}.\nPrice: $${p}\nPayment completed.`);
-            document.getElementById('wa-link').href = `https://wa.me/8801576940717?text=${msg}`;
+            const msg = encodeURIComponent(`Hello K ARCHIVE,\nAcquiring Social Plot #${p} for ${n}.\nTotal: $${p}`);
+            document.getElementById('wa-btn').href = `https://wa.me/8801576940717?text=${msg}`;
             document.getElementById('success-pop').style.display = 'block';
+        }
+
+        function downloadMap() {
+            const zone = document.getElementById('capture-zone');
+            html2canvas(zone, { scale: 1.5, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'K_ARCHIVE_SOCIAL_CREATORS.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
         }
     </script>
 </body>
