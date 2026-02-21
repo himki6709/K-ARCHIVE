@@ -108,11 +108,13 @@
             position: fixed; bottom: 40px; left: 40px; z-index: 9999;
         }
 
-        .charter { background: #fafafa; padding: 100px 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; scroll-snap-align: end; }
-        .charter-box h3 { font-size: 11px; letter-spacing: 5px; text-transform: uppercase; border-bottom: 1px solid #ddd; padding-bottom: 15px; }
-        .charter-box li { font-size: 11px; letter-spacing: 1px; color: #555; margin-bottom: 10px; list-style: none; }
-        .sub-list { margin-left: 15px; margin-top: 10px; opacity: 0.9; }
-        .sub-list li { font-size: 10px !important; margin-bottom: 8px !important; color: #000; }
+        /* Large Charter & Flow Section */
+        .charter { background: #fafafa; padding: 120px 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; scroll-snap-align: end; }
+        .charter-box h3 { font-size: 18px; letter-spacing: 6px; text-transform: uppercase; border-bottom: 2px solid #ddd; padding-bottom: 20px; margin-bottom: 30px; font-weight: 100; }
+        .charter-box li { font-size: 16px; letter-spacing: 1px; color: #333; margin-bottom: 18px; list-style: none; line-height: 1.6; }
+        .sub-list { margin-left: 20px; margin-top: 15px; }
+        .sub-list li { font-size: 14px !important; margin-bottom: 12px !important; color: #555; }
+        .sub-list li::before { content: "• "; color: var(--gold); font-weight: bold; }
 
         .footer { padding: 50px; text-align: center; font-size: 9px; letter-spacing: 4px; opacity: 0.5; text-transform: uppercase; }
 
@@ -121,7 +123,7 @@
 
         @media (max-width: 768px) { 
             #drawer { width: 100%; padding: 80px 20px; }
-            .charter { grid-template-columns: 1fr; } 
+            .charter { grid-template-columns: 1fr; padding: 80px 5%; gap: 40px; } 
             .title { font-size: 24px; letter-spacing: 8px; } 
             #cursor-outline { display: none; } 
             body { cursor: auto; } 
@@ -280,7 +282,7 @@
         function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
         function copy(t) { navigator.clipboard.writeText(t); alert("Registry Address Copied."); }
 
-        // Metamask Connection
+        // Metamask Connection (Updated to redirect if not found)
         const connectBtn = document.getElementById('connect-wallet-btn');
         const statusTxt = document.getElementById('wallet-status');
         connectBtn.onclick = async () => {
@@ -292,7 +294,9 @@
                     statusTxt.innerText = "Connected: " + accounts[0].substring(0, 8) + "...";
                     alert("Metamask Linked.");
                 } catch (err) { alert("Connection Rejected."); }
-            } else { alert("Install Metamask."); }
+            } else { 
+                window.open("https://metamask.io/download/", "_blank"); 
+            }
         };
 
         // Phantom Connection
