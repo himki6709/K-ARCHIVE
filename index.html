@@ -31,6 +31,8 @@
             --black: #050505; 
             --white: #ffffff; 
             --gold: #D4AF37; 
+            --metamask: #E2761B;
+            --phantom: #AB9FF2;
         }
 
         html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
@@ -72,12 +74,14 @@
         .pay-box p { font-size: 11px; font-weight: bold; margin: 0; word-break: break-all; line-height: 1.4; color: #333; }
         
         .connect-btn {
-            width: 100%; padding: 12px; background: #000; color: #fff; border: none; 
+            width: 100%; padding: 12px; color: #fff; border: none; 
             cursor: pointer; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; 
-            transition: 0.3s; margin-top: 10px;
+            transition: 0.3s; margin-top: 10px; font-weight: bold;
         }
-        .phantom-btn { background: #ab9ff2; }
-        .phantom-btn:hover { background: #512da8; }
+        .metamask-btn { background: var(--metamask); }
+        .metamask-btn:hover { background: #c56114; }
+        .phantom-btn { background: var(--phantom); }
+        .phantom-btn:hover { background: #8e80e9; }
 
         .snap-section { 
             height: 100vh; width: 100%; scroll-snap-align: start; 
@@ -144,7 +148,7 @@
         
         <div class="pay-box interactive" style="border-bottom: 2px solid #eee; padding-bottom: 20px;">
             <h4>Web3 Wallet Connection</h4>
-            <button id="connect-wallet-btn" class="connect-btn">Connect Metamask</button>
+            <button id="connect-wallet-btn" class="connect-btn metamask-btn">Connect Metamask</button>
             <button id="connect-phantom-btn" class="connect-btn phantom-btn">Connect Phantom</button>
             <p id="wallet-status" style="font-size: 10px; margin-top: 10px; color: var(--gold); display: none;"></p>
         </div>
@@ -281,11 +285,13 @@
         const statusTxt = document.getElementById('wallet-status');
         connectBtn.onclick = async () => {
             if (window.ethereum) {
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                connectBtn.innerText = "Linked";
-                statusTxt.style.display = "block";
-                statusTxt.innerText = "Connected: " + accounts[0].substring(0, 8) + "...";
-                alert("Metamask Linked.");
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    connectBtn.innerText = "Linked";
+                    statusTxt.style.display = "block";
+                    statusTxt.innerText = "Connected: " + accounts[0].substring(0, 8) + "...";
+                    alert("Metamask Linked.");
+                } catch (err) { alert("Connection Rejected."); }
             } else { alert("Install Metamask."); }
         };
 
