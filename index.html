@@ -71,11 +71,13 @@
         .pay-box h4 { font-size: 9px; color: #aaa; text-transform: uppercase; margin-bottom: 8px; }
         .pay-box p { font-size: 11px; font-weight: bold; margin: 0; word-break: break-all; line-height: 1.4; color: #333; }
         
-        #connect-wallet-btn {
+        .connect-btn {
             width: 100%; padding: 12px; background: #000; color: #fff; border: none; 
             cursor: pointer; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; 
             transition: 0.3s; margin-top: 10px;
         }
+        .phantom-btn { background: #ab9ff2; }
+        .phantom-btn:hover { background: #512da8; }
 
         .snap-section { 
             height: 100vh; width: 100%; scroll-snap-align: start; 
@@ -139,15 +141,21 @@
 
     <div id="drawer">
         <h2 style="font-size: 14px; letter-spacing: 4px; margin-bottom: 50px; text-transform: uppercase;">Official Registry</h2>
+        
         <div class="pay-box interactive" style="border-bottom: 2px solid #eee; padding-bottom: 20px;">
-            <h4>Web3 Estate Payment</h4>
-            <button id="connect-wallet-btn">Connect Metamask</button>
+            <h4>Web3 Wallet Connection</h4>
+            <button id="connect-wallet-btn" class="connect-btn">Connect Metamask</button>
+            <button id="connect-phantom-btn" class="connect-btn phantom-btn">Connect Phantom</button>
             <p id="wallet-status" style="font-size: 10px; margin-top: 10px; color: var(--gold); display: none;"></p>
         </div>
         
         <div class="pay-box interactive" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
             <h4>Metamask / ERC20</h4>
             <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
+        </div>
+        <div class="pay-box interactive" onclick="copy('8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7')">
+            <h4>Phantom / Solana (SOL)</h4>
+            <p>8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7</p>
         </div>
         <div class="pay-box interactive" onclick="copy('912221034')">
             <h4>Binance Pay ID</h4>
@@ -268,6 +276,7 @@
         function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
         function copy(t) { navigator.clipboard.writeText(t); alert("Registry Address Copied."); }
 
+        // Metamask Connection
         const connectBtn = document.getElementById('connect-wallet-btn');
         const statusTxt = document.getElementById('wallet-status');
         connectBtn.onclick = async () => {
@@ -276,8 +285,22 @@
                 connectBtn.innerText = "Linked";
                 statusTxt.style.display = "block";
                 statusTxt.innerText = "Connected: " + accounts[0].substring(0, 8) + "...";
-                alert("Metamask Linked to Archive.");
-            } else { alert("Please install Metamask."); }
+                alert("Metamask Linked.");
+            } else { alert("Install Metamask."); }
+        };
+
+        // Phantom Connection
+        const phantomBtn = document.getElementById('connect-phantom-btn');
+        phantomBtn.onclick = async () => {
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    const resp = await window.solana.connect();
+                    phantomBtn.innerText = "Linked";
+                    statusTxt.style.display = "block";
+                    statusTxt.innerText = "Phantom: " + resp.publicKey.toString().substring(0, 8) + "...";
+                    alert("Phantom Wallet Linked.");
+                } catch (err) { alert("Connection Rejected."); }
+            } else { window.open("https://phantom.app/", "_blank"); }
         };
 
         window.onload = () => { setTimeout(() => { document.getElementById('loader').classList.add('fade-out'); }, 1000); };
