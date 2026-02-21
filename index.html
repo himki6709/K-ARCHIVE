@@ -9,15 +9,16 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
+        // নতুন ফায়ারবেজ কনফিগারেশন (the-5k-elite-legacy)
         const firebaseConfig = {
-            apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
-            authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
-            databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
-            projectId: "milliondollarhomepage2-71ba3",
-            storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
-            messagingSenderId: "895107568682",
-            appId: "1:895107568682:web:d48003f71701005f3d5f53",
-            measurementId: "G-RG50BVDLTX"
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded",
+            measurementId: "G-P6S0EB8E7E"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -273,53 +274,4 @@
     </div>
 
     <a href="https://wa.me/8801576940717" target="_blank" class="support-btn interactive">
-        <svg viewBox="0 0 24 24" fill="#000" width="24"><path d="M12.004 2C6.48 2 2 6.48 2 12C2 13.59 2.37 15.12 3.08 16.46L2 22L7.69 20.91C8.99 21.61 10.45 22 12.004 22C17.524 22 22.004 17.52 22.004 12C22.004 6.48 17.524 2 12.004 2ZM12.004 20.18C10.634 20.18 9.334 19.83 8.194 19.22L7.854 19.04L4.544 19.67L5.194 16.46L4.994 16.14C4.294 15.01 3.924 13.72 3.924 12.38C3.924 7.91 7.554 4.28 12.024 4.28C16.494 4.28 20.124 7.91 20.124 12.38C20.124 16.85 16.474 20.18 12.004 20.18Z"/></svg>
-    </a>
-
-    <a href="https://x.com/ARCHIVEKAWSAR" target="_blank" class="twitter-btn interactive">
-        <svg viewBox="0 0 24 24" fill="#000" width="22"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-    </a>
-
-    <footer class="footer">
-        <div class="copyright">© 2026 K ARCHIVE. OWNED BY <b>KAWSAR</b>.</div>
-    </footer>
-
-    <script>
-        const outline = document.getElementById('cursor-outline');
-        document.addEventListener('mousemove', (e) => {
-            outline.style.left = e.clientX + 'px';
-            outline.style.top = e.clientY + 'px';
-        });
-
-        function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
-        function copyValue(text) { navigator.clipboard.writeText(text); alert("Copied: " + text); }
-
-        function toggleSubOverlay(id) {
-            const overlay = document.getElementById(id);
-            if(overlay.style.display === "flex") {
-                overlay.classList.remove('active');
-                setTimeout(() => { overlay.style.display = "none"; }, 500);
-            } else {
-                overlay.style.display = "flex";
-                setTimeout(() => { overlay.classList.add('active'); }, 10);
-            }
-        }
-
-        function navTo(url) { window.location.href = url; }
-
-        window.addEventListener("load", () => {
-            setTimeout(() => { document.getElementById('loader').classList.add('fade-out'); }, 1500);
-        });
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        document.querySelectorAll('.interactive').forEach(el => {
-            el.addEventListener('mouseenter', () => { outline.style.width = '30px'; outline.style.height = '30px'; outline.style.backgroundColor = 'rgba(0,0,0,0.05)'; });
-            el.addEventListener('mouseleave', () => { outline.style.width = '10px'; outline.style.height = '10px'; outline.style.backgroundColor = 'transparent'; });
-        });
-    </script>
-</body>
-</html>
+        <svg viewBox="0 0 24 24" fill="#000" width="24"><path d="M12.004 2C6.48 2 2 6.48 2 12C2 13.59 2.37 15.12 3.08 16.46L2 22L7.
