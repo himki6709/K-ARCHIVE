@@ -89,7 +89,7 @@
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         .label { font-size: 9px; letter-spacing: 10px; color: var(--gold); text-transform: uppercase; margin-bottom: 15px; font-weight: bold; display: block; }
-        .title { font-size: 40px; font-weight: 100; letter-spacing: 15px; text-transform: uppercase; margin: 0 0 20px 0; line-height: 1.2; }
+        .title { font-size: 38px; font-weight: 100; letter-spacing: 12px; text-transform: uppercase; margin: 0 0 20px 0; line-height: 1.2; }
         .price { font-size: 15px; letter-spacing: 4px; margin-bottom: 30px; font-weight: bold; }
         .desc { font-size: 13px; letter-spacing: 2px; color: #666; max-width: 550px; margin: 0 auto 40px auto; line-height: 1.8; }
 
@@ -163,41 +163,41 @@
 
     <section class="snap-section">
         <div class="reveal active">
-            <span class="label">Apex Visibility</span>
-            <h2 class="title">The Grand Billboard</h2>
-            <div class="price">INVESTMENT: $5,000</div>
-            <p class="desc">The crown of the archive. Only 10 Iconic Banners will ever be showcased at the absolute summit.</p>
-            <a href="billboard_canvas.html" class="btn-enter interactive">View Showcase</a>
-        </div>
-    </section>
-
-    <section class="snap-section">
-        <div class="reveal">
             <span class="label">Elite Tier</span>
             <h2 class="title">The Imperial 100</h2>
             <div class="price">ESTATE VALUE: $999</div>
-            <p class="desc">A sanctuary for global titans. Strictly limited to 100 Crown Jewel Plots with permanent heritage.</p>
-            <a href="millionaire_canvas.html" class="btn-enter interactive">Enter Elite Estate</a>
+            <p class="desc">A sanctuary for world-class titans and global brands. Strictly limited to 100 Crown Jewel Plots with permanent heritage.</p>
+            <a href="imperial_canvas.html" class="btn-enter interactive">Enter Elite Estate</a>
         </div>
     </section>
 
     <section class="snap-section">
         <div class="reveal">
-            <span class="label">Creator Heritage</span>
-            <h2 class="title">Social Sovereignty</h2>
+            <span class="label">Digital Influence</span>
+            <h2 class="title">Creator Sovereignty</h2>
             <div class="price">ACQUISITION: $199</div>
-            <p class="desc">Archiving the digital influence of the modern era. 300 Sovereign Plots reserved for top creators.</p>
-            <a href="social_canvas.html" class="btn-enter interactive">Claim Space</a>
+            <p class="desc">The hall of fame for top YouTubers, TikTokers, and Influencers. 300 Sovereign Plots reserved for creators.</p>
+            <a href="creator_canvas.html" class="btn-enter interactive">Claim Space</a>
         </div>
     </section>
 
     <section class="snap-section">
         <div class="reveal">
-            <span class="label">Digital Dynasty</span>
+            <span class="label">Dynasty of Play</span>
             <h2 class="title">Gaming Realm</h2>
             <div class="price">RANK VALUE: $149</div>
-            <p class="desc">Where legends are forged. A fixed supply of 250 Sovereign Plots reserved for iconic games.</p>
+            <p class="desc">Archiving the legends of the joystick. 500 Plots dedicated to Pro-Gamers and elite Gaming Studios.</p>
             <a href="gaming_canvas.html" class="btn-enter interactive">Enter Dynasty</a>
+        </div>
+    </section>
+
+    <section class="snap-section">
+        <div class="reveal">
+            <span class="label">Global Heritage</span>
+            <h2 class="title">Nations Grid</h2>
+            <div class="price">PRIDE VALUE: $99</div>
+            <p class="desc">Representing the globe. Strictly 5 special ambassadors from every nation. 1000 Plots total.</p>
+            <a href="nations_canvas.html" class="btn-enter interactive">Explore Nations</a>
         </div>
     </section>
 
@@ -206,28 +206,28 @@
             <span class="label">Future Intelligence</span>
             <h2 class="title">AI Pioneers</h2>
             <div class="price">TECH VALUE: $179</div>
-            <p class="desc">The directory of Artificial Intelligence architects. Allocated 100 Pioneer Plots only.</p>
+            <p class="desc">The directory of Artificial Intelligence architects. 100 Plots for AI content creators and Tech giants.</p>
             <a href="ai_canvas.html" class="btn-enter interactive">Explore AI</a>
         </div>
     </section>
 
     <section class="snap-section">
         <div class="reveal">
-            <span class="label">National Pride</span>
-            <h2 class="title">Nations Grid</h2>
-            <div class="price">HERITAGE VALUE: $99</div>
-            <p class="desc">Representing the world through its finest. 2 ambassadors from every nation. Total 200 Plots.</p>
-            <a href="nations_canvas.html" class="btn-enter interactive">Explore Nations</a>
+            <span class="label">Pure Legacy</span>
+            <h2 class="title">Little Stars & Pets</h2>
+            <div class="price">MEMORY VALUE: $59</div>
+            <p class="desc">Immortalizing emerging talent and loyal companions. 100 Eternal Plots for pure hearts.</p>
+            <a href="stars_canvas.html" class="btn-enter interactive">Archive Memory</a>
         </div>
     </section>
 
     <section class="snap-section">
         <div class="reveal">
-            <span class="label">Eternal Memories</span>
-            <h2 class="title">Stars & Paradise</h2>
-            <div class="price">LEGACY VALUE: $59</div>
-            <p class="desc">Preserving the future and the loyal. Immortalized in 100 Eternal Plots.</p>
-            <a href="stars_canvas.html" class="btn-enter interactive">Archive Memory</a>
+            <span class="label">Main Sponsorship</span>
+            <h2 class="title">The Grand Billboard</h2>
+            <div class="price">PATRONAGE: $5,000</div>
+            <p class="desc">The ultimate visibility at the archive's summit. Exclusively for 10 Main Sponsors of the Sovereign Archive.</p>
+            <a href="billboard_canvas.html" class="btn-enter interactive">View Showcase</a>
         </div>
     </section>
 
@@ -266,7 +266,7 @@
         });
 
         function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
-        function copy(t) { navigator.clipboard.writeText(t); alert("Address Copied."); }
+        function copy(t) { navigator.clipboard.writeText(t); alert("Registry Address Copied."); }
 
         const connectBtn = document.getElementById('connect-wallet-btn');
         const statusTxt = document.getElementById('wallet-status');
@@ -276,7 +276,8 @@
                 connectBtn.innerText = "Linked";
                 statusTxt.style.display = "block";
                 statusTxt.innerText = "Connected: " + accounts[0].substring(0, 8) + "...";
-            } else { alert("Install Metamask."); }
+                alert("Metamask Linked to Archive.");
+            } else { alert("Please install Metamask."); }
         };
 
         window.onload = () => { setTimeout(() => { document.getElementById('loader').classList.add('fade-out'); }, 1000); };
