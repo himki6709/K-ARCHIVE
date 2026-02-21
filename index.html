@@ -24,12 +24,13 @@
         window.firebaseDB = db;
     </script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+
     <style>
         :root { 
             --black: #050505; 
             --white: #ffffff; 
             --gold: #D4AF37; 
-            --silver: #C0C0C0;
             --font-main: 'Playfair Display', serif;
         }
 
@@ -45,7 +46,6 @@
             transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s;
         }
 
-        /* Navigation */
         .nav-bar {
             position: fixed; top: 0; width: 100%; height: 140px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -61,7 +61,23 @@
             font-weight: bold; border-bottom: 1px solid #000; cursor: pointer; text-transform: uppercase;
         }
 
-        /* Sections */
+        #drawer {
+            position: fixed; top: 0; left: -100%; width: 380px; height: 100vh;
+            background: #fff; border-right: 1px solid #eee; z-index: 5000;
+            transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); padding: 80px 40px; box-sizing: border-box;
+        }
+        #drawer.open { left: 0; }
+        .pay-box { margin-bottom: 30px; cursor: pointer; border-bottom: 1px solid #f5f5f5; padding-bottom: 15px; }
+        .pay-box h4 { font-size: 9px; color: #aaa; text-transform: uppercase; margin-bottom: 5px; }
+        .pay-box p { font-size: 12px; font-weight: bold; margin: 0; word-break: break-all; }
+        
+        #connect-wallet-btn {
+            width: 100%; padding: 12px; background: #000; color: #fff; border: none; 
+            cursor: pointer; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; 
+            transition: 0.3s; margin-top: 10px;
+        }
+        #connect-wallet-btn:hover { background: var(--gold); }
+
         .snap-section { 
             height: 100vh; width: 100%; scroll-snap-align: start; 
             display: flex; flex-direction: column; justify-content: center; 
@@ -78,18 +94,13 @@
         .btn-enter { padding: 18px 60px; border: 0.5px solid #000; text-decoration: none; color: #000; font-size: 10px; letter-spacing: 6px; text-transform: uppercase; transition: 0.4s; }
         .btn-enter:hover { background: #000; color: #fff; letter-spacing: 10px; }
 
-        /* Payment Drawer */
-        #drawer {
-            position: fixed; top: 0; left: -100%; width: 380px; height: 100vh;
-            background: #fff; border-right: 1px solid #eee; z-index: 5000;
-            transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); padding: 80px 40px; box-sizing: border-box;
+        .support-btn {
+            display: flex; align-items: center; justify-content: center; background: #fff; 
+            border: 1px solid #000; width: 50px; height: 50px; border-radius: 50%; 
+            position: fixed; bottom: 40px; left: 40px; z-index: 9999; transition: 0.3s;
         }
-        #drawer.open { left: 0; }
-        .pay-box { margin-bottom: 30px; cursor: pointer; border-bottom: 1px solid #f5f5f5; padding-bottom: 15px; }
-        .pay-box h4 { font-size: 9px; color: #aaa; text-transform: uppercase; margin-bottom: 5px; }
-        .pay-box p { font-size: 12px; font-weight: bold; margin: 0; word-break: break-all; }
+        .support-btn:hover { background: #000; color: #fff; }
 
-        /* Policy & Footer */
         .charter { background: #fafafa; padding: 100px 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; scroll-snap-align: end; }
         .charter-box h3 { font-size: 11px; letter-spacing: 5px; text-transform: uppercase; border-bottom: 1px solid #ddd; padding-bottom: 15px; }
         .charter-box li { font-size: 11px; letter-spacing: 1px; color: #555; margin-bottom: 10px; list-style: none; }
@@ -120,14 +131,26 @@
 
     <div id="drawer">
         <h2 style="font-size: 14px; letter-spacing: 4px; margin-bottom: 50px; text-transform: uppercase;">Official Registry</h2>
+        
+        <div class="pay-box interactive" style="border-bottom: 2px solid #eee; padding-bottom: 20px;">
+            <h4>Web3 Estate Payment</h4>
+            <button id="connect-wallet-btn">Connect Metamask</button>
+            <p id="wallet-status" style="font-size: 10px; margin-top: 10px; color: var(--gold); display: none;"></p>
+        </div>
+
+        <div class="pay-box interactive" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
+            <h4>Metamask / ERC20</h4>
+            <p>0x443792A4884e8...Aff1eb78E</p>
+        </div>
         <div class="pay-box interactive" onclick="copy('912221034')">
-            <h4>Binance UID</h4>
+            <h4>Binance Pay ID</h4>
             <p>912221034</p>
         </div>
         <div class="pay-box interactive" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
             <h4>USDT (TRC20)</h4>
-            <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
+            <p>TTapBkTqrDnzHbW...FmR8Ws6</p>
         </div>
+
         <button onclick="toggleDrawer()" style="background:none; border:none; border-bottom:1px solid #000; cursor:pointer; font-size:9px; letter-spacing:2px; margin-top:30px;">[ CLOSE ]</button>
     </div>
 
@@ -146,18 +169,8 @@
             <span class="label">Elite Tier</span>
             <h2 class="title">The Imperial 100</h2>
             <div class="price">ESTATE VALUE: $999</div>
-            <p class="desc">The sanctuary for global titans and industry leaders. Strictly limited to <span style="color:#000; font-weight:bold;">100 Crown Jewel Plots</span>.</p>
+            <p class="desc">A sanctuary for global titans. Strictly limited to <span style="color:#000; font-weight:bold;">100 Crown Jewel Plots</span> with permanent heritage.</p>
             <a href="millionaire_canvas.html" class="btn-enter interactive">Enter Elite Estate</a>
-        </div>
-    </section>
-
-    <section class="snap-section">
-        <div class="reveal">
-            <span class="label">Creator Heritage</span>
-            <h2 class="title">Social Sovereignty</h2>
-            <div class="price">ACQUISITION: $199</div>
-            <p class="desc">Archiving the digital influence of the modern era. Exactly <span style="color:#000; font-weight:bold;">300 Sovereign Plots</span> reserved.</p>
-            <a href="social_canvas.html" class="btn-enter interactive">Claim Space</a>
         </div>
     </section>
 
@@ -166,53 +179,27 @@
             <span class="label">Digital Dynasty</span>
             <h2 class="title">Gaming Realm</h2>
             <div class="price">RANK VALUE: $149</div>
-            <p class="desc">Where legends are forged. Reserved for the <span style="color:#000; font-weight:bold;">Top 20 Global Games</span> with a fixed supply of 250 Plots.</p>
+            <p class="desc">Where legends are forged. A fixed supply of <span style="color:#000; font-weight:bold;">250 Sovereign Plots</span> reserved for the world's most iconic games.</p>
             <a href="gaming_canvas.html" class="btn-enter interactive">Enter Dynasty</a>
         </div>
     </section>
 
-    <section class="snap-section">
-        <div class="reveal">
-            <span class="label">Future Intelligence</span>
-            <h2 class="title">AI Pioneers</h2>
-            <div class="price">TECH VALUE: $179</div>
-            <p class="desc">The directory of Artificial Intelligence architects. Allocated <span style="color:#000; font-weight:bold;">100 Pioneer Plots</span> only.</p>
-            <a href="ai_canvas.html" class="btn-enter interactive">Explore AI</a>
-        </div>
-    </section>
-
-    <section class="snap-section">
-        <div class="reveal">
-            <span class="label">National Pride</span>
-            <h2 class="title">Nations Grid</h2>
-            <div class="price">HERITAGE VALUE: $99</div>
-            <p class="desc">Representing the world through its finest. 2 special ambassadors from every nation. Total <span style="color:#000; font-weight:bold;">200 Sovereign Plots</span>.</p>
-            <a href="nations_canvas.html" class="btn-enter interactive">Explore Nations</a>
-        </div>
-    </section>
-
-    <section class="snap-section">
-        <div class="reveal">
-            <span class="label">Eternal Memories</span>
-            <h2 class="title">Stars & Paradise</h2>
-            <div class="price">LEGACY VALUE: $59</div>
-            <p class="desc">Preserving the future and the loyal. Immortalized in <span style="color:#000; font-weight:bold;">100 Eternal Plots</span>.</p>
-            <a href="stars_canvas.html" class="btn-enter interactive">Archive Memory</a>
-        </div>
-    </section>
+    <a href="https://wa.me/8801576940717" target="_blank" class="support-btn interactive">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-10.6 8.38 8.38 0 0 1 3.8.9L21 3z"></path>
+        </svg>
+    </a>
 
     <div class="charter reveal">
         <div class="charter-box">
             <h3>Sovereign Charter</h3>
             <li>• <b>Permanent Supply:</b> No additional plots shall ever be added.</li>
             <li>• <b>Update Protocol:</b> $9 fee for any data or URL modifications.</li>
-            <li>• <b>Verification:</b> Every plot undergoes a strict authentication process.</li>
         </div>
         <div class="charter-box">
             <h3>Acquisition Flow</h3>
-            <li><b>01.</b> Secure payment via the <b>Official Registry</b>.</li>
-            <li><b>02.</b> Forward assets and proof of transfer to the WhatsApp Concierge.</li>
-            <li><b>03.</b> Live archiving within 48 hours.</li>
+            <li><b>01.</b> Secure payment via the <b>Official Registry</b> drawer.</li>
+            <li><b>02.</b> Forward assets and proof of transfer to WhatsApp Concierge.</li>
         </div>
     </div>
 
@@ -228,7 +215,27 @@
         });
 
         function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
-        function copy(t) { navigator.clipboard.writeText(t); alert("Registry Data Copied."); }
+        function copy(t) { navigator.clipboard.writeText(t); alert("Registry Address Copied."); }
+
+        // Metamask Connection Logic
+        const connectBtn = document.getElementById('connect-wallet-btn');
+        const statusTxt = document.getElementById('wallet-status');
+
+        connectBtn.addEventListener('click', async () => {
+            if (window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    connectBtn.innerText = "Wallet Linked";
+                    statusTxt.style.display = "block";
+                    statusTxt.innerText = "Connected: " + accounts[0].substring(0, 8) + "...";
+                    alert("Metamask Linked to Archive.");
+                } catch (err) {
+                    alert("Connection Rejected.");
+                }
+            } else {
+                alert("Please install Metamask.");
+            }
+        });
 
         window.onload = () => {
             setTimeout(() => { document.getElementById('loader').classList.add('fade-out'); }, 1500);
