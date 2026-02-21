@@ -77,9 +77,10 @@
         .plot { 
             width: 120px; height: 120px; display: flex; flex-direction: column; 
             justify-content: center; align-items: center; font-size: 9px; transition: 0.3s;
+            background-size: cover; background-position: center; cursor: pointer;
         }
-        .plot:nth-child(odd) { background: #ffffff; }
-        .plot:nth-child(even) { background: #fffdf0; }
+        .plot:nth-child(odd) { background-color: #ffffff; }
+        .plot:nth-child(even) { background-color: #fffdf0; }
         .plot b { font-size: 12px; margin-top: 5px; color: #000; }
 
         .info-grid { 
@@ -187,39 +188,31 @@
         <svg viewBox="0 0 24 24" width="20"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.59.37 3.12 1.08 4.46L2 22l5.69-1.09c1.3.7 2.76 1.09 4.31 1.09 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
     </a>
 
-    <script>
-        const grid = document.getElementById('main-grid');
-        for (let i = 1; i <= 100; i++) {
-            const price = Math.round(1000 - (i - 1) * 9.09);
-            const plot = document.createElement('div');
-            plot.className = 'plot';
-            plot.innerHTML = `<span>#${String(i).padStart(3, '0')}</span><b>$${price}</b>`;
-            grid.appendChild(plot);
-        }
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
+    <script>
+        // আপনার Firebase Config (Compat Mode)
+        const firebaseConfigCompat = {
+            apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
+            authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
+            databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
+            projectId: "milliondollarhomepage2-71ba3",
+            storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
+            messagingSenderId: "895107568682",
+            appId: "1:895107568682:web:d48003f71701005f3d5f53"
+        };
+        firebase.initializeApp(firebaseConfigCompat);
+    </script>
+
+    <script src="millionaire-script.js"></script>
+
+    <script>
+        // ডিজাইনের ফাংশনসমূহ (অক্ষুণ্ণ রাখা হয়েছে)
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
         function copyVal(t) { navigator.clipboard.writeText(t); alert("Copied"); }
         function openPurchase() { document.getElementById('purchase-modal').style.display = 'flex'; }
         function closePurchase() { document.getElementById('purchase-modal').style.display = 'none'; }
-
-        function processPurchase() {
-            const b = document.getElementById('brandName').value;
-            const p = document.getElementById('plotNumber').value;
-            if(!b || !p) return;
-            
-            // Calculate specific price for auto-message
-            const price = Math.round(1000 - (p - 1) * 9.09);
-
-            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#bf953f', '#000', '#fff'] });
-            document.getElementById('purchase-modal').style.display = 'none';
-            document.getElementById('congrats-msg').innerText = "WELCOME, " + b.toUpperCase();
-            
-            // Auto-message logic: Brand Name, Plot Number, and Price
-            const waMsg = encodeURIComponent(`Hello K Archive Concierge,\n\nI want to acquire Millionaire Plot #${p}.\nBrand: ${b}\nPrice: $${price}\n\nPlease guide me for the next steps.`);
-            document.getElementById('wa-btn').href = `https://wa.me/8801576940717?text=${waMsg}`;
-            
-            document.getElementById('success-popup').style.display = 'block';
-        }
 
         function downloadMap() {
             const area = document.getElementById('capture-area');
