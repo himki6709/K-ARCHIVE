@@ -31,7 +31,6 @@
             --black: #050505; 
             --white: #ffffff; 
             --gold: #D4AF37; 
-            --font-main: 'Playfair Display', serif;
         }
 
         html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
@@ -76,50 +75,47 @@
             cursor: pointer; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; 
             transition: 0.3s; margin-top: 10px;
         }
-        #connect-wallet-btn:hover { background: var(--gold); }
 
         .snap-section { 
             height: 100vh; width: 100%; scroll-snap-align: start; 
             display: flex; flex-direction: column; justify-content: center; 
             align-items: center; text-align: center; padding: 0 10%; box-sizing: border-box; 
         }
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         .label { font-size: 9px; letter-spacing: 10px; color: var(--gold); text-transform: uppercase; margin-bottom: 15px; font-weight: bold; }
-        .title { font-size: 45px; font-weight: 100; letter-spacing: 20px; text-transform: uppercase; margin-bottom: 20px; }
-        .price { font-size: 16px; letter-spacing: 4px; margin-bottom: 30px; font-weight: bold; }
-        .desc { font-size: 13px; letter-spacing: 2px; color: #666; max-width: 650px; line-height: 1.8; margin-bottom: 40px; }
+        .title { font-size: 40px; font-weight: 100; letter-spacing: 15px; text-transform: uppercase; margin-bottom: 20px; }
+        .price { font-size: 15px; letter-spacing: 4px; margin-bottom: 30px; font-weight: bold; }
+        .desc { font-size: 12px; letter-spacing: 2px; color: #666; max-width: 600px; line-height: 1.8; margin-bottom: 40px; }
 
-        .btn-enter { padding: 18px 60px; border: 0.5px solid #000; text-decoration: none; color: #000; font-size: 10px; letter-spacing: 6px; text-transform: uppercase; transition: 0.4s; }
-        .btn-enter:hover { background: #000; color: #fff; letter-spacing: 10px; }
+        .btn-enter { padding: 15px 45px; border: 0.5px solid #000; text-decoration: none; color: #000; font-size: 9px; letter-spacing: 5px; text-transform: uppercase; transition: 0.4s; }
+        .btn-enter:hover { background: #000; color: #fff; }
 
         .support-btn {
             display: flex; align-items: center; justify-content: center; background: #fff; 
             border: 1px solid #000; width: 50px; height: 50px; border-radius: 50%; 
-            position: fixed; bottom: 40px; left: 40px; z-index: 9999; transition: 0.3s;
+            position: fixed; bottom: 40px; left: 40px; z-index: 9999;
         }
-        .support-btn:hover { background: #000; color: #fff; }
 
         .charter { background: #fafafa; padding: 100px 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; scroll-snap-align: end; }
         .charter-box h3 { font-size: 11px; letter-spacing: 5px; text-transform: uppercase; border-bottom: 1px solid #ddd; padding-bottom: 15px; }
         .charter-box li { font-size: 11px; letter-spacing: 1px; color: #555; margin-bottom: 10px; list-style: none; }
-        .sub-list { margin-left: 15px; margin-top: 5px; opacity: 0.8; }
-        .sub-list li { font-size: 10px !important; margin-bottom: 5px !important; }
+        .sub-list { margin-left: 15px; margin-top: 10px; opacity: 0.9; }
+        .sub-list li { font-size: 10px !important; margin-bottom: 8px !important; color: #000; }
 
         .footer { padding: 50px; text-align: center; font-size: 9px; letter-spacing: 4px; opacity: 0.5; text-transform: uppercase; }
 
         #loader { position: fixed; inset: 0; background: #000; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s; }
-        .loader-k { font-size: 80px; font-weight: 900; color: var(--gold); }
         .fade-out { opacity: 0; pointer-events: none; }
 
-        @media (max-width: 768px) { .charter { grid-template-columns: 1fr; } .title { font-size: 26px; letter-spacing: 10px; } #cursor-outline { display: none; } body { cursor: auto; } }
+        @media (max-width: 768px) { .charter { grid-template-columns: 1fr; } .title { font-size: 24px; letter-spacing: 8px; } #cursor-outline { display: none; } body { cursor: auto; } }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="loader-k">K</div>
+        <div style="font-size: 80px; font-weight: 900; color: var(--gold);">K</div>
         <div style="color: #fff; letter-spacing: 8px; font-size: 10px; margin-top: 20px;">AUTHENTICATING ESTATE...</div>
     </div>
 
@@ -133,13 +129,11 @@
 
     <div id="drawer">
         <h2 style="font-size: 14px; letter-spacing: 4px; margin-bottom: 50px; text-transform: uppercase;">Official Registry</h2>
-        
         <div class="pay-box interactive" style="border-bottom: 2px solid #eee; padding-bottom: 20px;">
             <h4>Web3 Estate Payment</h4>
             <button id="connect-wallet-btn">Connect Metamask</button>
             <p id="wallet-status" style="font-size: 10px; margin-top: 10px; color: var(--gold); display: none;"></p>
         </div>
-
         <div class="pay-box interactive" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
             <h4>Metamask / ERC20</h4>
             <p>0x443792A4884e8...Aff1eb78E</p>
@@ -152,7 +146,6 @@
             <h4>USDT (TRC20)</h4>
             <p>TTapBkTqrDnzHbW...FmR8Ws6</p>
         </div>
-
         <button onclick="toggleDrawer()" style="background:none; border:none; border-bottom:1px solid #000; cursor:pointer; font-size:9px; letter-spacing:2px; margin-top:30px;">[ CLOSE ]</button>
     </div>
 
@@ -161,7 +154,7 @@
             <span class="label">Apex Visibility</span>
             <h2 class="title">The Grand Billboard</h2>
             <div class="price">INVESTMENT: $5,000</div>
-            <p class="desc">The crown of the archive. Only <span style="color:#000; font-weight:bold;">10 Iconic Banners</span> will ever be showcased at the absolute summit.</p>
+            <p class="desc">The crown of the archive. Only 10 Iconic Banners will ever be showcased at the absolute summit.</p>
             <a href="billboard_canvas.html" class="btn-enter interactive">View Showcase</a>
         </div>
     </section>
@@ -171,8 +164,18 @@
             <span class="label">Elite Tier</span>
             <h2 class="title">The Imperial 100</h2>
             <div class="price">ESTATE VALUE: $999</div>
-            <p class="desc">A sanctuary for global titans. Strictly limited to <span style="color:#000; font-weight:bold;">100 Crown Jewel Plots</span> with permanent heritage.</p>
+            <p class="desc">A sanctuary for global titans. Strictly limited to 100 Crown Jewel Plots with permanent heritage.</p>
             <a href="millionaire_canvas.html" class="btn-enter interactive">Enter Elite Estate</a>
+        </div>
+    </section>
+
+    <section class="snap-section">
+        <div class="reveal">
+            <span class="label">Creator Heritage</span>
+            <h2 class="title">Social Sovereignty</h2>
+            <div class="price">ACQUISITION: $199</div>
+            <p class="desc">Archiving the digital influence of the modern era. 300 Sovereign Plots reserved for top creators.</p>
+            <a href="social_canvas.html" class="btn-enter interactive">Claim Space</a>
         </div>
     </section>
 
@@ -181,15 +184,43 @@
             <span class="label">Digital Dynasty</span>
             <h2 class="title">Gaming Realm</h2>
             <div class="price">RANK VALUE: $149</div>
-            <p class="desc">Where legends are forged. A fixed supply of <span style="color:#000; font-weight:bold;">250 Sovereign Plots</span> reserved for the world's most iconic games.</p>
+            <p class="desc">Where legends are forged. A fixed supply of 250 Sovereign Plots reserved for iconic games.</p>
             <a href="gaming_canvas.html" class="btn-enter interactive">Enter Dynasty</a>
         </div>
     </section>
 
+    <section class="snap-section">
+        <div class="reveal">
+            <span class="label">Future Intelligence</span>
+            <h2 class="title">AI Pioneers</h2>
+            <div class="price">TECH VALUE: $179</div>
+            <p class="desc">The directory of Artificial Intelligence architects. Allocated 100 Pioneer Plots only.</p>
+            <a href="ai_canvas.html" class="btn-enter interactive">Explore AI</a>
+        </div>
+    </section>
+
+    <section class="snap-section">
+        <div class="reveal">
+            <span class="label">National Pride</span>
+            <h2 class="title">Nations Grid</h2>
+            <div class="price">HERITAGE VALUE: $99</div>
+            <p class="desc">Representing the world through its finest. 2 ambassadors from every nation. Total 200 Plots.</p>
+            <a href="nations_canvas.html" class="btn-enter interactive">Explore Nations</a>
+        </div>
+    </section>
+
+    <section class="snap-section">
+        <div class="reveal">
+            <span class="label">Eternal Memories</span>
+            <h2 class="title">Stars & Paradise</h2>
+            <div class="price">LEGACY VALUE: $59</div>
+            <p class="desc">Preserving the future and the loyal. Immortalized in 100 Eternal Plots.</p>
+            <a href="stars_canvas.html" class="btn-enter interactive">Archive Memory</a>
+        </div>
+    </section>
+
     <a href="https://wa.me/8801576940717" target="_blank" class="support-btn interactive">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-10.6 8.38 8.38 0 0 1 3.8.9L21 3z"></path>
-        </svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-10.6 8.38 8.38 0 0 1 3.8.9L21 3z"></path></svg>
     </a>
 
     <div class="charter reveal">
@@ -201,12 +232,12 @@
         <div class="charter-box">
             <h3>Acquisition Flow</h3>
             <li><b>01.</b> Secure payment via the <b>Official Registry</b> drawer.</li>
-            <li><b>02.</b> Forward assets and proof of transfer to WhatsApp Concierge:</li>
+            <li><b>02.</b> Forward assets to WhatsApp Concierge:</li>
             <div class="sub-list">
-                <li>• Payment Screenshot or Transaction ID (TXID).</li>
-                <li>• High-Resolution Brand Logo/Icon for the plot.</li>
-                <li>• Target URL (The link you want to attach to your plot).</li>
-                <li>• Preferred Plot Coordinates (If specifically requested).</li>
+                <li>• <b>Payment Proof:</b> Screenshot or Transaction ID (TXID).</li>
+                <li>• <b>Plot Assets:</b> High-resolution Brand Logo or Image.</li>
+                <li>• <b>Target URL:</b> The destination link for your plot.</li>
+                <li>• <b>Update Access:</b> Registered Email for future modifications.</li>
             </div>
         </div>
     </div>
@@ -223,31 +254,20 @@
         });
 
         function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
-        function copy(t) { navigator.clipboard.writeText(t); alert("Registry Address Copied."); }
+        function copy(t) { navigator.clipboard.writeText(t); alert("Address Copied."); }
 
-        // Metamask Connection Logic
         const connectBtn = document.getElementById('connect-wallet-btn');
         const statusTxt = document.getElementById('wallet-status');
-
-        connectBtn.addEventListener('click', async () => {
+        connectBtn.onclick = async () => {
             if (window.ethereum) {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    connectBtn.innerText = "Wallet Linked";
-                    statusTxt.style.display = "block";
-                    statusTxt.innerText = "Connected: " + accounts[0].substring(0, 8) + "...";
-                    alert("Metamask Linked to Archive.");
-                } catch (err) {
-                    alert("Connection Rejected.");
-                }
-            } else {
-                alert("Please install Metamask.");
-            }
-        });
-
-        window.onload = () => {
-            setTimeout(() => { document.getElementById('loader').classList.add('fade-out'); }, 1500);
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                connectBtn.innerText = "Linked";
+                statusTxt.style.display = "block";
+                statusTxt.innerText = "Connected: " + accounts[0].substring(0, 8) + "...";
+            } else { alert("Install Metamask."); }
         };
+
+        window.onload = () => { setTimeout(() => { document.getElementById('loader').classList.add('fade-out'); }, 1000); };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
