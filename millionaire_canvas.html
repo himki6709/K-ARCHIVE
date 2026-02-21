@@ -7,7 +7,6 @@
     
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics-compat.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -16,7 +15,7 @@
         :root { --gold: #FCD535; --black: #000000; --white: #ffffff; }
         body { margin: 0; padding: 0; background: var(--white); font-family: 'Times New Roman', serif; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
-        /* Top Navigation - Responsive */
+        /* Navigation */
         .top-nav {
             position: fixed; top: 0; left: 0; width: 100%; height: 70px;
             background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
@@ -27,7 +26,7 @@
         .nav-btn { font-size: 8px; letter-spacing: 1px; font-weight: bold; border-bottom: 1px solid #000; cursor: pointer; text-transform: uppercase; padding: 5px 0; }
         .back-home { text-decoration: none; color: #000; font-size: 8px; letter-spacing: 1px; border: 1px solid #000; padding: 6px 10px; }
 
-        /* Sidebar Drawer */
+        /* Drawer */
         #payment-drawer {
             position: fixed; top: 0; left: -100%; width: 100%; max-width: 320px; height: 100vh;
             background: var(--white); border-right: 1px solid #eee; z-index: 5000;
@@ -36,9 +35,9 @@
         #payment-drawer.open { left: 0; }
         .pay-item { margin-bottom: 25px; cursor: pointer; }
         .pay-item h4 { font-size: 9px; color: #888; margin-bottom: 5px; text-transform: uppercase; }
-        .pay-item p { font-size: 11px; word-break: break-all; margin: 0; border-bottom: 1px solid #eee; padding-bottom: 8px; font-weight: bold; }
+        .pay-item p { font-size: 11px; word-break: break-all; margin: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; font-weight: bold; }
 
-        /* Premium Title */
+        /* Title */
         .premium-title {
             font-size: clamp(28px, 8vw, 55px); 
             letter-spacing: clamp(5px, 2vw, 15px);
@@ -54,8 +53,8 @@
         }
         @keyframes shine { to { background-position: 200% center; } }
 
-        /* Canvas/Grid Section */
-        .canvas-wrapper { padding: 20px; width: 100%; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
+        /* Canvas Grid */
+        .canvas-wrapper { padding: 20px; width: 100%; display: flex; flex-direction: column; align-items: center; }
         .grid-container { 
             display: grid; 
             grid-template-columns: repeat(10, 120px); 
@@ -65,35 +64,25 @@
         .plot { 
             width: 120px; height: 120px; display: flex; flex-direction: column; 
             justify-content: center; align-items: center; font-size: 9px; transition: 0.3s;
-            background-size: cover; background-position: center; cursor: pointer;
-            border: 0.1px solid rgba(0,0,0,0.05);
+            background-size: cover; background-position: center; border: 0.5px solid #eee;
         }
-        .plot:hover { transform: scale(0.98); opacity: 0.8; }
         .plot b { font-size: 11px; margin-top: 5px; color: #000; }
+        .plot:nth-child(odd) { background-color: #ffffff; }
+        .plot:nth-child(even) { background-color: #fffdf0; }
 
-        /* Information Grid */
-        .info-grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 30px; width: 100%; max-width: 1100px; margin-top: 50px; text-align: left;
-            padding: 0 20px; box-sizing: border-box;
-        }
-        .info-box h3 { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid #000; padding-bottom: 8px; }
-        .info-box p { font-size: 10px; line-height: 1.7; color: #555; }
-
-        /* Modal & Popups */
+        /* Modal */
         #purchase-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); z-index: 5500; display: none; align-items: center; justify-content: center; }
         .modal-content { width: 90%; max-width: 350px; text-align: center; }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #000; outline: none; text-align: center; box-sizing: border-box; font-family: serif; }
-        .submit-btn { width: 100%; padding: 18px; background: #000; color: #fff; border: none; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; font-weight: bold; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #000; outline: none; text-align: center; box-sizing: border-box; }
+        .submit-btn { width: 100%; padding: 18px; background: #000; color: #fff; border: none; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; }
 
         #success-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; max-width: 350px; background: #000; color: #fff; padding: 30px; z-index: 6000; display: none; text-align: center; }
+        .support-btn { position: fixed; bottom: 30px; left: 30px; width: 50px; height: 50px; border: 1px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #fff; z-index: 2500; }
 
         @media (max-width: 768px) {
-            .grid-container { grid-template-columns: repeat(10, 75px); gap: 2px; }
+            .grid-container { grid-template-columns: repeat(10, 75px); }
             .plot { width: 75px; height: 75px; font-size: 7px; }
             .plot b { font-size: 8px; }
-            .top-nav { height: 60px; }
-            .nav-btn { font-size: 7px; }
         }
     </style>
 </head>
@@ -103,12 +92,13 @@
         <div class="action-group">
             <div class="nav-btn" onclick="toggleDrawer()">ACQUISITION</div>
             <div class="nav-btn" onclick="openPurchase()">BUY PLOT</div>
+            <div class="nav-btn" onclick="downloadMap()">DOWNLOAD MAP</div>
         </div>
         <a href="index.html" class="back-home">HOME</a>
     </header>
 
     <div id="payment-drawer">
-        <h2 style="font-size: 14px; letter-spacing: 2px; margin-bottom: 35px;">ACQUISITION CENTER</h2>
+        <h2 style="font-size: 14px; letter-spacing: 2px; margin-bottom: 30px;">ACQUISITION CENTER</h2>
         <div class="pay-item" onclick="copyVal('912221034')">
             <h4>Binance UID</h4>
             <p>912221034</p>
@@ -117,29 +107,17 @@
             <h4>USDT (TRC20)</h4>
             <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
         </div>
-        <button onclick="toggleDrawer()" style="background:none; border:none; border-bottom:1px solid #000; cursor:pointer; font-size:10px; margin-top:20px;">[ CLOSE ]</button>
+        <button onclick="toggleDrawer()" style="background:none; border:none; border-bottom:1px solid #000; cursor:pointer; font-size:10px;">[ CLOSE ]</button>
     </div>
 
     <div class="canvas-wrapper" id="capture-area">
         <h1 class="premium-title">Millionaires Club</h1>
-        <p style="font-size: 9px; letter-spacing: 4px; color: #888; margin-bottom: 40px; text-align: center;">ELITE ARCHIVE • 100 LIMITED PLOTS</p>
+        <p style="font-size: 9px; letter-spacing: 4px; color: #888; margin-bottom: 40px;">ELITE ARCHIVE • 100 LIMITED PLOTS</p>
 
         <div class="grid-container" id="main-grid"></div>
 
-        <div class="info-grid">
-            <div class="info-box">
-                <h3>Acquisition Steps</h3>
-                <p><b>01</b> Complete payment via Drawer.<br>
-                <b>02</b> Prepare assets (Logo, URL).<br>
-                <b>03</b> Submit to WhatsApp for sync.<br>
-                <b>04</b> Activation within 48 hours.</p>
-            </div>
-            <div class="info-box">
-                <h3>Concierge Policies</h3>
-                <p>• <b>Permanent:</b> Plot ownership is lifetime.<br>
-                • <b>Update Fee:</b> $9 for info change.<br>
-                • <b>Support:</b> 24/7 Global Access.</p>
-            </div>
+        <div class="canvas-footer" style="margin-top: 50px; font-size: 9px; color: #888; text-align: center; padding-bottom: 100px;">
+            <b>K ARCHIVE OWNER KAWSAR TM</b> | Millionaires Club © 2026 <b>K ARCHIVE</b>.
         </div>
     </div>
 
@@ -147,22 +125,22 @@
         <div class="modal-content">
             <h2 style="letter-spacing: 3px;">SECURE PLOT</h2>
             <input type="text" id="brandName" placeholder="YOUR BRAND NAME">
-            <input type="number" id="plotNumber" placeholder="PLOT # (1-100)">
+            <input type="number" id="plotNumber" placeholder="PLOT # (1-100)" oninput="if(this.value>100)this.value=100">
             <button class="submit-btn" onclick="processPurchase()">Confirm</button>
-            <p onclick="closePurchase()" style="cursor:pointer; font-size:10px; margin-top:15px; border-bottom: 1px solid #ccc; display: inline-block;">[ CANCEL ]</p>
+            <p onclick="closePurchase()" style="cursor:pointer; font-size:10px; margin-top:15px;">[ CANCEL ]</p>
         </div>
     </div>
 
     <div id="success-popup">
-        <h3 id="congrats-msg">ORDER PLACED!</h3>
-        <p style="font-size: 10px; margin-bottom: 20px;">Finalize with concierge on WhatsApp.</p>
-        <a id="wa-btn" href="#" target="_blank" style="background:#25D366; color:#fff; text-decoration:none; padding:10px 20px; border-radius:5px; font-weight:bold; font-size:12px; display:inline-block;">WHATSAPP NOW</a>
+        <h3 id="congrats-msg"></h3>
+        <p style="font-size: 10px;">Contact concierge to finalize your plot.</p>
+        <a id="wa-btn" href="#" target="_blank" style="color:#25D366; text-decoration:none; font-weight:bold; font-size:12px;">WHATSAPP NOW</a>
         <br><br>
         <button onclick="location.reload()" style="background:none; border:none; color:#fff; cursor:pointer; font-size:9px; border-bottom:1px solid #fff;">DISMISS</button>
     </div>
 
     <script>
-        // আপনার দেওয়া নতুন Firebase Config (The 5K Elite Legacy)
+        // আপনার দেওয়া নতুন Firebase Config (the-5k-elite-legacy)
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -170,21 +148,81 @@
             projectId: "the-5k-elite-legacy",
             storageBucket: "the-5k-elite-legacy.firebasestorage.app",
             messagingSenderId: "440824313752",
-            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded",
-            measurementId: "G-6KEYY60YGG"
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // UI Functions
+        // ক্যানভাস গ্রিড রেন্ডার এবং রিয়েল টাইম ডাটা ফেচিং
+        const grid = document.getElementById('main-grid');
+        function initGrid() {
+            grid.innerHTML = '';
+            for (let i = 1; i <= 100; i++) {
+                const plot = document.createElement('div');
+                plot.className = 'plot';
+                plot.id = `plot-${i}`;
+                
+                // ডাটাবেজ থেকে পিক্সেল ডাটা চেক করা
+                db.ref('millionaire_pixels/' + i).on('value', (snap) => {
+                    const data = snap.val();
+                    if(data) {
+                        plot.style.backgroundImage = `url('${data.image}')`;
+                        plot.innerHTML = ''; // ডাটা থাকলে টেক্সট মুছে ছবি দেখাবে
+                        plot.onclick = () => window.open(data.url, '_blank');
+                    } else {
+                        const price = Math.round(1000 - (i - 1) * 9.09);
+                        plot.innerHTML = `<span>#${String(i).padStart(3, '0')}</span><b>$${price}</b>`;
+                        plot.onclick = () => {
+                            document.getElementById('plotNumber').value = i;
+                            openPurchase();
+                        };
+                    }
+                });
+                grid.appendChild(plot);
+            }
+        }
+
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
-        function copyVal(t) { navigator.clipboard.writeText(t); alert("Copied to clipboard!"); }
+        function copyVal(t) { navigator.clipboard.writeText(t); alert("Copied!"); }
         function openPurchase() { document.getElementById('purchase-modal').style.display = 'flex'; }
         function closePurchase() { document.getElementById('purchase-modal').style.display = 'none'; }
-    </script>
 
-    <script src="millionaire-script.js"></script>
+        function processPurchase() {
+            const b = document.getElementById('brandName').value;
+            const p = document.getElementById('plotNumber').value;
+            if(!b || !p) return alert("Please enter brand name and plot number");
+
+            const price = Math.round(1000 - (p - 1) * 9.09);
+
+            // ডাটাবেজে অর্ডার পাঠানো (millionaire_orders পাথে)
+            db.ref('millionaire_orders/' + p).set({
+                brand: b,
+                plotNum: p,
+                price: price,
+                timestamp: Date.now()
+            }).then(() => {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                document.getElementById('purchase-modal').style.display = 'none';
+                document.getElementById('congrats-msg').innerText = "ORDER SUBMITTED: " + b.toUpperCase();
+                
+                const waMsg = encodeURIComponent(`Hello K Archive,\nI acquired Millionaire Plot #${p}.\nBrand: ${b}\nPrice: $${price}`);
+                document.getElementById('wa-btn').href = `https://wa.me/8801576940717?text=${waMsg}`;
+                document.getElementById('success-popup').style.display = 'block';
+            });
+        }
+
+        function downloadMap() {
+            const area = document.getElementById('capture-area');
+            html2canvas(area, { scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Millionaires_Club_Map.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        initGrid();
+    </script>
 </body>
 </html>
