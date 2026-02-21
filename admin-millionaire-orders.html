@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CEO ADMIN | MILLIONAIRE ORDERS</title>
+    <title>MASTER ADMIN | ORDERS</title>
     <style>
-        body { font-family: sans-serif; background: #0B0E11; color: #fff; padding: 20px; display: none; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0B0E11; color: #fff; padding: 20px; display: none; }
         .card { background: #1E2329; padding: 20px; margin-bottom: 20px; border-radius: 10px; border-left: 8px solid #FCD535; }
-        input { padding: 12px; width: 250px; margin-right: 10px; border: 1px solid #444; background: #0B0E11; color: #fff; border-radius: 4px; margin-bottom:10px; }
-        button { padding: 12px 25px; cursor: pointer; border-radius: 5px; border: none; font-weight: bold; }
+        input { padding: 12px; width: 250px; margin-right: 10px; border: 1px solid #444; background: #0B0E11; color: #fff; border-radius: 4px; margin-bottom: 10px; }
+        button { padding: 12px 25px; cursor: pointer; border-radius: 5px; border: none; font-weight: bold; text-transform: uppercase; }
         h1 { color: #FCD535; }
     </style>
 </head>
 <body>
     <script>
-        if(prompt("Access Password:") === "zoomlink34@gmail.com") { 
-            document.body.style.display = "block"; 
-        } else { 
-            window.location.href = "index.html"; 
+        if(prompt("Master Access Password:") === "zoomlink34@gmail.com") {
+            document.body.style.display = "block";
+        } else {
+            window.location.href = "index.html";
         }
     </script>
 
     <h1>PENDING MILLIONAIRE ORDERS</h1>
-    <div id="order-list">Loading orders...</div>
+    <div id="order-list">Connecting to Firebase...</div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -39,44 +39,44 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function loadOrders() {
-            db.ref('millionaire_orders').on('value', s => {
-                const list = document.getElementById('order-list'); 
-                list.innerHTML = "";
-                const data = s.val(); 
-                if(!data) return list.innerHTML = "No pending orders.";
-                
-                Object.keys(data).forEach(id => {
-                    list.innerHTML += `<div class="card">
-                        <b>PLOT #${data[id].plotNum}</b> | BRAND: ${data[id].brand} <br><br>
-                        <input type="text" id="img_${id}" placeholder="Logo URL">
-                        <input type="text" id="web_${id}" placeholder="Website URL">
-                        <button onclick="approve('${id}', '${data[id].brand}', '${data[id].plotNum}')" style="background:#2ebd85; color:white;">APPROVE</button>
-                        <button onclick="reject('${id}')" style="background:red; color:white; margin-left:10px;">DELETE</button>
-                    </div>`;
-                });
+        // অর্ডার লোড করা
+        db.ref('millionaire_orders').on('value', s => {
+            const list = document.getElementById('order-list'); 
+            list.innerHTML = "";
+            const data = s.val(); 
+            if(!data) return list.innerHTML = "No pending orders found.";
+            
+            Object.keys(data).forEach(id => {
+                list.innerHTML += `<div class="card">
+                    <b>PLOT #${data[id].plotNum}</b> | BRAND: ${data[id].brand} <br><br>
+                    <input type="text" id="img_${id}" placeholder="Enter Logo URL (https://...)">
+                    <input type="text" id="web_${id}" placeholder="Enter Website URL (https://...)"> <br>
+                    <button onclick="approve('${id}', '${data[id].brand}', '${data[id].plotNum}')" style="background:#2ebd85; color:white;">APPROVE & GO LIVE</button>
+                    <button onclick="reject('${id}')" style="background:#f6465d; color:white; margin-left:10px;">REJECT</button>
+                </div>`;
             });
-        }
+        });
 
-        function approve(orderId, name, plotNum) {
+        function approve(orderId, name, pNum) {
             const img = document.getElementById('img_'+orderId).value;
             const web = document.getElementById('web_'+orderId).value;
-            if(!img) return alert("Logo URL required!");
+            if(!img) return alert("Logo URL is required to go live!");
 
-            // লাইভ ক্যানভাসে পাঠানো
-            db.ref('millionaire_pixels/' + plotNum).set({
-                name: name, image: img, url: web || "#"
+            db.ref('millionaire_pixels/' + pNum).set({
+                name: name,
+                image: img,
+                url: web || "#"
             }).then(() => {
                 db.ref('millionaire_orders/' + orderId).remove();
-                alert("Plot #" + plotNum + " Approved!");
+                alert("Plot #" + pNum + " is now LIVE on the homepage!");
             });
         }
 
         function reject(id) {
-            if(confirm("Delete this order?")) db.ref('millionaire_orders/'+id).remove();
+            if(confirm("Are you sure you want to delete this order?")) {
+                db.ref('millionaire_orders/' + id).remove();
+            }
         }
-
-        loadOrders();
     </script>
 </body>
 </html>
