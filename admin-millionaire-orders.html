@@ -1,27 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MILLIONAIRE ADMIN | PENDING ORDERS</title>
+    <title>CEO ADMIN | MILLIONAIRE ORDERS</title>
     <style>
         body { font-family: sans-serif; background: #0B0E11; color: #fff; padding: 20px; display: none; }
         .card { background: #1E2329; padding: 20px; margin-bottom: 20px; border-radius: 10px; border-left: 8px solid #FCD535; }
-        input { padding: 12px; width: 250px; margin-right: 10px; border: 1px solid #444; background: #0B0E11; color: #fff; border-radius: 4px; margin-bottom: 10px; }
+        input { padding: 12px; width: 250px; margin-right: 10px; border: 1px solid #444; background: #0B0E11; color: #fff; border-radius: 4px; margin-bottom:10px; }
         button { padding: 12px 25px; cursor: pointer; border-radius: 5px; border: none; font-weight: bold; }
         h1 { color: #FCD535; }
     </style>
 </head>
 <body>
     <script>
-        const accessPass = prompt("Access Password:");
-        if(accessPass === "zoomlink34@gmail.com") { 
+        if(prompt("Access Password:") === "zoomlink34@gmail.com") { 
             document.body.style.display = "block"; 
         } else { 
-            alert("Wrong Password!");
             window.location.href = "index.html"; 
         }
     </script>
 
-    <h1>MILLIONAIRE PENDING ORDERS</h1>
+    <h1>PENDING MILLIONAIRE ORDERS</h1>
     <div id="order-list">Loading orders...</div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -41,7 +39,6 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // অর্ডার লোড করার ফাংশন
         function loadOrders() {
             db.ref('millionaire_orders').on('value', s => {
                 const list = document.getElementById('order-list'); 
@@ -53,34 +50,30 @@
                     list.innerHTML += `<div class="card">
                         <b>PLOT #${data[id].plotNum}</b> | BRAND: ${data[id].brand} <br><br>
                         <input type="text" id="img_${id}" placeholder="Logo URL">
-                        <input type="text" id="web_${id}" placeholder="Website URL"> <br>
-                        <button onclick="approve('${id}', '${data[id].brand}', '${data[id].plotNum}')" style="background:#2ebd85; color:white;">APPROVE LIVE</button>
+                        <input type="text" id="web_${id}" placeholder="Website URL">
+                        <button onclick="approve('${id}', '${data[id].brand}', '${data[id].plotNum}')" style="background:#2ebd85; color:white;">APPROVE</button>
                         <button onclick="reject('${id}')" style="background:red; color:white; margin-left:10px;">DELETE</button>
                     </div>`;
                 });
             });
         }
 
-        // এপ্রুভ করলে লাইভ ক্যানভাসে চলে যাবে
         function approve(orderId, name, plotNum) {
             const img = document.getElementById('img_'+orderId).value;
             const web = document.getElementById('web_'+orderId).value;
-            if(!img) return alert("Please provide Logo URL!");
+            if(!img) return alert("Logo URL required!");
 
+            // লাইভ ক্যানভাসে পাঠানো
             db.ref('millionaire_pixels/' + plotNum).set({
-                name: name,
-                image: img,
-                url: web || "#"
+                name: name, image: img, url: web || "#"
             }).then(() => {
                 db.ref('millionaire_orders/' + orderId).remove();
-                alert("Plot #" + plotNum + " is now LIVE!");
+                alert("Plot #" + plotNum + " Approved!");
             });
         }
 
         function reject(id) {
-            if(confirm("Delete this request?")) {
-                db.ref('millionaire_orders/' + id).remove();
-            }
+            if(confirm("Delete this order?")) db.ref('millionaire_orders/'+id).remove();
         }
 
         loadOrders();
