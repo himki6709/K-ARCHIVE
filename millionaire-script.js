@@ -1,8 +1,4 @@
-/**
- * K ARCHIVE - MILLIONAIRE CLUB ENGINE
- * Updated with New Firebase Config
- */
-
+// New Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
     authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
@@ -13,25 +9,25 @@ const firebaseConfig = {
     appId: "1:895107568682:web:d48003f71701005f3d5f53"
 };
 
-// Initialize Firebase if not already initialized
+// Initialize Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const db = firebase.database();
-const grid = document.getElementById('main-grid');
 
+// গ্রিড জেনারেশন
 function initMillionaireGrid() {
+    const grid = document.getElementById('main-grid');
     if(!grid) return;
     grid.innerHTML = ''; 
 
     for (let i = 1; i <= 100; i++) {
         const plot = document.createElement('div');
         plot.className = 'plot';
-        plot.id = `plot-${i}`;
         const initialPrice = Math.round(1000 - (i - 1) * 9.09);
         plot.innerHTML = `<span>#${String(i).padStart(3, '0')}</span><b>$${initialPrice}</b>`;
 
-        // লাইভ ডাটা লোড (millionaire_pixels)
+        // লাইভ ডাটা চেক (Path: millionaire_pixels)
         db.ref('millionaire_pixels/' + i).on('value', (snap) => {
             const data = snap.val();
             if (data) {
@@ -46,7 +42,7 @@ function initMillionaireGrid() {
             } else {
                 plot.onclick = () => { 
                     document.getElementById('plotNumber').value = i;
-                    openPurchase(); 
+                    if(typeof openPurchase === 'function') openPurchase(); 
                 };
             }
         });
@@ -54,28 +50,33 @@ function initMillionaireGrid() {
     }
 }
 
-// কাস্টমার অর্ডার সাবমিট করলে এখানে আসবে
+// অর্ডার সাবমিট ফাংশন
 window.processPurchase = function() {
     const brand = document.getElementById('brandName').value;
     const plotNum = document.getElementById('plotNumber').value;
     
-    if(!brand || !plotNum) return alert("Please fill all details!");
+    if(!brand || !plotNum) {
+        alert("Please fill all details!");
+        return;
+    }
 
-    // ডাটাবেজে অর্ডার পাঠানো (millionaire_orders)
+    // অর্ডার ডাটাবেজে পাঠানো (Path: millionaire_orders)
     db.ref('millionaire_orders').push({
         brand: brand,
         plotNum: plotNum,
-        time: Date.now()
+        time: firebase.database.ServerValue.TIMESTAMP
     }).then(() => {
-        // এনিমেশন এবং মেসেজ
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        if(typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         document.getElementById('purchase-modal').style.display = 'none';
         document.getElementById('success-popup').style.display = 'block';
         
         const price = Math.round(1000 - (plotNum - 1) * 9.09);
         const waMsg = encodeURIComponent(`Hello, I want Plot #${plotNum}.\nBrand: ${brand}\nPrice: $${price}`);
         document.getElementById('wa-btn').href = `https://wa.me/8801576940717?text=${waMsg}`;
-    }).catch(e => alert("Error: " + e.message));
+    }).catch(e => {
+        console.error(e);
+        alert("Rules Error: ডাটাবেজ অনুমতি দিচ্ছে না। ফায়ারবেজ রুলস চেক করুন।");
+    });
 };
 
 document.addEventListener('DOMContentLoaded', initMillionaireGrid);
