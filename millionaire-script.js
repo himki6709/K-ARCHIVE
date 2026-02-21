@@ -1,5 +1,4 @@
-// আপনার বর্তমান সক্রিয় Firebase Config
-const firebaseConfig = {
+aconst firebaseConfig = {
     apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
     authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
     databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
@@ -9,61 +8,69 @@ const firebaseConfig = {
     appId: "1:895107568682:web:d48003f71701005f3d5f53"
 };
 
-// Initialize Firebase
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
+firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// গ্রিড লোড করার ফাংশন
-function initMillionaireGrid() {
-    const grid = document.getElementById('main-grid');
-    if(!grid) return;
-    grid.innerHTML = ''; 
+const cv = document.getElementById('mainCanvas'), ctx = cv.getContext('2d');
+const tooltip = document.getElementById('legacy-tooltip');
+const blockSize = 30; const cols = 100; const rows = 200; 
+cv.width = cols * blockSize; cv.height = rows * blockSize;
 
-    for (let i = 1; i <= 100; i++) {
-        const plot = document.createElement('div');
-        plot.className = 'plot';
-        
-        // লাইভ পিক্সেল ডাটা চেক
-        db.ref('millionaire_pixels/' + i).on('value', (snap) => {
-            const data = snap.val();
-            if (data) {
-                plot.style.backgroundImage = `url('${data.image}')`;
-                plot.style.backgroundSize = 'cover';
-                plot.onclick = () => window.open(data.url || "#", '_blank');
+let pixels = {};
+const imgCache = {};
+
+// ম্যাপ রেন্ডার করা
+function render() {
+    ctx.fillStyle = "#1E2329"; // ব্যাকগ্রাউন্ড কালার
+    ctx.fillRect(0, 0, cv.width, cv.height);
+
+    Object.values(pixels).forEach(p => {
+        const id = parseInt(p.plotID) - 1;
+        const x = (id % cols) * blockSize;
+        const y = Math.floor(id / cols) * blockSize;
+
+        if (p.imageUrl) {
+            if (imgCache[p.imageUrl]) {
+                ctx.drawImage(imgCache[p.imageUrl], x, y, blockSize, blockSize);
             } else {
-                plot.onclick = () => {
-                    document.getElementById('plotNumber').value = i;
-                    openPurchase(); // পপআপ ওপেন হবে
+                const img = new Image();
+                img.src = p.imageUrl;
+                img.onload = () => {
+                    imgCache[p.imageUrl] = img;
+                    ctx.drawImage(img, x, y, blockSize, blockSize);
                 };
             }
-        });
-        grid.appendChild(plot);
-    }
+        }
+    });
 }
 
-// কাস্টমার কনফার্ম করলে অর্ডার সাবমিট হবে
-window.processPurchase = function() {
-    const brand = document.getElementById('brandName').value;
-    const plotNum = document.getElementById('plotNumber').value;
+// ডাটাবেজ থেকে পিক্সেল ডাটা আনা
+db.ref('pixels').on('value', s => {
+    pixels = s.val() || {};
+    render();
+    document.getElementById('sold-count').innerText = Object.keys(pixels).length;
+    document.getElementById('rem-count').innerText = 20000 - Object.keys(pixels).length;
+});
+
+// টুলটিপ লজিক
+cv.addEventListener('mousemove', (e) => {
+    const rect = cv.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / (rect.width / cv.width);
+    const y = (e.clientY - rect.top) / (rect.height / cv.height);
+    let found = false;
     
-    if(!brand || !plotNum) return alert("সব তথ্য পূরণ করুন!");
-
-    // ডাটাবেজে অর্ডার পাঠানো (Path: millionaire_orders)
-    db.ref('millionaire_orders/' + plotNum).set({
-        brand: brand,
-        plotNum: plotNum,
-        time: Date.now()
-    }).then(() => {
-        confetti({ particleCount: 100, spread: 70 });
-        document.getElementById('purchase-modal').style.display = 'none';
-        document.getElementById('success-popup').style.display = 'block';
+    Object.values(pixels).forEach(p => {
+        const id = parseInt(p.plotID) - 1;
+        const px = (id % cols) * blockSize; 
+        const py = Math.floor(id / cols) * blockSize;
         
-        // হোয়াটসঅ্যাপ লিঙ্ক জেনারেট
-        const waMsg = encodeURIComponent(`Plot #${plotNum} Reserve করেছি। নাম: ${brand}`);
-        document.getElementById('wa-btn').href = `https://wa.me/8801576940717?text=${waMsg}`;
-    }).catch(e => alert("Error: " + e.message));
-};
-
-document.addEventListener('DOMContentLoaded', initMillionaireGrid);
+        if (x >= px && x <= px + blockSize && y >= py && y <= py + blockSize) {
+            tooltip.style.display = 'block';
+            tooltip.style.left = (e.pageX + 15) + 'px'; 
+            tooltip.style.top = (e.pageY + 15) + 'px';
+            tooltip.innerHTML = `<strong>${p.name}</strong><br>Plot #${p.plotID}`;
+            cv.style.cursor = 'pointer'; found = true;
+        }
+    });
+    if (!found) { tooltip.style.display = 'none'; cv.style.cursor = 'default'; }
+});
