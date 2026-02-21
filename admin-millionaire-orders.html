@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MILLIONAIRE ADMIN | PENDING ORDERS</title>
+    <style>
+        body { font-family: sans-serif; background: #0B0E11; color: #fff; padding: 20px; display: none; }
+        .card { background: #1E2329; padding: 20px; margin-bottom: 20px; border-radius: 10px; border-left: 8px solid #FCD535; }
+        input { padding: 12px; width: 250px; margin-right: 10px; border: 1px solid #444; background: #0B0E11; color: #fff; border-radius: 4px; }
+        button { padding: 12px 25px; cursor: pointer; border-radius: 5px; border: none; font-weight: bold; }
+        h1 { color: #FCD535; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+    <script>
+        const accessPass = prompt("Access Password:");
+        if(accessPass === "zoomlink34@gmail.com") { 
+            document.body.style.display = "block"; 
+        } else { 
+            alert("ভুল পাসওয়ার্ড!");
+            window.location.href = "index.html"; 
+        }
+    </script>
+
+    <h1>MILLIONAIRE PENDING ORDERS</h1>
+    <div id="order-list">Loading orders...</div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
+            authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
+            databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
+            projectId: "milliondollarhomepage2-71ba3",
+            storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
+            messagingSenderId: "895107568682",
+            appId: "1:895107568682:web:d48003f71701005f3d5f53"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function loadOrders() {
+            // Millionaire Specific Path
+            db.ref('millionaire_orders').on('value', s => {
+                const list = document.getElementById('order-list'); 
+                list.innerHTML = "";
+                const data = s.val(); 
+                if(!data) return list.innerHTML = "No pending millionaire orders.";
+                
+                Object.keys(data).forEach(id => {
+                    list.innerHTML += `<div class="card">
+                        <b>PLOT #${data[id].plotNum}</b> | BRAND: ${data[id].brand} <br><br>
+                        <input type="text" id="img_${id}" placeholder="Logo URL (Firebase/External)">
+                        <input type="text" id="web_${id}" placeholder="Website URL">
+                        <button onclick="approve('${id}', '${data[id].brand}', '${data[id].plotNum}')" style="background:#2ebd85; color:white;">APPROVE LIVE</button>
+                        <button onclick="reject('${id}')" style="background:red; color:white; margin-left:10px;">DELETE</button>
+                    </div>`;
+                });
+            });
+        }
+
+        function approve(orderId, name, plotNum) {
+            const img = document.getElementById('img_'+orderId).value;
+            const web = document.getElementById('web_'+orderId).value;
+            if(!img) return alert("Logo URL missing!");
+
+            // Move to Millionaire Pixels Path
+            db.ref('millionaire_pixels/' + plotNum).set({
+                name: name,
+                image: img,
+                url: web || "#",
+                plotId: plotNum
+            }).then(() => {
+                db.ref('millionaire_orders/' + orderId).remove();
+                alert("Plot #" + plotNum + " is now Live!");
+            });
+        }
+
+        function reject(id) {
+            if(confirm("Delete this request?")) {
+                db.ref('millionaire_orders/' + id).remove();
+            }
+        }
+
+        loadOrders();
+    </script>
+</body>
+</html>
