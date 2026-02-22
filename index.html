@@ -102,13 +102,19 @@
         .btn-enter { padding: 15px 45px; border: 0.5px solid #000; text-decoration: none; color: #000; font-size: 9px; letter-spacing: 5px; text-transform: uppercase; transition: 0.4s; display: inline-block; }
         .btn-enter:hover { background: #000; color: #fff; }
 
+        /* Floating Social Group */
+        .social-group {
+            position: fixed; bottom: 40px; left: 40px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
         .support-btn {
             display: flex; align-items: center; justify-content: center; background: #fff; 
             border: 1px solid #000; width: 50px; height: 50px; border-radius: 50%; 
-            position: fixed; bottom: 40px; left: 40px; z-index: 9999;
+            transition: 0.4s;
         }
+        .support-btn:hover { background: #000; color: #fff; }
 
-        /* Large Charter & Flow Section */
         .charter { background: #fafafa; padding: 120px 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; scroll-snap-align: end; }
         .charter-box h3 { font-size: 18px; letter-spacing: 6px; text-transform: uppercase; border-bottom: 2px solid #ddd; padding-bottom: 20px; margin-bottom: 30px; font-weight: 100; }
         .charter-box li { font-size: 16px; letter-spacing: 1px; color: #333; margin-bottom: 18px; list-style: none; line-height: 1.6; }
@@ -245,9 +251,16 @@
         </div>
     </section>
 
-    <a href="https://wa.me/8801576940717" target="_blank" class="support-btn interactive">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-10.6 8.38 8.38 0 0 1 3.8.9L21 3z"></path></svg>
-    </a>
+    <div class="social-group">
+        <a href="https://x.com/kawsar6700" target="_blank" class="support-btn interactive" title="Founder Twitter">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+            </svg>
+        </a>
+        <a href="https://wa.me/8801576940717" target="_blank" class="support-btn interactive" title="Contact Support">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-10.6 8.38 8.38 0 0 1 3.8.9L21 3z"></path></svg>
+        </a>
+    </div>
 
     <div class="charter reveal">
         <div class="charter-box">
@@ -282,7 +295,6 @@
         function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
         function copy(t) { navigator.clipboard.writeText(t); alert("Registry Address Copied."); }
 
-        // Metamask Connection (Updated to redirect if not found)
         const connectBtn = document.getElementById('connect-wallet-btn');
         const statusTxt = document.getElementById('wallet-status');
         connectBtn.onclick = async () => {
@@ -299,7 +311,6 @@
             }
         };
 
-        // Phantom Connection
         const phantomBtn = document.getElementById('connect-phantom-btn');
         phantomBtn.onclick = async () => {
             if (window.solana && window.solana.isPhantom) {
