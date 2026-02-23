@@ -7,6 +7,24 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        window.firebaseDB = db;
+    </script>
+
     <style>
         :root { 
             --bg-dark: #070a08; 
@@ -21,23 +39,21 @@
         
         body { 
             margin: 0; padding: 0; background: var(--bg-dark); color: var(--white); 
-            font-family: 'Georgia', serif; overflow-x: hidden; 
-            /* মাউস পয়েন্টার হাইড করা হয়েছে কাস্টম পয়েন্টারের জন্য */
-            cursor: none; 
+            font-family: 'Georgia', serif; overflow-x: hidden; cursor: none; 
         }
 
-        /* 11,100 Names Press-Wall Watermark */
+        /* 11,100 Names Press-Wall Watermark - Full Coverage */
         .ark-press-wall {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; opacity: 0.18; pointer-events: none;
             display: flex; flex-wrap: wrap; justify-content: space-around;
-            padding: 10px; overflow: hidden;
+            padding: 10px; overflow: hidden; align-content: flex-start;
             font-size: 10px; font-weight: bold; text-transform: uppercase;
             letter-spacing: 2px; color: var(--gold);
         }
         .ark-press-wall span { margin: 12px; transform: rotate(-12deg); text-shadow: 0 0 5px var(--gold-glow); }
 
-        /* Optimized Custom Cursor (Zero Lag) */
+        /* Smooth Mouse Pointer */
         #cursor-outline { 
             position: fixed; width: 15px; height: 15px; border: 1.5px solid var(--gold); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
@@ -46,7 +62,7 @@
             will-change: transform;
         }
 
-        /* Nav Bar */
+        /* Premium Nav Bar */
         .nav-bar {
             position: fixed; top: 0; width: 100%; height: 160px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -64,9 +80,9 @@
             padding: 10px 22px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
             border: 1px solid var(--gold-glow); cursor: pointer; background: transparent; color: var(--gold); transition: 0.4s; font-weight: bold;
         }
-        .wallet-btn:hover { background: var(--gold); color: var(--bg-dark); }
+        .wallet-btn.connected { background: var(--gold); color: #000; box-shadow: 0 0 15px var(--gold); }
 
-        /* Sections */
+        /* Main Sections */
         .snap-section { 
             height: 100vh; width: 100%; scroll-snap-align: start; 
             display: flex; flex-direction: column; justify-content: center; 
@@ -79,6 +95,7 @@
 
         .tier-label { font-size: 11px; letter-spacing: 12px; color: var(--gold); text-transform: uppercase; margin-bottom: 25px; display: block; }
         .tier-title { font-size: 55px; font-weight: 100; letter-spacing: 18px; text-transform: uppercase; margin-bottom: 25px; color: #fff; }
+        .tier-stats { font-size: 14px; font-weight: bold; letter-spacing: 4px; margin-bottom: 30px; color: var(--gold); }
         .tier-desc { font-size: 15px; color: #bbb; line-height: 2; letter-spacing: 2px; margin-bottom: 50px; padding: 0 40px; }
 
         .cta-gold { 
@@ -88,7 +105,7 @@
         }
         .cta-gold:hover { background: var(--gold); color: var(--bg-dark); }
 
-        /* Social Icons */
+        /* Sidebar Social */
         .social-dock { position: fixed; bottom: 50px; left: 50px; z-index: 5000; display: flex; flex-direction: column; gap: 20px; }
         .dock-link { 
             width: 55px; height: 55px; border: 1px solid var(--gold); border-radius: 50%; 
@@ -97,7 +114,7 @@
         }
         .dock-link:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--gold); background: var(--gold); color: #000; }
 
-        /* Drawer */
+        /* Drawer Registry */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 420px; height: 100vh;
             background: #050706; border-left: 2px solid var(--gold); z-index: 9999;
@@ -108,7 +125,7 @@
         .pay-item { padding: 25px 0; border-bottom: 1px solid var(--gold-glow); cursor: pointer; transition: 0.3s; }
         .pay-item:hover { background: rgba(212, 175, 55, 0.05); }
         .pay-item h5 { color: var(--gold); font-size: 9px; letter-spacing: 3px; margin: 0 0 8px 0; text-transform: uppercase; }
-        .pay-item p { margin: 0; font-size: 12px; font-weight: bold; word-break: break-all; opacity: 0.9; }
+        .pay-item p { margin: 0; font-size: 12px; font-weight: bold; word-break: break-all; }
 
         #loader { position: fixed; inset: 0; background: #000; z-index: 100000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s; }
         .fade-out { opacity: 0; pointer-events: none; }
@@ -154,9 +171,9 @@
             <p>912221034</p>
         </div>
 
-        <div class="pay-item interactive" onclick="copyAddress('Binance USDT Address Here')">
+        <div class="pay-item interactive" onclick="copyAddress('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
             <h5>Binance USDT (BEP20)</h5>
-            <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
+            <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
         </div>
 
         <button onclick="toggleDrawer()" style="margin-top: 40px; background: none; border: 1px solid var(--gold); color: var(--gold); padding: 12px 40px; cursor: pointer; letter-spacing: 3px; font-size: 10px;">CLOSE</button>
@@ -164,27 +181,30 @@
 
     <section class="snap-section">
         <div class="tier-card active">
-            <span class="tier-label">Genesis Tier</span>
+            <span class="tier-label">Level 01</span>
             <h2 class="tier-title">Genesis Pillar</h2>
-            <p class="tier-desc">Reserved for the 100 most critically endangered species. Permanent heritage for elite guardians.</p>
+            <div class="tier-stats">100 SUPREME PLOTS | $99 STARTING</div>
+            <p class="tier-desc">The elite summit. Dedicated to the 100 most critically endangered spirits of our planet.</p>
             <a href="genesis_apex.html" class="cta-gold interactive">Enter Summit</a>
         </div>
     </section>
 
     <section class="snap-section">
         <div class="tier-card">
-            <span class="tier-label">Elite Grid</span>
+            <span class="tier-label">Level 02</span>
             <h2 class="tier-title">Heritage Grid</h2>
-            <p class="tier-desc">1,000 unique digital signatures bridging biological conservation with blockchain technology.</p>
+            <div class="tier-stats">1,000 ELITE PLOTS | $89 STARTING</div>
+            <p class="tier-desc">A premium grid for the world's most influential creators and conservationists.</p>
             <a href="heritage_core.html" class="cta-gold interactive">Explore Heritage</a>
         </div>
     </section>
 
     <section class="snap-section">
         <div class="tier-card">
-            <span class="tier-label">Foundation</span>
+            <span class="tier-label">Level 03</span>
             <h2 class="tier-title">Global Horizon</h2>
-            <p class="tier-desc">10,000 foundational plots for the global community to join the mission of digital preservation.</p>
+            <div class="tier-stats">10,000 CITIZEN PLOTS | $39 STARTING</div>
+            <p class="tier-desc">The foundation of the Ark. Open to the global community for digital preservation.</p>
             <a href="global_horizon.html" class="cta-gold interactive">Join Horizon</a>
         </div>
     </section>
@@ -195,58 +215,80 @@
     </div>
 
     <script>
-        // 11,100 Names Dynamic Press-Wall
-        const speciesList = ["Javan Rhino", "Amur Leopard", "Bengal Tiger", "Mountain Gorilla", "Saola", "Vaquita", "Kakapo", "Red Panda", "Sumatran Rhino", "Blue Whale", "Snow Leopard", "African Elephant", "Pangolin", "Orangutan", "Black Rhino", "Polar Bear", "Cheetah", "African Lion", "Narwhal", "Red Wolf", "Galapagos Tortoise"];
+        // --- 11,100 Names Generation Logic ---
+        const species = ["Javan Rhino", "Amur Leopard", "Bengal Tiger", "Mountain Gorilla", "Saola", "Vaquita", "Kakapo", "Red Panda", "Sumatran Rhino", "Blue Whale", "Snow Leopard", "African Elephant", "Pangolin", "Orangutan", "Black Rhino", "Polar Bear", "Cheetah", "African Lion", "Narwhal", "Red Wolf", "Galapagos Tortoise"];
         const wall = document.getElementById('ark-press-wall');
-        for (let i = 0; i < 900; i++) {
+        for (let i = 0; i < 1100; i++) {
             const span = document.createElement('span');
-            span.innerText = speciesList[Math.floor(Math.random() * speciesList.length)];
+            span.innerText = species[i % species.length];
             wall.appendChild(span);
         }
 
-        // SMOOTH CURSOR (Optimized)
+        // --- Optimized Smooth Mouse Pointer ---
         const outline = document.getElementById('cursor-outline');
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        function animateCursor() {
-            // Lerp logic for smooth movement
-            cursorX += (mouseX - cursorX) * 0.2;
-            cursorY += (mouseY - cursorY) * 0.2;
-            outline.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
-            requestAnimationFrame(animateCursor);
+        let mX = 0, mY = 0, cX = 0, cY = 0;
+        document.addEventListener('mousemove', (e) => { mX = e.clientX; mY = e.clientY; });
+        function tick() {
+            cX += (mX - cX) * 0.15; cY += (mY - cY) * 0.15;
+            outline.style.transform = `translate(${cX}px, ${cY}px) translate(-50%, -50%)`;
+            requestAnimationFrame(tick);
         }
-        animateCursor();
+        tick();
 
-        function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
-        function copyAddress(text) { navigator.clipboard.writeText(text); alert("Address Copied: " + text); }
+        // --- Wallet Auto-Connect Logic ---
+        async function checkWallets() {
+            if (window.ethereum) {
+                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                if (accounts.length > 0) {
+                    const btn = document.getElementById('mm-connect');
+                    btn.innerText = "LINKED: " + accounts[0].substring(0, 6);
+                    btn.classList.add('connected');
+                }
+            }
+            if (window.solana && window.solana.isPhantom) {
+                const resp = await window.solana.connect({ onlyIfTrusted: true }).catch(() => null);
+                if (resp) {
+                    const btn = document.getElementById('ph-connect');
+                    btn.innerText = "LINKED: " + resp.publicKey.toString().substring(0, 6);
+                    btn.classList.add('connected');
+                }
+            }
+        }
 
-        // Wallet Logic
         document.getElementById('mm-connect').onclick = async function() {
             if (window.ethereum) {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                 this.innerText = "LINKED: " + accounts[0].substring(0, 6);
-            }
+                this.classList.add('connected');
+            } else { alert("Please Install Metamask"); }
         };
+
         document.getElementById('ph-connect').onclick = async function() {
             if (window.solana) {
                 const resp = await window.solana.connect();
                 this.innerText = "LINKED: " + resp.publicKey.toString().substring(0, 6);
-            }
+                this.classList.add('connected');
+            } else { alert("Please Install Phantom Wallet"); }
         };
 
+        // UI Helpers
+        function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
+        function copyAddress(t) { 
+            navigator.clipboard.writeText(t); 
+            alert("Registry Address Copied: " + t); 
+        }
+
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
         }, { threshold: 0.3 });
-        document.querySelectorAll('.tier-card').forEach(card => observer.observe(card));
+        document.querySelectorAll('.tier-card').forEach(c => observer.observe(c));
 
-        window.onload = () => { setTimeout(() => document.getElementById('loader').classList.add('fade-out'), 1000); };
+        window.onload = () => { 
+            checkWallets();
+            setTimeout(() => document.getElementById('loader').classList.add('fade-out'), 1000); 
+        };
 
+        // Hover Effect
         document.querySelectorAll('.interactive').forEach(el => {
             el.onmouseenter = () => { outline.style.width = '45px'; outline.style.height = '45px'; outline.style.background = 'var(--gold-glow)'; };
             el.onmouseleave = () => { outline.style.width = '15px'; outline.style.height = '15px'; outline.style.background = 'transparent'; };
