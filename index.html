@@ -21,24 +21,29 @@
         
         body { 
             margin: 0; padding: 0; background: var(--bg-dark); color: var(--white); 
-            font-family: 'Georgia', serif; overflow-x: hidden; cursor: none; 
+            font-family: 'Georgia', serif; overflow-x: hidden; 
+            /* মাউস পয়েন্টার হাইড করা হয়েছে কাস্টম পয়েন্টারের জন্য */
+            cursor: none; 
         }
 
-        /* 11,100 Names Press-Wall */
+        /* 11,100 Names Press-Wall Watermark */
         .ark-press-wall {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; opacity: 0.2; pointer-events: none;
+            z-index: -1; opacity: 0.18; pointer-events: none;
             display: flex; flex-wrap: wrap; justify-content: space-around;
             padding: 10px; overflow: hidden;
-            font-size: 11px; font-weight: bold; text-transform: uppercase;
+            font-size: 10px; font-weight: bold; text-transform: uppercase;
             letter-spacing: 2px; color: var(--gold);
         }
-        .ark-press-wall span { margin: 15px; transform: rotate(-10deg); text-shadow: 0 0 8px var(--gold-glow); }
+        .ark-press-wall span { margin: 12px; transform: rotate(-12deg); text-shadow: 0 0 5px var(--gold-glow); }
 
+        /* Optimized Custom Cursor (Zero Lag) */
         #cursor-outline { 
             position: fixed; width: 15px; height: 15px; border: 1.5px solid var(--gold); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
-            transform: translate(-50%, -50%); transition: 0.15s;
+            transform: translate(-50%, -50%); 
+            transition: width 0.15s ease-out, height 0.15s ease-out, background 0.15s ease-out;
+            will-change: transform;
         }
 
         /* Nav Bar */
@@ -60,7 +65,6 @@
             border: 1px solid var(--gold-glow); cursor: pointer; background: transparent; color: var(--gold); transition: 0.4s; font-weight: bold;
         }
         .wallet-btn:hover { background: var(--gold); color: var(--bg-dark); }
-        .wallet-btn.connected { background: var(--gold); color: var(--bg-dark); box-shadow: 0 0 15px var(--gold); }
 
         /* Sections */
         .snap-section { 
@@ -97,23 +101,17 @@
         #drawer {
             position: fixed; top: 0; right: -100%; width: 420px; height: 100vh;
             background: #050706; border-left: 2px solid var(--gold); z-index: 9999;
-            transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); padding: 100px 40px; color: var(--white);
+            transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); padding: 80px 40px; color: var(--white);
+            overflow-y: auto;
         }
         #drawer.open { right: 0; }
-        .pay-item { padding: 30px 0; border-bottom: 1px solid var(--gold-glow); cursor: pointer; transition: 0.3s; }
+        .pay-item { padding: 25px 0; border-bottom: 1px solid var(--gold-glow); cursor: pointer; transition: 0.3s; }
         .pay-item:hover { background: rgba(212, 175, 55, 0.05); }
-        .pay-item h5 { color: var(--gold); font-size: 10px; letter-spacing: 3px; margin: 0 0 10px 0; text-transform: uppercase; }
-        .pay-item p { margin: 0; font-size: 13px; font-weight: bold; word-break: break-all; opacity: 0.9; }
+        .pay-item h5 { color: var(--gold); font-size: 9px; letter-spacing: 3px; margin: 0 0 8px 0; text-transform: uppercase; }
+        .pay-item p { margin: 0; font-size: 12px; font-weight: bold; word-break: break-all; opacity: 0.9; }
 
         #loader { position: fixed; inset: 0; background: #000; z-index: 100000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s; }
         .fade-out { opacity: 0; pointer-events: none; }
-
-        @media (max-width: 768px) {
-            #drawer { width: 100%; }
-            .nav-actions { flex-direction: column; gap: 20px; align-items: center; }
-            .tier-title { font-size: 32px; letter-spacing: 8px; }
-            .social-dock { left: 20px; bottom: 20px; }
-        }
     </style>
 </head>
 <body>
@@ -122,7 +120,6 @@
 
     <div id="loader">
         <div style="font-size: 80px; font-weight: 900; color: var(--gold); letter-spacing: -5px;">ARK</div>
-        <div style="color: var(--gold); letter-spacing: 10px; font-size: 10px; margin-top: 30px; opacity: 0.6;">AUTHENTICATING SPECIES...</div>
     </div>
 
     <div id="cursor-outline"></div>
@@ -140,15 +137,15 @@
     </nav>
 
     <div id="drawer">
-        <h3 style="color: var(--gold); letter-spacing: 6px; text-transform: uppercase; margin-bottom: 50px; border-bottom: 1px solid var(--gold);">Official Registry</h3>
+        <h3 style="color: var(--gold); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; border-bottom: 1px solid var(--gold);">Official Registry</h3>
         
         <div class="pay-item interactive" onclick="copyAddress('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-            <h5>Ethereum (ERC20)</h5>
+            <h5>Ethereum (ERC20 / USDT)</h5>
             <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
         </div>
 
         <div class="pay-item interactive" onclick="copyAddress('8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7')">
-            <h5>Solana (Phantom)</h5>
+            <h5>Solana / Phantom (USDT)</h5>
             <p>8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7</p>
         </div>
 
@@ -157,14 +154,19 @@
             <p>912221034</p>
         </div>
 
-        <button onclick="toggleDrawer()" style="margin-top: 60px; background: none; border: 1px solid var(--gold); color: var(--gold); padding: 12px 40px; cursor: pointer; letter-spacing: 3px; font-size: 10px; font-weight: bold;">CLOSE</button>
+        <div class="pay-item interactive" onclick="copyAddress('Binance USDT Address Here')">
+            <h5>Binance USDT (BEP20)</h5>
+            <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
+        </div>
+
+        <button onclick="toggleDrawer()" style="margin-top: 40px; background: none; border: 1px solid var(--gold); color: var(--gold); padding: 12px 40px; cursor: pointer; letter-spacing: 3px; font-size: 10px;">CLOSE</button>
     </div>
 
     <section class="snap-section">
         <div class="tier-card active">
             <span class="tier-label">Genesis Tier</span>
             <h2 class="tier-title">Genesis Pillar</h2>
-            <p class="tier-desc">Reserved for the 100 most critically endangered species. Permanent heritage for the world's most elite guardians.</p>
+            <p class="tier-desc">Reserved for the 100 most critically endangered species. Permanent heritage for elite guardians.</p>
             <a href="genesis_apex.html" class="cta-gold interactive">Enter Summit</a>
         </div>
     </section>
@@ -188,91 +190,66 @@
     </section>
 
     <div class="social-dock">
-        <a href="https://x.com/kawsar6700" target="_blank" class="dock-link interactive" title="Twitter (X)">
-            <i class="fa-brands fa-x-twitter"></i>
-        </a>
-        <a href="https://wa.me/8801576940717" target="_blank" class="dock-link interactive" title="WhatsApp Support">
-            <i class="fa-brands fa-whatsapp"></i>
-        </a>
+        <a href="https://x.com/kawsar6700" target="_blank" class="dock-link interactive"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://wa.me/8801576940717" target="_blank" class="dock-link interactive"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
 
     <script>
-        // 11,100 Names Generation
-        const speciesList = ["Javan Rhino", "Amur Leopard", "Bengal Tiger", "Mountain Gorilla", "Saola", "Vaquita", "Kakapo", "Red Panda", "Sumatran Rhino", "Blue Whale", "Snow Leopard", "African Elephant", "Pangolin", "Orangutan", "Black Rhino", "Polar Bear", "Giant Panda"];
+        // 11,100 Names Dynamic Press-Wall
+        const speciesList = ["Javan Rhino", "Amur Leopard", "Bengal Tiger", "Mountain Gorilla", "Saola", "Vaquita", "Kakapo", "Red Panda", "Sumatran Rhino", "Blue Whale", "Snow Leopard", "African Elephant", "Pangolin", "Orangutan", "Black Rhino", "Polar Bear", "Cheetah", "African Lion", "Narwhal", "Red Wolf", "Galapagos Tortoise"];
         const wall = document.getElementById('ark-press-wall');
-        
         for (let i = 0; i < 900; i++) {
             const span = document.createElement('span');
             span.innerText = speciesList[Math.floor(Math.random() * speciesList.length)];
             wall.appendChild(span);
         }
 
-        // Mouse Tracker
+        // SMOOTH CURSOR (Optimized)
         const outline = document.getElementById('cursor-outline');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
         document.addEventListener('mousemove', (e) => {
-            outline.style.left = e.clientX + 'px';
-            outline.style.top = e.clientY + 'px';
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
 
-        // Toggle Registry Drawer
-        function toggleDrawer() { 
-            document.getElementById('drawer').classList.toggle('open'); 
+        function animateCursor() {
+            // Lerp logic for smooth movement
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
+            outline.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+            requestAnimationFrame(animateCursor);
         }
+        animateCursor();
 
-        // Copy Address Function
-        function copyAddress(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Registry Address Copied: " + text);
-            });
-        }
+        function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
+        function copyAddress(text) { navigator.clipboard.writeText(text); alert("Address Copied: " + text); }
 
-        // Wallet Connection Logic
+        // Wallet Logic
         document.getElementById('mm-connect').onclick = async function() {
             if (window.ethereum) {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    this.innerText = "LINKED: " + accounts[0].substring(0, 6);
-                    this.classList.add('connected');
-                } catch (err) { alert("Metamask Connection Failed"); }
-            } else { alert("Please install Metamask!"); }
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                this.innerText = "LINKED: " + accounts[0].substring(0, 6);
+            }
         };
-
         document.getElementById('ph-connect').onclick = async function() {
             if (window.solana) {
-                try {
-                    const resp = await window.solana.connect();
-                    this.innerText = "LINKED: " + resp.publicKey.toString().substring(0, 6);
-                    this.classList.add('connected');
-                } catch (err) { alert("Phantom Connection Failed"); }
-            } else { alert("Please install Phantom Wallet!"); }
+                const resp = await window.solana.connect();
+                this.innerText = "LINKED: " + resp.publicKey.toString().substring(0, 6);
+            }
         };
 
-        // Scroll Reveal
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
         }, { threshold: 0.3 });
-
         document.querySelectorAll('.tier-card').forEach(card => observer.observe(card));
 
-        // Loader Removal
-        window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('fade-out');
-            }, 1200);
-        };
+        window.onload = () => { setTimeout(() => document.getElementById('loader').classList.add('fade-out'), 1000); };
 
-        // Hover Effect
         document.querySelectorAll('.interactive').forEach(el => {
-            el.onmouseenter = () => { 
-                outline.style.transform = 'translate(-50%, -50%) scale(3)'; 
-                outline.style.background = 'var(--gold-glow)'; 
-            };
-            el.onmouseleave = () => { 
-                outline.style.transform = 'translate(-50%, -50%) scale(1)'; 
-                outline.style.background = 'transparent'; 
-            };
+            el.onmouseenter = () => { outline.style.width = '45px'; outline.style.height = '45px'; outline.style.background = 'var(--gold-glow)'; };
+            el.onmouseleave = () => { outline.style.width = '15px'; outline.style.height = '15px'; outline.style.background = 'transparent'; };
         });
     </script>
 </body>
