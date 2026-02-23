@@ -33,6 +33,7 @@
             --gold: #D4AF37; 
             --metamask: #E2761B;
             --phantom: #AB9FF2;
+            --success-bg: #1a1a1a;
         }
 
         html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
@@ -68,20 +69,34 @@
         }
         .wallet-mini-btn {
             padding: 10px 18px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-            border: 1px solid #eee; cursor: pointer; transition: 0.4s; font-weight: bold; background: #fff;
-            color: #555;
+            border: 1px solid #eee; cursor: pointer; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
+            font-weight: bold; background: #fff; color: #555;
         }
-        /* Active States colors */
-        .wallet-mini-btn.mm-active { background: var(--metamask) !important; color: #fff !important; border-color: var(--metamask) !important; }
-        .wallet-mini-btn.ph-active { background: var(--phantom) !important; color: #fff !important; border-color: var(--phantom) !important; }
+        
+        /* Premium Connected Styles */
+        .wallet-mini-btn.mm-connected { 
+            background: var(--metamask) !important; 
+            color: #fff !important; 
+            border-color: var(--metamask) !important;
+            box-shadow: 0 4px 15px rgba(226, 118, 27, 0.3);
+        }
+        .wallet-mini-btn.ph-connected { 
+            background: var(--phantom) !important; 
+            color: #fff !important; 
+            border-color: var(--phantom) !important;
+            box-shadow: 0 4px 15px rgba(171, 159, 242, 0.3);
+        }
 
+        /* Professional Success Toast */
         #success-toast {
-            position: fixed; bottom: -100px; right: 40px; background: var(--black); color: var(--gold);
-            padding: 20px 40px; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-            z-index: 10001; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-            border: 1px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: fixed; bottom: -100px; right: 40px; background: var(--success-bg); color: var(--gold);
+            padding: 22px 45px; font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+            z-index: 10001; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            border: 1px solid var(--gold); box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: flex; align-items: center; gap: 15px;
         }
         #success-toast.show { bottom: 40px; }
+        #success-toast::before { content: '✓'; font-weight: bold; font-size: 14px; }
 
         #drawer {
             position: fixed; top: 0; left: -100%; width: 420px; height: 100vh;
@@ -117,7 +132,6 @@
             position: fixed; bottom: 40px; left: 40px; z-index: 9999;
             display: flex; flex-direction: column; gap: 15px;
         }
-
         .support-btn {
             display: flex; align-items: center; justify-content: center; background: #fff; 
             border: 1px solid #000; width: 50px; height: 50px; border-radius: 50%; 
@@ -128,6 +142,10 @@
         .charter { background: #fafafa; padding: 120px 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; scroll-snap-align: end; }
         .charter-box h3 { font-size: 18px; letter-spacing: 6px; text-transform: uppercase; border-bottom: 2px solid #ddd; padding-bottom: 20px; margin-bottom: 30px; font-weight: 100; }
         .charter-box li { font-size: 16px; letter-spacing: 1px; color: #333; margin-bottom: 18px; list-style: none; line-height: 1.6; }
+        .sub-list { margin-left: 20px; margin-top: 15px; }
+        .sub-list li { font-size: 14px !important; margin-bottom: 12px !important; color: #555; }
+        .sub-list li::before { content: "• "; color: var(--gold); font-weight: bold; }
+
         .footer { padding: 50px; text-align: center; font-size: 9px; letter-spacing: 4px; opacity: 0.5; text-transform: uppercase; }
 
         #loader { position: fixed; inset: 0; background: #000; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s; }
@@ -141,7 +159,7 @@
             body { cursor: auto; } 
             .wallet-nav { right: 20px; top: 15px; flex-direction: column; gap: 5px; }
             .wallet-mini-btn { padding: 5px 10px; font-size: 7px; }
-            #success-toast { right: 20px; left: 20px; text-align: center; }
+            #success-toast { right: 20px; left: 20px; text-align: center; padding: 15px 20px; font-size: 9px; letter-spacing: 2px; }
         }
     </style>
 </head>
@@ -153,14 +171,15 @@
     </div>
 
     <div id="cursor-outline"></div>
-    <div id="success-toast">Heritage Secured: Wallet Linked</div>
+
+    <div id="success-toast">Authentication Success: Heritage Secured</div>
 
     <nav class="nav-bar">
         <div class="acq-btn interactive" onclick="toggleDrawer()">Acquisition</div>
         
         <div class="wallet-nav">
-            <button id="connect-wallet-btn" class="wallet-mini-btn mm interactive">Metamask</button>
-            <button id="connect-phantom-btn" class="wallet-mini-btn ph interactive">Phantom</button>
+            <button id="connect-wallet-btn" class="wallet-mini-btn mm interactive">Connect Metamask</button>
+            <button id="connect-phantom-btn" class="wallet-mini-btn ph interactive">Connect Phantom</button>
         </div>
 
         <div class="rr-logo">K <span>K</span></div>
@@ -169,7 +188,9 @@
 
     <div id="drawer">
         <h2 style="font-size: 14px; letter-spacing: 4px; margin-bottom: 50px; text-transform: uppercase;">Official Registry</h2>
-        <div id="auth-box" style="display:none; margin-bottom:20px; padding:15px; border:1px solid var(--gold); font-size:10px; color:var(--gold); font-weight:bold;">CONNECTED: <span id="user-addr"></span></div>
+        <div id="status-display" style="display:none; margin-bottom: 25px; padding: 15px; border: 1px solid var(--gold); color: var(--gold); font-size: 10px; font-weight: bold; letter-spacing: 1px;">
+            VERIFIED SESSION: <span id="active-addr"></span>
+        </div>
 
         <div class="pay-box interactive" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
             <h4>Metamask / ERC20</h4>
@@ -191,17 +212,83 @@
         <button onclick="toggleDrawer()" style="background:none; border:none; border-bottom:1px solid #000; cursor:pointer; font-size:9px; letter-spacing:2px; margin-top:30px;">[ CLOSE ]</button>
     </div>
 
-    <section class="snap-section"><div class="reveal active"><span class="label">Elite Tier</span><h2 class="title">The Imperial 100</h2><div class="price">ESTATE VALUE: $999</div><p class="desc">A sanctuary for world-class titans and global brands. Strictly limited to 100 Crown Jewel Plots with permanent heritage.</p><a href="the_imperial_100.html" class="btn-enter interactive">Enter Elite Estate</a></div></section>
-    <section class="snap-section"><div class="reveal"><span class="label">Digital Influence</span><h2 class="title">Creator Sovereignty</h2><div class="price">ACQUISITION: $199</div><p class="desc">The hall of fame for top YouTubers, TikTokers, and Influencers. 300 Sovereign Plots reserved for creators.</p><a href="creator_canvas.html" class="btn-enter interactive">Claim Space</a></div></section>
-    <section class="snap-section"><div class="reveal"><span class="label">Dynasty of Play</span><h2 class="title">Gaming Realm</h2><div class="price">RANK VALUE: $149</div><p class="desc">Archiving the legends of the joystick. 500 Plots dedicated to Pro-Gamers and elite Gaming Studios.</p><a href="gaming_canvas.html" class="btn-enter interactive">Enter Dynasty</a></div></section>
-    <section class="snap-section"><div class="reveal"><span class="label">Global Heritage</span><h2 class="title">Nations Grid</h2><div class="price">PRIDE VALUE: $99</div><p class="desc">Representing the globe. Strictly 5 special ambassadors from every nation. 1000 Plots total.</p><a href="nations_canvas.html" class="btn-enter interactive">Explore Nations</a></div></section>
-    <section class="snap-section"><div class="reveal"><span class="label">Future Intelligence</span><h2 class="title">AI Pioneers</h2><div class="price">TECH VALUE: $179</div><p class="desc">The directory of Artificial Intelligence architects. 100 Plots for AI content creators and Tech giants.</p><a href="ai_canvas.html" class="btn-enter interactive">Explore AI</a></div></section>
-    <section class="snap-section"><div class="reveal"><span class="label">Pure Legacy</span><h2 class="title">Little Stars & Pets</h2><div class="price">MEMORY VALUE: $59</div><p class="desc">Immortalizing emerging talent and loyal companions. 100 Eternal Plots for pure hearts.</p><a href="stars_canvas.html" class="btn-enter interactive">Archive Memory</a></div></section>
-    <section class="snap-section"><div class="reveal"><span class="label">Main Sponsorship</span><h2 class="title">The Grand Billboard</h2><div class="price">PATRONAGE: $5,000</div><p class="desc">The ultimate visibility at the archive's summit. Exclusively for 10 Main Sponsors of the Sovereign Archive.</p><a href="billboard_canvas.html" class="btn-enter interactive">View Showcase</a></div></section>
+    <section class="snap-section">
+        <div class="reveal active">
+            <span class="label">Elite Tier</span>
+            <h2 class="title">The Imperial 100</h2>
+            <div class="price">ESTATE VALUE: $999</div>
+            <p class="desc">A sanctuary for world-class titans and global brands. Strictly limited to 100 Crown Jewel Plots with permanent heritage.</p>
+            <a href="the_imperial_100.html" class="btn-enter interactive">Enter Elite Estate</a>
+        </div>
+    </section>
+
+    <section class="snap-section">
+        <div class="reveal">
+            <span class="label">Digital Influence</span>
+            <h2 class="title">Creator Sovereignty</h2>
+            <div class="price">ACQUISITION: $199</div>
+            <p class="desc">The hall of fame for top YouTubers, TikTokers, and Influencers. 300 Sovereign Plots reserved for creators.</p>
+            <a href="creator_canvas.html" class="btn-enter interactive">Claim Space</a>
+        </div>
+    </section>
+
+    <section class="snap-section">
+        <div class="reveal">
+            <span class="label">Dynasty of Play</span>
+            <h2 class="title">Gaming Realm</h2>
+            <div class="price">RANK VALUE: $149</div>
+            <p class="desc">Archiving the legends of the joystick. 500 Plots dedicated to Pro-Gamers and elite Gaming Studios.</p>
+            <a href="gaming_canvas.html" class="btn-enter interactive">Enter Dynasty</a>
+        </div>
+    </section>
+
+    <section class="snap-section">
+        <div class="reveal">
+            <span class="label">Global Heritage</span>
+            <h2 class="title">Nations Grid</h2>
+            <div class="price">PRIDE VALUE: $99</div>
+            <p class="desc">Representing the globe. Strictly 5 special ambassadors from every nation. 1000 Plots total.</p>
+            <a href="nations_canvas.html" class="btn-enter interactive">Explore Nations</a>
+        </div>
+    </section>
+
+    <section class="snap-section">
+        <div class="reveal">
+            <span class="label">Future Intelligence</span>
+            <h2 class="title">AI Pioneers</h2>
+            <div class="price">TECH VALUE: $179</div>
+            <p class="desc">The directory of Artificial Intelligence architects. 100 Plots for AI content creators and Tech giants.</p>
+            <a href="ai_canvas.html" class="btn-enter interactive">Explore AI</a>
+        </div>
+    </section>
+
+    <section class="snap-section">
+        <div class="reveal">
+            <span class="label">Pure Legacy</span>
+            <h2 class="title">Little Stars & Pets</h2>
+            <div class="price">MEMORY VALUE: $59</div>
+            <p class="desc">Immortalizing emerging talent and loyal companions. 100 Eternal Plots for pure hearts.</p>
+            <a href="stars_canvas.html" class="btn-enter interactive">Archive Memory</a>
+        </div>
+    </section>
+
+    <section class="snap-section">
+        <div class="reveal">
+            <span class="label">Main Sponsorship</span>
+            <h2 class="title">The Grand Billboard</h2>
+            <div class="price">PATRONAGE: $5,000</div>
+            <p class="desc">The ultimate visibility at the archive's summit. Exclusively for 10 Main Sponsors of the Sovereign Archive.</p>
+            <a href="billboard_canvas.html" class="btn-enter interactive">View Showcase</a>
+        </div>
+    </section>
 
     <div class="social-group">
-        <a href="https://x.com/kawsar6700" target="_blank" class="support-btn interactive"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></a>
-        <a href="https://wa.me/8801576940717" target="_blank" class="support-btn interactive"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-10.6 8.38 8.38 0 0 1 3.8.9L21 3z"></path></svg></a>
+        <a href="https://x.com/kawsar6700" target="_blank" class="support-btn interactive">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+        </a>
+        <a href="https://wa.me/8801576940717" target="_blank" class="support-btn interactive">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-10.6 8.38 8.38 0 0 1 3.8.9L21 3z"></path></svg>
+        </a>
     </div>
 
     <div class="charter reveal">
@@ -210,70 +297,97 @@
             <li>• <b>Permanent Supply:</b> No additional plots shall ever be added.</li>
             <li>• <b>Update Protocol:</b> $9 fee for any data or URL modifications.</li>
         </div>
+        <div class="charter-box">
+            <h3>Acquisition Flow</h3>
+            <li><b>01.</b> Secure payment via the <b>Official Registry</b> drawer.</li>
+            <li><b>02.</b> Forward assets to WhatsApp Concierge:</li>
+            <div class="sub-list">
+                <li>• <b>Payment Proof:</b> Screenshot or Transaction ID (TXID).</li>
+                <li>• <b>Plot Assets:</b> High-resolution Brand Logo or Image.</li>
+                <li>• <b>Target URL:</b> The destination link for your plot.</li>
+                <li>• <b>Update Access:</b> Registered Email for future modifications.</li>
+            </div>
+        </div>
     </div>
 
-    <footer class="footer">© 2026 THE SOVEREIGN ARCHIVE. CURATED BY <b>KAWSAR</b>.</footer>
+    <footer class="footer">
+        © 2026 THE SOVEREIGN ARCHIVE. CURATED BY <b>KAWSAR</b>.
+    </footer>
 
     <script>
         const outline = document.getElementById('cursor-outline');
-        document.addEventListener('mousemove', (e) => { outline.style.left = e.clientX + 'px'; outline.style.top = e.clientY + 'px'; });
+        document.addEventListener('mousemove', (e) => {
+            outline.style.left = e.clientX + 'px';
+            outline.style.top = e.clientY + 'px';
+        });
 
         function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
         function copy(t) { navigator.clipboard.writeText(t); alert("Registry Address Copied."); }
 
         const toast = document.getElementById('success-toast');
-        const authBox = document.getElementById('auth-box');
-        const userAddr = document.getElementById('user-addr');
+        const statusDisplay = document.getElementById('status-display');
+        const activeAddr = document.getElementById('active-addr');
 
-        function triggerSuccess(wallet, addr) {
-            toast.innerText = `${wallet} Connected Successfully`;
+        function handleSuccessUI(walletName, address) {
+            toast.innerText = `${walletName} Linked Successfully`;
             toast.classList.add('show');
-            authBox.style.display = "block";
-            userAddr.innerText = addr.substring(0, 15) + "...";
-            setTimeout(() => toast.classList.remove('show'), 4000);
+            statusDisplay.style.display = "block";
+            activeAddr.innerText = address.substring(0, 12) + "...";
+            setTimeout(() => toast.classList.remove('show'), 5000);
         }
 
-        // Metamask Connection
         const mmBtn = document.getElementById('connect-wallet-btn');
         mmBtn.onclick = async () => {
             if (window.ethereum) {
                 try {
                     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    mmBtn.innerText = "Linked";
-                    mmBtn.classList.add('mm-active'); // Changes to Metamask Orange
-                    triggerSuccess("Metamask", accounts[0]);
-                } catch (err) { console.log(err); }
+                    mmBtn.innerText = "Linked: " + accounts[0].substring(0, 5);
+                    mmBtn.classList.add('mm-connected');
+                    handleSuccessUI("Metamask", accounts[0]);
+                } catch (err) { console.error(err); }
             } else {
-                // Improved Deep Link for Chrome to Metamask
                 window.location.href = `https://metamask.app.link/dapp/${window.location.host}${window.location.pathname}`;
             }
         };
 
-        // Phantom Connection
         const phBtn = document.getElementById('connect-phantom-btn');
         phBtn.onclick = async () => {
-            const isPhantomInstalled = window.solana && window.solana.isPhantom;
-            if (isPhantomInstalled) {
+            if (window.solana && window.solana.isPhantom) {
                 try {
                     const resp = await window.solana.connect();
-                    phBtn.innerText = "Linked";
-                    phBtn.classList.add('ph-active'); // Changes to Phantom Purple
-                    triggerSuccess("Phantom", resp.publicKey.toString());
-                } catch (err) { console.log(err); }
+                    phBtn.innerText = "Linked: " + resp.publicKey.toString().substring(0, 5);
+                    phBtn.classList.add('ph-connected');
+                    handleSuccessUI("Phantom", resp.publicKey.toString());
+                } catch (err) { console.error(err); }
             } else {
-                // Improved Deep Link for Phantom
                 const url = encodeURIComponent(window.location.href);
                 window.location.href = `https://phantom.app/ul/browse/${url}`;
             }
         };
 
-        window.onload = () => { setTimeout(() => { document.getElementById('loader').classList.add('fade-out'); }, 1000); };
-        const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); }); }, { threshold: 0.1 });
+        window.onload = () => {
+            setTimeout(() => { document.getElementById('loader').classList.add('fade-out'); }, 1000);
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) e.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
         document.querySelectorAll('.interactive').forEach(el => {
-            el.onmouseenter = () => { outline.style.width = '30px'; outline.style.height = '30px'; outline.style.background = 'rgba(0,0,0,0.05)'; };
-            el.onmouseleave = () => { outline.style.width = '12px'; outline.style.height = '12px'; outline.style.background = 'transparent'; };
+            el.onmouseenter = () => {
+                outline.style.width = '30px';
+                outline.style.height = '30px';
+                outline.style.background = 'rgba(0,0,0,0.05)';
+            };
+            el.onmouseleave = () => {
+                outline.style.width = '12px';
+                outline.style.height = '12px';
+                outline.style.background = 'transparent';
+            };
         });
     </script>
 </body>
