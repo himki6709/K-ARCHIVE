@@ -14,6 +14,9 @@
             --gold: #D4AF37; 
             --gold-low: rgba(212, 175, 55, 0.15);
             --gold-bright: #FFD700;
+            --yt-red: #FF0000;
+            --dubai-green: #00ffcc;
+            --tycoon-silver: #E0E0E0;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,13 +38,13 @@
         .header {
             position: fixed; top: 0; width: 100%; padding: 30px 6%;
             display: flex; justify-content: space-between; align-items: center; z-index: 5000;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
-            backdrop-filter: blur(5px);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.95), transparent);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gold-low);
         }
-        .logo-group { display: flex; flex-direction: column; gap: 10px; }
+        .logo-group { display: flex; flex-direction: column; gap: 5px; }
         .logo { font-family: 'Cinzel', serif; font-size: 28px; font-weight: 900; letter-spacing: 8px; color: var(--gold); text-decoration: none; }
         
-        /* Payment Trigger (Top Left Under Logo) */
         .registry-trigger {
             font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold);
             letter-spacing: 2px; cursor: pointer; padding: 5px 0;
@@ -50,38 +53,57 @@
         }
         .registry-trigger:hover { color: #fff; border-color: var(--gold); letter-spacing: 3px; }
 
-        /* Wallet Buttons with Glow Effect */
+        /* Wallet Buttons */
         .btn-wallet {
             padding: 12px 25px; border: 1px solid var(--gold); background: transparent;
             color: var(--gold); font-family: 'Cinzel', serif; font-size: 10px;
             letter-spacing: 2px; cursor: pointer; transition: 0.5s; position: relative;
-            overflow: hidden;
         }
-        .btn-wallet:hover { 
-            background: var(--gold); color: #000; 
-            box-shadow: 0 0 20px var(--gold), 0 0 40px var(--gold-low);
-            transform: translateY(-2px);
-        }
-        .btn-wallet.active { background: var(--gold-bright); color: #000; box-shadow: 0 0 25px var(--gold-bright); }
+        .btn-wallet:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); }
+        .btn-wallet.active { background: var(--gold-bright); color: #000; }
 
         .main-container { padding: 180px 6% 100px; display: flex; flex-direction: column; align-items: center; }
-        .hero-title { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 12px; color: var(--gold); margin-bottom: 60px; text-align: center; }
+        .hero-title { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 15px; color: var(--gold); margin-bottom: 80px; text-align: center; width: 100%; }
 
-        /* Gateways Grid */
+        /* Gateways Grid - Optimised for 7 cards */
         .gateways {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;
-            max-width: 1200px; width: 100%;
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 40px;
+            max-width: 1400px; width: 100%;
         }
+
         .gate-card {
-            height: 380px; border: 1px solid rgba(212, 175, 55, 0.1); position: relative;
+            height: 420px; border: 1px solid rgba(212, 175, 55, 0.1); position: relative;
             display: flex; flex-direction: column; justify-content: flex-end;
-            padding: 40px; transition: 0.6s; text-decoration: none; overflow: hidden;
+            padding: 40px; transition: 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            text-decoration: none; overflow: hidden;
             background: rgba(255, 255, 255, 0.02);
         }
-        .gate-card:hover { border-color: var(--gold); transform: translateY(-10px); background: rgba(212, 175, 55, 0.05); }
-        .gate-card h3 { font-family: 'Cinzel', serif; font-size: 24px; color: var(--gold); margin-bottom: 8px; }
-        .gate-card p { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 2px; }
-        .gate-price { font-size: 18px; color: #fff; margin-top: 15px; font-weight: bold; padding-top: 15px; border-top: 1px solid var(--gold-low); }
+
+        .gate-card::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.05), transparent);
+            transition: 0.5s;
+        }
+
+        .gate-card:hover { border-color: var(--gold); transform: translateY(-15px); background: rgba(212, 175, 55, 0.05); }
+        .gate-card:hover::before { left: 100%; }
+
+        .gate-card p.level-tag { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 5px; }
+        .gate-card h3 { font-family: 'Cinzel', serif; font-size: 26px; color: var(--gold); margin-bottom: 10px; letter-spacing: 2px; }
+        .gate-card p.desc { font-size: 12px; color: #ccc; line-height: 1.6; opacity: 0.7; }
+        .gate-price { font-size: 18px; color: #fff; margin-top: 20px; font-weight: bold; padding-top: 20px; border-top: 1px solid var(--gold-low); }
+
+        /* Special Tier Decorations */
+        .creator-card:hover { border-color: var(--yt-red); box-shadow: 0 0 30px rgba(255, 0, 0, 0.2); }
+        .creator-card h3 { color: var(--yt-red) !important; }
+        
+        .royal-card:hover { border-color: var(--dubai-green); box-shadow: 0 0 30px rgba(0, 255, 204, 0.2); }
+        .royal-card h3 { color: var(--dubai-green) !important; }
+
+        .tycoon-card:hover { border-color: var(--tycoon-silver); box-shadow: 0 0 30px rgba(255, 255, 255, 0.1); }
+        .tycoon-card h3 { color: var(--tycoon-silver) !important; }
 
         /* Sidebar Contacts */
         .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 20px; z-index: 5000; }
@@ -90,9 +112,9 @@
             display: flex; align-items: center; justify-content: center;
             color: var(--gold); text-decoration: none; font-size: 20px; transition: 0.4s; background: rgba(0,0,0,0.8);
         }
-        .social-icon:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); transform: scale(1.1); }
+        .social-icon:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); transform: rotate(360deg) scale(1.1); }
 
-        /* Drawer - Information & Payment Hub */
+        /* Drawer */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 420px; height: 100vh;
             background: #080808; border-left: 2px solid var(--gold); z-index: 9999;
@@ -103,27 +125,17 @@
         
         .info-section { margin-bottom: 30px; padding: 20px; border: 1px solid var(--gold-low); background: rgba(212,175,55,0.03); }
         .info-title { color: var(--gold); font-size: 11px; margin-bottom: 12px; font-family: 'Cinzel'; letter-spacing: 2px; border-bottom: 1px solid var(--gold-low); padding-bottom: 5px; }
-        
-        .checklist-item { font-size: 12px; color: #ccc; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-        .checklist-item i { color: var(--gold); font-size: 10px; }
-
-        .fee-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; color: #eee; }
-
         .pay-box { padding: 20px 0; border-bottom: 1px solid var(--gold-low); cursor: pointer; transition: 0.3s; }
-        .pay-box:hover { background: rgba(212,175,55,0.05); padding-left: 10px; }
-        .pay-box h4 { font-size: 10px; color: var(--gold); margin-bottom: 5px; letter-spacing: 2px; }
-        .pay-box p { font-size: 12px; color: #fff; word-break: break-all; opacity: 0.8; }
+        .pay-box:hover { background: rgba(212,175,55,0.08); padding-left: 10px; }
 
         #loader { position: fixed; inset: 0; background: #000; z-index: 100000; display: flex; justify-content: center; align-items: center; }
         .fade-out { opacity: 0; pointer-events: none; transition: 1s; }
 
         @media (max-width: 768px) {
             .gateways { grid-template-columns: 1fr; }
-            .header { padding: 20px 5%; flex-direction: column; gap: 20px; text-align: center; }
+            .header { padding: 20px 5%; flex-direction: column; gap: 20px; }
             #drawer { width: 100%; }
-            #cursor { display: none; }
-            .main-container { padding-top: 220px; }
-            .registry-trigger { margin: 0 auto; }
+            .main-container { padding-top: 250px; }
         }
     </style>
 </head>
@@ -148,32 +160,56 @@
     </header>
 
     <main class="main-container">
-        <div class="hero-title">SELECT YOUR ETERNITY GATEWAY</div>
+        <div class="hero-title">THE SEVEN GATES OF ETERNITY</div>
         
         <div class="gateways">
             <a href="crown_summit.html" class="gate-card">
-                <p>Level 01</p>
+                <p class="level-tag">Level 01</p>
                 <h3>CROWN SUMMIT</h3>
-                <p>The Elite 100 Master Plots</p>
-                <div class="gate-price">$999</div>
+                <p class="desc">The most prestigious 100 plots for the first pioneers of the Ark.</p>
+                <div class="gate-price">$99 - $999</div>
             </a>
+
             <a href="elite_legacy.html" class="gate-card">
-                <p>Level 02</p>
+                <p class="level-tag">Level 02</p>
                 <h3>ELITE LEGACY</h3>
-                <p>500 Guardian Reserved</p>
+                <p class="desc">500 Reserved slots for industrial leaders and heritage keepers.</p>
                 <div class="gate-price">$249</div>
             </a>
+
             <a href="heritage_vault.html" class="gate-card">
-                <p>Level 03</p>
+                <p class="level-tag">Level 03</p>
                 <h3>HERITAGE VAULT</h3>
-                <p>2,500 Preservation Units</p>
+                <p class="desc">2,500 High-security preservation units for global families.</p>
                 <div class="gate-price">$79</div>
             </a>
+
             <a href="global_horizon.html" class="gate-card">
-                <p>Level 04</p>
+                <p class="level-tag">Level 04</p>
                 <h3>GLOBAL HORIZON</h3>
-                <p>8,000 Open Archive</p>
+                <p class="desc">8,000 Open archive units for the citizen of the world.</p>
                 <div class="gate-price">$29</div>
+            </a>
+
+            <a href="creator_studio.html" class="gate-card creator-card">
+                <p class="level-tag" style="color:var(--yt-red)">Supreme Tier</p>
+                <h3>CREATOR STUDIO</h3>
+                <p class="desc">Exclusive domain for the Top 100 Global Creators and Influencers.</p>
+                <div class="gate-price">$999</div>
+            </a>
+
+            <a href="royal_oasis.html" class="gate-card royal-card">
+                <p class="level-tag" style="color:var(--dubai-green)">Supreme Tier</p>
+                <h3>ROYAL OASIS</h3>
+                <p class="desc">Private estates reserved for Sheikhs and Royal Dynasties.</p>
+                <div class="gate-price">$9,999</div>
+            </a>
+
+            <a href="tycoon_plaza.html" class="gate-card tycoon-card">
+                <p class="level-tag" style="color:var(--tycoon-silver)">Supreme Tier</p>
+                <h3>TYCOON PLAZA</h3>
+                <p class="desc">Global Business Tycoons and Multi-Millionaire legacy plots.</p>
+                <div class="gate-price">$5,000</div>
             </a>
         </div>
     </main>
@@ -184,46 +220,38 @@
     </div>
 
     <div id="drawer">
-        <h2 style="color:var(--gold); font-family:'Cinzel'; margin-bottom: 30px; letter-spacing: 4px; font-size: 20px;">ARK REGISTRY</h2>
+        <h2 style="color:var(--gold); font-family:'Cinzel'; margin-bottom: 30px; letter-spacing: 4px;">ARK REGISTRY</h2>
         
         <div class="info-section">
-            <h4 class="info-title">SUBMISSION CHECKLIST (WHATSAPP)</h4>
-            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Payment Screenshot / TxID</div>
-            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Full Identity Name</div>
-            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> High-Resolution Portrait</div>
-            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Target Website URL</div>
+            <h4 class="info-title">SUBMISSION CHECKLIST</h4>
+            <div style="font-size:12px; color:#aaa; line-height:2;">
+                • Payment Screenshot / TxID<br>
+                • Full Name & High-Res Portrait<br>
+                • Target Website/Social Link
+            </div>
         </div>
 
         <div class="info-section">
-            <h4 class="info-title">MAINTENANCE & FEES</h4>
-            <div class="fee-row"><span>Lifetime Hosting</span> <span style="color:#0f0;">FREE</span></div>
-            <div class="fee-row"><span>Information Update</span> <span style="color:var(--gold);">$9 / Req</span></div>
-            <div class="fee-row"><span>Network Fee</span> <span>Variable</span></div>
+            <h4 class="info-title">FEE STRUCTURE</h4>
+            <div style="display:flex; justify-content:space-between; font-size:12px;"><span>Info Update</span> <span style="color:var(--gold);">$9 / Req</span></div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-top:5px;"><span>Hosting</span> <span style="color:#0f0;">Lifetime Free</span></div>
         </div>
 
-        <h4 class="info-title" style="margin-left:5px;">PAYMENT DESTINATIONS</h4>
+        <h4 class="info-title">GATEWAY ADDRESSES</h4>
         <div class="pay-box" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-            <h4>ETH / USDT (ERC20)</h4>
-            <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
-        </div>
-        <div class="pay-box" onclick="copy('8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7')">
-            <h4>SOLANA (PHANTOM)</h4>
-            <p>8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7</p>
-        </div>
-        <div class="pay-box" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-            <h4>BINANCE USDT (BEP20)</h4>
-            <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
+            <h4 style="font-size:10px; color:var(--gold);">ETH / USDT (ERC20)</h4>
+            <p style="font-size:11px; opacity:0.8;">0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
         </div>
         <div class="pay-box" onclick="copy('912221034')">
-            <h4>BINANCE PAY ID</h4>
-            <p>912221034</p>
+            <h4 style="font-size:10px; color:var(--gold);">BINANCE PAY ID</h4>
+            <p style="font-size:11px; opacity:0.8;">912221034</p>
         </div>
 
-        <button onclick="toggleDrawer()" style="margin-top: 30px; background:none; border:1px solid var(--gold); color:var(--gold); padding:15px; cursor:pointer; font-family:'Cinzel'; width:100%; transition:0.3s;">CLOSE</button>
+        <button onclick="toggleDrawer()" style="margin-top: 30px; background:none; border:1px solid var(--gold); color:var(--gold); padding:15px; cursor:pointer; font-family:'Cinzel'; width:100%;">CLOSE</button>
     </div>
 
     <script>
-        // Particle Background logic
+        // Starfield Particles Logic
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -244,11 +272,11 @@
                 if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
             }
             draw() {
-                ctx.fillStyle = 'rgba(212, 175, 55, 0.3)';
+                ctx.fillStyle = 'rgba(212, 175, 55, 0.4)';
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
             }
         }
-        for (let i = 0; i < 100; i++) particles.push(new Particle());
+        for (let i = 0; i < 120; i++) particles.push(new Particle());
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
             particles.forEach(p => { p.update(); p.draw(); });
@@ -256,38 +284,19 @@
         }
         animate();
 
-        // Cursor logic
+        // UI Logic
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // Wallet Logic
-        async function connectMM() {
-            if (window.ethereum) {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    document.getElementById('mm-btn').innerText = accounts[0].substring(0,6) + "...";
-                    document.getElementById('mm-btn').classList.add('active');
-                } catch (err) { console.error(err); }
-            } else { window.open('https://metamask.app.link/dapp/' + window.location.host); }
-        }
-
-        async function connectPH() {
-            if (window.solana) {
-                try {
-                    const resp = await window.solana.connect();
-                    document.getElementById('ph-btn').innerText = resp.publicKey.toString().substring(0,6) + "...";
-                    document.getElementById('ph-btn').classList.add('active');
-                } catch (err) { console.error(err); }
-            } else { window.open('https://phantom.app/ul/browse/' + window.location.host); }
-        }
-
         function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
-        function copy(t) { navigator.clipboard.writeText(t); alert("Address Copied: " + t); }
+        function copy(t) { navigator.clipboard.writeText(t); alert("Address Copied!"); }
 
-        window.onload = () => { setTimeout(() => document.getElementById('loader').classList.add('fade-out'), 800); };
+        window.onload = () => { 
+            setTimeout(() => document.getElementById('loader').classList.add('fade-out'), 800); 
+        };
     </script>
 </body>
 </html>
