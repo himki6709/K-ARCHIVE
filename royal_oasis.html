@@ -15,38 +15,17 @@
             --royal-emerald: #00ffcc;
             --gold: #D4AF37;
             --border: rgba(212, 175, 55, 0.2);
-            --glass: rgba(255, 255, 255, 0.02);
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
-            overflow-x: hidden; cursor: none;
-        }
-
+        body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; cursor: none; }
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.3; }
+        #cursor-ring { position: fixed; width: 25px; height: 25px; border: 1.5px solid var(--royal-emerald); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); transition: 0.1s ease-out; box-shadow: 0 0 15px var(--royal-emerald); }
 
-        #cursor-ring {
-            position: fixed; width: 25px; height: 25px; border: 1.5px solid var(--royal-emerald); 
-            border-radius: 50%; pointer-events: none; z-index: 10000; 
-            transform: translate(-50%, -50%); transition: 0.1s ease-out;
-            box-shadow: 0 0 15px var(--royal-emerald);
-        }
-
-        header {
-            position: fixed; top: 0; width: 100%; padding: 25px 6%;
-            display: flex; justify-content: space-between; align-items: center; z-index: 5000;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
-        }
+        header { position: fixed; top: 0; width: 100%; padding: 25px 6%; display: flex; justify-content: space-between; align-items: center; z-index: 5000; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); }
         .back-btn { font-family: 'Cinzel'; color: var(--gold); text-decoration: none; font-size: 11px; letter-spacing: 2px; }
-        
-        /* Buy Plot Button Style */
-        .buy-plot-btn {
-            background: var(--gold); color: #000; padding: 12px 25px;
-            font-family: 'Cinzel'; font-weight: 900; font-size: 11px;
-            border: none; cursor: pointer; letter-spacing: 2px;
-            transition: 0.3s; margin-right: 20px;
-        }
+        .buy-plot-btn { background: var(--gold); color: #000; padding: 12px 25px; font-family: 'Cinzel'; font-weight: 900; font-size: 11px; border: none; cursor: pointer; letter-spacing: 2px; transition: 0.3s; margin-right: 20px; }
         .buy-plot-btn:hover { box-shadow: 0 0 20px var(--gold); transform: scale(1.05); }
 
         .branding { text-align: right; }
@@ -57,90 +36,39 @@
         .section-intro h1 { font-family: 'Cinzel'; font-size: 38px; letter-spacing: 15px; color: var(--royal-emerald); margin-bottom: 10px; }
         .section-intro p { font-size: 11px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
 
-        .oasis-container { 
-            max-width: 1300px; margin: 0 auto; padding: 40px 20px 100px;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;
-        }
-
-        .plot-unit {
-            aspect-ratio: 1/1; background: var(--glass); border: 1px solid var(--border);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-decoration: none; color: #fff; transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative; cursor: pointer;
-        }
-
-        .plot-unit:hover {
-            transform: translateY(-10px);
-            border-color: var(--royal-emerald);
-            background: rgba(0, 255, 204, 0.05);
-            box-shadow: 0 0 30px rgba(0, 255, 204, 0.15);
-        }
-
+        /* Grid Setup */
+        .oasis-container { max-width: 1300px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
+        .plot-unit { aspect-ratio: 1/1; background: var(--glass); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: 0.4s ease; }
+        .plot-unit:hover { transform: translateY(-10px); border-color: var(--royal-emerald); background: rgba(0, 255, 204, 0.05); box-shadow: 0 0 30px rgba(0, 255, 204, 0.15); }
         .plot-unit.sold { border-color: #ff0033; opacity: 0.6; cursor: not-allowed; }
-        .plot-id { font-family: 'Cinzel'; font-size: 10px; color: var(--gold); margin-bottom: 5px; }
-        .plot-status { font-size: 8px; color: var(--royal-emerald); text-transform: uppercase; letter-spacing: 1px; }
-        .plot-unit.sold .plot-status { color: #ff0033; }
-        .plot-price { position: absolute; bottom: 12px; font-size: 10px; font-family: 'Cinzel'; color: #fff; opacity: 0.8; }
+        .plot-id { font-family: 'Cinzel'; font-size: 11px; color: var(--gold); }
+        .plot-status { font-size: 9px; color: var(--royal-emerald); text-transform: uppercase; margin-top: 5px; }
+        .plot-price { position: absolute; bottom: 12px; font-size: 10px; color: #fff; font-family: 'Cinzel'; }
 
-        /* Booking Modal Styles */
-        #booking-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 9999; display: none;
-            align-items: center; justify-content: center; backdrop-filter: blur(10px);
-        }
-        .modal-content {
-            background: #0a0a0a; border: 1px solid var(--gold); padding: 40px;
-            width: 90%; max-width: 450px; text-align: center;
-        }
-        .modal-content h3 { font-family: 'Cinzel'; color: var(--gold); margin-bottom: 20px; letter-spacing: 3px; }
-        .modal-content input {
-            width: 100%; padding: 12px; margin-bottom: 15px; background: #111;
-            border: 1px solid #333; color: #fff; font-family: 'Montserrat'; font-size: 12px;
-        }
-        .confirm-btn {
-            width: 100%; padding: 15px; background: var(--gold); color: #000;
-            border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer;
-        }
+        /* Assets Section */
+        .asset-showcase { background: rgba(212, 175, 55, 0.02); border-top: 1px solid var(--border); padding: 80px 6%; text-align: center; }
+        .asset-grid { display: flex; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap; }
+        .asset-item { max-width: 300px; padding: 30px; border: 1px solid var(--border); background: var(--glass); }
+        .asset-item i { font-size: 30px; color: var(--gold); margin-bottom: 15px; }
+        .asset-item h4 { font-family: 'Cinzel'; font-size: 14px; margin-bottom: 10px; color: var(--royal-emerald); }
+        .asset-item p { font-size: 11px; color: #888; line-height: 1.6; }
 
-        /* Success Overlay */
-        #success-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 5, 5, 0.98); z-index: 10000; display: none;
-            flex-direction: column; align-items: center; justify-content: center; text-align: center;
-            backdrop-filter: blur(15px);
-        }
+        /* Modal & Overlay */
+        #booking-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .modal-content { background: #0a0a0a; border: 1px solid var(--gold); padding: 40px; width: 90%; max-width: 450px; text-align: center; }
+        .modal-content input { width: 100%; padding: 12px; margin-bottom: 15px; background: #111; border: 1px solid #333; color: #fff; }
+        .confirm-btn { width: 100%; padding: 15px; background: var(--gold); color: #000; border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer; }
+        #success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 
         footer { padding: 50px; text-align: center; border-top: 1px solid var(--border); font-size: 10px; color: #555; letter-spacing: 2px; }
 
-        @media (max-width: 768px) {
-            .oasis-container { grid-template-columns: repeat(3, 1fr); }
-            #cursor-ring { display: none; }
-            body { cursor: auto; }
-        }
+        @media (max-width: 768px) { .oasis-container { grid-template-columns: repeat(3, 1fr); } #cursor-ring { display: none; } body { cursor: auto; } }
     </style>
 </head>
 <body>
 
     <canvas id="bg-canvas"></canvas>
     <div id="cursor-ring"></div>
-
-    <div id="booking-modal">
-        <div class="modal-content">
-            <h3 id="modal-title">ACQUIRE PLOT</h3>
-            <input type="text" id="owner-name" placeholder="YOUR NAME / DYNASTY">
-            <input type="number" id="plot-number-input" placeholder="PLOT NUMBER (1-35)">
-            <input type="text" id="owner-logo" placeholder="LOGO/IMAGE LINK (OPTIONAL)">
-            <input type="text" id="owner-link" placeholder="WEBSITE LINK (OPTIONAL)">
-            <button class="confirm-btn" onclick="bookPlot()">INITIATE ACQUISITION</button>
-            <button onclick="closeModal()" style="background:transparent; color:#555; border:none; margin-top:15px; cursor:pointer; font-size:10px;">CANCEL</button>
-        </div>
-    </div>
-
-    <div id="success-overlay">
-        <h1 style="color:var(--gold); font-size:40px; font-family:'Cinzel'; letter-spacing:5px;">CONGRATULATIONS!</h1>
-        <p id="congrats-text" style="font-size:16px; margin:20px 0; color:var(--royal-emerald); text-transform:uppercase; letter-spacing:2px;"></p>
-        <p style="color:#555; font-size:10px;">PREPARING YOUR SOVEREIGN PRESENCE...</p>
-    </div>
 
     <header>
         <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> RETURN TO ARK</a>
@@ -159,6 +87,45 @@
     </section>
 
     <main class="oasis-container" id="plots-grid"></main>
+
+    <section class="asset-showcase">
+        <h2 style="font-family:'Cinzel'; letter-spacing:10px; margin-bottom:50px; color: var(--gold);">ROYAL ASSETS</h2>
+        <div class="asset-grid">
+            <div class="asset-item">
+                <i class="fa-solid fa-gem"></i>
+                <h4>EXCLUSIVE NFT</h4>
+                <p>A unique blockchain asset representing your sovereign presence in the Oasis.</p>
+            </div>
+            <div class="asset-item">
+                <i class="fa-solid fa-scroll"></i>
+                <h4>GOLDEN TITLE DEED</h4>
+                <p>Verifiable digital deed confirming your permanent status within the Ark.</p>
+            </div>
+            <div class="asset-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h4>DYNASTY STATUS</h4>
+                <p>Priority support and direct access to the Founder's executive network.</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="booking-modal">
+        <div class="modal-content">
+            <h3 style="color:var(--gold); margin-bottom:20px; font-family:'Cinzel';">ACQUIRE PLOT</h3>
+            <input type="text" id="owner-name" placeholder="YOUR NAME / DYNASTY">
+            <input type="number" id="plot-number-input" placeholder="PLOT NUMBER (1-35)">
+            <input type="text" id="owner-logo" placeholder="LOGO LINK">
+            <input type="text" id="owner-link" placeholder="WEBSITE LINK">
+            <button class="confirm-btn" onclick="bookPlot()">INITIATE ACQUISITION</button>
+            <button onclick="closeModal()" style="background:transparent; color:#555; border:none; margin-top:15px; cursor:pointer;">CANCEL</button>
+        </div>
+    </div>
+
+    <div id="success-overlay">
+        <h1 style="color:var(--gold); font-size:40px; font-family:'Cinzel';">SUCCESS!</h1>
+        <p id="congrats-text" style="color:var(--royal-emerald); margin:20px 0; letter-spacing:2px;"></p>
+        <p style="color:#555;">RELOADING OASIS...</p>
+    </div>
 
     <footer>© 2026 ARK ENTERPRISE | DESIGNED FOR SOVEREIGNS</footer>
 
@@ -180,19 +147,17 @@
         const db = getDatabase(app);
         window.db = db;
 
-        // Render Plots with Dynamic Pricing
+        const grid = document.getElementById('plots-grid');
+
+        // রিয়েলটাইম ৩৫টি প্লট রেন্ডারিং
         onValue(ref(db, 'royal_oasis/'), (snapshot) => {
             const data = snapshot.val() || {};
-            const grid = document.getElementById('plots-grid');
             grid.innerHTML = '';
-            
             for (let i = 1; i <= 35; i++) {
                 const id = `ROYAL-${i < 10 ? '0'+i : i}`;
                 const isSold = data[id] ? true : false;
-                
-                // Pricing: Each row (5 plots) decreases by $100
-                const rowNumber = Math.floor((i - 1) / 5);
-                const currentPrice = 9999 - (rowNumber * 100);
+                const rowNum = Math.floor((i - 1) / 5);
+                const price = 9999 - (rowNum * 100);
 
                 const plot = document.createElement('div');
                 plot.className = `plot-unit ${isSold ? 'sold' : ''}`;
@@ -200,7 +165,7 @@
                     <span class="plot-id">${id}</span>
                     <span class="plot-status">${isSold ? 'Sold' : 'Available'}</span>
                     <i class="fa-solid fa-crown" style="font-size: 12px; margin-top:8px; color:${isSold ? '#ff0033' : 'rgba(212,175,55,0.2)'}"></i>
-                    <span class="plot-price">$${currentPrice.toLocaleString()}</span>
+                    <span class="plot-price">$${price.toLocaleString()}</span>
                 `;
                 if(!isSold) plot.onclick = () => openModal(i);
                 grid.appendChild(plot);
@@ -210,22 +175,11 @@
         window.bookPlot = () => {
             const name = document.getElementById('owner-name').value;
             const plotNum = document.getElementById('plot-number-input').value;
-            const logo = document.getElementById('owner-logo').value;
-            const link = document.getElementById('owner-link').value;
-
             if(!name || !plotNum) return alert("Please fill Name and Plot Number");
-            
-            const id = `ROYAL-${plotNum < 10 ? '0'+plotNum : plotNum}`;
-            const rowNumber = Math.floor((plotNum - 1) / 5);
-            const price = 9999 - (rowNumber * 100);
 
+            const id = `ROYAL-${plotNum < 10 ? '0'+plotNum : plotNum}`;
             set(ref(db, 'royal_oasis/' + id), {
-                owner: name,
-                logo: logo,
-                link: link,
-                price: "$" + price.toLocaleString(),
-                status: "Sold",
-                timestamp: Date.now()
+                owner: name, status: "Sold", timestamp: Date.now()
             }).then(() => {
                 showSuccess(name);
             });
@@ -237,46 +191,25 @@
             document.getElementById('plot-number-input').value = num;
             document.getElementById('booking-modal').style.display = 'flex';
         }
-
-        function closeModal() {
-            document.getElementById('booking-modal').style.display = 'none';
-        }
-
+        function closeModal() { document.getElementById('booking-modal').style.display = 'none'; }
+        
         function showSuccess(name) {
             closeModal();
-            const success = document.getElementById('success-overlay');
-            document.getElementById('congrats-text').innerText = name + ", YOUR LEGACY IS NOW SECURED";
-            success.style.display = 'flex';
+            const overlay = document.getElementById('success-overlay');
+            document.getElementById('congrats-text').innerText = name + ", YOUR LEGACY IS SECURED!";
+            overlay.style.display = 'flex';
 
-            // Confetti with Theme Colors (Gold & Emerald)
-            var end = Date.now() + (4 * 1000);
+            // রঙিন কাগজ ছেটানো (থিম কালার: Gold & Emerald)
             var colors = ['#D4AF37', '#00ffcc', '#ffffff'];
-
+            var end = Date.now() + (4 * 1000);
             (function frame() {
-                confetti({
-                    particleCount: 3,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: colors
-                });
-                confetti({
-                    particleCount: 3,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: colors
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+                if (Date.now() < end) requestAnimationFrame(frame);
             }());
-
-            setTimeout(() => { success.style.display = 'none'; }, 5000);
+            setTimeout(() => { overlay.style.display = 'none'; }, 5000);
         }
 
-        // Cursor & Background
         const ring = document.getElementById('cursor-ring');
         document.addEventListener('mousemove', e => { ring.style.left = e.clientX+'px'; ring.style.top = e.clientY+'px'; });
 
