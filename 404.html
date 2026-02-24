@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | LOST IN ETERNITY</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@300&display=swap" rel="stylesheet">
+
+    <style>
+        :root { 
+            --bg: #050505; 
+            --gold: #D4AF37; 
+            --gold-glow: rgba(212, 175, 55, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: var(--bg); 
+            color: #fff; 
+            font-family: 'Montserrat', sans-serif; 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* Ambient Void Background */
+        .void-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #111 0%, #050505 100%);
+            z-index: -1;
+        }
+
+        .error-container {
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .error-code {
+            font-family: 'Cinzel', serif;
+            font-size: 120px;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 20px;
+            text-shadow: 0 0 30px var(--gold-glow);
+            margin-bottom: 20px;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .error-message {
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        .error-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #888;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+        }
+
+        /* Premium Return Button */
+        .btn-return {
+            text-decoration: none;
+            padding: 18px 45px;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-return:hover {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 30px var(--gold-glow);
+            transform: scale(1.05);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+        }
+
+        /* Floating Particles (CSS only for 404) */
+        .particle {
+            position: absolute;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            from { transform: translateY(100vh) rotate(0deg); }
+            to { transform: translateY(-100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="void-bg"></div>
+
+    <div class="particle" style="width: 2px; height: 2px; left: 10%; animation-duration: 15s;"></div>
+    <div class="particle" style="width: 1px; height: 1px; left: 30%; animation-duration: 25s;"></div>
+    <div class="particle" style="width: 3px; height: 3px; left: 70%; animation-duration: 20s;"></div>
+    <div class="particle" style="width: 1px; height: 1px; left: 90%; animation-duration: 18s;"></div>
+
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <div class="error-message">Lost in the Void</div>
+        <p class="error-desc">
+            The coordinate you are looking for has drifted beyond the Eternal Ark's reach. 
+            Perhaps this legacy is yet to be written.
+        </p>
+        <a href="index.html" class="btn-return">Return to Gateway</a>
+    </div>
+
+</body>
+</html>
