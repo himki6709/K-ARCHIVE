@@ -1,54 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>NFT GENERATOR | ARK</title>
+    <title>ARK NFT CREATOR | ENDANGERED SPECIES</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { background: #111; color: #fff; font-family: sans-serif; text-align: center; }
+        body { background: #0a0a0a; color: #fff; font-family: 'Montserrat', sans-serif; text-align: center; padding-top: 50px; }
+        .controls { background: #1a1a1a; padding: 25px; display: inline-block; border-radius: 15px; border: 1px solid #D4AF37; margin-bottom: 30px; }
+        select, input { padding: 12px; margin: 10px; width: 280px; background: #000; border: 1px solid #D4AF37; color: #fff; border-radius: 5px; }
+        
+        /* NFT Card Design */
         .nft-card { 
-            width: 400px; height: 500px; background: linear-gradient(45deg, #000, #1a1a1a);
-            margin: 20px auto; border: 10px solid #D4AF37; position: relative; overflow: hidden;
-            box-shadow: 0 0 50px rgba(212, 175, 55, 0.5);
+            width: 380px; height: 550px; background: #000; margin: 0 auto; 
+            border: 12px solid #D4AF37; position: relative; overflow: hidden;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
         }
-        .nft-img { width: 100%; height: 60%; object-fit: cover; border-bottom: 2px solid #D4AF37; }
-        .nft-info { padding: 20px; font-family: 'Cinzel', serif; }
-        .nft-info h2 { color: #D4AF37; margin: 0; font-size: 24px; }
-        .nft-info p { font-size: 14px; letter-spacing: 2px; color: #aaa; }
-        .controls { background: #222; padding: 20px; display: inline-block; border-radius: 10px; }
-        input { padding: 10px; margin: 5px; width: 300px; }
+        .nft-image-container { 
+            width: 100%; height: 65%; background: #111; 
+            display: flex; align-items: center; justify-content: center;
+            border-bottom: 4px solid #D4AF37;
+        }
+        .nft-image-container img { width: 90%; height: 90%; object-fit: contain; }
+        .nft-content { padding: 20px; text-align: center; }
+        .nft-content h2 { font-family: 'Cinzel'; color: #D4AF37; font-size: 22px; margin: 5px 0; }
+        .nft-content p { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin: 2px 0; color: #888; }
+        .price-badge { font-family: 'Cinzel'; color: #00ffcc; font-size: 18px; margin-top: 10px; display: block; }
+        
+        .download-btn { padding: 15px 30px; background: #D4AF37; color: #000; border: none; cursor: pointer; font-weight: bold; margin-top: 20px; border-radius: 5px; }
     </style>
 </head>
 <body>
-    <h1>NFT MANUALLY CREATOR</h1>
+
+    <h1>ARK SPECIES NFT GENERATOR</h1>
+    
     <div class="controls">
-        <input type="text" id="nftName" placeholder="Customer Name"><br>
-        <input type="text" id="nftImgURL" placeholder="Customer Photo URL"><br>
-        <input type="text" id="nftPlot" placeholder="Plot ID (e.g. ROYAL-05)"><br>
-        <button onclick="generateNFT()" style="padding:10px 20px; background:#D4AF37; border:none; cursor:pointer;">UPDATE PREVIEW</button>
-        <button onclick="downloadNFT()" style="padding:10px 20px; background:#00ffcc; border:none; cursor:pointer;">DOWNLOAD NFT</button>
+        <input type="text" id="ownerName" placeholder="Owner Name/Dynasty">
+        <input type="text" id="plotID" placeholder="Plot ID (e.g. OASIS-01)">
+        <select id="sectionSelect" onchange="updatePreview()">
+            <option value="9999" data-animal="https://cdn-icons-png.flaticon.com/512/10545/10545419.png">ROYAL OASIS</option>
+            <option value="4999" data-animal="https://cdn-icons-png.flaticon.com/512/4148/4148490.png">TYCOON PLAZA</option>
+            <option value="999" data-animal="https://cdn-icons-png.flaticon.com/512/11550/11550426.png">GAMER STUDIO</option>
+            <option value="7999" data-animal="https://cdn-icons-png.flaticon.com/512/614/614131.png">CROWN SUMMIT</option>
+            <option value="5999" data-animal="https://cdn-icons-png.flaticon.com/512/4148/4148507.png">ELITE LEGACY</option>
+            <option value="3999" data-animal="https://cdn-icons-png.flaticon.com/512/10545/10545412.png">HERITAGE VAULT</option>
+            <option value="2999" data-animal="https://cdn-icons-png.flaticon.com/512/2906/2906233.png">GLOBAL HORIZON</option>
+        </select>
+        <br>
+        <button class="download-btn" onclick="downloadNFT()">DOWNLOAD NFT IMAGE</button>
     </div>
 
-    <div id="capture" class="nft-card">
-        <img id="displayImg" class="nft-img" src="https://via.placeholder.com/400x300?text=Logo+Here">
-        <div class="nft-info">
-            <p>SOVEREIGN DYNASTY</p>
-            <h2 id="displayName">OWNER NAME</h2>
-            <p id="displayPlot">PLOT: ROYAL-00</p>
-            <div style="font-size:10px; margin-top:20px; color:#D4AF37;">OFFICIAL ARK NFT ASSET</div>
+    <div id="nft-capture" class="nft-card">
+        <div class="nft-image-container">
+            <img id="animalImg" src="https://cdn-icons-png.flaticon.com/512/10545/10545419.png">
+        </div>
+        <div class="nft-content">
+            <p id="dispSection">ROYAL OASIS</p>
+            <h2 id="dispName">OWNER NAME</h2>
+            <p id="dispPlot">PLOT ID: ROYAL-00</p>
+            <span class="price-badge" id="dispPrice">$9,999</span>
         </div>
     </div>
 
     <script>
-        function generateNFT() {
-            document.getElementById('displayName').innerText = document.getElementById('nftName').value;
-            document.getElementById('displayPlot').innerText = "PLOT: " + document.getElementById('nftPlot').value;
-            document.getElementById('displayImg').src = document.getElementById('nftImgURL').value;
+        function updatePreview() {
+            const select = document.getElementById('sectionSelect');
+            const sectionName = select.options[select.selectedIndex].text;
+            const price = select.value;
+            const animalUrl = select.options[select.selectedIndex].getAttribute('data-animal');
+            
+            document.getElementById('dispSection').innerText = sectionName;
+            document.getElementById('dispPrice').innerText = "$" + price;
+            document.getElementById('animalImg').src = animalUrl;
+            document.getElementById('dispName').innerText = document.getElementById('ownerName').value || "OWNER NAME";
+            document.getElementById('dispPlot').innerText = "PLOT ID: " + (document.getElementById('plotID').value || "N/A");
         }
 
+        // রিয়েলটাইম আপডেট
+        document.getElementById('ownerName').addEventListener('input', updatePreview);
+        document.getElementById('plotID').addEventListener('input', updatePreview);
+
         function downloadNFT() {
-            html2canvas(document.querySelector("#capture")).then(canvas => {
+            html2canvas(document.querySelector("#nft-capture"), { backgroundColor: null }).then(canvas => {
                 let link = document.createElement('a');
-                link.download = 'ARK-NFT.png';
+                link.download = 'ARK-NFT-' + document.getElementById('plotID').value + '.png';
                 link.href = canvas.toDataURL();
                 link.click();
             });
