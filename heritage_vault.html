@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HERITAGE VAULT | 2500 LEGACIES</title>
+    <title>HERITAGE VAULT | 2500 SECURE UNITS</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #010103;
-            --gold: #D4AF37;
+            --bg: #0a0a0c;
             --silver: #C0C0C0;
-            --vault-blue: #0a1128;
+            --border: rgba(192, 192, 192, 0.2);
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,87 +22,115 @@
             overflow: hidden; height: 100vh;
         }
 
-        #canvas-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.6; }
+        /* Vault Blueprint Background */
+        .vault-bg {
+            position: fixed; inset: 0;
+            background-image: 
+                radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1; opacity: 0.3;
+        }
 
-        /* Navigation */
-        .nav-header {
-            position: fixed; top: 0; width: 100%; padding: 25px 40px;
+        .header-nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 40px;
             display: flex; justify-content: space-between; align-items: center; z-index: 1000;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            background: rgba(0,0,0,0.85); border-bottom: 1px solid var(--silver);
         }
-        .back-link { text-decoration: none; color: var(--silver); font-family: 'Cinzel'; font-size: 11px; letter-spacing: 2px; }
 
-        /* The Infinite Vault Wrapper */
-        .vault-viewport {
-            width: 100vw; height: 100vh; overflow: auto;
-            cursor: grab; display: flex; justify-content: center; align-items: center;
-            scrollbar-width: none; /* Firefox */
+        .nav-back { text-decoration: none; color: var(--silver); font-family: 'Cinzel'; font-size: 11px; letter-spacing: 2px; }
+
+        /* Navigation Controls */
+        .search-box {
+            position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+            z-index: 1000; display: flex; gap: 10px;
         }
-        .vault-viewport::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        .search-box input {
+            background: #111; border: 1px solid var(--silver); padding: 8px 15px;
+            color: #fff; border-radius: 2px; font-size: 12px; outline: none;
+        }
+
+        /* Scrollable Grid Viewport */
+        .viewport {
+            width: 100vw; height: 100vh; overflow: auto;
+            padding: 150px 50px 100px 50px; cursor: crosshair;
+            scrollbar-width: thin; scrollbar-color: var(--silver) transparent;
+        }
+        .viewport::-webkit-scrollbar { width: 5px; height: 5px; }
+        .viewport::-webkit-scrollbar-thumb { background: var(--silver); }
 
         .vault-grid {
             display: grid;
-            grid-template-columns: repeat(50, 25px); /* 50x50 = 2500 plots */
-            gap: 5px; padding: 200px;
-            background: radial-gradient(circle, var(--vault-blue) 0%, transparent 80%);
+            grid-template-columns: repeat(50, 100px); /* 50 cols x 50 rows = 2500 plots */
+            gap: 12px;
         }
 
-        /* Plot Design */
+        /* Vault Plot Property */
         .plot {
-            width: 25px; height: 25px; border: 1px solid rgba(192, 192, 192, 0.1);
-            background: rgba(255, 255, 255, 0.02); cursor: pointer;
-            transition: 0.2s; position: relative;
+            width: 100px; height: 100px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            position: relative; cursor: pointer;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .plot:hover {
-            background: var(--silver); transform: scale(3);
-            z-index: 1000; box-shadow: 0 0 15px var(--silver);
-            border-radius: 2px;
-        }
-        .plot.sold { border-color: var(--silver); background: rgba(192, 192, 192, 0.2); }
-        .plot.sold::after {
-            content: ''; position: absolute; inset: 6px;
-            background: var(--silver); border-radius: 50%; box-shadow: 0 0 5px var(--silver);
+            background: var(--silver); color: #000;
+            transform: scale(1.15) translateZ(20px);
+            box-shadow: 0 0 30px rgba(192, 192, 192, 0.4);
+            z-index: 100;
         }
 
-        /* Float Info */
-        .info-panel {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            width: 350px; background: rgba(0,0,0,0.95); border-top: 2px solid var(--silver);
-            padding: 20px; text-align: center; backdrop-filter: blur(10px);
-            opacity: 0; pointer-events: none; transition: 0.4s;
-        }
-        .plot:hover ~ .info-panel, .info-panel:hover { opacity: 1; pointer-events: all; }
+        .plot-id { position: absolute; top: 5px; left: 8px; font-size: 9px; opacity: 0.5; font-family: 'Cinzel'; }
+        .plot-dim { position: absolute; bottom: 5px; font-size: 7px; opacity: 0.4; letter-spacing: 1px; }
+        .plot i { font-size: 22px; opacity: 0.2; }
 
-        .vault-img { width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--silver); margin-bottom: 10px; }
-        .vault-name { font-family: 'Cinzel'; color: var(--silver); font-size: 16px; margin-bottom: 5px; }
-        .vault-link { font-size: 10px; color: #777; text-decoration: none; border-bottom: 1px solid #333; }
+        /* Sold Status */
+        .plot.locked { border-color: #fff; background: rgba(192, 192, 192, 0.15); }
+        .plot.locked i { opacity: 1; color: var(--silver); }
 
-        .ui-hint {
-            position: fixed; bottom: 30px; right: 30px; font-size: 10px;
-            color: #444; font-family: 'Cinzel'; letter-spacing: 2px;
+        /* Info Overlay */
+        .vault-panel {
+            position: fixed; bottom: 40px; right: 40px; width: 300px;
+            background: rgba(5,5,5,0.98); border: 1px solid var(--silver);
+            padding: 25px; backdrop-filter: blur(15px); opacity: 0;
+            transform: scale(0.9); transition: 0.4s; pointer-events: none;
+            z-index: 2000;
         }
+        .plot:hover ~ .vault-panel, .vault-panel:hover { opacity: 1; transform: scale(1); pointer-events: all; }
+
+        .v-img { width: 55px; height: 55px; border: 1px solid var(--silver); margin-bottom: 12px; }
+        .v-name { font-family: 'Cinzel'; color: var(--silver); font-size: 17px; margin-bottom: 5px; }
+        .v-price { color: #00ff00; font-size: 13px; font-weight: bold; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas-bg"></canvas>
+    <div class="vault-bg"></div>
 
-    <header class="nav-header">
-        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> EXIT VAULT</a>
-        <div style="font-family:'Cinzel'; color:var(--silver); font-size:10px; letter-spacing:2px;">LEVEL 03: HERITAGE VAULT</div>
+    <header class="header-nav">
+        <a href="index.html" class="nav-back"><i class="fa-solid fa-lock"></i> EXIT VAULT</a>
+        <div style="text-align: right;">
+            <p style="font-family:'Cinzel'; color:var(--silver); font-size:12px; letter-spacing:3px;">HERITAGE VAULT</p>
+            <p style="font-size: 8px; color: #666;">2,500 SECURE PLOTS | DIM: 100x100</p>
+        </div>
     </header>
 
-    <div class="ui-hint">DRAG TO EXPLORE | HOVER TO FOCUS</div>
+    <div class="search-box">
+        <input type="number" id="vaultSearch" placeholder="UNIT NUMBER (1-2500)">
+        <button onclick="findUnit()" style="background:var(--silver); border:none; padding:8px 15px; cursor:pointer; font-weight:bold; font-size:10px;">SCAN</button>
+    </div>
 
-    <div class="vault-viewport" id="viewport">
-        <div class="vault-grid" id="plotGrid">
+    <div class="viewport" id="vPort">
+        <div class="vault-grid" id="vGrid">
             </div>
 
-        <div class="info-panel" id="infoPanel">
-            <img src="" id="vImg" class="vault-img" style="display:none;">
-            <h3 class="vault-name" id="vName">UNCLAIMED HERITAGE</h3>
-            <p id="vMsg" style="font-size: 11px; color: #888; margin-bottom: 12px;">This unit is vacant. Price: $79</p>
-            <a href="#" id="vLink" target="_blank" class="vault-link">VIEW LEGACY</a>
+        <div class="vault-panel" id="vPanel">
+            <img src="" id="vImg" class="v-img">
+            <h3 id="vName" class="v-name">VAULT UNLOCKED</h3>
+            <p id="vPrice" class="v-price">$79.00</p>
+            <p id="vMsg" style="font-size: 11px; color: #999; line-height: 1.5;">This 100x100 unit is ready for your legacy. High-security digital storage.</p>
+            <a href="#" id="vLink" target="_blank" style="display:none; color:var(--silver); font-size:10px; margin-top:12px; text-decoration:none; border-bottom:1px solid;">OPEN RECORD →</a>
         </div>
     </div>
 
@@ -123,82 +151,61 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        const grid = document.getElementById('plotGrid');
-        const vName = document.getElementById('vName');
-        const vImg = document.getElementById('vImg');
-        const vLink = document.getElementById('vLink');
-        const vMsg = document.getElementById('vMsg');
+        const grid = document.getElementById('vGrid');
 
-        // Fetch Level 03 Data
-        const plotsRef = ref(db, 'heritage_vault');
-        onValue(plotsRef, (snapshot) => {
+        onValue(ref(db, 'heritage_vault'), (snapshot) => {
             const data = snapshot.val() || {};
             renderVault(data);
         });
 
         function renderVault(data) {
             grid.innerHTML = '';
-            const fragment = document.createDocumentFragment();
+            const frag = document.createDocumentFragment();
             for (let i = 1; i <= 2500; i++) {
                 const plot = document.createElement('div');
                 plot.className = 'plot';
+                plot.id = "unit-" + i;
                 const pData = data[i];
 
-                if (pData) plot.classList.add('sold');
-                
+                plot.innerHTML = `<span class="plot-id">HV-${i}</span>
+                                 <i class="fa-solid ${pData ? 'fa-vault' : 'fa-box-open'}"></i>
+                                 <span class="plot-dim">100x100</span>`;
+
+                if (pData) plot.classList.add('locked');
+
                 plot.onmouseenter = () => {
                     if (pData) {
-                        vName.innerText = pData.name;
-                        vImg.src = pData.image;
-                        vImg.style.display = 'inline-block';
-                        vMsg.innerText = pData.message || "A preserved legacy in the Vault.";
-                        vLink.href = pData.link;
-                        vLink.style.display = 'inline-block';
+                        document.getElementById('vName').innerText = pData.name;
+                        document.getElementById('vPrice').innerText = "SECURED";
+                        document.getElementById('vPrice').style.color = "#C0C0C0";
+                        document.getElementById('vImg').src = pData.image;
+                        document.getElementById('vImg').style.display = 'block';
+                        document.getElementById('vMsg').innerText = pData.message || "A preserved record in the Heritage Vault.";
+                        document.getElementById('vLink').href = pData.link;
+                        document.getElementById('vLink').style.display = 'block';
                     } else {
-                        vName.innerText = "VAULT UNIT #" + i;
-                        vImg.style.display = 'none';
-                        vMsg.innerText = "Available for preservation. Price: $79";
-                        vLink.style.display = 'none';
+                        document.getElementById('vName').innerText = "UNIT HV-" + i;
+                        document.getElementById('vPrice').innerText = "$79.00";
+                        document.getElementById('vPrice').style.color = "#00ff00";
+                        document.getElementById('vImg').style.display = 'none';
+                        document.getElementById('vMsg').innerText = "Secure this 100x100 unit. Heritage level preservation.";
+                        document.getElementById('vLink').style.display = 'none';
                     }
                 };
-                fragment.appendChild(plot);
+                frag.appendChild(plot);
             }
-            grid.appendChild(fragment);
+            grid.appendChild(frag);
         }
 
-        // Mouse Drag to Scroll Logic
-        const slider = document.getElementById('viewport');
-        let isDown = false; let startX; let startY; let scrollLeft; let scrollTop;
-
-        slider.addEventListener('mousedown', (e) => {
-            isDown = true; slider.style.cursor = 'grabbing';
-            startX = e.pageX - slider.offsetLeft; startY = e.pageY - slider.offsetTop;
-            scrollLeft = slider.scrollLeft; scrollTop = slider.scrollTop;
-        });
-        slider.addEventListener('mouseleave', () => { isDown = false; slider.style.cursor = 'grab'; });
-        slider.addEventListener('mouseup', () => { isDown = false; slider.style.cursor = 'grab'; });
-        slider.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - slider.offsetLeft; const y = e.pageY - slider.offsetTop;
-            const walkX = (x - startX) * 2; const walkY = (y - startY) * 2;
-            slider.scrollLeft = scrollLeft - walkX; slider.scrollTop = scrollTop - walkY;
-        });
-
-        // Simple Star Background
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        function res() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.onresize = res; res();
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            for(let i=0; i<100; i++) {
-                ctx.fillStyle = "rgba(255,255,255," + Math.random() + ")";
-                ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*1, 0, Math.PI*2); ctx.fill();
+        window.findUnit = function() {
+            const val = document.getElementById('vaultSearch').value;
+            const target = document.getElementById('unit-' + val);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                target.style.background = "#fff";
+                setTimeout(() => target.style.background = "", 2000);
             }
-            requestAnimationFrame(draw);
         }
-        draw();
     </script>
 </body>
 </html>
