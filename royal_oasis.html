@@ -36,7 +36,6 @@
         .section-intro h1 { font-family: 'Cinzel'; font-size: 38px; letter-spacing: 15px; color: var(--royal-emerald); margin-bottom: 10px; }
         .section-intro p { font-size: 11px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
 
-        /* Grid Setup */
         .oasis-container { max-width: 1300px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
         .plot-unit { aspect-ratio: 1/1; background: var(--glass); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: 0.4s ease; }
         .plot-unit:hover { transform: translateY(-10px); border-color: var(--royal-emerald); background: rgba(0, 255, 204, 0.05); box-shadow: 0 0 30px rgba(0, 255, 204, 0.15); }
@@ -45,23 +44,20 @@
         .plot-status { font-size: 9px; color: var(--royal-emerald); text-transform: uppercase; margin-top: 5px; }
         .plot-price { position: absolute; bottom: 12px; font-size: 10px; color: #fff; font-family: 'Cinzel'; }
 
-        /* Assets Section */
         .asset-showcase { background: rgba(212, 175, 55, 0.02); border-top: 1px solid var(--border); padding: 80px 6%; text-align: center; }
         .asset-grid { display: flex; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap; }
-        .asset-item { max-width: 300px; padding: 30px; border: 1px solid var(--border); background: var(--glass); }
+        .asset-item { max-width: 300px; padding: 30px; border: 1px solid var(--border); background: var(--glass); transition: 0.3s; }
+        .asset-item:hover { border-color: var(--gold); background: rgba(212, 175, 55, 0.05); }
         .asset-item i { font-size: 30px; color: var(--gold); margin-bottom: 15px; }
         .asset-item h4 { font-family: 'Cinzel'; font-size: 14px; margin-bottom: 10px; color: var(--royal-emerald); }
         .asset-item p { font-size: 11px; color: #888; line-height: 1.6; }
 
-        /* Modal & Overlay */
-        #booking-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        #booking-modal, #success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
         .modal-content { background: #0a0a0a; border: 1px solid var(--gold); padding: 40px; width: 90%; max-width: 450px; text-align: center; }
-        .modal-content input { width: 100%; padding: 12px; margin-bottom: 15px; background: #111; border: 1px solid #333; color: #fff; }
+        .modal-content input { width: 100%; padding: 12px; margin-bottom: 15px; background: #111; border: 1px solid #333; color: #fff; font-family: 'Montserrat'; font-size: 12px; outline: none; }
         .confirm-btn { width: 100%; padding: 15px; background: var(--gold); color: #000; border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer; }
-        #success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 
         footer { padding: 50px; text-align: center; border-top: 1px solid var(--border); font-size: 10px; color: #555; letter-spacing: 2px; }
-
         @media (max-width: 768px) { .oasis-container { grid-template-columns: repeat(3, 1fr); } #cursor-ring { display: none; } body { cursor: auto; } }
     </style>
 </head>
@@ -76,7 +72,7 @@
             <button class="buy-plot-btn" onclick="openModal()">BUY PLOT</button>
             <div class="branding">
                 <div class="company-name">ARK ENTERPRISE</div>
-                <div class="owner-name">KAWSAR - Founder & CEO</div>
+                <div class="owner-name">KAWSAR - CEO</div>
             </div>
         </div>
     </header>
@@ -114,18 +110,12 @@
             <h3 style="color:var(--gold); margin-bottom:20px; font-family:'Cinzel';">ACQUIRE PLOT</h3>
             <input type="text" id="owner-name" placeholder="YOUR NAME / DYNASTY">
             <input type="number" id="plot-number-input" placeholder="PLOT NUMBER (1-35)">
-            <input type="text" id="owner-logo" placeholder="LOGO LINK">
-            <input type="text" id="owner-link" placeholder="WEBSITE LINK">
-            <button class="confirm-btn" onclick="bookPlot()">INITIATE ACQUISITION</button>
-            <button onclick="closeModal()" style="background:transparent; color:#555; border:none; margin-top:15px; cursor:pointer;">CANCEL</button>
+            <button class="confirm-btn" onclick="bookPlot()">SUBMIT INQUIRY</button>
+            <button onclick="closeModal()" style="background:transparent; color:#555; border:none; margin-top:15px; cursor:pointer; font-size:10px;">CANCEL</button>
         </div>
     </div>
 
-    <div id="success-overlay">
-        <h1 style="color:var(--gold); font-size:40px; font-family:'Cinzel';">SUCCESS!</h1>
-        <p id="congrats-text" style="color:var(--royal-emerald); margin:20px 0; letter-spacing:2px;"></p>
-        <p style="color:#555;">RELOADING OASIS...</p>
-    </div>
+    <div id="success-overlay"></div>
 
     <footer>© 2026 ARK ENTERPRISE | DESIGNED FOR SOVEREIGNS</footer>
 
@@ -146,12 +136,13 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         window.db = db;
+        window.dbRef = ref;
+        window.dbSet = set;
 
-        const grid = document.getElementById('plots-grid');
-
-        // রিয়েলটাইম ৩৫টি প্লট রেন্ডারিং
+        // Render 35 Plots Real-time
         onValue(ref(db, 'royal_oasis/'), (snapshot) => {
             const data = snapshot.val() || {};
+            const grid = document.getElementById('plots-grid');
             grid.innerHTML = '';
             for (let i = 1; i <= 35; i++) {
                 const id = `ROYAL-${i < 10 ? '0'+i : i}`;
@@ -163,7 +154,7 @@
                 plot.className = `plot-unit ${isSold ? 'sold' : ''}`;
                 plot.innerHTML = `
                     <span class="plot-id">${id}</span>
-                    <span class="plot-status">${isSold ? 'Sold' : 'Available'}</span>
+                    <span class="plot-status">${isSold ? 'SOLD' : 'AVAILABLE'}</span>
                     <i class="fa-solid fa-crown" style="font-size: 12px; margin-top:8px; color:${isSold ? '#ff0033' : 'rgba(212,175,55,0.2)'}"></i>
                     <span class="plot-price">$${price.toLocaleString()}</span>
                 `;
@@ -171,19 +162,6 @@
                 grid.appendChild(plot);
             }
         });
-
-        window.bookPlot = () => {
-            const name = document.getElementById('owner-name').value;
-            const plotNum = document.getElementById('plot-number-input').value;
-            if(!name || !plotNum) return alert("Please fill Name and Plot Number");
-
-            const id = `ROYAL-${plotNum < 10 ? '0'+plotNum : plotNum}`;
-            set(ref(db, 'royal_oasis/' + id), {
-                owner: name, status: "Sold", timestamp: Date.now()
-            }).then(() => {
-                showSuccess(name);
-            });
-        };
     </script>
 
     <script>
@@ -192,27 +170,45 @@
             document.getElementById('booking-modal').style.display = 'flex';
         }
         function closeModal() { document.getElementById('booking-modal').style.display = 'none'; }
-        
+
+        function bookPlot() {
+            const name = document.getElementById('owner-name').value;
+            const plotNum = document.getElementById('plot-number-input').value;
+            if(!name || !plotNum) return alert("Please fill Name and Plot Number");
+            const id = `ROYAL-${plotNum < 10 ? '0'+plotNum : plotNum}`;
+            
+            window.dbSet(window.dbRef(window.db, 'royal_oasis_inquiries/' + id), {
+                name: name, plotID: id, timestamp: Date.now()
+            }).then(() => { showSuccess(name); });
+        }
+
         function showSuccess(name) {
             closeModal();
             const overlay = document.getElementById('success-overlay');
-            document.getElementById('congrats-text').innerText = name + ", YOUR LEGACY IS SECURED!";
+            overlay.innerHTML = `
+                <div style="background:#0a0a0a; border:2px solid #D4AF37; padding:40px; max-width:500px; text-align:center;">
+                    <h1 style="color:#D4AF37; font-family:'Cinzel';">INQUIRY RECEIVED!</h1>
+                    <p style="margin:20px 0; color:#00ffcc;">Congratulations ${name}, your interest has been recorded.</p>
+                    <div style="text-align:left; background:rgba(255,255,255,0.05); padding:20px; border-radius:10px; font-size:12px; color:#ccc; line-height:1.8;">
+                        <p style="color:#D4AF37; font-weight:bold; margin-bottom:10px;">NEXT STEPS: Provide these to Support:</p>
+                        <ul style="list-style:none;">
+                            <li>✅ Transaction ID / Payment Proof</li>
+                            <li>✅ Your Brand Logo (Image Link)</li>
+                            <li>✅ Your Website or Social Link</li>
+                            <li>✅ Contact Email or Phone</li>
+                        </ul>
+                    </div>
+                    <button onclick="location.reload()" style="margin-top:25px; background:#D4AF37; color:#000; padding:12px 25px; border:none; font-family:'Cinzel'; font-weight:900; cursor:pointer;">CLOSE</button>
+                </div>
+            `;
             overlay.style.display = 'flex';
-
-            // রঙিন কাগজ ছেটানো (থিম কালার: Gold & Emerald)
             var colors = ['#D4AF37', '#00ffcc', '#ffffff'];
-            var end = Date.now() + (4 * 1000);
-            (function frame() {
-                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
-                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
-            setTimeout(() => { overlay.style.display = 'none'; }, 5000);
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: colors });
         }
 
+        // Custom Cursor & Star Field
         const ring = document.getElementById('cursor-ring');
         document.addEventListener('mousemove', e => { ring.style.left = e.clientX+'px'; ring.style.top = e.clientY+'px'; });
-
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
