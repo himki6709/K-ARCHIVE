@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELITE LEGACY | 500 GUARDIANS</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #020205;
+            --blue-gold: #b39b5d;
+            --gold: #D4AF37;
+            --glass: rgba(255, 255, 255, 0.02);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
+            overflow: hidden; height: 100vh;
+        }
+
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.5; }
+
+        .header-nav {
+            position: fixed; top: 0; width: 100%; padding: 25px 40px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+        }
+        .nav-back {
+            text-decoration: none; color: var(--gold); font-family: 'Cinzel';
+            font-size: 11px; letter-spacing: 2px; display: flex; align-items: center; gap: 10px;
+        }
+
+        /* Galactic Map Container */
+        .galaxy-container {
+            height: 100vh; width: 100vw; display: flex; justify-content: center;
+            align-items: center; overflow: hidden;
+        }
+
+        .scroll-area {
+            display: grid;
+            grid-template-columns: repeat(25, 30px); /* 25x20 = 500 plots */
+            gap: 8px;
+            padding: 100px;
+            transform: scale(0.9);
+            transition: 0.5s ease-out;
+        }
+
+        /* Plot Design - Minimalist for 500 Units */
+        .plot {
+            width: 30px; height: 30px; background: var(--glass);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 8px; color: var(--gold); cursor: pointer;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .plot:hover {
+            transform: scale(2.5);
+            background: var(--gold); color: #000;
+            box-shadow: 0 0 20px var(--gold);
+            z-index: 500;
+            border-radius: 2px;
+        }
+
+        .plot.sold { border-color: #fff; background: rgba(255,255,255,0.15); }
+        .plot.sold::after { content: ''; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; }
+
+        /* Floating Info Portal */
+        .portal-card {
+            position: fixed; left: 50px; bottom: 50px; width: 300px;
+            background: rgba(0,0,0,0.9); border: 1px solid var(--gold);
+            padding: 25px; backdrop-filter: blur(10px);
+            opacity: 0; transform: translateX(-20px); transition: 0.4s;
+            pointer-events: none;
+        }
+        .plot:hover ~ .portal-card, .portal-card:hover { opacity: 1; transform: translateX(0); pointer-events: all; }
+
+        .portal-img { width: 50px; height: 50px; border: 1px solid var(--gold); margin-bottom: 15px; }
+        .portal-name { font-family: 'Cinzel'; font-size: 16px; color: var(--gold); margin-bottom: 10px; }
+        .portal-link { font-size: 10px; color: #aaa; text-decoration: none; border-bottom: 1px solid #444; }
+
+        .sector-info {
+            position: absolute; top: 100px; right: 50px; text-align: right;
+            font-family: 'Cinzel'; color: var(--gold); opacity: 0.4;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-area { grid-template-columns: repeat(10, 30px); transform: scale(0.7); }
+            .portal-card { width: 80%; left: 10%; bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <header class="header-nav">
+        <a href="index.html" class="nav-back"><i class="fa-solid fa-arrow-left"></i> THE ARK MAIN</a>
+        <div style="font-family:'Cinzel'; font-size: 10px; color: var(--gold); letter-spacing: 2px;">SECTOR: ELITE LEGACY</div>
+    </header>
+
+    <div class="sector-info">
+        <h1 style="letter-spacing: 10px; font-size: 30px;">LEVEL 02</h1>
+        <p>500 RESERVED UNITS</p>
+    </div>
+
+    <div class="galaxy-container">
+        <div class="scroll-area" id="plotGrid">
+            </div>
+
+        <div class="portal-card" id="portalCard">
+            <img src="" id="portalImg" class="portal-img" style="display:none;">
+            <h3 class="portal-name" id="portalName">EMPTY SECTOR</h3>
+            <p id="portalMsg" style="font-size: 12px; color: #888; margin-bottom: 15px;">Available for legacy preservation. Price: $249</p>
+            <a href="#" id="portalLink" target="_blank" class="portal-link">CONNECT TO GUARDIAN</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const grid = document.getElementById('plotGrid');
+        const portalCard = document.getElementById('portalCard');
+        const portalName = document.getElementById('portalName');
+        const portalImg = document.getElementById('portalImg');
+        const portalLink = document.getElementById('portalLink');
+        const portalMsg = document.getElementById('portalMsg');
+
+        // Realtime Data Fetching for Level 02
+        const plotsRef = ref(db, 'elite_legacy');
+        onValue(plotsRef, (snapshot) => {
+            const data = snapshot.val() || {};
+            renderEliteGrid(data);
+        });
+
+        function renderEliteGrid(data) {
+            grid.innerHTML = '';
+            for (let i = 1; i <= 500; i++) {
+                const plot = document.createElement('div');
+                plot.className = 'plot';
+                const pData = data[i];
+
+                if (pData) plot.classList.add('sold');
+                plot.innerText = i;
+
+                plot.onmouseenter = () => {
+                    if (pData) {
+                        portalName.innerText = pData.name;
+                        portalImg.src = pData.image;
+                        portalImg.style.display = 'block';
+                        portalMsg.innerText = pData.message || "Elite Member of the Eternal Ark.";
+                        portalLink.href = pData.link;
+                        portalLink.style.display = 'inline-block';
+                    } else {
+                        portalName.innerText = "SECTOR #" + i;
+                        portalImg.style.display = 'none';
+                        portalMsg.innerText = "Available for legacy preservation. Price: $249";
+                        portalLink.style.display = 'none';
+                    }
+                };
+                grid.appendChild(plot);
+            }
+        }
+
+        // Particle Background
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.onresize = resize; resize();
+        for(let i=0; i<300; i++) stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1 });
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height); ctx.fillStyle = "#fff";
+            stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill(); });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>
