@@ -1,60 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DEED GENERATOR | ARK ENTERPRISE</title>
+    <title>ARK DEED GENERATOR | MASTER TOOL</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body { background: #333; font-family: 'Cinzel', serif; text-align: center; color: #fff; }
+        body { background: #222; font-family: 'Cinzel', serif; color: #fff; padding: 20px; }
+        .input-panel { background: #111; padding: 20px; border: 1px solid #D4AF37; display: inline-block; border-radius: 10px; margin-bottom: 30px; }
+        input, select { padding: 10px; margin: 5px; width: 180px; background: #000; color: #fff; border: 1px solid #444; }
+        
+        /* Deed Design */
         .deed-paper { 
-            width: 800px; height: 1100px; background: #fff; color: #000;
-            margin: 20px auto; padding: 60px; border: 15px double #D4AF37; box-sizing: border-box;
+            width: 800px; height: 1050px; background: #fff; color: #000;
+            margin: 0 auto; padding: 70px; border: 20px double #D4AF37; box-sizing: border-box;
             background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
+            box-shadow: 0 0 30px rgba(0,0,0,0.5); position: relative;
         }
-        .header { border-bottom: 2px solid #D4AF37; padding-bottom: 20px; }
-        .content { margin-top: 50px; line-height: 2; text-align: left; font-size: 18px; }
-        .signature-area { margin-top: 100px; display: flex; justify-content: space-between; }
-        .sig-box { border-top: 1px solid #000; width: 250px; text-align: center; }
-        .signature-font { font-family: 'Dancing Script', cursive; font-size: 30px; color: #000; }
-        .input-panel { background: #111; padding: 20px; margin-bottom: 20px; }
-        input, select { padding: 10px; margin: 5px; width: 200px; }
+        .header { text-align: center; border-bottom: 2px solid #D4AF37; padding-bottom: 20px; margin-bottom: 40px; }
+        .content { font-family: 'Times New Roman', serif; font-size: 20px; line-height: 1.8; text-align: justify; }
+        .info-row { margin: 15px 0; border-bottom: 1px dashed #ccc; padding-bottom: 5px; }
+        .signature-section { margin-top: 80px; display: flex; justify-content: space-between; }
+        .sig-box { border-top: 1px solid #000; width: 250px; text-align: center; padding-top: 10px; }
+        .sig-font { font-family: 'Dancing Script', cursive; font-size: 32px; height: 40px; }
+        
+        .gen-btn { padding: 10px 20px; background: #D4AF37; color: #000; border: none; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
+
     <div class="input-panel">
-        <input type="text" id="cName" placeholder="Owner Name">
-        <select id="cSection">
+        <input type="text" id="ownerName" placeholder="Owner Name">
+        <select id="sectionName">
             <option>ROYAL OASIS</option>
             <option>TYCOON PLAZA</option>
             <option>GAMER STUDIO</option>
+            <option>CROWN SUMMIT</option>
+            <option>ELITE LEGACY</option>
+            <option>HERITAGE VAULT</option>
+            <option>GLOBAL HORIZON</option>
         </select>
-        <input type="text" id="cPlot" placeholder="Plot Number">
-        <input type="text" id="cPrice" placeholder="Price (e.g. $9,999)">
-        <button onclick="updateDeed()" style="padding:10px; background:#D4AF37;">GENERATE DEED</button>
-        <button onclick="downloadDeed()" style="padding:10px; background:#00ffcc;">DOWNLOAD PDF/IMG</button>
+        <input type="text" id="plotID" placeholder="Plot ID">
+        <input type="text" id="priceVal" placeholder="Price ($)">
+        <button class="gen-btn" onclick="updateDeed()">GENERATE DEED</button>
+        <button onclick="downloadDeed()" style="padding:10px; background:#00ffcc; border:none; cursor:pointer; font-weight:bold;">DOWNLOAD PNG</button>
     </div>
 
     <div id="deed-capture" class="deed-paper">
         <div class="header">
-            <h1 style="font-size: 40px; margin:0;">GOLDEN TITLE DEED</h1>
-            <p>OFFICIAL OWNERSHIP DOCUMENT | ARK ENTERPRISE</p>
+            <h1 style="font-size: 45px; margin:0;">TITLE DEED OF ARK</h1>
+            <p style="letter-spacing: 5px;">SOVEREIGN OWNERSHIP RECORD</p>
         </div>
+        
         <div class="content">
-            This document certifies that <b id="dName">[NAME]</b> is the sole legal owner of 
-            the digital plot located within the <b>ARK METAVERSE</b>. <br><br>
-            <b>SECTION:</b> <span id="dSection">[SECTION NAME]</span> <br>
-            <b>PLOT NUMBER:</b> <span id="dPlot">[PLOT ID]</span> <br>
-            <b>ACQUISITION PRICE:</b> <span id="dPrice">[PRICE]</span> <br><br>
-            The owner is entitled to all digital rights, including the associated NFT Asset 
-            and eternal presence on the Global Creator Homepage.
+            This is to certify that, under the laws of <b>ARK ENTERPRISE</b>, the individual/entity known as:
+            <div class="info-row"><b>NAME:</b> <span id="dName">________________________</span></div>
+            
+            is the recognized owner of the following digital asset within the Ark Metaverse:
+            <div class="info-row"><b>DISTRICT:</b> <span id="dSection">________________________</span></div>
+            <div class="info-row"><b>PLOT ID:</b> <span id="dPlot">________________________</span></div>
+            <div class="info-row"><b>VALUE:</b> <span id="dPrice">________________________</span></div>
+            
+            <p style="margin-top:30px;">
+                The owner holds eternal rights to display their brand, logo, and identity upon this plot. This deed is backed by the Global Creator Homepage Heritage Protocol.
+            </p>
         </div>
-        <div class="signature-area">
+
+        <div class="signature-section">
             <div class="sig-box">
-                <div class="signature-font">Kawsar</div>
+                <div class="sig-font">Kawsar</div>
                 <p>CEO, ARK ENTERPRISE</p>
             </div>
             <div class="sig-box">
-                <div id="dSig" class="signature-font">Signature</div>
+                <div id="dSig" class="sig-font"></div>
                 <p>OWNER SIGNATURE</p>
             </div>
         </div>
@@ -62,17 +79,18 @@
 
     <script>
         function updateDeed() {
-            document.getElementById('dName').innerText = document.getElementById('cName').value;
-            document.getElementById('dSection').innerText = document.getElementById('cSection').value;
-            document.getElementById('dPlot').innerText = document.getElementById('cPlot').value;
-            document.getElementById('dPrice').innerText = document.getElementById('cPrice').value;
-            document.getElementById('dSig').innerText = document.getElementById('cName').value;
+            const name = document.getElementById('ownerName').value;
+            document.getElementById('dName').innerText = name;
+            document.getElementById('dSection').innerText = document.getElementById('sectionName').value;
+            document.getElementById('dPlot').innerText = document.getElementById('plotID').value;
+            document.getElementById('dPrice').innerText = "$" + document.getElementById('priceVal').value;
+            document.getElementById('dSig').innerText = name;
         }
 
         function downloadDeed() {
             html2canvas(document.querySelector("#deed-capture")).then(canvas => {
                 let link = document.createElement('a');
-                link.download = 'Golden-Deed.png';
+                link.download = 'ARK-DEED-' + document.getElementById('plotID').value + '.png';
                 link.href = canvas.toDataURL();
                 link.click();
             });
