@@ -14,32 +14,25 @@
             --gold: #D4AF37; 
             --gold-bright: #FFD700;
             --border-low: rgba(212, 175, 55, 0.15);
-            --royal-emerald: #00ffcc;
-            --tycoon-silver: #E0E0E0;
-            --creator-red: #ff0033;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
-            overflow-x: hidden; cursor: none; /* Custom Cursor */
+            overflow-x: hidden; cursor: none;
         }
 
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.5; }
 
-        /* --- Custom Cursor --- */
-        #cursor { 
-            position: fixed; width: 10px; height: 10px; background: var(--gold); 
-            border-radius: 50%; pointer-events: none; z-index: 10001; 
-            transform: translate(-50%, -50%); transition: transform 0.1s ease-out;
-        }
+        /* --- Updated Custom Cursor (No Dot) --- */
         #cursor-outline {
-            position: fixed; width: 35px; height: 35px; border: 1.5px solid var(--gold); 
+            position: fixed; width: 25px; height: 25px; border: 1.5px solid var(--gold); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
-            transform: translate(-50%, -50%); transition: 0.15s ease-out;
+            transform: translate(-50%, -50%); transition: 0.1s ease-out;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
         }
 
-        /* --- Header --- */
+        /* --- Header & Block Button --- */
         header {
             position: fixed; top: 0; width: 100%; padding: 25px 6%;
             display: flex; justify-content: space-between; align-items: center; z-index: 5000;
@@ -47,9 +40,16 @@
         }
         .logo-box { display: flex; flex-direction: column; }
         .logo { font-family: 'Cinzel'; font-size: 26px; letter-spacing: 10px; color: var(--gold); text-decoration: none; font-weight: 900; }
+        
+        /* Official Gateway Block Style */
         .registry-btn { 
             font-size: 10px; color: var(--gold); letter-spacing: 2px; cursor: pointer; 
-            margin-top: 5px; text-transform: uppercase; background: none; border: none; font-family: 'Cinzel';
+            margin-top: 10px; text-transform: uppercase; background: rgba(212, 175, 55, 0.05); 
+            border: 1px solid var(--gold); padding: 8px 15px; font-family: 'Cinzel';
+            transition: 0.4s; display: inline-block;
+        }
+        .registry-btn:hover { 
+            background: var(--gold); color: #000; box-shadow: 0 0 15px var(--gold);
         }
 
         .wallet-nav { display: flex; gap: 15px; }
@@ -57,74 +57,65 @@
             padding: 10px 20px; border: 1px solid var(--gold); background: transparent;
             color: var(--gold); font-family: 'Cinzel'; font-size: 10px; cursor: pointer; transition: 0.4s;
         }
-        .btn-connect:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px var(--gold); }
+        .btn-connect:hover { background: var(--gold); color: #000; }
 
-        /* --- Main Grid --- */
-        .main-container { padding: 180px 6% 80px; max-width: 1400px; margin: 0 auto; text-align: center; }
+        /* --- Main Content --- */
+        .main-container { padding: 200px 6% 80px; max-width: 1400px; margin: 0 auto; text-align: center; }
         .hero-title { font-family: 'Cinzel'; font-size: 14px; letter-spacing: 12px; color: var(--gold); margin-bottom: 60px; }
 
         .gateways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
         .gate-card {
-            height: 400px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-low);
+            height: 380px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-low);
             padding: 40px; text-align: left; transition: 0.5s; text-decoration: none; color: #fff;
-            display: flex; flex-direction: column; justify-content: flex-end; position: relative;
+            display: flex; flex-direction: column; justify-content: flex-end;
         }
         .gate-card:hover { transform: translateY(-10px); border-color: var(--gold); background: rgba(212, 175, 55, 0.05); }
-        .gate-card h3 { font-family: 'Cinzel'; font-size: 22px; margin-bottom: 12px; }
-        .gate-card p { font-size: 11px; color: #aaa; line-height: 1.6; margin-bottom: 20px; }
-        
-        .price-ft { border-top: 1px solid var(--border-low); padding-top: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .price-ft span { font-family: 'Cinzel'; font-weight: bold; }
 
-        /* --- Social Bar --- */
-        .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 5000; }
-        .social-icon { 
-            width: 45px; height: 45px; border: 1px solid var(--gold); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; color: var(--gold); text-decoration: none; transition: 0.3s;
+        /* --- Footer --- */
+        .footer-ark {
+            padding: 60px 6%; text-align: center; border-top: 1px solid var(--border-low); margin-top: 50px;
+            font-size: 11px; color: #666; line-height: 2;
         }
-        .social-icon:hover { background: var(--gold); color: #000; }
+        .footer-ark strong { color: var(--gold); }
 
-        /* --- Payment Drawer --- */
+        /* --- Payment Drawer & Full Addresses --- */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100vh;
             background: #080808; border-left: 1px solid var(--gold); z-index: 9999;
-            padding: 50px 35px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto;
+            padding: 50px 30px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto;
         }
         #drawer.active { right: 0; }
-        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .close-btn { color: var(--gold); font-size: 24px; cursor: pointer; }
-
         .step-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border-low); padding: 20px; margin-bottom: 20px; }
-        .step-box h4 { font-family: 'Cinzel'; color: var(--gold); font-size: 11px; margin-bottom: 10px; border-bottom: 1px solid var(--border-low); padding-bottom: 5px; }
+        .address-title { font-size: 9px; color: var(--gold); letter-spacing: 1px; margin-top: 15px; display: block; }
+        
+        /* Full Address View */
         .address-box { 
             background: #000; padding: 12px; border: 1px dashed var(--gold); font-size: 10px; 
-            margin-top: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+            margin-top: 6px; display: flex; justify-content: space-between; align-items: center; 
+            cursor: pointer; word-break: break-all; gap: 10px;
         }
+        .address-box span { color: #ccc; }
+        .address-box i { color: var(--gold); }
+
         .action-btn { 
             width: 100%; padding: 15px; background: var(--gold); color: #000; 
             border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer; margin-top: 10px;
         }
 
-        /* --- Footer --- */
-        .footer-ark {
-            padding: 60px 6%; text-align: center; border-top: 1px solid var(--border-low); margin-top: 50px;
-            font-size: 12px; color: #666; line-height: 1.8;
-        }
-        .footer-ark strong { color: var(--gold); }
+        .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 5000; }
+        .social-icon { width: 40px; height: 40px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); text-decoration: none; transition: 0.3s; }
+        .social-icon:hover { background: var(--gold); color: #000; }
 
-        /* --- Mobile --- */
         @media (max-width: 768px) {
-            header { flex-direction: column; padding: 15px; gap: 15px; }
-            #cursor, #cursor-outline { display: none; }
+            header { flex-direction: column; padding: 20px; }
+            #cursor-outline { display: none; }
             body { cursor: auto; }
-            #drawer { max-width: 100%; }
         }
     </style>
 </head>
 <body>
 
     <canvas id="bg-canvas"></canvas>
-    <div id="cursor"></div>
     <div id="cursor-outline"></div>
 
     <header>
@@ -140,43 +131,18 @@
 
     <main class="main-container">
         <h2 class="hero-title">The Seven Gates of Eternity</h2>
-        
         <div class="gateways-grid">
-            <a href="royal_oasis.html" class="gate-card" style="border-left: 4px solid var(--royal-emerald);">
-                <h3 style="color:var(--royal-emerald)">ROYAL OASIS</h3>
+            <a href="royal_oasis.html" class="gate-card">
+                <h3>ROYAL OASIS</h3>
                 <p>Limited 30 luxury plots for Royal Dynasties.</p>
-                <div class="price-ft"><span>30 PLOTS</span> <span>$9,999</span></div>
+                <div style="border-top: 1px solid var(--border-low); padding-top:15px;">$9,999</div>
             </a>
-            <a href="tycoon_plaza.html" class="gate-card" style="border-left: 4px solid var(--tycoon-silver);">
-                <h3 style="color:var(--tycoon-silver)">TYCOON PLAZA</h3>
-                <p>Elite grounds for global business titans.</p>
-                <div class="price-ft"><span>30 PLOTS</span> <span>$4,999</span></div>
-            </a>
-            <a href="creator_studio.html" class="gate-card" style="border-left: 4px solid var(--creator-red);">
-                <h3 style="color:var(--creator-red)">GAMER STUDIO</h3>
-                <p>Top 100 creators legacy archive.</p>
-                <div class="price-ft"><span>100 PLOTS</span> <span>$999</span></div>
-            </a>
-            <a href="crown_summit.html" class="gate-card">
-                <h3 style="color:var(--gold)">CROWN SUMMIT</h3>
-                <p>100x100 plots for Ark pioneers.</p>
-                <div class="price-ft"><span>100 PLOTS</span> <span>$599</span></div>
-            </a>
-            <a href="elite_legacy.html" class="gate-card">
-                <h3>ELITE LEGACY</h3>
-                <p>Guardian units for industrial leaders.</p>
-                <div class="price-ft"><span>300 PLOTS</span> <span>$249</span></div>
-            </a>
-            <a href="heritage_vault.html" class="gate-card">
-                <h3>HERITAGE VAULT</h3>
-                <p>Family memory preservation units.</p>
-                <div class="price-ft"><span>1,500 PLOTS</span> <span>$129</span></div>
-            </a>
-            <a href="global_horizon.html" class="gate-card">
-                <h3>GLOBAL HORIZON</h3>
-                <p>Eternal citizen units for everyone.</p>
-                <div class="price-ft"><span>2,000 PLOTS</span> <span>$79</span></div>
-            </a>
+            <a href="tycoon_plaza.html" class="gate-card"><h3>TYCOON PLAZA</h3><p>Elite grounds for titans.</p><div>$4,999</div></a>
+            <a href="creator_studio.html" class="gate-card"><h3>GAMER STUDIO</h3><p>Creators legacy archive.</p><div>$999</div></a>
+            <a href="crown_summit.html" class="gate-card"><h3>CROWN SUMMIT</h3><p>Ark pioneers ground.</p><div>$599</div></a>
+            <a href="elite_legacy.html" class="gate-card"><h3>ELITE LEGACY</h3><p>Guardian units.</p><div>$249</div></a>
+            <a href="heritage_vault.html" class="gate-card"><h3>HERITAGE VAULT</h3><p>Family memory units.</p><div>$129</div></a>
+            <a href="global_horizon.html" class="gate-card"><h3>GLOBAL HORIZON</h3><p>Eternal citizen units.</p><div>$79</div></a>
         </div>
     </main>
 
@@ -191,46 +157,30 @@
     </div>
 
     <div id="drawer">
-        <div class="drawer-header">
-            <h2 style="font-family:'Cinzel'; color:var(--gold);">PAYMENT GATEWAY</h2>
-            <i class="fa-solid fa-xmark close-btn" onclick="closeDrawer()"></i>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h2 style="font-family:'Cinzel'; color:var(--gold);">REGISTRY</h2>
+            <i class="fa-solid fa-xmark" style="color:var(--gold); cursor:pointer; font-size:24px;" onclick="closeDrawer()"></i>
         </div>
 
         <div class="step-box">
-            <h4>REQUIRED INFORMATION</h4>
-            <ul style="font-size:11px; color:#aaa; list-style:none; line-height:2;">
-                <li>• Target Plot Name / Business Name</li>
-                <li>• High-Resolution Image/Logo Link</li>
-                <li>• External Website or Social Link</li>
-                <li>• Transaction Screenshot / TxID</li>
-            </ul>
-        </div>
-
-        <div class="step-box">
-            <h4>PAYMENT ADDRESSES</h4>
+            <h4 style="font-size:11px; color:var(--gold);">PAYMENT ADDRESSES</h4>
             
-            <span style="font-size:9px; color:var(--gold);">USDT / ETH (ERC20)</span>
+            <span class="address-title">USDT / ETH (ERC20)</span>
             <div class="address-box" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-                <span>0x4437...b78E</span> <i class="fa-regular fa-copy"></i>
+                <span>0x443792A4884e8e855f954ccEF910778Aff1eb78E</span> <i class="fa-regular fa-copy"></i>
             </div>
 
-            <div style="margin-top:15px;"></div>
-
-            <span style="font-size:9px; color:var(--gold);">USDT (TRC20)</span>
+            <span class="address-title">USDT (TRC20)</span>
             <div class="address-box" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-                <span>TTap...8Ws6</span> <i class="fa-regular fa-copy"></i>
+                <span>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</span> <i class="fa-regular fa-copy"></i>
             </div>
 
-            <div style="margin-top:15px;"></div>
-
-            <span style="font-size:9px; color:var(--gold);">SOLANA (SOL)</span>
+            <span class="address-title">SOLANA (SOL)</span>
             <div class="address-box" onclick="copy('8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7')">
-                <span>8jcs...ixd7</span> <i class="fa-regular fa-copy"></i>
+                <span>8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7</span> <i class="fa-regular fa-copy"></i>
             </div>
 
-            <div style="margin-top:15px;"></div>
-
-            <span style="font-size:9px; color:var(--gold);">BINANCE PAY ID</span>
+            <span class="address-title">BINANCE PAY ID</span>
             <div class="address-box" onclick="copy('912221034')">
                 <span>912221034</span> <i class="fa-regular fa-copy"></i>
             </div>
@@ -242,7 +192,36 @@
     </div>
 
     <script>
-        // Starfield Canvas
+        // Updated Cursor Logic (Outline Only)
+        const outline = document.getElementById('cursor-outline');
+        document.addEventListener('mousemove', (e) => {
+            outline.style.left = e.clientX + 'px';
+            outline.style.top = e.clientY + 'px';
+        });
+
+        function openDrawer() { document.getElementById('drawer').classList.add('active'); }
+        function closeDrawer() { document.getElementById('drawer').classList.remove('active'); }
+        function copy(text) { navigator.clipboard.writeText(text); alert("Address Copied!"); }
+
+        async function connectMetamask() {
+            if (window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    alert("Connected: " + accounts[0]);
+                } catch (err) { alert("Denied."); }
+            } else { window.open('https://metamask.io/download/', '_blank'); }
+        }
+
+        async function connectPhantom() {
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    const resp = await window.solana.connect();
+                    alert("Connected: " + resp.publicKey.toString());
+                } catch (err) { alert("Denied."); }
+            } else { window.open('https://phantom.app/download', '_blank'); }
+        }
+
+        // Background Animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -255,46 +234,6 @@
         for(let i=0; i<100; i++) stars.push(new Star());
         function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
         animate();
-
-        // Cursor Logic
-        const cursor = document.getElementById('cursor');
-        const outline = document.getElementById('cursor-outline');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            outline.style.left = e.clientX + 'px';
-            outline.style.top = e.clientY + 'px';
-        });
-
-        // Drawer & Copy
-        function openDrawer() { document.getElementById('drawer').classList.add('active'); }
-        function closeDrawer() { document.getElementById('drawer').classList.remove('active'); }
-        function copy(text) { navigator.clipboard.writeText(text); alert("Address Copied!"); }
-
-        // Metamask Fix
-        async function connectMetamask() {
-            if (window.ethereum) {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    alert("Connected: " + accounts[0]);
-                } catch (err) { alert("Connection Rejected."); }
-            } else {
-                window.open('https://metamask.io/download/', '_blank');
-            }
-        }
-
-        // Phantom Fix
-        async function connectPhantom() {
-            const isPhantom = window.solana && window.solana.isPhantom;
-            if (isPhantom) {
-                try {
-                    const resp = await window.solana.connect();
-                    alert("Connected: " + resp.publicKey.toString());
-                } catch (err) { alert("Connection Rejected."); }
-            } else {
-                window.open('https://phantom.app/download', '_blank');
-            }
-        }
     </script>
 </body>
 </html>
