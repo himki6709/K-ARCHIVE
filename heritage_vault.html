@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HERITAGE VAULT | 2500 LEGACIES</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #010103;
+            --gold: #D4AF37;
+            --silver: #C0C0C0;
+            --vault-blue: #0a1128;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
+            overflow: hidden; height: 100vh;
+        }
+
+        #canvas-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.6; }
+
+        /* Navigation */
+        .nav-header {
+            position: fixed; top: 0; width: 100%; padding: 25px 40px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        }
+        .back-link { text-decoration: none; color: var(--silver); font-family: 'Cinzel'; font-size: 11px; letter-spacing: 2px; }
+
+        /* The Infinite Vault Wrapper */
+        .vault-viewport {
+            width: 100vw; height: 100vh; overflow: auto;
+            cursor: grab; display: flex; justify-content: center; align-items: center;
+            scrollbar-width: none; /* Firefox */
+        }
+        .vault-viewport::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+        .vault-grid {
+            display: grid;
+            grid-template-columns: repeat(50, 25px); /* 50x50 = 2500 plots */
+            gap: 5px; padding: 200px;
+            background: radial-gradient(circle, var(--vault-blue) 0%, transparent 80%);
+        }
+
+        /* Plot Design */
+        .plot {
+            width: 25px; height: 25px; border: 1px solid rgba(192, 192, 192, 0.1);
+            background: rgba(255, 255, 255, 0.02); cursor: pointer;
+            transition: 0.2s; position: relative;
+        }
+        .plot:hover {
+            background: var(--silver); transform: scale(3);
+            z-index: 1000; box-shadow: 0 0 15px var(--silver);
+            border-radius: 2px;
+        }
+        .plot.sold { border-color: var(--silver); background: rgba(192, 192, 192, 0.2); }
+        .plot.sold::after {
+            content: ''; position: absolute; inset: 6px;
+            background: var(--silver); border-radius: 50%; box-shadow: 0 0 5px var(--silver);
+        }
+
+        /* Float Info */
+        .info-panel {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 350px; background: rgba(0,0,0,0.95); border-top: 2px solid var(--silver);
+            padding: 20px; text-align: center; backdrop-filter: blur(10px);
+            opacity: 0; pointer-events: none; transition: 0.4s;
+        }
+        .plot:hover ~ .info-panel, .info-panel:hover { opacity: 1; pointer-events: all; }
+
+        .vault-img { width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--silver); margin-bottom: 10px; }
+        .vault-name { font-family: 'Cinzel'; color: var(--silver); font-size: 16px; margin-bottom: 5px; }
+        .vault-link { font-size: 10px; color: #777; text-decoration: none; border-bottom: 1px solid #333; }
+
+        .ui-hint {
+            position: fixed; bottom: 30px; right: 30px; font-size: 10px;
+            color: #444; font-family: 'Cinzel'; letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-bg"></canvas>
+
+    <header class="nav-header">
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> EXIT VAULT</a>
+        <div style="font-family:'Cinzel'; color:var(--silver); font-size:10px; letter-spacing:2px;">LEVEL 03: HERITAGE VAULT</div>
+    </header>
+
+    <div class="ui-hint">DRAG TO EXPLORE | HOVER TO FOCUS</div>
+
+    <div class="vault-viewport" id="viewport">
+        <div class="vault-grid" id="plotGrid">
+            </div>
+
+        <div class="info-panel" id="infoPanel">
+            <img src="" id="vImg" class="vault-img" style="display:none;">
+            <h3 class="vault-name" id="vName">UNCLAIMED HERITAGE</h3>
+            <p id="vMsg" style="font-size: 11px; color: #888; margin-bottom: 12px;">This unit is vacant. Price: $79</p>
+            <a href="#" id="vLink" target="_blank" class="vault-link">VIEW LEGACY</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const grid = document.getElementById('plotGrid');
+        const vName = document.getElementById('vName');
+        const vImg = document.getElementById('vImg');
+        const vLink = document.getElementById('vLink');
+        const vMsg = document.getElementById('vMsg');
+
+        // Fetch Level 03 Data
+        const plotsRef = ref(db, 'heritage_vault');
+        onValue(plotsRef, (snapshot) => {
+            const data = snapshot.val() || {};
+            renderVault(data);
+        });
+
+        function renderVault(data) {
+            grid.innerHTML = '';
+            const fragment = document.createDocumentFragment();
+            for (let i = 1; i <= 2500; i++) {
+                const plot = document.createElement('div');
+                plot.className = 'plot';
+                const pData = data[i];
+
+                if (pData) plot.classList.add('sold');
+                
+                plot.onmouseenter = () => {
+                    if (pData) {
+                        vName.innerText = pData.name;
+                        vImg.src = pData.image;
+                        vImg.style.display = 'inline-block';
+                        vMsg.innerText = pData.message || "A preserved legacy in the Vault.";
+                        vLink.href = pData.link;
+                        vLink.style.display = 'inline-block';
+                    } else {
+                        vName.innerText = "VAULT UNIT #" + i;
+                        vImg.style.display = 'none';
+                        vMsg.innerText = "Available for preservation. Price: $79";
+                        vLink.style.display = 'none';
+                    }
+                };
+                fragment.appendChild(plot);
+            }
+            grid.appendChild(fragment);
+        }
+
+        // Mouse Drag to Scroll Logic
+        const slider = document.getElementById('viewport');
+        let isDown = false; let startX; let startY; let scrollLeft; let scrollTop;
+
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true; slider.style.cursor = 'grabbing';
+            startX = e.pageX - slider.offsetLeft; startY = e.pageY - slider.offsetTop;
+            scrollLeft = slider.scrollLeft; scrollTop = slider.scrollTop;
+        });
+        slider.addEventListener('mouseleave', () => { isDown = false; slider.style.cursor = 'grab'; });
+        slider.addEventListener('mouseup', () => { isDown = false; slider.style.cursor = 'grab'; });
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft; const y = e.pageY - slider.offsetTop;
+            const walkX = (x - startX) * 2; const walkY = (y - startY) * 2;
+            slider.scrollLeft = scrollLeft - walkX; slider.scrollTop = scrollTop - walkY;
+        });
+
+        // Simple Star Background
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        function res() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.onresize = res; res();
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            for(let i=0; i<100; i++) {
+                ctx.fillStyle = "rgba(255,255,255," + Math.random() + ")";
+                ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*1, 0, Math.PI*2); ctx.fill();
+            }
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>
