@@ -25,7 +25,6 @@
 
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.3; }
 
-        /* Cursor */
         #cursor-ring {
             position: fixed; width: 25px; height: 25px; border: 1.5px solid var(--royal-emerald); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
@@ -33,7 +32,6 @@
             box-shadow: 0 0 15px var(--royal-emerald);
         }
 
-        /* Luxury Header */
         header {
             position: fixed; top: 0; width: 100%; padding: 25px 6%;
             display: flex; justify-content: space-between; align-items: center; z-index: 5000;
@@ -44,12 +42,10 @@
         .company-name { font-family: 'Cinzel'; font-size: 18px; color: var(--gold); letter-spacing: 4px; font-weight: 900; }
         .owner-name { font-size: 10px; color: #888; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
 
-        /* Section Intro */
         .section-intro { padding: 180px 6% 40px; text-align: center; }
         .section-intro h1 { font-family: 'Cinzel'; font-size: 38px; letter-spacing: 15px; color: var(--royal-emerald); margin-bottom: 10px; }
         .section-intro p { font-size: 11px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
 
-        /* The Imperial Grid (35 Plots) */
         .oasis-container { 
             max-width: 1300px; margin: 0 auto; padding: 40px 20px 100px;
             display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;
@@ -59,7 +55,7 @@
             aspect-ratio: 1/1; background: var(--glass); border: 1px solid var(--border);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             text-decoration: none; color: #fff; transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
+            position: relative; cursor: pointer;
         }
 
         .plot-unit:hover {
@@ -69,11 +65,34 @@
             box-shadow: 0 0 30px rgba(0, 255, 204, 0.15);
         }
 
+        .plot-unit.sold { border-color: #ff0033; opacity: 0.6; cursor: not-allowed; }
+        .plot-unit.sold:hover { transform: none; box-shadow: none; }
+
         .plot-id { font-family: 'Cinzel'; font-size: 10px; color: var(--gold); margin-bottom: 5px; }
         .plot-status { font-size: 8px; color: var(--royal-emerald); text-transform: uppercase; letter-spacing: 1px; }
+        .plot-unit.sold .plot-status { color: #ff0033; }
         .plot-price { position: absolute; bottom: 12px; font-size: 9px; font-family: 'Cinzel'; color: rgba(255,255,255,0.2); }
 
-        /* Inclusions */
+        /* Booking Modal Styles */
+        #booking-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 9999; display: none;
+            align-items: center; justify-content: center; backdrop-filter: blur(10px);
+        }
+        .modal-content {
+            background: #0a0a0a; border: 1px solid var(--gold); padding: 40px;
+            width: 90%; max-width: 450px; text-align: center;
+        }
+        .modal-content h3 { font-family: 'Cinzel'; color: var(--gold); margin-bottom: 20px; letter-spacing: 3px; }
+        .modal-content input {
+            width: 100%; padding: 12px; margin-bottom: 15px; background: #111;
+            border: 1px solid #333; color: #fff; font-family: 'Montserrat'; font-size: 12px;
+        }
+        .confirm-btn {
+            width: 100%; padding: 15px; background: var(--gold); color: #000;
+            border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer;
+        }
+
         .asset-showcase {
             background: rgba(212, 175, 55, 0.02); border-top: 1px solid var(--border);
             padding: 80px 6%; text-align: center;
@@ -84,10 +103,7 @@
         .asset-item h4 { font-family: 'Cinzel'; font-size: 15px; margin-bottom: 12px; }
         .asset-item p { font-size: 11px; color: #777; line-height: 1.8; }
 
-        footer {
-            padding: 50px; text-align: center; border-top: 1px solid var(--border);
-            font-size: 10px; color: #555; letter-spacing: 2px;
-        }
+        footer { padding: 50px; text-align: center; border-top: 1px solid var(--border); font-size: 10px; color: #555; letter-spacing: 2px; }
 
         @media (max-width: 768px) {
             .oasis-container { grid-template-columns: repeat(3, 1fr); }
@@ -102,6 +118,18 @@
     <canvas id="bg-canvas"></canvas>
     <div id="cursor-ring"></div>
 
+    <div id="booking-modal">
+        <div class="modal-content">
+            <h3 id="modal-plot-id">ROYAL-01</h3>
+            <p style="font-size: 10px; color: #888; margin-bottom: 20px;">ACQUISITION PRICE: $9,999</p>
+            <input type="text" id="owner-name" placeholder="YOUR NAME / DYNASTY">
+            <input type="text" id="owner-logo" placeholder="IMAGE/LOGO LINK">
+            <input type="text" id="owner-link" placeholder="WEBSITE/SOCIAL LINK">
+            <button class="confirm-btn" onclick="bookPlot()">INTIATE ACQUISITION</button>
+            <button onclick="closeModal()" style="background:transparent; color:#555; border:none; margin-top:15px; cursor:pointer; font-size:10px;">CANCEL</button>
+        </div>
+    </div>
+
     <header>
         <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> RETURN TO ARK</a>
         <div class="branding">
@@ -115,20 +143,8 @@
         <p>35 Sovereign Legacy Plots</p>
     </section>
 
-    <main class="oasis-container">
-        <script>
-            for (let i = 1; i <= 35; i++) {
-                document.write(`
-                    <a href="#" class="plot-unit">
-                        <span class="plot-id">ROYAL-${i < 10 ? '0'+i : i}</span>
-                        <span class="plot-status">Available</span>
-                        <i class="fa-solid fa-crown" style="font-size: 12px; margin-top:8px; color:rgba(212,175,55,0.2)"></i>
-                        <span class="plot-price">$9,999</span>
-                    </a>
-                `);
-            }
-        </script>
-    </main>
+    <main class="oasis-container" id="plots-grid">
+        </main>
 
     <section class="asset-showcase">
         <h2 style="font-family:'Cinzel'; letter-spacing:10px; margin-bottom:50px;">ROYAL ASSETS</h2>
@@ -151,11 +167,87 @@
         </div>
     </section>
 
-    <footer>
-        © 2026 ARK ENTERPRISE | DESIGNED FOR SOVEREIGNS
-    </footer>
+    <footer>© 2026 ARK ENTERPRISE | DESIGNED FOR SOVEREIGNS</footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded",
+            measurementId: "G-6KEYY60YGG"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        window.db = db; // Global access for functions
+
+        const grid = document.getElementById('plots-grid');
+        const modal = document.getElementById('booking-modal');
+        let selectedPlotId = null;
+
+        // Render & Sync Plots
+        onValue(ref(db, 'royal_oasis/'), (snapshot) => {
+            const data = snapshot.val() || {};
+            grid.innerHTML = '';
+            for (let i = 1; i <= 35; i++) {
+                const id = `ROYAL-${i < 10 ? '0'+i : i}`;
+                const isSold = data[id] ? true : false;
+                
+                const plot = document.createElement('div');
+                plot.className = `plot-unit ${isSold ? 'sold' : ''}`;
+                plot.innerHTML = `
+                    <span class="plot-id">${id}</span>
+                    <span class="plot-status">${isSold ? 'Sold' : 'Available'}</span>
+                    <i class="fa-solid fa-crown" style="font-size: 12px; margin-top:8px; color:${isSold ? '#ff0033' : 'rgba(212,175,55,0.2)'}"></i>
+                    <span class="plot-price">$9,999</span>
+                `;
+                
+                if(!isSold) {
+                    plot.onclick = () => openModal(id);
+                }
+                grid.appendChild(plot);
+            }
+        });
+
+        window.openModal = (id) => {
+            selectedPlotId = id;
+            document.getElementById('modal-plot-id').innerText = id;
+            modal.style.display = 'flex';
+        };
+
+        window.closeModal = () => {
+            modal.style.display = 'none';
+        };
+
+        window.bookPlot = () => {
+            const name = document.getElementById('owner-name').value;
+            const logo = document.getElementById('owner-logo').value;
+            const link = document.getElementById('owner-link').value;
+
+            if(!name) return alert("Please enter Owner Name");
+
+            set(ref(window.db, 'royal_oasis/' + selectedPlotId), {
+                owner: name,
+                logo: logo,
+                link: link,
+                price: "$9,999",
+                status: "Sold"
+            }).then(() => {
+                alert("Plot Inquiry Registered! Please complete payment via Gateway.");
+                closeModal();
+            });
+        };
+    </script>
 
     <script>
+        // Cursor & Canvas Logic (Keep as is)
         const ring = document.getElementById('cursor-ring');
         document.addEventListener('mousemove', (e) => {
             ring.style.left = e.clientX + 'px';
