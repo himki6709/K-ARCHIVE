@@ -41,7 +41,7 @@
         .logo-group { display: flex; flex-direction: column; gap: 10px; }
         .logo { font-family: 'Cinzel', serif; font-size: 28px; font-weight: 900; letter-spacing: 8px; color: var(--gold); text-decoration: none; }
         
-        /* New Payment Trigger Position (Top Left Under Logo) */
+        /* Payment Trigger (Top Left Under Logo) */
         .registry-trigger {
             font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold);
             letter-spacing: 2px; cursor: pointer; padding: 5px 0;
@@ -92,17 +92,27 @@
         }
         .social-icon:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); transform: scale(1.1); }
 
-        /* Drawer */
+        /* Drawer - Information & Payment Hub */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 420px; height: 100vh;
             background: #080808; border-left: 2px solid var(--gold); z-index: 9999;
-            padding: 80px 40px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            padding: 60px 40px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            overflow-y: auto;
         }
         #drawer.open { right: 0; }
-        .pay-box { padding: 25px 0; border-bottom: 1px solid var(--gold-low); cursor: pointer; transition: 0.3s; }
+        
+        .info-section { margin-bottom: 30px; padding: 20px; border: 1px solid var(--gold-low); background: rgba(212,175,55,0.03); }
+        .info-title { color: var(--gold); font-size: 11px; margin-bottom: 12px; font-family: 'Cinzel'; letter-spacing: 2px; border-bottom: 1px solid var(--gold-low); padding-bottom: 5px; }
+        
+        .checklist-item { font-size: 12px; color: #ccc; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .checklist-item i { color: var(--gold); font-size: 10px; }
+
+        .fee-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; color: #eee; }
+
+        .pay-box { padding: 20px 0; border-bottom: 1px solid var(--gold-low); cursor: pointer; transition: 0.3s; }
         .pay-box:hover { background: rgba(212,175,55,0.05); padding-left: 10px; }
-        .pay-box h4 { font-size: 10px; color: var(--gold); margin-bottom: 8px; letter-spacing: 2px; }
-        .pay-box p { font-size: 13px; color: #fff; word-break: break-all; }
+        .pay-box h4 { font-size: 10px; color: var(--gold); margin-bottom: 5px; letter-spacing: 2px; }
+        .pay-box p { font-size: 12px; color: #fff; word-break: break-all; opacity: 0.8; }
 
         #loader { position: fixed; inset: 0; background: #000; z-index: 100000; display: flex; justify-content: center; align-items: center; }
         .fade-out { opacity: 0; pointer-events: none; transition: 1s; }
@@ -174,7 +184,24 @@
     </div>
 
     <div id="drawer">
-        <h2 style="color:var(--gold); font-family:'Cinzel'; margin-bottom: 40px; letter-spacing: 4px;">SECURE REGISTRY</h2>
+        <h2 style="color:var(--gold); font-family:'Cinzel'; margin-bottom: 30px; letter-spacing: 4px; font-size: 20px;">ARK REGISTRY</h2>
+        
+        <div class="info-section">
+            <h4 class="info-title">SUBMISSION CHECKLIST (WHATSAPP)</h4>
+            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Payment Screenshot / TxID</div>
+            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Full Identity Name</div>
+            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> High-Resolution Portrait</div>
+            <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Target Website URL</div>
+        </div>
+
+        <div class="info-section">
+            <h4 class="info-title">MAINTENANCE & FEES</h4>
+            <div class="fee-row"><span>Lifetime Hosting</span> <span style="color:#0f0;">FREE</span></div>
+            <div class="fee-row"><span>Information Update</span> <span style="color:var(--gold);">$9 / Req</span></div>
+            <div class="fee-row"><span>Network Fee</span> <span>Variable</span></div>
+        </div>
+
+        <h4 class="info-title" style="margin-left:5px;">PAYMENT DESTINATIONS</h4>
         <div class="pay-box" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
             <h4>ETH / USDT (ERC20)</h4>
             <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
@@ -191,11 +218,12 @@
             <h4>BINANCE PAY ID</h4>
             <p>912221034</p>
         </div>
-        <button onclick="toggleDrawer()" style="margin-top: 50px; background:none; border:1px solid var(--gold); color:var(--gold); padding:15px 30px; cursor:pointer; font-family:'Cinzel';">CLOSE</button>
+
+        <button onclick="toggleDrawer()" style="margin-top: 30px; background:none; border:1px solid var(--gold); color:var(--gold); padding:15px; cursor:pointer; font-family:'Cinzel'; width:100%; transition:0.3s;">CLOSE</button>
     </div>
 
     <script>
-        // Particle Background
+        // Particle Background logic
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -228,14 +256,14 @@
         }
         animate();
 
-        // Cursor
+        // Cursor logic
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // Wallet Logic with Feedback
+        // Wallet Logic
         async function connectMM() {
             if (window.ethereum) {
                 try {
