@@ -3,296 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE ETERNAL ARK | OFFICIAL PREMIER ESTATE</title>
+    <title>THE ETERNAL ARK | THE ULTIMATE LEGACY</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
-            authDomain: "the-5k-elite-legacy.firebaseapp.com",
-            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
-            projectId: "the-5k-elite-legacy",
-            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
-            messagingSenderId: "440824313752",
-            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
-        };
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        window.firebaseDB = db;
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
     <style>
         :root { 
-            --bg-dark: #070a08; 
+            --bg: #050505; 
             --gold: #D4AF37; 
-            --gold-glow: rgba(212, 175, 55, 0.4);
-            --white: #f4f4f4;
-            --accent-green: #0d1a0f;
+            --gold-low: rgba(212, 175, 55, 0.15);
+            --gold-bright: #FFD700;
         }
 
-        * { box-sizing: border-box; }
-        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            margin: 0; padding: 0; background: var(--bg-dark); color: var(--white); 
-            font-family: 'Georgia', serif; overflow-x: hidden; cursor: none; 
+            background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
+            overflow-x: hidden; cursor: none;
         }
 
-        /* 11,100 Names Press-Wall Watermark - Full Coverage */
-        .ark-press-wall {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; opacity: 0.18; pointer-events: none;
-            display: flex; flex-wrap: wrap; justify-content: space-around;
-            padding: 10px; overflow: hidden; align-content: flex-start;
-            font-size: 10px; font-weight: bold; text-transform: uppercase;
-            letter-spacing: 2px; color: var(--gold);
-        }
-        .ark-press-wall span { margin: 12px; transform: rotate(-12deg); text-shadow: 0 0 5px var(--gold-glow); }
+        /* Particles Canvas Background */
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; }
 
-        /* Smooth Mouse Pointer */
-        #cursor-outline { 
-            position: fixed; width: 15px; height: 15px; border: 1.5px solid var(--gold); 
+        /* Custom Pointer */
+        #cursor { 
+            position: fixed; width: 20px; height: 20px; border: 2px solid var(--gold); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
-            transform: translate(-50%, -50%); 
-            transition: width 0.15s ease-out, height 0.15s ease-out, background 0.15s ease-out;
-            will-change: transform;
+            transition: transform 0.1s ease-out, background 0.3s;
         }
 
-        /* Premium Nav Bar */
-        .nav-bar {
-            position: fixed; top: 0; width: 100%; height: 160px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 5000; background: rgba(7, 10, 8, 0.95); backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--gold-glow);
+        /* Header Navigation */
+        .header {
+            position: fixed; top: 0; width: 100%; padding: 40px 60px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 5000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
         }
-        .rr-logo { font-size: 60px; font-weight: 900; letter-spacing: -3px; color: var(--gold); filter: drop-shadow(0 0 12px var(--gold-glow)); margin-bottom: 5px; }
-        .brand-subtitle { font-size: 9px; letter-spacing: 15px; text-transform: uppercase; color: var(--gold); opacity: 0.7; }
-
-        .nav-actions { display: flex; gap: 40px; margin-top: 20px; }
-        .acq-btn { font-size: 11px; letter-spacing: 5px; font-weight: bold; border-bottom: 1px solid var(--gold); cursor: pointer; color: var(--gold); text-transform: uppercase; }
-
-        .wallet-nav { display: flex; gap: 15px; }
-        .wallet-btn {
-            padding: 10px 22px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-            border: 1px solid var(--gold-glow); cursor: pointer; background: transparent; color: var(--gold); transition: 0.4s; font-weight: bold;
+        .logo { font-family: 'Cinzel', serif; font-size: 32px; font-weight: 900; letter-spacing: 10px; color: var(--gold); text-shadow: 0 0 15px var(--gold-low); }
+        
+        .nav-right { display: flex; gap: 30px; align-items: center; }
+        .wallet-group { display: flex; gap: 10px; }
+        .btn-wallet {
+            padding: 12px 25px; border: 1px solid var(--gold); background: transparent;
+            color: var(--gold); font-family: 'Cinzel', serif; font-size: 11px;
+            letter-spacing: 2px; cursor: pointer; transition: 0.5s;
         }
-        .wallet-btn.connected { background: var(--gold); color: #000; box-shadow: 0 0 15px var(--gold); }
+        .btn-wallet:hover, .btn-wallet.active { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); }
 
-        /* Main Sections */
-        .snap-section { 
-            height: 100vh; width: 100%; scroll-snap-align: start; 
-            display: flex; flex-direction: column; justify-content: center; 
-            align-items: center; text-align: center; position: relative;
-            background: radial-gradient(circle at center, var(--accent-green) 0%, var(--bg-dark) 100%);
+        /* Main Portal Sections */
+        .main-container { padding-top: 180px; display: flex; flex-direction: column; align-items: center; }
+        .hero-title { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 15px; color: var(--gold); margin-bottom: 50px; }
+
+        .gateways {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;
+            max-width: 1200px; width: 90%; margin-bottom: 100px;
+        }
+        .gate-card {
+            height: 400px; border: 1px solid rgba(212, 175, 55, 0.2); position: relative;
+            overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 40px; transition: 0.6s; text-decoration: none;
+        }
+        .gate-card:hover { border-color: var(--gold); transform: translateY(-10px); background: rgba(212, 175, 55, 0.05); }
+        .gate-card h3 { font-family: 'Cinzel', serif; font-size: 24px; color: var(--gold); letter-spacing: 5px; margin-bottom: 10px; }
+        .gate-card p { font-size: 11px; letter-spacing: 2px; color: #aaa; text-transform: uppercase; }
+        .gate-price { font-size: 18px; color: #fff; margin-top: 15px; font-weight: bold; }
+
+        /* Side Controls */
+        .social-bar { position: fixed; bottom: 40px; left: 40px; display: flex; flex-direction: column; gap: 20px; z-index: 5000; }
+        .social-icon { 
+            width: 50px; height: 50px; border: 1px solid var(--gold); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gold); text-decoration: none; font-size: 20px; transition: 0.4s;
+        }
+        .social-icon:hover { background: var(--gold); color: #000; transform: scale(1.1); }
+
+        .registry-trigger {
+            position: fixed; bottom: 40px; right: 40px;
+            writing-mode: vertical-rl; padding: 20px 10px; border-left: 2px solid var(--gold);
+            color: var(--gold); letter-spacing: 5px; cursor: pointer; font-family: 'Cinzel', serif;
         }
 
-        .tier-card { max-width: 800px; opacity: 0; transform: translateY(40px); transition: 1.2s ease-out; }
-        .tier-card.active { opacity: 1; transform: translateY(0); }
-
-        .tier-label { font-size: 11px; letter-spacing: 12px; color: var(--gold); text-transform: uppercase; margin-bottom: 25px; display: block; }
-        .tier-title { font-size: 55px; font-weight: 100; letter-spacing: 18px; text-transform: uppercase; margin-bottom: 25px; color: #fff; }
-        .tier-stats { font-size: 14px; font-weight: bold; letter-spacing: 4px; margin-bottom: 30px; color: var(--gold); }
-        .tier-desc { font-size: 15px; color: #bbb; line-height: 2; letter-spacing: 2px; margin-bottom: 50px; padding: 0 40px; }
-
-        .cta-gold { 
-            padding: 20px 60px; border: 1px solid var(--gold); text-decoration: none; 
-            color: var(--gold); font-size: 10px; letter-spacing: 6px; text-transform: uppercase; 
-            transition: 0.5s; box-shadow: 0 0 20px var(--gold-glow);
-        }
-        .cta-gold:hover { background: var(--gold); color: var(--bg-dark); }
-
-        /* Sidebar Social */
-        .social-dock { position: fixed; bottom: 50px; left: 50px; z-index: 5000; display: flex; flex-direction: column; gap: 20px; }
-        .dock-link { 
-            width: 55px; height: 55px; border: 1px solid var(--gold); border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            text-decoration: none; color: var(--gold); background: rgba(0,0,0,0.6); transition: 0.4s; font-size: 20px;
-        }
-        .dock-link:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--gold); background: var(--gold); color: #000; }
-
-        /* Drawer Registry */
+        /* Drawer */
         #drawer {
-            position: fixed; top: 0; right: -100%; width: 420px; height: 100vh;
-            background: #050706; border-left: 2px solid var(--gold); z-index: 9999;
-            transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); padding: 80px 40px; color: var(--white);
-            overflow-y: auto;
+            position: fixed; top: 0; right: -100%; width: 450px; height: 100vh;
+            background: #080808; border-left: 2px solid var(--gold); z-index: 9999;
+            padding: 100px 50px; transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1);
         }
         #drawer.open { right: 0; }
-        .pay-item { padding: 25px 0; border-bottom: 1px solid var(--gold-glow); cursor: pointer; transition: 0.3s; }
-        .pay-item:hover { background: rgba(212, 175, 55, 0.05); }
-        .pay-item h5 { color: var(--gold); font-size: 9px; letter-spacing: 3px; margin: 0 0 8px 0; text-transform: uppercase; }
-        .pay-item p { margin: 0; font-size: 12px; font-weight: bold; word-break: break-all; }
+        .pay-box { padding: 30px 0; border-bottom: 1px solid var(--gold-low); }
+        .pay-box h4 { font-size: 10px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+        .pay-box p { font-size: 13px; color: #fff; word-break: break-all; font-weight: bold; }
 
-        #loader { position: fixed; inset: 0; background: #000; z-index: 100000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s; }
-        .fade-out { opacity: 0; pointer-events: none; }
+        #loader { position: fixed; inset: 0; background: #000; z-index: 100000; display: flex; justify-content: center; align-items: center; }
+        .fade-out { opacity: 0; pointer-events: none; transition: 1s; }
+
+        @media (max-width: 900px) {
+            .gateways { grid-template-columns: 1fr; }
+            #drawer { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="ark-press-wall" class="ark-press-wall"></div>
+    <canvas id="bg-canvas"></canvas>
+    <div id="cursor"></div>
 
     <div id="loader">
-        <div style="font-size: 80px; font-weight: 900; color: var(--gold); letter-spacing: -5px;">ARK</div>
+        <h1 style="color:var(--gold); font-family:'Cinzel'; letter-spacing: 20px;">ARK</h1>
     </div>
 
-    <div id="cursor-outline"></div>
-
-    <nav class="nav-bar">
-        <div class="rr-logo">ARK</div>
-        <div class="brand-subtitle">The Eternal Ark</div>
-        <div class="nav-actions">
-            <div class="acq-btn interactive" onclick="toggleDrawer()">Acquisition Registry</div>
-            <div class="wallet-nav">
-                <button id="mm-connect" class="wallet-btn interactive">Metamask</button>
-                <button id="ph-connect" class="wallet-btn interactive">Phantom</button>
+    <header class="header">
+        <div class="logo">ARK</div>
+        <div class="nav-right">
+            <div class="wallet-group">
+                <button id="mm-btn" class="btn-wallet" onclick="connectMM()">METAMASK</button>
+                <button id="ph-btn" class="btn-wallet" onclick="connectPH()">PHANTOM</button>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <div id="drawer">
-        <h3 style="color: var(--gold); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; border-bottom: 1px solid var(--gold);">Official Registry</h3>
+    <main class="main-container">
+        <div class="hero-title">SELECT YOUR ETERNITY GATEWAY</div>
         
-        <div class="pay-item interactive" onclick="copyAddress('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-            <h5>Ethereum (ERC20 / USDT)</h5>
-            <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
+        <div class="gateways">
+            <a href="crown_summit.html" class="gate-card">
+                <p>Level 01</p>
+                <h3>THE CROWN SUMMIT</h3>
+                <p>Limited 100 Master Plots</p>
+                <div class="gate-price">$999</div>
+            </a>
+            <a href="elite_legacy.html" class="gate-card">
+                <p>Level 02</p>
+                <h3>THE ELITE LEGACY</h3>
+                <p>Reserved 500 Guardian Plots</p>
+                <div class="gate-price">$249</div>
+            </a>
+            <a href="heritage_vault.html" class="gate-card">
+                <p>Level 03</p>
+                <h3>HERITAGE VAULT</h3>
+                <p>2,500 Preservation Plots</p>
+                <div class="gate-price">$79</div>
+            </a>
+            <a href="global_horizon.html" class="gate-card">
+                <p>Level 04</p>
+                <h3>GLOBAL HORIZON</h3>
+                <p>8,000 Foundational Plots</p>
+                <div class="gate-price">$29</div>
+            </a>
         </div>
+    </main>
 
-        <div class="pay-item interactive" onclick="copyAddress('8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7')">
-            <h5>Solana / Phantom (USDT)</h5>
-            <p>8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7</p>
-        </div>
-
-        <div class="pay-item interactive" onclick="copyAddress('912221034')">
-            <h5>Binance Pay ID</h5>
-            <p>912221034</p>
-        </div>
-
-        <div class="pay-item interactive" onclick="copyAddress('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-            <h5>Binance USDT (BEP20)</h5>
-            <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
-        </div>
-
-        <button onclick="toggleDrawer()" style="margin-top: 40px; background: none; border: 1px solid var(--gold); color: var(--gold); padding: 12px 40px; cursor: pointer; letter-spacing: 3px; font-size: 10px;">CLOSE</button>
+    <div class="social-bar">
+        <a href="https://x.com/kawsar6700" target="_blank" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://wa.me/8801576940717" target="_blank" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
 
-    <section class="snap-section">
-        <div class="tier-card active">
-            <span class="tier-label">Level 01</span>
-            <h2 class="tier-title">Genesis Pillar</h2>
-            <div class="tier-stats">100 SUPREME PLOTS | $99 STARTING</div>
-            <p class="tier-desc">The elite summit. Dedicated to the 100 most critically endangered spirits of our planet.</p>
-            <a href="genesis_apex.html" class="cta-gold interactive">Enter Summit</a>
-        </div>
-    </section>
+    <div class="registry-trigger" onclick="toggleDrawer()">ACQUISITION REGISTRY</div>
 
-    <section class="snap-section">
-        <div class="tier-card">
-            <span class="tier-label">Level 02</span>
-            <h2 class="tier-title">Heritage Grid</h2>
-            <div class="tier-stats">1,000 ELITE PLOTS | $89 STARTING</div>
-            <p class="tier-desc">A premium grid for the world's most influential creators and conservationists.</p>
-            <a href="heritage_core.html" class="cta-gold interactive">Explore Heritage</a>
+    <div id="drawer">
+        <h2 style="color:var(--gold); font-family:'Cinzel'; margin-bottom: 40px; letter-spacing: 5px;">OFFICIAL REGISTRY</h2>
+        <div class="pay-box" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
+            <h4>Ethereum / Binance USDT</h4>
+            <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
         </div>
-    </section>
-
-    <section class="snap-section">
-        <div class="tier-card">
-            <span class="tier-label">Level 03</span>
-            <h2 class="tier-title">Global Horizon</h2>
-            <div class="tier-stats">10,000 CITIZEN PLOTS | $39 STARTING</div>
-            <p class="tier-desc">The foundation of the Ark. Open to the global community for digital preservation.</p>
-            <a href="global_horizon.html" class="cta-gold interactive">Join Horizon</a>
+        <div class="pay-box" onclick="copy('8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7')">
+            <h4>Solana / Phantom</h4>
+            <p>8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7</p>
         </div>
-    </section>
-
-    <div class="social-dock">
-        <a href="https://x.com/kawsar6700" target="_blank" class="dock-link interactive"><i class="fa-brands fa-x-twitter"></i></a>
-        <a href="https://wa.me/8801576940717" target="_blank" class="dock-link interactive"><i class="fa-brands fa-whatsapp"></i></a>
+        <div class="pay-box" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
+            <h4>Binance USDT (BEP20)</h4>
+            <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
+        </div>
+        <div class="pay-box" onclick="copy('912221034')">
+            <h4>Binance Pay ID</h4>
+            <p>912221034</p>
+        </div>
+        <button onclick="toggleDrawer()" style="margin-top: 50px; background:transparent; border:1px solid var(--gold); color:var(--gold); padding:15px 30px; cursor:pointer; font-family:'Cinzel';">CLOSE</button>
     </div>
 
     <script>
-        // --- 11,100 Names Generation Logic ---
-        const species = ["Javan Rhino", "Amur Leopard", "Bengal Tiger", "Mountain Gorilla", "Saola", "Vaquita", "Kakapo", "Red Panda", "Sumatran Rhino", "Blue Whale", "Snow Leopard", "African Elephant", "Pangolin", "Orangutan", "Black Rhino", "Polar Bear", "Cheetah", "African Lion", "Narwhal", "Red Wolf", "Galapagos Tortoise"];
-        const wall = document.getElementById('ark-press-wall');
-        for (let i = 0; i < 1100; i++) {
-            const span = document.createElement('span');
-            span.innerText = species[i % species.length];
-            wall.appendChild(span);
-        }
+        // 1. Particle Background Logic
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        // --- Optimized Smooth Mouse Pointer ---
-        const outline = document.getElementById('cursor-outline');
-        let mX = 0, mY = 0, cX = 0, cY = 0;
-        document.addEventListener('mousemove', (e) => { mX = e.clientX; mY = e.clientY; });
-        function tick() {
-            cX += (mX - cX) * 0.15; cY += (mY - cY) * 0.15;
-            outline.style.transform = `translate(${cX}px, ${cY}px) translate(-50%, -50%)`;
-            requestAnimationFrame(tick);
-        }
-        tick();
-
-        // --- Wallet Auto-Connect Logic ---
-        async function checkWallets() {
-            if (window.ethereum) {
-                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-                if (accounts.length > 0) {
-                    const btn = document.getElementById('mm-connect');
-                    btn.innerText = "LINKED: " + accounts[0].substring(0, 6);
-                    btn.classList.add('connected');
-                }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
             }
-            if (window.solana && window.solana.isPhantom) {
-                const resp = await window.solana.connect({ onlyIfTrusted: true }).catch(() => null);
-                if (resp) {
-                    const btn = document.getElementById('ph-connect');
-                    btn.innerText = "LINKED: " + resp.publicKey.toString().substring(0, 6);
-                    btn.classList.add('connected');
-                }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.001;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(212, 175, 55, 0.5)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
 
-        document.getElementById('mm-connect').onclick = async function() {
-            if (window.ethereum) {
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                this.innerText = "LINKED: " + accounts[0].substring(0, 6);
-                this.classList.add('connected');
-            } else { alert("Please Install Metamask"); }
-        };
+        function init() {
+            for (let i = 0; i < 150; i++) particles.push(new Particle());
+        }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, i) => {
+                p.update();
+                p.draw();
+                if (p.size <= 0.2) particles[i] = new Particle();
+            });
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
 
-        document.getElementById('ph-connect').onclick = async function() {
+        // 2. Smooth Custom Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // 3. One-Click Wallet Logic
+        async function connectMM() {
+            if (window.ethereum) {
+                const accts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                document.getElementById('mm-btn').innerText = "LINKED: " + accts[0].substring(0, 6);
+                document.getElementById('mm-btn').classList.add('active');
+            } else { alert("Please install Metamask"); }
+        }
+
+        async function connectPH() {
             if (window.solana) {
                 const resp = await window.solana.connect();
-                this.innerText = "LINKED: " + resp.publicKey.toString().substring(0, 6);
-                this.classList.add('connected');
-            } else { alert("Please Install Phantom Wallet"); }
-        };
-
-        // UI Helpers
-        function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
-        function copyAddress(t) { 
-            navigator.clipboard.writeText(t); 
-            alert("Registry Address Copied: " + t); 
+                document.getElementById('ph-btn').innerText = "LINKED: " + resp.publicKey.toString().substring(0, 6);
+                document.getElementById('ph-btn').classList.add('active');
+            } else { alert("Please install Phantom"); }
         }
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
-        }, { threshold: 0.3 });
-        document.querySelectorAll('.tier-card').forEach(c => observer.observe(c));
+        // 4. UI Functions
+        function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
+        function copy(t) { navigator.clipboard.writeText(t); alert("Address Copied: " + t); }
 
-        window.onload = () => { 
-            checkWallets();
-            setTimeout(() => document.getElementById('loader').classList.add('fade-out'), 1000); 
+        window.onload = () => {
+            setTimeout(() => document.getElementById('loader').classList.add('fade-out'), 1000);
         };
-
-        // Hover Effect
-        document.querySelectorAll('.interactive').forEach(el => {
-            el.onmouseenter = () => { outline.style.width = '45px'; outline.style.height = '45px'; outline.style.background = 'var(--gold-glow)'; };
-            el.onmouseleave = () => { outline.style.width = '15px'; outline.style.height = '15px'; outline.style.background = 'transparent'; };
-        });
     </script>
 </body>
 </html>
