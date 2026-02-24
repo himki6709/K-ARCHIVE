@@ -13,7 +13,7 @@
             --bg: #050505; 
             --gold: #D4AF37; 
             --gold-low: rgba(212, 175, 55, 0.15);
-            --glass: rgba(255, 255, 255, 0.03);
+            --gold-bright: #FFD700;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,32 +24,50 @@
 
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; }
 
-        /* Smooth Cursor */
+        /* Custom Cursor */
         #cursor { 
             position: fixed; width: 20px; height: 20px; border: 1.5px solid var(--gold); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
-            transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, background 0.3s;
+            transform: translate(-50%, -50%); transition: transform 0.1s ease-out;
         }
 
+        /* Header Navigation */
         .header {
             position: fixed; top: 0; width: 100%; padding: 30px 6%;
             display: flex; justify-content: space-between; align-items: center; z-index: 5000;
             background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
             backdrop-filter: blur(5px);
         }
-        .logo { font-family: 'Cinzel', serif; font-size: 28px; font-weight: 900; letter-spacing: 8px; color: var(--gold); }
+        .logo-group { display: flex; flex-direction: column; gap: 10px; }
+        .logo { font-family: 'Cinzel', serif; font-size: 28px; font-weight: 900; letter-spacing: 8px; color: var(--gold); text-decoration: none; }
         
-        .btn-wallet {
-            padding: 12px 20px; border: 1px solid var(--gold); background: transparent;
-            color: var(--gold); font-family: 'Cinzel', serif; font-size: 10px;
-            letter-spacing: 2px; cursor: pointer; transition: 0.4s;
+        /* New Payment Trigger Position (Top Left Under Logo) */
+        .registry-trigger {
+            font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold);
+            letter-spacing: 2px; cursor: pointer; padding: 5px 0;
+            border-bottom: 1px solid var(--gold-low); display: inline-block;
+            transition: 0.3s; width: fit-content;
         }
-        .btn-wallet.active { background: var(--gold); color: #000; box-shadow: 0 0 15px var(--gold); }
+        .registry-trigger:hover { color: #fff; border-color: var(--gold); letter-spacing: 3px; }
+
+        /* Wallet Buttons with Glow Effect */
+        .btn-wallet {
+            padding: 12px 25px; border: 1px solid var(--gold); background: transparent;
+            color: var(--gold); font-family: 'Cinzel', serif; font-size: 10px;
+            letter-spacing: 2px; cursor: pointer; transition: 0.5s; position: relative;
+            overflow: hidden;
+        }
+        .btn-wallet:hover { 
+            background: var(--gold); color: #000; 
+            box-shadow: 0 0 20px var(--gold), 0 0 40px var(--gold-low);
+            transform: translateY(-2px);
+        }
+        .btn-wallet.active { background: var(--gold-bright); color: #000; box-shadow: 0 0 25px var(--gold-bright); }
 
         .main-container { padding: 180px 6% 100px; display: flex; flex-direction: column; align-items: center; }
         .hero-title { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 12px; color: var(--gold); margin-bottom: 60px; text-align: center; }
 
-        /* Responsive Gateways with Glass Effect */
+        /* Gateways Grid */
         .gateways {
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;
             max-width: 1200px; width: 100%;
@@ -57,21 +75,13 @@
         .gate-card {
             height: 380px; border: 1px solid rgba(212, 175, 55, 0.1); position: relative;
             display: flex; flex-direction: column; justify-content: flex-end;
-            padding: 40px; transition: 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); 
-            text-decoration: none; overflow: hidden; background: var(--glass);
+            padding: 40px; transition: 0.6s; text-decoration: none; overflow: hidden;
+            background: rgba(255, 255, 255, 0.02);
         }
-        /* Glowing background effect instead of images */
-        .gate-card::before {
-            content: ''; position: absolute; top: 50%; left: 50%; width: 0%; height: 0%;
-            background: radial-gradient(circle, var(--gold-low) 0%, transparent 70%);
-            transform: translate(-50%, -50%); transition: 0.6s; z-index: 0;
-        }
-        .gate-card:hover::before { width: 150%; height: 150%; }
-        .gate-card:hover { border-color: var(--gold); transform: translateY(-10px); }
-        
-        .gate-card h3 { font-family: 'Cinzel', serif; font-size: 24px; color: var(--gold); margin-bottom: 8px; z-index: 1; }
-        .gate-card p { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 2px; z-index: 1; }
-        .gate-price { font-size: 18px; color: #fff; margin-top: 15px; font-weight: bold; z-index: 1; border-top: 1px solid var(--gold-low); padding-top: 15px; display: inline-block; }
+        .gate-card:hover { border-color: var(--gold); transform: translateY(-10px); background: rgba(212, 175, 55, 0.05); }
+        .gate-card h3 { font-family: 'Cinzel', serif; font-size: 24px; color: var(--gold); margin-bottom: 8px; }
+        .gate-card p { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 2px; }
+        .gate-price { font-size: 18px; color: #fff; margin-top: 15px; font-weight: bold; padding-top: 15px; border-top: 1px solid var(--gold-low); }
 
         /* Sidebar Contacts */
         .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 20px; z-index: 5000; }
@@ -80,37 +90,30 @@
             display: flex; align-items: center; justify-content: center;
             color: var(--gold); text-decoration: none; font-size: 20px; transition: 0.4s; background: rgba(0,0,0,0.8);
         }
-        .social-icon:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px var(--gold); }
+        .social-icon:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); transform: scale(1.1); }
 
-        /* Official Payment Trigger */
-        .registry-trigger {
-            position: fixed; bottom: 40px; right: 30px;
-            padding: 20px 10px; border-right: 2.5px solid var(--gold);
-            color: var(--gold); letter-spacing: 4px; cursor: pointer; font-family: 'Cinzel', serif;
-            writing-mode: vertical-rl; font-size: 12px; background: rgba(0,0,0,0.6); z-index: 5000;
-        }
-
-        /* Responsive Drawer */
+        /* Drawer */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 420px; height: 100vh;
             background: #080808; border-left: 2px solid var(--gold); z-index: 9999;
-            padding: 80px 40px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto;
+            padding: 80px 40px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
         }
         #drawer.open { right: 0; }
         .pay-box { padding: 25px 0; border-bottom: 1px solid var(--gold-low); cursor: pointer; transition: 0.3s; }
-        .pay-box:hover { background: rgba(212,175,55,0.05); }
+        .pay-box:hover { background: rgba(212,175,55,0.05); padding-left: 10px; }
         .pay-box h4 { font-size: 10px; color: var(--gold); margin-bottom: 8px; letter-spacing: 2px; }
-        .pay-box p { font-size: 13px; color: #fff; word-break: break-all; font-weight: bold; }
+        .pay-box p { font-size: 13px; color: #fff; word-break: break-all; }
 
         #loader { position: fixed; inset: 0; background: #000; z-index: 100000; display: flex; justify-content: center; align-items: center; }
         .fade-out { opacity: 0; pointer-events: none; transition: 1s; }
 
         @media (max-width: 768px) {
             .gateways { grid-template-columns: 1fr; }
-            .header { padding: 20px 5%; }
+            .header { padding: 20px 5%; flex-direction: column; gap: 20px; text-align: center; }
             #drawer { width: 100%; }
             #cursor { display: none; }
-            .main-container { padding-top: 130px; }
+            .main-container { padding-top: 220px; }
+            .registry-trigger { margin: 0 auto; }
         }
     </style>
 </head>
@@ -124,7 +127,10 @@
     </div>
 
     <header class="header">
-        <div class="logo">ARK</div>
+        <div class="logo-group">
+            <a href="#" class="logo">ARK</a>
+            <div class="registry-trigger" onclick="toggleDrawer()">OFFICIAL PAYMENT GATEWAY</div>
+        </div>
         <div class="wallet-group" style="display:flex; gap:15px;">
             <button id="mm-btn" class="btn-wallet" onclick="connectMM()">METAMASK</button>
             <button id="ph-btn" class="btn-wallet" onclick="connectPH()">PHANTOM</button>
@@ -132,7 +138,7 @@
     </header>
 
     <main class="main-container">
-        <div class="hero-title">BEYOND THE HORIZON</div>
+        <div class="hero-title">SELECT YOUR ETERNITY GATEWAY</div>
         
         <div class="gateways">
             <a href="crown_summit.html" class="gate-card">
@@ -167,8 +173,6 @@
         <a href="https://wa.me/8801576940717" target="_blank" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
 
-    <div class="registry-trigger" onclick="toggleDrawer()">OFFICIAL PAYMENT GATEWAY</div>
-
     <div id="drawer">
         <h2 style="color:var(--gold); font-family:'Cinzel'; margin-bottom: 40px; letter-spacing: 4px;">SECURE REGISTRY</h2>
         <div class="pay-box" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
@@ -176,7 +180,7 @@
             <p>0x443792A4884e8e855f954ccEF910778Aff1eb78E</p>
         </div>
         <div class="pay-box" onclick="copy('8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7')">
-            <h4>SOLANA (USDT)</h4>
+            <h4>SOLANA (PHANTOM)</h4>
             <p>8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7</p>
         </div>
         <div class="pay-box" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
@@ -187,11 +191,11 @@
             <h4>BINANCE PAY ID</h4>
             <p>912221034</p>
         </div>
-        <button onclick="toggleDrawer()" style="margin-top: 50px; background:none; border:1px solid var(--gold); color:var(--gold); padding:15px 30px; cursor:pointer; font-family:'Cinzel';">EXIT REGISTRY</button>
+        <button onclick="toggleDrawer()" style="margin-top: 50px; background:none; border:1px solid var(--gold); color:var(--gold); padding:15px 30px; cursor:pointer; font-family:'Cinzel';">CLOSE</button>
     </div>
 
     <script>
-        // Particle Background logic
+        // Particle Background
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -206,18 +210,17 @@
                 this.size = Math.random() * 1.5;
                 this.speedX = Math.random() * 0.4 - 0.2;
                 this.speedY = Math.random() * 0.4 - 0.2;
-                this.life = Math.random() * 1;
             }
             update() {
                 this.x += this.speedX; this.y += this.speedY;
                 if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
             }
             draw() {
-                ctx.fillStyle = `rgba(212, 175, 55, ${this.life})`;
+                ctx.fillStyle = 'rgba(212, 175, 55, 0.3)';
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
             }
         }
-        for (let i = 0; i < 120; i++) particles.push(new Particle());
+        for (let i = 0; i < 100; i++) particles.push(new Particle());
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
             particles.forEach(p => { p.update(); p.draw(); });
@@ -225,42 +228,38 @@
         }
         animate();
 
-        // Zero-Lag Cursor
+        // Cursor
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // Wallet Connectivity Fixed
+        // Wallet Logic with Feedback
         async function connectMM() {
             if (window.ethereum) {
                 try {
                     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    document.getElementById('mm-btn').innerText = "CONNECTED: " + accounts[0].substring(0,6);
+                    document.getElementById('mm-btn').innerText = accounts[0].substring(0,6) + "...";
                     document.getElementById('mm-btn').classList.add('active');
-                } catch (err) { console.log(err); }
-            } else {
-                window.open('https://metamask.app.link/dapp/' + window.location.host);
-            }
+                } catch (err) { console.error(err); }
+            } else { window.open('https://metamask.app.link/dapp/' + window.location.host); }
         }
 
         async function connectPH() {
             if (window.solana) {
                 try {
                     const resp = await window.solana.connect();
-                    document.getElementById('ph-btn').innerText = "CONNECTED: " + resp.publicKey.toString().substring(0,6);
+                    document.getElementById('ph-btn').innerText = resp.publicKey.toString().substring(0,6) + "...";
                     document.getElementById('ph-btn').classList.add('active');
-                } catch (err) { console.log(err); }
-            } else {
-                window.open('https://phantom.app/ul/browse/' + window.location.host);
-            }
+                } catch (err) { console.error(err); }
+            } else { window.open('https://phantom.app/ul/browse/' + window.location.host); }
         }
 
         function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
-        function copy(t) { navigator.clipboard.writeText(t); alert("Copied to Clipboard: " + t); }
+        function copy(t) { navigator.clipboard.writeText(t); alert("Address Copied: " + t); }
 
-        window.onload = () => { setTimeout(() => document.getElementById('loader').classList.add('fade-out'), 1000); };
+        window.onload = () => { setTimeout(() => document.getElementById('loader').classList.add('fade-out'), 800); };
     </script>
 </body>
 </html>
