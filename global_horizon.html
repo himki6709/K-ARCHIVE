@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLOBAL HORIZON | 8,000 ARCHIVES</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #000205;
+            --neon: #00f2ff;
+            --gold: #D4AF37;
+            --dark-glass: rgba(0, 242, 255, 0.03);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
+            overflow: hidden; height: 100vh;
+        }
+
+        #starfield { position: fixed; inset: 0; z-index: -1; }
+
+        /* UI Elements */
+        .header {
+            position: fixed; top: 0; width: 100%; padding: 20px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(to bottom, #000, transparent); z-index: 1000;
+        }
+        .back-btn { text-decoration: none; color: var(--neon); font-family: 'Cinzel'; font-size: 10px; letter-spacing: 2px; }
+
+        .search-container {
+            position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+            z-index: 1000; display: flex; gap: 10px;
+        }
+        .search-container input {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--neon);
+            padding: 8px 15px; color: #fff; border-radius: 20px; font-size: 12px; outline: none;
+        }
+
+        /* The Grid Engine */
+        .grid-viewport {
+            width: 100vw; height: 100vh; overflow: auto;
+            display: flex; justify-content: flex-start; align-items: flex-start;
+            cursor: crosshair; padding-top: 150px;
+        }
+
+        .horizon-grid {
+            display: grid;
+            grid-template-columns: repeat(100, 15px); /* 100 columns */
+            grid-template-rows: repeat(80, 15px);    /* 80 rows = 8000 plots */
+            gap: 2px; padding: 50px;
+        }
+
+        .pixel {
+            width: 15px; height: 15px; background: var(--dark-glass);
+            border: 0.1px solid rgba(0, 242, 255, 0.1); transition: 0.1s;
+        }
+        .pixel:hover {
+            background: var(--neon); transform: scale(4);
+            z-index: 100; box-shadow: 0 0 15px var(--neon);
+            border-radius: 1px;
+        }
+        .pixel.occupied { background: var(--neon); box-shadow: 0 0 5px var(--neon); }
+
+        /* Pop-up Card */
+        .preview-card {
+            position: fixed; bottom: 30px; right: 30px; width: 280px;
+            background: rgba(0,0,0,0.9); border-bottom: 3px solid var(--neon);
+            padding: 20px; backdrop-filter: blur(10px);
+            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 2000;
+        }
+        .pixel:hover ~ .preview-card, .preview-card:hover { opacity: 1; pointer-events: all; }
+
+        .p-img { width: 40px; height: 40px; border: 1px solid var(--neon); margin-bottom: 10px; }
+        .p-name { font-family: 'Cinzel'; font-size: 14px; color: var(--neon); }
+        .p-link { font-size: 10px; color: #555; text-decoration: none; display: block; margin-top: 10px; }
+
+        /* Stats */
+        .stats { position: fixed; bottom: 30px; left: 30px; color: var(--neon); font-size: 9px; font-family: 'Cinzel'; opacity: 0.5; }
+
+        @media (max-width: 768px) {
+            .preview-card { width: 90%; left: 5%; right: 5%; bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="starfield"></canvas>
+
+    <header class="header">
+        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> EXIT HORIZON</a>
+        <div style="font-family:'Cinzel'; color:var(--neon); font-size:10px; letter-spacing:3px;">LEVEL 04: GLOBAL HORIZON</div>
+    </header>
+
+    <div class="search-container">
+        <input type="number" id="plotSearch" placeholder="SEARCH PLOT (1-8000)">
+        <button onclick="findPlot()" style="background:var(--neon); border:none; padding:8px 15px; border-radius:20px; font-size:10px; cursor:pointer;">FIND</button>
+    </div>
+
+    <div class="stats">CAPACITY: 8,000 ARCHIVES | STATUS: GLOBAL ACCESS</div>
+
+    <div class="grid-viewport" id="viewport">
+        <div class="horizon-grid" id="mainGrid">
+            </div>
+
+        <div class="preview-card" id="previewCard">
+            <img src="" id="pImg" class="p-img" style="display:none;">
+            <h4 id="pName" class="p-name">EMPTY ARCHIVE</h4>
+            <p id="pMsg" style="font-size: 11px; color: #888; margin-top: 5px;">Available for public legacy. Price: $29</p>
+            <a href="#" id="pLink" target="_blank" class="p-link">VIEW ARCHIVE →</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const grid = document.getElementById('mainGrid');
+        const pName = document.getElementById('pName');
+        const pImg = document.getElementById('pImg');
+        const pLink = document.getElementById('pLink');
+        const pMsg = document.getElementById('pMsg');
+
+        // Fetch Data for Level 04
+        const plotsRef = ref(db, 'global_horizon');
+        onValue(plotsRef, (snapshot) => {
+            const data = snapshot.val() || {};
+            renderHorizon(data);
+        });
+
+        function renderHorizon(data) {
+            grid.innerHTML = '';
+            const frag = document.createDocumentFragment();
+            for (let i = 1; i <= 8000; i++) {
+                const pixel = document.createElement('div');
+                pixel.className = 'pixel';
+                pixel.id = 'plot-' + i;
+                const pData = data[i];
+
+                if (pData) pixel.classList.add('occupied');
+
+                pixel.onmouseenter = () => {
+                    if (pData) {
+                        pName.innerText = pData.name;
+                        pImg.src = pData.image;
+                        pImg.style.display = 'block';
+                        pMsg.innerText = pData.message || "Part of the Global Horizon Archive.";
+                        pLink.href = pData.link;
+                        pLink.style.display = 'block';
+                    } else {
+                        pName.innerText = "ARCHIVE #" + i;
+                        pImg.style.display = 'none';
+                        pMsg.innerText = "Open for public. Price: $29";
+                        pLink.style.display = 'none';
+                    }
+                };
+                frag.appendChild(pixel);
+            }
+            grid.appendChild(frag);
+        }
+
+        window.findPlot = function() {
+            const val = document.getElementById('plotSearch').value;
+            const target = document.getElementById('plot-' + val);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                target.style.background = '#fff';
+                setTimeout(() => target.style.background = '', 2000);
+            }
+        };
+
+        // Starfield
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.onresize = resize; resize();
+        function anim() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            for(let i=0; i<50; i++) {
+                ctx.fillStyle = "rgba(0, 242, 255, 0.2)";
+                ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*1, 0, Math.PI*2); ctx.fill();
+            }
+            requestAnimationFrame(anim);
+        }
+        anim();
+    </script>
+</body>
+</html>
