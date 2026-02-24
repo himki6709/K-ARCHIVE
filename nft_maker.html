@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NFT GENERATOR | ARK</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body { background: #111; color: #fff; font-family: sans-serif; text-align: center; }
+        .nft-card { 
+            width: 400px; height: 500px; background: linear-gradient(45deg, #000, #1a1a1a);
+            margin: 20px auto; border: 10px solid #D4AF37; position: relative; overflow: hidden;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.5);
+        }
+        .nft-img { width: 100%; height: 60%; object-fit: cover; border-bottom: 2px solid #D4AF37; }
+        .nft-info { padding: 20px; font-family: 'Cinzel', serif; }
+        .nft-info h2 { color: #D4AF37; margin: 0; font-size: 24px; }
+        .nft-info p { font-size: 14px; letter-spacing: 2px; color: #aaa; }
+        .controls { background: #222; padding: 20px; display: inline-block; border-radius: 10px; }
+        input { padding: 10px; margin: 5px; width: 300px; }
+    </style>
+</head>
+<body>
+    <h1>NFT MANUALLY CREATOR</h1>
+    <div class="controls">
+        <input type="text" id="nftName" placeholder="Customer Name"><br>
+        <input type="text" id="nftImgURL" placeholder="Customer Photo URL"><br>
+        <input type="text" id="nftPlot" placeholder="Plot ID (e.g. ROYAL-05)"><br>
+        <button onclick="generateNFT()" style="padding:10px 20px; background:#D4AF37; border:none; cursor:pointer;">UPDATE PREVIEW</button>
+        <button onclick="downloadNFT()" style="padding:10px 20px; background:#00ffcc; border:none; cursor:pointer;">DOWNLOAD NFT</button>
+    </div>
+
+    <div id="capture" class="nft-card">
+        <img id="displayImg" class="nft-img" src="https://via.placeholder.com/400x300?text=Logo+Here">
+        <div class="nft-info">
+            <p>SOVEREIGN DYNASTY</p>
+            <h2 id="displayName">OWNER NAME</h2>
+            <p id="displayPlot">PLOT: ROYAL-00</p>
+            <div style="font-size:10px; margin-top:20px; color:#D4AF37;">OFFICIAL ARK NFT ASSET</div>
+        </div>
+    </div>
+
+    <script>
+        function generateNFT() {
+            document.getElementById('displayName').innerText = document.getElementById('nftName').value;
+            document.getElementById('displayPlot').innerText = "PLOT: " + document.getElementById('nftPlot').value;
+            document.getElementById('displayImg').src = document.getElementById('nftImgURL').value;
+        }
+
+        function downloadNFT() {
+            html2canvas(document.querySelector("#capture")).then(canvas => {
+                let link = document.createElement('a');
+                link.download = 'ARK-NFT.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
