@@ -34,11 +34,21 @@
         }
 
         header {
-            position: fixed; top: 0; width: 100%; padding: 25px 6%;
+            position: fixed; top: 0; width: 100%; padding: 15px 6%;
             display: flex; justify-content: space-between; align-items: center; z-index: 5000;
             background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
         }
         .back-btn { font-family: 'Cinzel'; color: var(--gold); text-decoration: none; font-size: 11px; letter-spacing: 2px; }
+        
+        /* Buy Plot Button in Corner */
+        .buy-plot-btn {
+            background: var(--gold); color: #000; padding: 10px 20px;
+            font-family: 'Cinzel'; font-weight: 900; font-size: 12px;
+            border: none; cursor: pointer; letter-spacing: 1px;
+            transition: 0.3s; margin-right: 20px;
+        }
+        .buy-plot-btn:hover { box-shadow: 0 0 15px var(--gold); transform: scale(1.05); }
+
         .branding { text-align: right; }
         .company-name { font-family: 'Cinzel'; font-size: 18px; color: var(--gold); letter-spacing: 4px; font-weight: 900; }
         .owner-name { font-size: 10px; color: #888; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
@@ -47,25 +57,16 @@
         .section-intro h1 { font-family: 'Cinzel'; font-size: 38px; letter-spacing: 15px; color: var(--royal-emerald); margin-bottom: 10px; }
         .section-intro p { font-size: 11px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
 
-        /* Buy Plot Button */
-        .buy-plot-trigger {
-            margin: 20px auto; display: inline-block; padding: 15px 40px;
-            background: var(--gold); color: #000; font-family: 'Cinzel';
-            font-weight: 900; text-decoration: none; letter-spacing: 2px;
-            cursor: pointer; border: none; transition: 0.3s;
-        }
-        .buy-plot-trigger:hover { box-shadow: 0 0 20px var(--gold); transform: scale(1.05); }
-
         .oasis-container { 
             max-width: 1300px; margin: 0 auto; padding: 40px 20px 100px;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;
         }
 
         .plot-unit {
             aspect-ratio: 1/1; background: var(--glass); border: 1px solid var(--border);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             text-decoration: none; color: #fff; transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
+            position: relative; cursor: pointer;
         }
 
         .plot-unit:hover {
@@ -77,33 +78,32 @@
         .plot-id { font-family: 'Cinzel'; font-size: 10px; color: var(--gold); margin-bottom: 5px; }
         .plot-status { font-size: 8px; color: var(--royal-emerald); text-transform: uppercase; letter-spacing: 1px; }
         .plot-unit.sold .plot-status { color: #ff0033; }
-        .plot-price { position: absolute; bottom: 12px; font-size: 9px; font-family: 'Cinzel'; color: rgba(255,255,255,0.2); }
+        .plot-price { position: absolute; bottom: 12px; font-size: 10px; font-family: 'Cinzel'; color: #fff; opacity: 0.8; }
 
-        /* Reserve Plot Modal (Based on Image) */
+        /* Modal Styles */
         #reserve-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 14, 17, 0.98); z-index: 9999; display: none;
-            align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.95); z-index: 9999; display: none;
+            align-items: center; justify-content: center; backdrop-filter: blur(10px);
         }
-        .reserve-content { width: 90%; max-width: 400px; text-align: center; }
-        .reserve-content h2 { color: #FCD535; font-family: 'Montserrat'; font-weight: 700; margin-bottom: 30px; letter-spacing: 1px; }
-        
-        .reserve-content input {
-            width: 100%; padding: 18px; margin-bottom: 20px;
-            background: #2B3139; border: 1px solid #333; border-radius: 8px;
-            color: #fff; font-size: 15px; outline: none;
+        .modal-content {
+            background: #0a0a0a; border: 1px solid var(--gold); padding: 40px;
+            width: 90%; max-width: 400px; text-align: center;
         }
-
-        .submit-req-btn {
-            width: 100%; padding: 18px; background: #FCD535; color: #000;
-            border: none; border-radius: 8px; font-weight: 700; font-size: 16px;
-            cursor: pointer; text-transform: uppercase; margin-top: 10px;
+        .modal-content h2 { color: var(--gold); font-family: 'Cinzel'; margin-bottom: 25px; }
+        .modal-content input {
+            width: 100%; padding: 15px; margin-bottom: 15px; background: #111;
+            border: 1px solid #333; color: #fff; border-radius: 5px;
+        }
+        .submit-btn {
+            width: 100%; padding: 15px; background: var(--gold); border: none;
+            font-family: 'Cinzel'; font-weight: 900; cursor: pointer; margin-top: 10px;
         }
 
         /* Success Overlay */
         #success-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0B0E11; z-index: 10000; display: none;
+            background: #050505; z-index: 10000; display: none;
             flex-direction: column; align-items: center; justify-content: center; text-align: center;
         }
 
@@ -111,9 +111,7 @@
         .asset-grid { display: flex; justify-content: center; gap: 60px; margin-top: 40px; flex-wrap: wrap; }
         .asset-item { max-width: 280px; }
         .asset-item i { font-size: 32px; color: var(--gold); margin-bottom: 20px; }
-        .asset-item h4 { font-family: 'Cinzel'; font-size: 15px; margin-bottom: 12px; }
-        .asset-item p { font-size: 11px; color: #777; line-height: 1.8; }
-
+        
         footer { padding: 50px; text-align: center; border-top: 1px solid var(--border); font-size: 10px; color: #555; letter-spacing: 2px; }
 
         @media (max-width: 768px) {
@@ -129,33 +127,35 @@
     <div id="cursor-ring"></div>
 
     <div id="reserve-modal">
-        <div class="reserve-content">
-            <h2>RESERVE YOUR PLOT</h2>
-            <input type="text" id="res-brand" placeholder="Your Brand Name">
-            <input type="number" id="res-plot" placeholder="Plot Number (1-35)">
-            <button class="submit-req-btn" onclick="submitBooking()">SUBMIT REQUEST</button>
-            <p onclick="closeModal()" style="color:#555; margin-top:20px; cursor:pointer; font-size:12px;">← Back to Homepage</p>
+        <div class="modal-content">
+            <h2>BUY PLOT</h2>
+            <input type="text" id="mBrand" placeholder="ENTER BRAND NAME">
+            <input type="number" id="mPlotNum" placeholder="ENTER PLOT NUMBER (1-35)">
+            <button class="submit-btn" onclick="submitRequest()">SUBMIT REQUEST</button>
+            <p onclick="closeModal()" style="color:#555; margin-top:15px; cursor:pointer; font-size:10px;">CANCEL</p>
         </div>
     </div>
 
     <div id="success-overlay">
-        <h1 style="color:#FCD535; font-size:40px; margin-bottom:20px;">SUCCESS! 🎉</h1>
-        <p id="success-brand-name" style="font-size:20px; letter-spacing:2px;"></p>
-        <p style="color:#888; margin-top:15px;">Contact Support to activate your plot.</p>
+        <h1 style="color:var(--gold); font-size:40px; font-family:'Cinzel';">CONGRATULATIONS! 🎉</h1>
+        <p id="congrats-text" style="font-size:18px; margin:20px 0; letter-spacing:2px;"></p>
+        <p style="color:#888;">Redirecting back to Oasis...</p>
     </div>
 
     <header>
         <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> RETURN TO ARK</a>
-        <div class="branding">
-            <div class="company-name">ARK ENTERPRISE</div>
-            <div class="owner-name">KAWSAR - Founder & CEO</div>
+        <div style="display: flex; align-items: center;">
+            <button class="buy-plot-btn" onclick="openModal()">BUY PLOT</button>
+            <div class="branding">
+                <div class="company-name">ARK ENTERPRISE</div>
+                <div class="owner-name">KAWSAR - CEO</div>
+            </div>
         </div>
     </header>
 
     <section class="section-intro">
         <h1>ROYAL OASIS</h1>
         <p>35 Sovereign Legacy Plots</p>
-        <button class="buy-plot-trigger" onclick="openModal()">RESERVE MY PLOT</button>
     </section>
 
     <main class="oasis-container" id="plots-grid"></main>
@@ -163,9 +163,9 @@
     <section class="asset-showcase">
         <h2 style="font-family:'Cinzel'; letter-spacing:10px; margin-bottom:50px;">ROYAL ASSETS</h2>
         <div class="asset-grid">
-            <div class="asset-item"><i class="fa-solid fa-gem"></i><h4>EXCLUSIVE NFT</h4><p>A unique blockchain asset representing your sovereign presence.</p></div>
-            <div class="asset-item"><i class="fa-solid fa-scroll"></i><h4>GOLDEN TITLE DEED</h4><p>Verifiable digital deed confirming your permanent status.</p></div>
-            <div class="asset-item"><i class="fa-solid fa-shield-halved"></i><h4>DYNASTY STATUS</h4><p>Priority support and direct access to the executive network.</p></div>
+            <div class="asset-item"><i class="fa-solid fa-gem"></i><h4>EXCLUSIVE NFT</h4></div>
+            <div class="asset-item"><i class="fa-solid fa-scroll"></i><h4>GOLDEN TITLE DEED</h4></div>
+            <div class="asset-item"><i class="fa-solid fa-shield-halved"></i><h4>DYNASTY STATUS</h4></div>
         </div>
     </section>
 
@@ -189,40 +189,44 @@
         const db = getDatabase(app);
         window.db = db;
 
-        // Render Grid
+        // Render Plots with Dynamic Pricing
         onValue(ref(db, 'royal_oasis/'), (snapshot) => {
             const data = snapshot.val() || {};
             const grid = document.getElementById('plots-grid');
             grid.innerHTML = '';
+            
             for (let i = 1; i <= 35; i++) {
                 const id = `ROYAL-${i < 10 ? '0'+i : i}`;
                 const isSold = data[id] ? true : false;
+                
+                // Pricing Logic: Row 1 is $9,999, each row below decreases by $100
+                // Assuming 5 plots per row
+                const rowNumber = Math.floor((i - 1) / 5);
+                const currentPrice = 9999 - (rowNumber * 100);
+
                 grid.innerHTML += `
                     <div class="plot-unit ${isSold ? 'sold' : ''}">
                         <span class="plot-id">${id}</span>
                         <span class="plot-status">${isSold ? 'Sold' : 'Available'}</span>
                         <i class="fa-solid fa-crown" style="font-size: 12px; margin-top:8px; color:${isSold ? '#ff0033' : 'rgba(212,175,55,0.2)'}"></i>
-                        <span class="plot-price">$9,999</span>
+                        <span class="plot-price">$${currentPrice.toLocaleString()}</span>
                     </div>`;
             }
         });
 
-        // Submit Booking Function
-        window.submitBooking = () => {
-            const brand = document.getElementById('res-brand').value;
-            const plotNum = document.getElementById('res-plot').value;
+        window.submitRequest = () => {
+            const brand = document.getElementById('mBrand').value;
+            const plotNum = document.getElementById('mPlotNum').value;
 
-            if(!brand || !plotNum) return alert("Please fill all fields!");
-            if(plotNum < 1 || plotNum > 35) return alert("Invalid Plot Number!");
+            if(!brand || !plotNum) return alert("Please fill all details!");
 
-            const formattedID = "ROYAL-" + (plotNum < 10 ? '0'+plotNum : plotNum);
+            const plotID = "ROYAL-" + (plotNum < 10 ? '0'+plotNum : plotNum);
 
-            // Save to Orders
-            set(ref(db, 'orders/' + formattedID), {
+            set(ref(db, 'orders/' + plotID), {
                 name: brand,
-                plotID: formattedID,
-                timestamp: Date.now(),
-                status: "Pending"
+                plotID: plotID,
+                status: "Pending",
+                timestamp: Date.now()
             }).then(() => {
                 showSuccess(brand);
             });
@@ -236,25 +240,30 @@
         function showSuccess(brand) {
             closeModal();
             const success = document.getElementById('success-overlay');
-            document.getElementById('success-brand-name').innerText = "Brand: " + brand;
+            document.getElementById('congrats-text').innerText = "Brand '" + brand + "' Request Received!";
             success.style.display = 'flex';
 
-            // Confetti Blast
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#FCD535', '#00ffcc', '#ffffff'] });
+            // Confetti effect from sides
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 11000 };
 
-            // Auto Back to Canvas after 5 seconds
-            setTimeout(() => {
-                success.style.display = 'none';
-                document.getElementById('res-brand').value = "";
-                document.getElementById('res-plot').value = "";
-            }, 5000);
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+
+            setTimeout(() => { success.style.display = 'none'; }, 5000);
         }
 
-        // Cursor & Star Background
+        // Cursor & Star Logic
         const ring = document.getElementById('cursor-ring');
-        document.addEventListener('mousemove', (e) => {
-            ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
-        });
+        document.addEventListener('mousemove', e => { ring.style.left = e.clientX+'px'; ring.style.top = e.clientY+'px'; });
 
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
