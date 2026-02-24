@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELITE LEGACY | 500 GUARDIANS</title>
+    <title>ELITE LEGACY | 500 INDUSTRIAL PLOTS</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --bg: #020205;
-            --blue-gold: #b39b5d;
-            --gold: #D4AF37;
+            --legacy-gold: #b39b5d;
+            --border: rgba(179, 155, 93, 0.3);
             --glass: rgba(255, 255, 255, 0.02);
         }
 
@@ -22,100 +22,98 @@
             overflow: hidden; height: 100vh;
         }
 
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.5; }
+        /* Technical Grid Background */
+        .tech-bg {
+            position: fixed; inset: 0;
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1; opacity: 0.2;
+        }
 
         .header-nav {
-            position: fixed; top: 0; width: 100%; padding: 25px 40px;
+            position: fixed; top: 0; width: 100%; padding: 20px 40px;
             display: flex; justify-content: space-between; align-items: center; z-index: 1000;
-        }
-        .nav-back {
-            text-decoration: none; color: var(--gold); font-family: 'Cinzel';
-            font-size: 11px; letter-spacing: 2px; display: flex; align-items: center; gap: 10px;
+            background: rgba(0,0,0,0.8); border-bottom: 1px solid var(--border);
         }
 
-        /* Galactic Map Container */
-        .galaxy-container {
-            height: 100vh; width: 100vw; display: flex; justify-content: center;
-            align-items: center; overflow: hidden;
-        }
+        .nav-back { text-decoration: none; color: var(--legacy-gold); font-family: 'Cinzel'; font-size: 11px; letter-spacing: 2px; }
 
-        .scroll-area {
+        /* The Mega Grid Container */
+        .viewport {
+            width: 100vw; height: 100vh; overflow: auto;
+            padding: 120px 50px; cursor: grab;
+            scrollbar-width: thin; scrollbar-color: var(--legacy-gold) transparent;
+        }
+        .viewport::-webkit-scrollbar { width: 6px; }
+        .viewport::-webkit-scrollbar-thumb { background: var(--legacy-gold); }
+
+        .legacy-grid {
             display: grid;
-            grid-template-columns: repeat(25, 30px); /* 25x20 = 500 plots */
-            gap: 8px;
-            padding: 100px;
-            transform: scale(0.9);
-            transition: 0.5s ease-out;
+            grid-template-columns: repeat(25, 100px); /* 25 cols x 20 rows = 500 plots */
+            gap: 10px; margin: 0 auto;
         }
 
-        /* Plot Design - Minimalist for 500 Units */
+        /* Plot Property Design */
         .plot {
-            width: 30px; height: 30px; background: var(--glass);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            display: flex; justify-content: center; align-items: center;
-            font-size: 8px; color: var(--gold); cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100px; height: 100px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            position: relative; cursor: pointer;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: 0.3s;
         }
 
         .plot:hover {
-            transform: scale(2.5);
-            background: var(--gold); color: #000;
-            box-shadow: 0 0 20px var(--gold);
-            z-index: 500;
-            border-radius: 2px;
+            background: var(--legacy-gold);
+            color: #000; border-color: #fff;
+            box-shadow: 0 0 25px var(--legacy-gold);
+            z-index: 10; transform: scale(1.1);
         }
 
-        .plot.sold { border-color: #fff; background: rgba(255,255,255,0.15); }
-        .plot.sold::after { content: ''; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; }
+        .plot-id { position: absolute; top: 5px; left: 8px; font-size: 9px; opacity: 0.5; font-weight: bold; }
+        .plot-dim { position: absolute; bottom: 5px; font-size: 7px; opacity: 0.4; letter-spacing: 1px; }
+        .plot i { font-size: 18px; opacity: 0.2; }
 
-        /* Floating Info Portal */
-        .portal-card {
-            position: fixed; left: 50px; bottom: 50px; width: 300px;
-            background: rgba(0,0,0,0.9); border: 1px solid var(--gold);
-            padding: 25px; backdrop-filter: blur(10px);
-            opacity: 0; transform: translateX(-20px); transition: 0.4s;
-            pointer-events: none;
+        /* Sold Logic */
+        .plot.sold { border-color: #fff; background: rgba(179, 155, 93, 0.2); }
+        .plot.sold i { opacity: 1; color: var(--legacy-gold); }
+
+        /* Detail Panel */
+        .detail-panel {
+            position: fixed; bottom: 30px; left: 30px; width: 300px;
+            background: rgba(5,5,5,0.95); border-left: 4px solid var(--legacy-gold);
+            padding: 20px; backdrop-filter: blur(10px); opacity: 0;
+            transform: translateY(20px); transition: 0.4s; pointer-events: none;
         }
-        .plot:hover ~ .portal-card, .portal-card:hover { opacity: 1; transform: translateX(0); pointer-events: all; }
+        .plot:hover ~ .detail-panel, .detail-panel:hover { opacity: 1; transform: translateY(0); pointer-events: all; }
 
-        .portal-img { width: 50px; height: 50px; border: 1px solid var(--gold); margin-bottom: 15px; }
-        .portal-name { font-family: 'Cinzel'; font-size: 16px; color: var(--gold); margin-bottom: 10px; }
-        .portal-link { font-size: 10px; color: #aaa; text-decoration: none; border-bottom: 1px solid #444; }
-
-        .sector-info {
-            position: absolute; top: 100px; right: 50px; text-align: right;
-            font-family: 'Cinzel'; color: var(--gold); opacity: 0.4;
-        }
-
-        @media (max-width: 768px) {
-            .scroll-area { grid-template-columns: repeat(10, 30px); transform: scale(0.7); }
-            .portal-card { width: 80%; left: 10%; bottom: 20px; }
-        }
+        .d-img { width: 50px; height: 50px; border: 1px solid var(--legacy-gold); margin-bottom: 10px; }
+        .d-name { font-family: 'Cinzel'; color: var(--legacy-gold); font-size: 16px; margin-bottom: 5px; }
+        .d-price { font-size: 14px; color: #00ff00; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
+    <div class="tech-bg"></div>
 
     <header class="header-nav">
-        <a href="index.html" class="nav-back"><i class="fa-solid fa-arrow-left"></i> THE ARK MAIN</a>
-        <div style="font-family:'Cinzel'; font-size: 10px; color: var(--gold); letter-spacing: 2px;">SECTOR: ELITE LEGACY</div>
+        <a href="index.html" class="nav-back"><i class="fa-solid fa-chevron-left"></i> BACK TO ARK</a>
+        <div style="text-align: right;">
+            <p style="font-family:'Cinzel'; color:var(--legacy-gold); font-size:12px;">LEVEL 02: ELITE LEGACY</p>
+            <p style="font-size: 8px; color: #888;">500 INDUSTRIAL PLOTS | UNIT: 100x100</p>
+        </div>
     </header>
 
-    <div class="sector-info">
-        <h1 style="letter-spacing: 10px; font-size: 30px;">LEVEL 02</h1>
-        <p>500 RESERVED UNITS</p>
-    </div>
-
-    <div class="galaxy-container">
-        <div class="scroll-area" id="plotGrid">
+    <div class="viewport" id="viewport">
+        <div class="legacy-grid" id="legacyGrid">
             </div>
 
-        <div class="portal-card" id="portalCard">
-            <img src="" id="portalImg" class="portal-img" style="display:none;">
-            <h3 class="portal-name" id="portalName">EMPTY SECTOR</h3>
-            <p id="portalMsg" style="font-size: 12px; color: #888; margin-bottom: 15px;">Available for legacy preservation. Price: $249</p>
-            <a href="#" id="portalLink" target="_blank" class="portal-link">CONNECT TO GUARDIAN</a>
+        <div class="detail-panel" id="detailPanel">
+            <img src="" id="dImg" class="d-img">
+            <h3 id="dName" class="d-name">SELECT PROPERTY</h3>
+            <p id="dPrice" class="d-price">$249.00</p>
+            <p id="dMsg" style="font-size: 11px; color: #ccc;">Secure this 100x100 architectural unit in the Elite Legacy sector.</p>
+            <a href="#" id="dLink" target="_blank" style="display:none; color:var(--legacy-gold); font-size:10px; margin-top:10px; text-decoration:none; border-bottom:1px solid;">VISIT ARCHIVE →</a>
         </div>
     </div>
 
@@ -136,62 +134,67 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        const grid = document.getElementById('plotGrid');
-        const portalCard = document.getElementById('portalCard');
-        const portalName = document.getElementById('portalName');
-        const portalImg = document.getElementById('portalImg');
-        const portalLink = document.getElementById('portalLink');
-        const portalMsg = document.getElementById('portalMsg');
+        const grid = document.getElementById('legacyGrid');
+        const dName = document.getElementById('dName');
+        const dPrice = document.getElementById('dPrice');
+        const dImg = document.getElementById('dImg');
+        const dLink = document.getElementById('dLink');
+        const dMsg = document.getElementById('dMsg');
 
-        // Realtime Data Fetching for Level 02
-        const plotsRef = ref(db, 'elite_legacy');
-        onValue(plotsRef, (snapshot) => {
+        onValue(ref(db, 'elite_legacy'), (snapshot) => {
             const data = snapshot.val() || {};
-            renderEliteGrid(data);
+            renderElitePlots(data);
         });
 
-        function renderEliteGrid(data) {
+        function renderElitePlots(data) {
             grid.innerHTML = '';
+            const frag = document.createDocumentFragment();
             for (let i = 1; i <= 500; i++) {
                 const plot = document.createElement('div');
                 plot.className = 'plot';
                 const pData = data[i];
 
+                plot.innerHTML = `<span class="plot-id">EL-${i}</span>
+                                 <i class="fa-solid ${pData ? 'fa-building-shield' : 'fa-border-all'}"></i>
+                                 <span class="plot-dim">100x100 DIM</span>`;
+
                 if (pData) plot.classList.add('sold');
-                plot.innerText = i;
 
                 plot.onmouseenter = () => {
                     if (pData) {
-                        portalName.innerText = pData.name;
-                        portalImg.src = pData.image;
-                        portalImg.style.display = 'block';
-                        portalMsg.innerText = pData.message || "Elite Member of the Eternal Ark.";
-                        portalLink.href = pData.link;
-                        portalLink.style.display = 'inline-block';
+                        dName.innerText = pData.name;
+                        dPrice.innerText = "OWNED";
+                        dPrice.style.color = "#b39b5d";
+                        dImg.src = pData.image;
+                        dImg.style.display = 'block';
+                        dMsg.innerText = pData.message || "Elite Legacy Member.";
+                        dLink.href = pData.link;
+                        dLink.style.display = 'block';
                     } else {
-                        portalName.innerText = "SECTOR #" + i;
-                        portalImg.style.display = 'none';
-                        portalMsg.innerText = "Available for legacy preservation. Price: $249";
-                        portalLink.style.display = 'none';
+                        dName.innerText = "PROPERTY EL-" + i;
+                        dPrice.innerText = "$249.00";
+                        dPrice.style.color = "#00ff00";
+                        dImg.style.display = 'none';
+                        dMsg.innerText = "Available for legacy reservation. Dimensions: 100x100.";
+                        dLink.style.display = 'none';
                     }
                 };
-                grid.appendChild(plot);
+                frag.appendChild(plot);
             }
+            grid.appendChild(frag);
         }
 
-        // Particle Background
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.onresize = resize; resize();
-        for(let i=0; i<300; i++) stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1 });
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height); ctx.fillStyle = "#fff";
-            stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill(); });
-            requestAnimationFrame(draw);
-        }
-        draw();
+        // Horizontal Drag Scroll
+        const slider = document.getElementById('viewport');
+        let isDown = false; let startX; let scrollLeft;
+        slider.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft; });
+        slider.addEventListener('mouseup', () => isDown = false);
+        slider.addEventListener('mousemove', (e) => {
+            if(!isDown) return;
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2;
+            slider.scrollLeft = scrollLeft - walk;
+        });
     </script>
 </body>
 </html>
