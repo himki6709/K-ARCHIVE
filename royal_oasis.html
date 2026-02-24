@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROYAL OASIS | THE SOVEREIGN 30</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root { 
+            --bg: #050505; 
+            --royal-emerald: #00ffcc;
+            --gold: #D4AF37;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(212, 175, 55, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
+            overflow-x: hidden; cursor: none;
+        }
+
+        /* Particles Background */
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.4; }
+
+        /* Custom Cursor Ring */
+        #cursor-ring {
+            position: fixed; width: 25px; height: 25px; border: 1.5px solid var(--royal-emerald); 
+            border-radius: 50%; pointer-events: none; z-index: 10000; 
+            transform: translate(-50%, -50%); transition: 0.1s ease-out;
+            box-shadow: 0 0 15px var(--royal-emerald);
+        }
+
+        /* Top Header */
+        header {
+            position: fixed; top: 0; width: 100%; padding: 30px 6%;
+            display: flex; justify-content: space-between; align-items: center; z-index: 5000;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
+        }
+        .back-btn { font-family: 'Cinzel'; color: var(--gold); text-decoration: none; font-size: 12px; letter-spacing: 2px; transition: 0.3s; }
+        .back-btn:hover { color: #fff; text-shadow: 0 0 10px var(--gold); }
+
+        /* Hero Info */
+        .section-intro { padding: 180px 6% 60px; text-align: center; }
+        .section-intro h1 { font-family: 'Cinzel'; font-size: 42px; letter-spacing: 15px; color: var(--royal-emerald); margin-bottom: 15px; }
+        .section-intro p { font-size: 12px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; opacity: 0.8; }
+
+        /* The Imperial Grid (30 Plots) */
+        .oasis-container { 
+            max-width: 1200px; margin: 0 auto; padding: 40px 20px 100px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 25px;
+            perspective: 1000px;
+        }
+
+        .plot-unit {
+            aspect-ratio: 1/1; background: var(--glass); border: 1px solid var(--border);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-decoration: none; color: #fff; transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative; overflow: hidden;
+        }
+
+        .plot-unit:hover {
+            transform: scale(1.05) translateZ(20px);
+            border-color: var(--royal-emerald);
+            background: rgba(0, 255, 204, 0.05);
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.2);
+        }
+
+        .plot-id { font-family: 'Cinzel'; font-size: 10px; color: var(--gold); margin-bottom: 5px; }
+        .plot-status { font-size: 8px; letter-spacing: 1px; color: var(--royal-emerald); text-transform: uppercase; }
+
+        /* Plot Badge */
+        .plot-unit::after {
+            content: '$9,999'; position: absolute; bottom: 10px; font-size: 8px; font-family: 'Cinzel';
+            color: rgba(255,255,255,0.3); transition: 0.3s;
+        }
+        .plot-unit:hover::after { color: var(--royal-emerald); }
+
+        /* Footer Assets */
+        .asset-showcase {
+            background: rgba(212, 175, 55, 0.02); border-top: 1px solid var(--border);
+            padding: 60px 6%; text-align: center; margin-top: 50px;
+        }
+        .asset-grid { display: flex; justify-content: center; gap: 50px; margin-top: 30px; flex-wrap: wrap; }
+        .asset-item { max-width: 250px; }
+        .asset-item i { font-size: 30px; color: var(--gold); margin-bottom: 15px; }
+        .asset-item h4 { font-family: 'Cinzel'; font-size: 14px; color: #fff; margin-bottom: 10px; }
+        .asset-item p { font-size: 11px; color: #777; line-height: 1.6; }
+
+        @media (max-width: 768px) {
+            .oasis-container { grid-template-columns: repeat(3, 1fr); }
+            #cursor-ring { display: none; }
+            body { cursor: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+    <div id="cursor-ring"></div>
+
+    <header>
+        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> RETURN TO ARK</a>
+        <div style="font-family:'Cinzel'; font-weight:900; letter-spacing:5px;">KAWSAR6700</div>
+    </header>
+
+    <section class="section-intro">
+        <h1>ROYAL OASIS</h1>
+        <p>30 Sovereign Legacy Plots</p>
+    </section>
+
+    <main class="oasis-container">
+        <script>
+            for (let i = 1; i <= 30; i++) {
+                document.write(`
+                    <a href="#" class="plot-unit">
+                        <span class="plot-id">ROYAL-${i < 10 ? '0'+i : i}</span>
+                        <span class="plot-status">Available</span>
+                        <i class="fa-solid fa-crown" style="font-size: 14px; margin-top:10px; color:rgba(212,175,55,0.2)"></i>
+                    </a>
+                `);
+            }
+        </script>
+    </main>
+
+    <section class="asset-showcase">
+        <h2 style="font-family:'Cinzel'; letter-spacing:8px; margin-bottom:40px; font-size:18px;">INCLUSIONS OF SOVEREIGNTY</h2>
+        <div class="asset-grid">
+            <div class="asset-item">
+                <i class="fa-solid fa-gem"></i>
+                <h4>EXCLUSIVE ARK-NFT</h4>
+                <p>A unique generative 1-of-1 NFT minted on the blockchain representing your Royal status.</p>
+            </div>
+            <div class="asset-item">
+                <i class="fa-solid fa-scroll"></i>
+                <h4>GOLDEN TITLE DEED</h4>
+                <p>An official, verifiable digital document confirming your eternal ownership in the Oasis.</p>
+            </div>
+            <div class="asset-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h4>DYNASTY PROTECTION</h4>
+                <p>Enhanced security protocols and priority support for all Royal Oasis citizens.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer style="padding: 40px; text-align:center; font-size:10px; color:#444; letter-spacing:2px; border-top: 1px solid var(--border);">
+        THE ETERNAL ARK | ROYAL OASIS DIVISION | BY KAWSAR6700
+    </footer>
+
+    <script>
+        const ring = document.getElementById('cursor-ring');
+        document.addEventListener('mousemove', (e) => {
+            ring.style.left = e.clientX + 'px';
+            ring.style.top = e.clientY + 'px';
+        });
+
+        // Background Particles
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.onresize = resize; resize();
+        class Star {
+            constructor() { 
+                this.x = Math.random()*canvas.width; 
+                this.y = Math.random()*canvas.height; 
+                this.size = Math.random()*1.5; 
+            }
+            draw() { 
+                ctx.fillStyle = "rgba(0, 255, 204, 0.2)"; 
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); 
+            }
+        }
+        for(let i=0; i<80; i++) stars.push(new Star());
+        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
+        animate();
+    </script>
+</body>
+</html>
