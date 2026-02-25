@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARK CONCIERGE | ROYAL SUPPORT</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #D4AF37; /* Royal Gold */
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(212, 175, 55, 0.15);
+            --text-muted: #888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            background-image: radial-gradient(circle at 0% 0%, #1a150a 0%, #050505 50%);
+        }
+
+        /* Ambient Glow Objects */
+        .glow {
+            position: absolute;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+            z-index: -1;
+            filter: blur(50px);
+        }
+
+        .support-card {
+            width: 90%;
+            max-width: 500px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            padding: 50px 40px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        .support-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .brand-header h2 {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 5px;
+            color: var(--accent);
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .brand-header p {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .instruction-box {
+            text-align: left;
+            margin-bottom: 40px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .step-num {
+            font-family: 'Cinzel';
+            color: var(--accent);
+            font-size: 18px;
+            font-weight: 900;
+            opacity: 0.5;
+        }
+
+        .step-text h4 {
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: #eee;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .step-text p {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .cta-container {
+            margin-top: 40px;
+        }
+
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--accent);
+            color: #000;
+            padding: 18px 35px;
+            text-decoration: none;
+            font-family: 'Cinzel';
+            font-weight: 900;
+            font-size: 12px;
+            letter-spacing: 2px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-whatsapp:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
+            background: #fff;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 25px;
+            color: #444;
+            text-decoration: none;
+            font-size: 10px;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        /* Decorative Corners */
+        .corner {
+            position: absolute;
+            width: 15px; height: 15px;
+            border: 1px solid var(--accent);
+            opacity: 0.3;
+        }
+        .tl { top: 15px; left: 15px; border-right: 0; border-bottom: 0; }
+        .br { bottom: 15px; right: 15px; border-left: 0; border-top: 0; }
+
+    </style>
+</head>
+<body>
+
+    <div class="glow"></div>
+
+    <div class="support-card">
+        <div class="corner tl"></div>
+        <div class="corner br"></div>
+
+        <div class="brand-header">
+            <h2>CONCIERGE</h2>
+            <p>Royal Oasis Acquisition Support</p>
+        </div>
+
+        <div class="instruction-box">
+            <div class="step">
+                <div class="step-num">01</div>
+                <div class="step-text">
+                    <h4>Verification</h4>
+                    <p>Send your transaction receipt (Binance/USDT) for plot validation.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">02</div>
+                <div class="step-text">
+                    <h4>Identity</h4>
+                    <p>Provide your Brand Name and the Plot Coordinate you reserved.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">03</div>
+                <div class="step-text">
+                    <h4>Assets</h4>
+                    <p>Submit a high-resolution logo and the target URL for your plot link.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-container">
+            <a href="https://wa.me/8801576940717?text=CEO_OFFICE_REQUEST:%20I%20want%20to%20activate%20my%20Royal%20Oasis%20Plot." target="_blank" class="btn-whatsapp">
+                <i class="fab fa-whatsapp"></i> ESTABLISH CONTACT
+            </a>
+            <a href="royal_oasis.html" class="back-link">RETURN TO OASIS</a>
+        </div>
+    </div>
+
+    <script>
+        // CEO Touch: Subtle parallax movement on card
+        document.addEventListener('mousemove', (e) => {
+            const card = document.querySelector('.support-card');
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        });
+    </script>
+
+</body>
+</html>
