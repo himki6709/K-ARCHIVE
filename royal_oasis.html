@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROYAL OASIS | SOVEREIGN DYNASTIES</title>
+    <title>ROYAL OASIS | THE SOVEREIGN DYNASTY</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
@@ -25,93 +26,167 @@
             background-color: var(--bg);
             color: var(--white);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            padding: 50px 20px;
-            text-align: center;
+            overflow-x: hidden;
+            padding-bottom: 100px;
         }
 
-        .header { margin-bottom: 50px; }
-        .header h1 { font-family: 'Cinzel'; font-size: 40px; color: var(--gold); letter-spacing: 5px; }
-        .header p { font-size: 12px; color: #888; margin-top: 10px; text-transform: uppercase; letter-spacing: 2px; }
+        /* Video Color Effect for Title */
+        .title-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
 
-        /* Canvas Grid */
+        .video-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(40px, 8vw, 85px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            background: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJmZmtpZzRreXJ4ZzRreHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JnB0PWEmZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWc/3o7TKMGpxx6659KSre/giphy.gif');
+            background-size: cover;
+            background-position: center;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+        }
+
+        /* Download Map Button */
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px 5%;
+        }
+
+        .btn-download {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 12px 25px;
+            font-family: 'Cinzel';
+            font-size: 11px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.4s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-download:hover {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Plot Grid with Animated Effects */
         .plot-canvas {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 15px;
-            padding: 20px;
-            background: rgba(212, 175, 55, 0.05);
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            gap: 20px;
+            padding: 40px;
+            background: linear-gradient(145deg, #050505, #0a0a0a);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            position: relative;
         }
 
         .plot {
             aspect-ratio: 1/1;
-            background: #0a0a0a;
-            border: 1px solid #222;
+            background: #080808;
+            border: 1px solid #1a1a1a;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        .plot:hover { border-color: var(--emerald); transform: scale(1.02); }
-        .plot-id { font-family: 'Cinzel'; font-size: 14px; color: var(--gold); }
-        .plot-price { font-size: 11px; margin-top: 5px; color: var(--white); }
+        /* Plot Color Animation (Dynamic) */
+        .plot::before {
+            content: '';
+            position: absolute;
+            width: 150%; height: 150%;
+            background: conic-gradient(from 180deg at 50% 50%, transparent 0%, var(--gold) 15%, transparent 30%);
+            animation: rotate 4s linear infinite;
+            opacity: 0.1;
+        }
 
-        /* Modal / Pop-up */
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .plot:hover {
+            border-color: var(--emerald);
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+        }
+
+        .plot-id { font-family: 'Cinzel'; font-size: 18px; color: var(--gold); z-index: 2; }
+        .plot-price { font-size: 12px; color: #666; margin-top: 8px; z-index: 2; letter-spacing: 1px; }
+
+        /* Modal & Support Info */
         .overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-            display: none; align-items: center; justify-content: center; z-index: 1000;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.98);
+            display: none; align-items: center; justify-content: center; z-index: 10000;
         }
 
         .modal {
-            background: #0d0d0d; border: 1px solid var(--gold);
-            padding: 40px; width: 90%; max-width: 500px; text-align: left;
+            background: #000; border: 1px solid var(--gold);
+            padding: 50px; width: 90%; max-width: 550px;
+            box-shadow: 0 0 100px rgba(212, 175, 55, 0.1);
         }
 
-        .modal h2 { font-family: 'Cinzel'; color: var(--emerald); margin-bottom: 20px; text-align: center; }
-
+        .modal h2 { font-family: 'Cinzel'; color: var(--gold); letter-spacing: 5px; text-align: center; margin-bottom: 30px; }
+        
         input {
-            width: 100%; padding: 15px; margin-bottom: 20px;
-            background: #111; border: 1px solid #333; color: #fff; outline: none;
+            width: 100%; padding: 18px; margin-bottom: 25px;
+            background: #0a0a0a; border: 1px solid #222; color: #fff; font-family: inherit;
         }
 
-        .btn-buy {
-            width: 100%; padding: 15px; background: var(--gold); color: #000;
-            border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer;
+        .btn-submit {
+            width: 100%; padding: 20px; background: var(--gold); color: #000;
+            border: none; font-family: 'Cinzel'; font-weight: 900; letter-spacing: 3px; cursor: pointer;
         }
 
-        /* Success Support Info */
-        .support-list { background: #111; padding: 20px; margin: 20px 0; border-left: 3px solid var(--gold); }
-        .support-list li { font-size: 12px; margin-bottom: 8px; color: #bbb; list-style: none; }
+        .support-card {
+            background: #050505; border: 1px dashed #333; padding: 25px; margin: 30px 0;
+        }
 
-        .action-flex { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-msg { flex: 1; padding: 12px; background: var(--emerald); color: #000; text-decoration: none; text-align: center; font-weight: bold; font-size: 13px; }
-        .btn-back { flex: 1; padding: 12px; background: #222; color: #fff; border: none; cursor: pointer; font-size: 13px; }
+        .support-card li { font-size: 11px; margin-bottom: 12px; color: #888; list-style: none; text-transform: uppercase; letter-spacing: 1px; }
 
-        @media (max-width: 768px) { .plot-canvas { grid-template-columns: repeat(3, 1fr); } }
+        .btn-wa { display: block; width: 100%; padding: 18px; background: var(--emerald); color: #000; text-align: center; text-decoration: none; font-weight: 900; font-family: 'Cinzel'; margin-bottom: 15px; }
+        .btn-close { display: block; width: 100%; padding: 15px; background: transparent; color: #444; border: none; cursor: pointer; font-size: 10px; letter-spacing: 2px; }
+
+        @media (max-width: 800px) { .plot-canvas { grid-template-columns: repeat(3, 1fr); padding: 20px; } }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>ROYAL OASIS</h1>
-        <p>Top-tier legacy plots for Sovereign Dynasties.</p>
+    <div class="top-nav">
+        <button class="btn-download" onclick="downloadMap()">
+            DOWNLOAD HIGH-RES MAP
+        </button>
     </div>
 
-    <div class="plot-canvas" id="canvas">
+    <div class="title-container">
+        <h1 class="video-title">ROYAL OASIS</h1>
+        <p style="color: #444; letter-spacing: 8px; font-size: 10px; margin-top: 15px;">ESTABLISHED FOR THE SOVEREIGN ELITE</p>
+    </div>
+
+    <div class="plot-canvas" id="map-capture">
         </div>
 
     <div class="overlay" id="orderModal">
-        <div class="modal" id="modalContent">
-            <h2>ACQUIRE PLOT</h2>
-            <input type="text" id="brandName" placeholder="YOUR BRAND NAME">
-            <input type="number" id="plotNumber" placeholder="PLOT NUMBER" readonly>
-            <input type="text" id="plotPriceDisplay" readonly>
-            <button class="btn-buy" onclick="submitAcquisition()">SUBMIT REQUEST</button>
+        <div class="modal" id="modalBody">
+            <h2>ACQUISITION</h2>
+            <input type="text" id="brandName" placeholder="ENTER BRAND IDENTITY">
+            <input type="hidden" id="plotNum">
+            <input type="hidden" id="plotPrice">
+            <div id="displayInfo" style="text-align:center; color:var(--emerald); margin-bottom:20px; font-size:12px;"></div>
+            <button class="btn-submit" onclick="processOrder()">INITIATE PROTOCOL</button>
         </div>
     </div>
 
@@ -128,73 +203,70 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function initCanvas() {
-            const canvas = document.getElementById('canvas');
+        function createGrid() {
+            const canvas = document.getElementById('map-capture');
             for (let i = 1; i <= 35; i++) {
                 const row = Math.floor((i - 1) / 5);
-                const price = 9999 - (row * 100); // ১০০ ডলার করে কমবে
+                const price = 9999 - (row * 100);
                 const plot = document.createElement('div');
                 plot.className = 'plot';
-                plot.onclick = () => openModal(i, price);
-                plot.innerHTML = `<span class="plot-id">#${i}</span><span class="plot-price">$${price.toLocaleString()}</span>`;
+                plot.onclick = () => openPortal(i, price);
+                plot.innerHTML = `<span class="plot-id">${i}</span><span class="plot-price">$${price.toLocaleString()}</span>`;
                 canvas.appendChild(plot);
             }
         }
 
-        function openModal(id, price) {
-            document.getElementById('plotNumber').value = id;
-            document.getElementById('plotPriceDisplay').value = `$${price.toLocaleString()}`;
+        function openPortal(id, price) {
+            document.getElementById('plotNum').value = id;
+            document.getElementById('plotPrice').value = price;
+            document.getElementById('displayInfo').innerText = `SYSTEM PREPARING PLOT #${id} | VALUE: $${price.toLocaleString()}`;
             document.getElementById('orderModal').style.display = 'flex';
         }
 
-        function submitAcquisition() {
+        function processOrder() {
             const brand = document.getElementById('brandName').value;
-            const plotNum = document.getElementById('plotNumber').value;
-            const price = document.getElementById('plotPriceDisplay').value;
+            const id = document.getElementById('plotNum').value;
+            const price = document.getElementById('plotPrice').value;
 
-            if (!brand) return alert("Please enter your brand name.");
+            if(!brand) return;
 
-            // Admin Panel Push
-            db.ref('orders/' + Date.now()).set({
-                brand: brand,
-                plot: plotNum,
-                price: price,
-                timestamp: Date.now()
-            }).then(() => {
-                showSuccess(brand, plotNum, price);
-            });
+            db.ref('orders/' + Date.now()).set({ brand, plot: id, price, timestamp: Date.now() })
+            .then(() => triggerSuccess(brand, id, price));
         }
 
-        function showSuccess(brand, plot, price) {
-            // Confetti Sequence
-            const duration = 3 * 1000;
-            const end = Date.now() + duration;
-            (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#030303', '#D4AF37', '#00ffcc', '#E0E0E0', '#ff0033'] });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#030303', '#D4AF37', '#00ffcc', '#E0E0E0', '#ff0033'] });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+        function triggerSuccess(brand, id, price) {
+            // Explosive Confetti
+            const colors = ['#030303', '#D4AF37', '#00ffcc', '#E0E0E0', '#ff0033'];
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors });
 
-            const modal = document.getElementById('modalContent');
-            const msg = encodeURIComponent(`CONGRATULATIONS ${brand}!\nRequest for Plot #${plot}\nPrice: ${price}\nReady for submission.`);
+            const modal = document.getElementById('modalBody');
+            const waMsg = encodeURIComponent(`ROYAL_OASIS_REQUEST\nBrand: ${brand}\nPlot: #${id}\nPrice: $${price}\nStatus: Verification Pending`);
             
             modal.innerHTML = `
-                <h2 style="color:var(--gold)">CONGRATULATIONS!</h2>
-                <p style="text-align:center; font-size:14px; margin-bottom:20px;">Welcome to the Dynasty, <b>${brand}</b></p>
-                <div class="support-list">
-                    <li>• Target Plot: #${plot} / ${brand}</li>
-                    <li>• High-Resolution Image/Logo Link</li>
-                    <li>• External Website or Social Link</li>
-                    <li>• Transaction Screenshot / TxID</li>
+                <h2 style="color:var(--emerald)">CONFIRMED</h2>
+                <p style="text-align:center; font-size:12px; color:#fff;">WELCOME, ${brand}</p>
+                <div class="support-card">
+                    <li>• Plot ID: #${id} / ${brand}</li>
+                    <li>• High-Res Logo/Brand Link</li>
+                    <li>• Target URL (Web/Social)</li>
+                    <li>• Payment Proof (Screenshot/TxID)</li>
                 </div>
-                <div class="action-flex">
-                    <a href="https://wa.me/8801576940717?text=${msg}" target="_blank" class="btn-msg">SEND MESSAGE</a>
-                    <button class="btn-back" onclick="location.reload()">BACK TO CANVAS</button>
-                </div>
+                <a href="https://wa.me/8801576940717?text=${waMsg}" target="_blank" class="btn-wa">SEND TO CONCIERGE</a>
+                <button class="btn-close" onclick="location.reload()">BACK TO CANVAS</button>
             `;
         }
 
-        window.onload = initCanvas;
+        function downloadMap() {
+            const target = document.getElementById('map-capture');
+            html2canvas(target, { backgroundColor: '#030303', scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Royal-Oasis-Legacy-Map.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        window.onload = createGrid;
     </script>
 </body>
 </html>
