@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECURE ACCESS | ADMIN TERMINAL</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <style>
+        :root {
+            --bg: #030303;
+            --nuclear-orange: #FF3D00;
+            --surface: #0A0A0A;
+            --border: #1A1A1A;
+            --text-gray: #555;
+            --font-header: 'Cinzel', serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: var(--font-mono);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Terminal Frame */
+        .admin-frame {
+            width: 95%;
+            max-width: 1000px;
+            height: 80vh;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        /* Sidebar Interface */
+        .admin-sidebar {
+            background: #070707;
+            border-right: 1px solid var(--border);
+            padding: 40px 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sys-title {
+            font-family: var(--font-header);
+            color: var(--nuclear-orange);
+            font-size: 14px;
+            letter-spacing: 3px;
+            margin-bottom: 50px;
+            text-shadow: 0 0 10px rgba(255, 61, 0, 0.3);
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-gray);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+        }
+
+        /* Main Display */
+        .admin-main {
+            padding: 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--nuclear-orange);
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+            box-shadow: 0 0 10px var(--nuclear-orange);
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Data Grid */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        .data-table th {
+            text-align: left;
+            color: var(--text-gray);
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+        }
+
+        .data-table td {
+            padding: 20px 15px;
+            border-bottom: 1px solid #0f0f0f;
+            color: #ccc;
+        }
+
+        /* Action Buttons */
+        .btn-action {
+            padding: 8px 15px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-gray);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-action:hover {
+            border-color: var(--nuclear-orange);
+            color: var(--nuclear-orange);
+        }
+
+        /* Master Clear Button */
+        .danger-zone {
+            margin-top: auto;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-purge {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 61, 0, 0.05);
+            border: 1px solid var(--nuclear-orange);
+            color: var(--nuclear-orange);
+            font-family: var(--font-header);
+            font-size: 10px;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); }
+    </style>
+</head>
+<body>
+
+    <div class="admin-frame">
+        <div class="admin-sidebar">
+            <div class="sys-title">ARK ADMIN v3.0</div>
+            
+            <a href="royal_oasis_dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="royal_oasis_manual_update.html" class="nav-link"><i class="fas fa-plus-circle"></i> Add Plot</a>
+            <a href="royal_oasis.html" class="nav-link"><i class="fas fa-globe"></i> Live Site</a>
+            <a href="#" class="nav-link active"><i class="fas fa-database"></i> Database</a>
+            
+            <div class="danger-zone">
+                <button class="btn-purge" onclick="purgeOrders()">Purge All Orders</button>
+            </div>
+        </div>
+
+        <div class="admin-main">
+            <div class="admin-header">
+                <div>
+                    <h2 style="font-family: var(--font-header); letter-spacing: 2px;">ORDER REPOSITORY</h2>
+                    <p style="font-size: 9px; color: var(--text-gray); margin-top: 5px;">MANAGE GLOBAL ACQUISITION REQUESTS</p>
+                </div>
+                <div style="font-size: 10px; color: var(--nuclear-orange);">
+                    <span class="status-dot"></span> ENCRYPTED LINK ACTIVE
+                </div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Plot ID</th>
+                        <th>Identity</th>
+                        <th>Request Time</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="order-rows">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // রিয়েল টাইম ডাটা মনিটরিং
+        function streamOrders() {
+            db.ref('orders').on('value', snapshot => {
+                const orders = snapshot.val();
+                const container = document.getElementById('order-rows');
+                container.innerHTML = '';
+
+                if (!orders) {
+                    container.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#333;">NO ACTIVE REQUESTS IN BUFFER</td></tr>';
+                    return;
+                }
+
+                Object.keys(orders).forEach(id => {
+                    const data = orders[id];
+                    const time = data.timestamp ? new Date(data.timestamp).toLocaleTimeString() : 'N/A';
+                    
+                    container.innerHTML += `
+                        <tr>
+                            <td style="color: var(--nuclear-orange)">${data.plot || data.plotID}</td>
+                            <td>${data.brand || data.name}</td>
+                            <td>${time}</td>
+                            <td>
+                                <button class="btn-action" onclick="deleteOrder('${id}')">DELETE</button>
+                                <button class="btn-action" style="margin-left:5px;" onclick="activatePlot('${id}')">ACTIVATE</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
+        }
+
+        function deleteOrder(id) {
+            if(confirm("Permanently remove this request?")) {
+                db.ref('orders/' + id).remove();
+            }
+        }
+
+        function activatePlot(id) {
+            window.location.href = "royal_oasis_manual_update.html";
+        }
+
+        function purgeOrders() {
+            if(confirm("DANGER: This will delete ALL pending orders. Proceed?")) {
+                db.ref('orders').remove();
+            }
+        }
+
+        window.onload = streamOrders;
+    </script>
+</body>
+</html>
