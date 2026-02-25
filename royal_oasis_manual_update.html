@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASTER CONTROL | ROYAL OASIS</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --cmd-bg: #0A0A0B;
+            --laser: #FF0033;
+            --gold: #D4AF37;
+            --terminal-text: #00FFCC;
+        }
+
+        body {
+            background-color: var(--cmd-bg);
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .control-panel {
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border: 1px solid #1a1a1a;
+            background: #0d0d0e;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        .control-panel::before {
+            content: "OPERATOR ACCESS ONLY";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--laser);
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 10px;
+            font-weight: bold;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 20px;
+        }
+
+        header h1 {
+            font-family: 'Cinzel';
+            color: var(--gold);
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin: 0;
+        }
+
+        .input-box {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: var(--terminal-text);
+            font-size: 11px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        input, select {
+            width: 100%;
+            background: #141415;
+            border: 1px solid #222;
+            padding: 12px;
+            color: var(--terminal-text);
+            font-family: inherit;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: var(--gold);
+        }
+
+        .btn-push {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Cinzel';
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-push:hover {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .status-feed {
+            margin-top: 30px;
+            font-size: 10px;
+            color: #444;
+            max-height: 100px;
+            overflow-y: auto;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 15px;
+        }
+
+        .success-text { color: var(--terminal-text); }
+    </style>
+</head>
+<body>
+
+    <div class="control-panel">
+        <header>
+            <h1>MANUAL OVERRIDE</h1>
+            <p style="font-size: 9px; color: #555; margin-top: 5px;">ARK ENTERPRISE CORE v3.0</p>
+        </header>
+
+        <div class="input-box">
+            <label>Brand Designation</label>
+            <input type="text" id="targetBrand" placeholder="ENTER BRAND NAME">
+        </div>
+
+        <div class="input-box">
+            <label>Plot Coordinate</label>
+            <input type="number" id="targetPlot" placeholder="COORD (1-35)">
+        </div>
+
+        <div class="input-box">
+            <label>External Link (Optional)</label>
+            <input type="text" id="targetLink" placeholder="https://...">
+        </div>
+
+        <div class="input-box">
+            <label>Brand Image URL</label>
+            <input type="text" id="targetImg" placeholder="https://image-link.png">
+        </div>
+
+        <button class="btn-push" onclick="manualPush()">PUSH TO MAIN GRID</button>
+
+        <div class="status-feed" id="logs">
+            [SYSTEM] Waiting for operator command...
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <script>
+        // CEO's Direct Handshake with DB
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function manualPush() {
+            const name = document.getElementById('targetBrand').value;
+            const coord = document.getElementById('targetPlot').value;
+            const link = document.getElementById('targetLink').value || "#";
+            const img = document.getElementById('targetImg').value || "";
+            const logBox = document.getElementById('logs');
+
+            if(!name || !coord) {
+                logBox.innerHTML += `<br>[ERROR] Required fields missing.`;
+                return;
+            }
+
+            const plotID = `ROYAL-${String(coord).padStart(2, '0')}`;
+
+            // CEO Overwrite Protocol
+            db.ref('royal_oasis/' + plotID).set({
+                name: name,
+                plotID: plotID,
+                link: link,
+                imageUrl: img,
+                lastUpdated: Date.now()
+            }).then(() => {
+                logBox.innerHTML += `<br><span class="success-text">[SUCCESS] ${plotID} updated on Global Grid.</span>`;
+                // Clear inputs for next command
+                document.getElementById('targetBrand').value = "";
+                document.getElementById('targetPlot').value = "";
+            }).catch(e => {
+                logBox.innerHTML += `<br>[FAIL] Update rejected by server.`;
+            });
+        }
+    </script>
+</body>
+</html>
