@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ROYAL OASIS | THE SOVEREIGN DYNASTY</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;600&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -14,11 +14,10 @@
 
     <style>
         :root {
-            --bg: #050505;
+            --bg: #030303;
             --gold: #D4AF37;
-            --emerald: #00ffcc;
+            --cyan-glow: #00FFCC; /* আপনার পাঠানো সিগনেচার কালার */
             --white: #E0E0E0;
-            --border-muted: rgba(212, 175, 55, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,93 +30,84 @@
             padding-bottom: 100px;
         }
 
-        /* Top Action Bar */
-        .top-bar {
+        /* Top Bar with Navigation */
+        .top-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 30px 5%;
+            padding: 25px 5%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--white);
+            font-family: 'Cinzel';
+            font-size: 10px;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+        }
+
+        .nav-link:hover {
+            color: var(--cyan-glow);
+            border-color: var(--cyan-glow);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
         }
 
         .btn-download {
             background: transparent;
             color: var(--gold);
             border: 1px solid var(--gold);
-            padding: 10px 20px;
+            padding: 8px 15px;
             font-family: 'Cinzel';
             font-size: 10px;
             letter-spacing: 2px;
             cursor: pointer;
-            transition: 0.4s;
-            text-transform: uppercase;
         }
 
-        .btn-download:hover {
-            background: var(--gold);
-            color: #000;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-        }
-
-        /* Luxury Minimalist Title */
+        /* Luxury Header */
         .brand-header {
             text-align: center;
-            padding: 40px 0 80px;
-            position: relative;
-        }
-
-        .brand-header::before {
-            content: '';
-            position: absolute;
-            top: 50%; left: 15%; width: 15%; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold));
-        }
-
-        .brand-header::after {
-            content: '';
-            position: absolute;
-            top: 50%; right: 15%; width: 15%; height: 1px;
-            background: linear-gradient(-90deg, transparent, var(--gold));
+            padding: 80px 20px;
         }
 
         .royal-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(32px, 6vw, 65px);
-            font-weight: 400;
-            color: var(--gold);
-            letter-spacing: 15px;
+            font-size: clamp(35px, 7vw, 75px);
+            font-weight: 900;
+            color: var(--cyan-glow);
+            letter-spacing: 12px;
             text-transform: uppercase;
-            display: inline-block;
+            text-shadow: 0 0 30px rgba(0, 255, 204, 0.4);
+            margin-bottom: 10px;
         }
 
         .sub-title {
-            display: block;
             font-size: 10px;
-            letter-spacing: 6px;
+            letter-spacing: 8px;
             color: #666;
-            margin-top: 15px;
             text-transform: uppercase;
         }
 
-        /* Plot Canvas Grid */
-        .canvas-wrapper {
+        /* Plot Canvas with Glow Effect */
+        .canvas-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px;
-            background: #080808;
-            border: 1px solid var(--border-muted);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
         }
 
         .plot-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
+            gap: 25px;
         }
 
         .plot-card {
             aspect-ratio: 1/1;
-            background: #050505;
-            border: 1px solid #1a1a1a;
+            background: var(--cyan-glow); /* ইমেজ অনুযায়ী সলিড গ্লো ব্যাকগ্রাউন্ড */
+            border-radius: 12px; /* হালকা রাউন্ডেড কর্নার */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -125,81 +115,96 @@
             cursor: pointer;
             position: relative;
             transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
         }
 
         .plot-card:hover {
-            border-color: var(--gold);
-            transform: translateY(-5px);
-            background: rgba(212, 175, 55, 0.02);
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.7);
         }
 
-        .plot-id { font-family: 'Cinzel'; font-size: 20px; color: var(--gold); font-weight: 700; }
-        .plot-val { font-size: 11px; color: #444; margin-top: 5px; letter-spacing: 1px; }
+        .plot-id { 
+            font-family: 'Cinzel'; 
+            font-size: 24px; 
+            color: #000; /* গ্লোয়িং ব্যাকগ্রাউন্ডে ডার্ক টেক্সট */
+            font-weight: 900; 
+        }
 
-        /* Pop-up / Modal System */
+        .plot-val { 
+            font-size: 10px; 
+            color: rgba(0, 0, 0, 0.6); 
+            margin-top: 5px; 
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Pulse Animation for glowing */
+        .plot-card {
+            animation: pulse-glow 3s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 15px rgba(0, 255, 204, 0.3); }
+            to { box-shadow: 0 0 35px rgba(0, 255, 204, 0.6); }
+        }
+
+        /* Modal / Pop-up System */
         .overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.98);
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
             display: none; align-items: center; justify-content: center; z-index: 1000;
             backdrop-filter: blur(10px);
         }
 
         .modal-box {
-            background: #0a0a0a; border: 1px solid var(--gold);
+            background: #000; border: 1px solid var(--cyan-glow);
             padding: 50px; width: 90%; max-width: 500px;
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.2);
         }
 
-        .modal-box h2 { font-family: 'Cinzel'; color: var(--gold); font-weight: 400; letter-spacing: 5px; text-align: center; margin-bottom: 40px; }
+        .modal-box h2 { font-family: 'Cinzel'; color: var(--cyan-glow); text-align: center; margin-bottom: 30px; letter-spacing: 5px; }
         
         input {
-            width: 100%; padding: 15px; margin-bottom: 25px;
-            background: #000; border: 1px solid #222; color: #fff; font-family: inherit; outline: none;
+            width: 100%; padding: 15px; margin-bottom: 20px;
+            background: #0a0a0a; border: 1px solid #222; color: #fff; outline: none;
         }
 
         .btn-submit {
-            width: 100%; padding: 18px; background: var(--gold); color: #000;
-            border: none; font-family: 'Cinzel'; font-weight: 900; letter-spacing: 2px; cursor: pointer;
+            width: 100%; padding: 18px; background: var(--cyan-glow); color: #000;
+            border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer; letter-spacing: 2px;
         }
 
-        .support-info {
-            background: #000; border: 1px solid #111; padding: 25px; margin: 30px 0;
-        }
+        .btn-wa { display: block; width: 100%; padding: 15px; background: var(--gold); color: #000; text-align: center; text-decoration: none; font-weight: bold; margin-top: 20px; font-family: 'Cinzel'; }
 
-        .support-info li { font-size: 11px; margin-bottom: 10px; color: #777; list-style: none; text-transform: uppercase; letter-spacing: 1px; }
-
-        .btn-wa { display: block; width: 100%; padding: 15px; background: var(--emerald); color: #000; text-align: center; text-decoration: none; font-weight: bold; margin-bottom: 10px; font-size: 12px; letter-spacing: 1px; }
-        .btn-back { display: block; width: 100%; padding: 10px; background: transparent; color: #444; border: none; cursor: pointer; font-size: 10px; }
-
-        @media (max-width: 800px) {
+        @media (max-width: 850px) {
             .plot-grid { grid-template-columns: repeat(3, 1fr); }
-            .brand-header::before, .brand-header::after { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div style="font-size: 10px; color: #333; letter-spacing: 3px;">ARK ENTERPRISE</div>
-        <button class="btn-download" onclick="exportMap()">Download Map</button>
+    <div class="top-nav">
+        <a href="royal_oasis_index.html" class="nav-link">← BACK TO HOMEPAGE</a>
+        <button class="btn-download" onclick="exportMap()">DOWNLOAD MAP</button>
     </div>
 
     <div class="brand-header">
         <h1 class="royal-title">ROYAL OASIS</h1>
-        <span class="sub-title">The Sovereign Dynasty</span>
+        <span class="sub-title">The Sovereign Dynasty Legacy</span>
     </div>
 
-    <div class="canvas-wrapper" id="capture-area">
-        <div class="plot-grid" id="plotGrid">
+    <div class="canvas-container" id="capture-map">
+        <div class="plot-grid" id="mainGrid">
             </div>
     </div>
 
-    <div class="overlay" id="orderOverlay">
+    <div class="overlay" id="orderSystem">
         <div class="modal-box" id="modalUI">
             <h2>ACQUISITION</h2>
-            <input type="text" id="custBrand" placeholder="YOUR BRAND IDENTITY">
-            <input type="hidden" id="selectedID">
-            <input type="hidden" id="selectedPrice">
-            <div id="statusInfo" style="text-align:center; color:#555; margin-bottom:20px; font-size:11px; letter-spacing: 1px;"></div>
-            <button class="btn-submit" onclick="submitOrder()">SEND PROTOCOL</button>
+            <input type="text" id="brandTag" placeholder="BRAND IDENTITY">
+            <input type="hidden" id="pID">
+            <input type="hidden" id="pVal">
+            <div id="infoBar" style="text-align:center; color:#555; margin-bottom:20px; font-size:10px; letter-spacing: 1px;"></div>
+            <button class="btn-submit" onclick="confirmOrder()">INITIATE PROTOCOL</button>
         </div>
     </div>
 
@@ -216,8 +221,8 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function createPlots() {
-            const grid = document.getElementById('plotGrid');
+        function generatePlots() {
+            const grid = document.getElementById('mainGrid');
             for (let i = 1; i <= 35; i++) {
                 const row = Math.floor((i - 1) / 5);
                 const price = 9999 - (row * 100);
@@ -230,55 +235,44 @@
         }
 
         function openModal(id, price) {
-            document.getElementById('selectedID').value = id;
-            document.getElementById('selectedPrice').value = price;
-            document.getElementById('statusInfo').innerText = `READY TO RESERVE PLOT #${id} | VALUE $${price.toLocaleString()}`;
-            document.getElementById('orderOverlay').style.display = 'flex';
+            document.getElementById('pID').value = id;
+            document.getElementById('pVal').value = price;
+            document.getElementById('infoBar').innerText = `RESERVING COORDINATE #${id} | VALUE $${price.toLocaleString()}`;
+            document.getElementById('orderSystem').style.display = 'flex';
         }
 
-        function submitOrder() {
-            const brand = document.getElementById('custBrand').value;
-            const id = document.getElementById('selectedID').value;
-            const price = document.getElementById('selectedPrice').value;
+        function confirmOrder() {
+            const brand = document.getElementById('brandTag').value;
+            const id = document.getElementById('pID').value;
+            const val = document.getElementById('pVal').value;
 
-            if(!brand) return alert("Please enter brand identity.");
+            if(!brand) return;
 
-            db.ref('orders/' + Date.now()).set({ brand, plot: id, price, timestamp: Date.now() })
-            .then(() => handleSuccess(brand, id, price));
-        }
-
-        function handleSuccess(brand, id, price) {
-            // High-End Confetti with your codes
-            const colors = ['#030303', '#D4AF37', '#00ffcc', '#E0E0E0', '#ff0033'];
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors });
-
-            const ui = document.getElementById('modalUI');
-            const waLink = `https://wa.me/8801576940717?text=${encodeURIComponent(`ROYAL_OASIS_ACQUISITION\nBrand: ${brand}\nPlot: #${id}\nPrice: $${price}`)}`;
-            
-            ui.innerHTML = `
-                <h2 style="color:var(--gold)">CONFIRMED</h2>
-                <div class="support-info">
-                    <li>• Target Plot: #${id} / ${brand}</li>
-                    <li>• Logo/Brand High-Res Assets</li>
-                    <li>• Target Link (Web/Social)</li>
-                    <li>• Transaction Confirmation</li>
-                </div>
-                <a href="${waLink}" target="_blank" class="btn-wa">SEND TO CONCIERGE</a>
-                <button class="btn-back" onclick="location.reload()">Return to Map</button>
-            `;
-        }
-
-        function exportMap() {
-            const area = document.getElementById('capture-area');
-            html2canvas(area, { backgroundColor: '#050505', scale: 2 }).then(canvas => {
-                const a = document.createElement('a');
-                a.download = 'Royal-Oasis-Legacy.png';
-                a.href = canvas.toDataURL();
-                a.click();
+            db.ref('orders/' + Date.now()).set({ brand, plot: id, price: val, timestamp: Date.now() })
+            .then(() => {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#00FFCC', '#D4AF37', '#FFFFFF'] });
+                const ui = document.getElementById('modalUI');
+                const wa = `https://wa.me/8801576940717?text=ACQUISITION_ID_${id}_BRAND_${brand}`;
+                
+                ui.innerHTML = `
+                    <h2 style="color:var(--cyan-glow)">PROTOCOL ACTIVE</h2>
+                    <p style="text-align:center; font-size:12px; color:#666; margin-bottom:20px;">Identity Recorded: ${brand}</p>
+                    <a href="${wa}" target="_blank" class="btn-wa">CONTACT CONCIERGE</a>
+                    <button onclick="location.reload()" style="display:block; width:100%; margin-top:20px; background:none; border:none; color:#333; cursor:pointer; font-size:10px;">Return to Map</button>
+                `;
             });
         }
 
-        window.onload = createPlots;
+        function exportMap() {
+            html2canvas(document.getElementById('capture-map'), { backgroundColor: '#030303', scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Royal-Oasis-Legacy-Map.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        window.onload = generatePlots;
     </script>
 </body>
 </html>
