@@ -14,74 +14,61 @@
 
     <style>
         :root { 
-            --bg: #050505; 
-            --royal-emerald: #00ffcc;
-            --gold: #D4AF37;
-            --border: rgba(212, 175, 55, 0.2);
-            --glass: rgba(255, 255, 255, 0.05);
+            --bg: #0B0E11; 
+            --gold: #FCD535;
+            --emerald: #00ffcc;
+            --dark-card: #1E2329;
+            --border-color: #333; /* দাগ বা গ্রিডলাইনের রং */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
-        
-        /* Header Fix */
+        body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; }
+
         header { 
             position: fixed; top: 0; width: 100%; padding: 15px 5%; 
             display: flex; justify-content: space-between; align-items: center; 
-            z-index: 5000; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); 
-            border-bottom: 1px solid var(--border); 
+            z-index: 5000; background: var(--dark-card); border-bottom: 1px solid var(--border-color); 
         }
         
-        .company-name { font-family: 'Cinzel'; font-size: 18px; color: var(--gold); letter-spacing: 2px; font-weight: 900; }
-        .buy-plot-btn { 
-            background: var(--gold); color: #000; padding: 10px 20px; 
-            font-family: 'Cinzel'; font-weight: 900; font-size: 11px; 
-            border: none; cursor: pointer; border-radius: 4px;
-        }
+        .company-name { font-family: 'Cinzel'; font-size: 18px; color: var(--gold); font-weight: 900; }
+        .buy-btn { background: var(--gold); color: #000; padding: 10px 20px; font-family: 'Cinzel'; font-weight: bold; border: none; cursor: pointer; border-radius: 5px; }
 
-        .section-intro { padding: 120px 6% 20px; text-align: center; }
-        .section-intro h1 { font-family: 'Cinzel'; font-size: 35px; letter-spacing: 10px; color: var(--royal-emerald); }
+        .section-header { padding: 120px 0 30px; text-align: center; }
+        .section-header h1 { font-family: 'Cinzel'; font-size: 35px; color: var(--emerald); letter-spacing: 5px; }
 
-        /* Grid for 35 Plots */
-        .oasis-container { 
-            max-width: 1200px; margin: 0 auto; padding: 30px 20px; 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; 
+        /* গ্রিড কন্টেইনার ফিক্স */
+        .oasis-grid { 
+            max-width: 1000px; margin: 0 auto; padding: 20px; 
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); /* এক সারিতে ৫টি প্লট */
+            gap: 2px; /* প্লটগুলোর মাঝখানের দাগের ব্যবধান */
+            background: var(--border-color); /* এই রংটিই গ্রিডলাইন হিসেবে কাজ করবে */
+            border: 2px solid var(--border-color);
         }
         
-        .plot-unit { 
-            aspect-ratio: 1/1; background: var(--glass); border: 1px solid var(--border); 
+        .plot-box { 
+            aspect-ratio: 1/1; 
+            background: var(--bg); /* প্রতিটি প্লটের ভেতরের রং */
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            position: relative; cursor: pointer; transition: 0.3s; 
+            cursor: pointer; transition: 0.2s; position: relative;
         }
-        .plot-unit:hover { border-color: var(--royal-emerald); background: rgba(0, 255, 204, 0.05); }
-        .plot-unit.sold { border-color: #ff0033; opacity: 0.5; cursor: not-allowed; }
+
+        .plot-box:hover { background: #1a1a1a; z-index: 10; outline: 1px solid var(--gold); }
         
-        .plot-id { font-family: 'Cinzel'; font-size: 12px; color: var(--gold); }
-        .plot-price { font-size: 11px; color: #fff; margin-top: 5px; font-family: 'Cinzel'; }
+        .plot-box.sold { background: rgba(255, 0, 0, 0.05); cursor: not-allowed; }
+        .plot-box.sold::after { content: "SOLD"; font-size: 8px; color: #ff0033; position: absolute; top: 5px; right: 5px; font-weight: bold; }
 
-        /* Modal Overlay */
-        .modal-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.95); z-index: 10000; display: none; 
-            align-items: center; justify-content: center; padding: 20px;
-        }
-        .modal-box { 
-            background: #0a0a0a; border: 1px solid var(--gold); padding: 30px; 
-            width: 100%; max-width: 400px; text-align: center; 
-        }
-        .modal-box input { 
-            width: 100%; padding: 12px; margin: 15px 0; 
-            background: #111; border: 1px solid #333; color: #fff; outline: none; 
-        }
-        .action-btn { 
-            width: 100%; padding: 15px; background: var(--gold); 
-            color: #000; border: none; font-family: 'Cinzel'; font-weight: 900; 
-            cursor: pointer; 
-        }
+        .plot-id { font-family: 'Cinzel'; font-size: 11px; color: var(--gold); }
+        .plot-price { font-size: 10px; margin-top: 5px; color: #848e9c; }
 
-        @media (max-width: 768px) {
-            .oasis-container { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-            .section-intro h1 { font-size: 24px; }
+        /* Modal */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 10000; }
+        .modal { background: var(--dark-card); padding: 30px; border-radius: 10px; border: 1px solid var(--gold); width: 350px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #2B3139; border: 1px solid #444; color: #fff; border-radius: 5px; }
+        .submit-btn { width: 100%; padding: 15px; background: var(--gold); color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 5px; }
+
+        @media (max-width: 600px) {
+            .oasis-grid { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
@@ -89,32 +76,27 @@
 
     <header>
         <div class="company-name">ARK ENTERPRISE</div>
-        <button class="buy-plot-btn" onclick="openModal()">BUY PLOT</button>
+        <button class="buy-btn" onclick="openForm()">BUY PLOT</button>
     </header>
 
-    <section class="section-intro">
+    <div class="section-header">
         <h1>ROYAL OASIS</h1>
-        <p style="color:var(--gold); font-size: 11px; letter-spacing: 2px;">35 EXCLUSIVE LEGACY PLOTS</p>
-    </section>
+        <p style="color:var(--gold); font-size: 12px; margin-top: 10px;">SECTION 01 - 35 ELITE PLOTS</p>
+    </div>
 
-    <main class="oasis-container" id="plots-grid"></main>
+    <div class="oasis-grid" id="mainGrid"></div>
 
-    <div id="booking-modal" class="modal-overlay">
-        <div class="modal-box">
-            <h3 style="color:var(--gold); font-family:'Cinzel';">RESERVE PLOT</h3>
-            <input type="text" id="mBrand" placeholder="YOUR BRAND NAME">
-            <input type="number" id="mPlot" placeholder="PLOT NUMBER (1-35)">
-            <button class="action-btn" onclick="submitInquiry()">SUBMIT REQUEST</button>
-            <p onclick="closeModal()" style="color:#555; margin-top:15px; cursor:pointer; font-size:10px;">CANCEL</p>
+    <div class="overlay" id="orderOverlay">
+        <div class="modal">
+            <h2 style="color:var(--gold); font-family: 'Cinzel';">RESERVE PLOT</h2>
+            <input type="text" id="brandName" placeholder="Brand Name">
+            <input type="number" id="plotNumber" placeholder="Plot ID (1-35)">
+            <button class="submit-btn" onclick="sendOrder()">SUBMIT REQUEST</button>
+            <p onclick="closeForm()" style="margin-top: 15px; cursor: pointer; color: #888; font-size: 12px;">Close</p>
         </div>
     </div>
 
-    <div id="success-popup" class="modal-overlay">
-        <div class="modal-box" id="success-content"></div>
-    </div>
-
     <script>
-        // আপনার দেওয়া ফায়ারবেস কনফিগ
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -124,95 +106,68 @@
             messagingSenderId: "440824313752",
             appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ১. গ্রিড এবং প্লট লোড করা
-        function initOasis() {
-            // 'royal_oasis' পাথ থেকে ডাটা নিয়ে আসা (লাইভ প্লটের জন্য)
-            db.ref('royal_oasis').on('value', (snapshot) => {
-                const data = snapshot.val() || {};
-                const grid = document.getElementById('plots-grid');
+        function loadPlots() {
+            db.ref('royal_oasis').on('value', snap => {
+                const soldData = snap.val() || {};
+                const grid = document.getElementById('mainGrid');
                 grid.innerHTML = '';
 
-                for (let i = 1; i <= 35; i++) {
-                    const id = `ROYAL-${i < 10 ? '0' + i : i}`;
-                    const isSold = data[id] ? true : false;
+                for(let i=1; i<=35; i++) {
+                    const id = `ROYAL-${i < 10 ? '0'+i : i}`;
+                    const isSold = soldData[id] ? true : false;
                     
-                    // আপনার প্রাইসিং লজিক অনুযায়ী (প্রথম রো $99, তারপর কমবে)
-                    const row = Math.floor((i - 1) / 5);
+                    // প্রাইস সেটআপ
+                    const row = Math.floor((i-1)/5);
                     let price = 39;
                     if(row === 0) price = 99;
                     else if(row === 1) price = 89;
                     else if(row === 2) price = 59;
 
-                    const div = document.createElement('div');
-                    div.className = `plot-unit ${isSold ? 'sold' : ''}`;
-                    div.onclick = isSold ? null : () => openModal(i);
-                    div.innerHTML = `
+                    const plot = document.createElement('div');
+                    plot.className = `plot-box ${isSold ? 'sold' : ''}`;
+                    plot.onclick = isSold ? null : () => openForm(i);
+                    
+                    plot.innerHTML = `
                         <span class="plot-id">${id}</span>
-                        <span class="plot-price">${isSold ? 'SOLD' : '$' + price}</span>
-                        <i class="fa-solid fa-gem" style="margin-top:10px; opacity:0.2;"></i>
+                        <span class="plot-price">${isSold ? '' : '$'+price}</span>
                     `;
-                    grid.appendChild(div);
+                    grid.appendChild(plot);
                 }
             });
         }
 
-        // ২. মডাল ফাংশন
-        function openModal(n = "") {
-            document.getElementById('mPlot').value = n;
-            document.getElementById('booking-modal').style.display = 'flex';
-        }
-        function closeModal() {
-            document.getElementById('booking-modal').style.display = 'none';
+        function openForm(num = "") {
+            document.getElementById('plotNumber').value = num;
+            document.getElementById('orderOverlay').style.display = 'flex';
         }
 
-        // ৩. ইনকোয়ারি সাবমিট (Admin Panel-এর জন্য)
-        function submitInquiry() {
-            const name = document.getElementById('mBrand').value;
-            const plotNum = document.getElementById('mPlot').value;
-            
-            if (!name || !plotNum || plotNum < 1 || plotNum > 35) {
-                return alert("Please enter valid details!");
-            }
-            
-            const id = `ROYAL-${plotNum < 10 ? '0' + plotNum : plotNum}`;
+        function closeForm() {
+            document.getElementById('orderOverlay').style.display = 'none';
+        }
 
-            // ফায়ারবেসের 'orders' ফোল্ডারে পাঠানো হচ্ছে যাতে এডমিন প্যানেল দেখতে পায়
-            db.ref('orders/' + id).set({
+        function sendOrder() {
+            const name = document.getElementById('brandName').value;
+            const pId = document.getElementById('plotNumber').value;
+            if(!name || !pId) return alert("Fill all info");
+
+            const finalID = `ROYAL-${pId < 10 ? '0'+pId : pId}`;
+            
+            db.ref('orders/' + finalID).set({
                 name: name,
-                plotID: id,
+                plotID: finalID,
                 section: "Royal Oasis",
                 timestamp: Date.now()
             }).then(() => {
-                showSuccess(name, id);
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                alert("Request Sent! Contact Support.");
+                closeForm();
             });
         }
 
-        // ৪. সাকসেস মেসেজ ও কনফেটি
-        function showSuccess(name, id) {
-            closeModal();
-            const popup = document.getElementById('success-popup');
-            const content = document.getElementById('success-content');
-            
-            // অটো হোয়াটসঅ্যাপ মেসেজ লিঙ্ক
-            const waMsg = encodeURIComponent(`Hi ARK Support, I want to confirm my plot.\nBrand: ${name}\nPlot: ${id}`);
-            const waLink = `https://wa.me/8801576940717?text=${waMsg}`;
-
-            content.innerHTML = `
-                <h2 style="color:var(--gold); font-family:'Cinzel';">SUCCESS! 🎉</h2>
-                <p style="margin:15px 0;">${name}, Your request for ${id} is submitted.</p>
-                <button class="action-btn" onclick="window.open('${waLink}', '_blank')">CONTACT SUPPORT</button>
-                <button class="action-btn" onclick="location.reload()" style="background:transparent; color:#555; border:1px solid #333; margin-top:10px;">CLOSE</button>
-            `;
-            
-            popup.style.display = 'flex';
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#D4AF37', '#00ffcc'] });
-        }
-
-        window.onload = initOasis;
+        window.onload = loadPlots;
     </script>
 </body>
 </html>
