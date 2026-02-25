@@ -24,9 +24,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
         
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.2; }
-
-        /* Header - Fixed Responsive Layout */
+        /* Header Fix */
         header { 
             position: fixed; top: 0; width: 100%; padding: 15px 5%; 
             display: flex; justify-content: space-between; align-items: center; 
@@ -34,96 +32,79 @@
             border-bottom: 1px solid var(--border); 
         }
         
-        .header-left { display: flex; align-items: center; gap: 15px; }
-        .back-btn { font-family: 'Cinzel'; color: var(--gold); text-decoration: none; font-size: 10px; letter-spacing: 1px; }
-        
-        .header-right { text-align: right; }
-        .company-name { font-family: 'Cinzel'; font-size: 16px; color: var(--gold); letter-spacing: 2px; font-weight: 900; }
-
+        .company-name { font-family: 'Cinzel'; font-size: 18px; color: var(--gold); letter-spacing: 2px; font-weight: 900; }
         .buy-plot-btn { 
             background: var(--gold); color: #000; padding: 10px 20px; 
             font-family: 'Cinzel'; font-weight: 900; font-size: 11px; 
-            border: none; cursor: pointer; transition: 0.3s;
+            border: none; cursor: pointer; border-radius: 4px;
         }
-        .buy-plot-btn:hover { box-shadow: 0 0 15px var(--gold); }
 
-        .section-intro { padding: 150px 6% 20px; text-align: center; }
-        .section-intro h1 { font-family: 'Cinzel'; font-size: 35px; letter-spacing: 12px; color: var(--royal-emerald); }
+        .section-intro { padding: 120px 6% 20px; text-align: center; }
+        .section-intro h1 { font-family: 'Cinzel'; font-size: 35px; letter-spacing: 10px; color: var(--royal-emerald); }
 
-        /* Grid Container - 35 Plots */
+        /* Grid for 35 Plots */
         .oasis-container { 
-            max-width: 1200px; margin: 0 auto; padding: 40px 20px; 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; 
+            max-width: 1200px; margin: 0 auto; padding: 30px 20px; 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; 
         }
         
         .plot-unit { 
             aspect-ratio: 1/1; background: var(--glass); border: 1px solid var(--border); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            position: relative; cursor: pointer; transition: 0.4s; 
+            position: relative; cursor: pointer; transition: 0.3s; 
         }
-        .plot-unit:hover { border-color: var(--royal-emerald); transform: translateY(-5px); }
+        .plot-unit:hover { border-color: var(--royal-emerald); background: rgba(0, 255, 204, 0.05); }
         .plot-unit.sold { border-color: #ff0033; opacity: 0.5; cursor: not-allowed; }
         
         .plot-id { font-family: 'Cinzel'; font-size: 12px; color: var(--gold); }
-        .plot-price { font-size: 10px; color: #fff; margin-top: 8px; font-family: 'Cinzel'; }
+        .plot-price { font-size: 11px; color: #fff; margin-top: 5px; font-family: 'Cinzel'; }
 
-        /* Modal / Pop-ups */
+        /* Modal Overlay */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.96); z-index: 10000; display: none; 
+            background: rgba(0,0,0,0.95); z-index: 10000; display: none; 
             align-items: center; justify-content: center; padding: 20px;
         }
         .modal-box { 
-            background: #0a0a0a; border: 1px solid var(--gold); padding: 40px; 
-            width: 100%; max-width: 450px; text-align: center; 
+            background: #0a0a0a; border: 1px solid var(--gold); padding: 30px; 
+            width: 100%; max-width: 400px; text-align: center; 
         }
         .modal-box input { 
-            width: 100%; padding: 15px; margin: 20px 0; 
+            width: 100%; padding: 12px; margin: 15px 0; 
             background: #111; border: 1px solid #333; color: #fff; outline: none; 
         }
         .action-btn { 
             width: 100%; padding: 15px; background: var(--gold); 
             color: #000; border: none; font-family: 'Cinzel'; font-weight: 900; 
-            cursor: pointer; font-size: 12px; 
+            cursor: pointer; 
         }
 
-        footer { padding: 40px; text-align: center; color: #444; font-size: 10px; letter-spacing: 2px; }
-
         @media (max-width: 768px) {
-            .section-intro h1 { font-size: 24px; letter-spacing: 5px; }
-            .oasis-container { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-            .company-name { font-size: 12px; }
+            .oasis-container { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .section-intro h1 { font-size: 24px; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
-
     <header>
-        <div class="header-left">
-            <a href="index.html" class="back-btn">← RETURN</a>
-            <button class="buy-plot-btn" onclick="openModal()">BUY PLOT</button>
-        </div>
-        <div class="header-right">
-            <div class="company-name">ARK ENTERPRISE</div>
-        </div>
+        <div class="company-name">ARK ENTERPRISE</div>
+        <button class="buy-plot-btn" onclick="openModal()">BUY PLOT</button>
     </header>
 
     <section class="section-intro">
         <h1>ROYAL OASIS</h1>
-        <p style="color:var(--gold); font-size:10px; letter-spacing:3px; margin-top:10px;">35 SOVEREIGN PLOTS</p>
+        <p style="color:var(--gold); font-size: 11px; letter-spacing: 2px;">35 EXCLUSIVE LEGACY PLOTS</p>
     </section>
 
-    <main class="oasis-container" id="plots-grid">
-        </main>
+    <main class="oasis-container" id="plots-grid"></main>
 
     <div id="booking-modal" class="modal-overlay">
         <div class="modal-box">
-            <h3 style="color:var(--gold); font-family:'Cinzel';">ACQUIRE PLOT</h3>
+            <h3 style="color:var(--gold); font-family:'Cinzel';">RESERVE PLOT</h3>
             <input type="text" id="mBrand" placeholder="YOUR BRAND NAME">
             <input type="number" id="mPlot" placeholder="PLOT NUMBER (1-35)">
-            <button class="action-btn" onclick="submitInquiry()">SEND REQUEST</button>
+            <button class="action-btn" onclick="submitInquiry()">SUBMIT REQUEST</button>
             <p onclick="closeModal()" style="color:#555; margin-top:15px; cursor:pointer; font-size:10px;">CANCEL</p>
         </div>
     </div>
@@ -132,10 +113,8 @@
         <div class="modal-box" id="success-content"></div>
     </div>
 
-    <footer>© 2026 ARK ENTERPRISE | SECTION 1: ROYAL OASIS</footer>
-
     <script>
-        // আপনার দেওয়া Firebase Config
+        // আপনার দেওয়া ফায়ারবেস কনফিগ
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -146,14 +125,12 @@
             appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
         };
 
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ১. ৩৫টি প্লট লোড করা (Real-time)
-        function loadGrid() {
+        // ১. গ্রিড এবং প্লট লোড করা
+        function initOasis() {
+            // 'royal_oasis' পাথ থেকে ডাটা নিয়ে আসা (লাইভ প্লটের জন্য)
             db.ref('royal_oasis').on('value', (snapshot) => {
                 const data = snapshot.val() || {};
                 const grid = document.getElementById('plots-grid');
@@ -162,23 +139,28 @@
                 for (let i = 1; i <= 35; i++) {
                     const id = `ROYAL-${i < 10 ? '0' + i : i}`;
                     const isSold = data[id] ? true : false;
+                    
+                    // আপনার প্রাইসিং লজিক অনুযায়ী (প্রথম রো $99, তারপর কমবে)
                     const row = Math.floor((i - 1) / 5);
-                    const price = 9999 - (row * 100);
+                    let price = 39;
+                    if(row === 0) price = 99;
+                    else if(row === 1) price = 89;
+                    else if(row === 2) price = 59;
 
                     const div = document.createElement('div');
                     div.className = `plot-unit ${isSold ? 'sold' : ''}`;
                     div.onclick = isSold ? null : () => openModal(i);
                     div.innerHTML = `
                         <span class="plot-id">${id}</span>
-                        <span class="plot-price">${isSold ? 'SOLD' : '$' + price.toLocaleString()}</span>
-                        <i class="fa-solid fa-crown" style="margin-top:10px; opacity:0.2;"></i>
+                        <span class="plot-price">${isSold ? 'SOLD' : '$' + price}</span>
+                        <i class="fa-solid fa-gem" style="margin-top:10px; opacity:0.2;"></i>
                     `;
                     grid.appendChild(div);
                 }
             });
         }
 
-        // ২. মডাল কন্ট্রোল
+        // ২. মডাল ফাংশন
         function openModal(n = "") {
             document.getElementById('mPlot').value = n;
             document.getElementById('booking-modal').style.display = 'flex';
@@ -187,75 +169,50 @@
             document.getElementById('booking-modal').style.display = 'none';
         }
 
-        // ৩. ইনকোয়ারি সাবমিট করা
+        // ৩. ইনকোয়ারি সাবমিট (Admin Panel-এর জন্য)
         function submitInquiry() {
             const name = document.getElementById('mBrand').value;
-            const plot = document.getElementById('mPlot').value;
+            const plotNum = document.getElementById('mPlot').value;
             
-            if (!name || !plot) return alert("Please fill all fields!");
+            if (!name || !plotNum || plotNum < 1 || plotNum > 35) {
+                return alert("Please enter valid details!");
+            }
             
-            const id = `ROYAL-${plot < 10 ? '0' + plot : plot}`;
-            const row = Math.floor((plot - 1) / 5);
-            const price = 9999 - (row * 100);
+            const id = `ROYAL-${plotNum < 10 ? '0' + plotNum : plotNum}`;
 
-            // ডাটাবেসে ইনকোয়ারি পাঠানো (Admin Panel-এর জন্য)
-            db.ref('royal_oasis_inquiries/' + id).set({
-                brandName: name,
+            // ফায়ারবেসের 'orders' ফোল্ডারে পাঠানো হচ্ছে যাতে এডমিন প্যানেল দেখতে পায়
+            db.ref('orders/' + id).set({
+                name: name,
                 plotID: id,
-                price: price,
+                section: "Royal Oasis",
                 timestamp: Date.now()
             }).then(() => {
-                showSuccess(name, id, price);
+                showSuccess(name, id);
             });
         }
 
-        // ৪. অভিনন্দন পপ-আপ এবং হোয়াটসঅ্যাপ অটো-মেসেজ
-        function showSuccess(name, id, price) {
+        // ৪. সাকসেস মেসেজ ও কনফেটি
+        function showSuccess(name, id) {
             closeModal();
             const popup = document.getElementById('success-popup');
             const content = document.getElementById('success-content');
             
             // অটো হোয়াটসঅ্যাপ মেসেজ লিঙ্ক
-            const waMsg = encodeURIComponent(`Hello Support, I requested to buy a plot.\n\nBrand: ${name}\nPlot ID: ${id}\nPrice: $${price}\n\nPlease guide me for the next steps.`);
-            const waLink = `https://wa.me/8801XXXXXXXXX?text=${waMsg}`; // আপনার হোয়াটসঅ্যাপ নম্বর দিন
+            const waMsg = encodeURIComponent(`Hi ARK Support, I want to confirm my plot.\nBrand: ${name}\nPlot: ${id}`);
+            const waLink = `https://wa.me/8801576940717?text=${waMsg}`;
 
             content.innerHTML = `
-                <h2 style="color:var(--gold); font-family:'Cinzel';">CONGRATULATIONS!</h2>
-                <p style="color:var(--royal-emerald); margin:15px 0; font-size:14px;">${name}, YOUR REQUEST IS RECORDED</p>
-                <div style="background:rgba(255,255,255,0.05); padding:15px; text-align:left; font-size:11px; color:#ccc; border-radius:5px;">
-                    <p style="color:var(--gold); font-weight:bold; margin-bottom:5px;">TO MAKE YOUR PLOT LIVE:</p>
-                    <p>• Send Payment Proof to Support</p>
-                    <p>• Send your Brand Logo Link</p>
-                    <p>• Send Website URL</p>
-                </div>
-                <button class="action-btn" onclick="window.open('${waLink}', '_blank')" style="margin-top:20px;">CONTACT CUSTOMER SUPPORT</button>
-                <button class="action-btn" onclick="location.reload()" style="background:transparent; color:#555; border:1px solid #333; margin-top:10px;">BACK TO CANVASS</button>
+                <h2 style="color:var(--gold); font-family:'Cinzel';">SUCCESS! 🎉</h2>
+                <p style="margin:15px 0;">${name}, Your request for ${id} is submitted.</p>
+                <button class="action-btn" onclick="window.open('${waLink}', '_blank')">CONTACT SUPPORT</button>
+                <button class="action-btn" onclick="location.reload()" style="background:transparent; color:#555; border:1px solid #333; margin-top:10px;">CLOSE</button>
             `;
             
             popup.style.display = 'flex';
-            
-            // কনফেটি এনিমেশন
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#D4AF37', '#00ffcc'] });
         }
 
-        // স্টার ক্যানভাস এনিমেশন
-        function initCanvas() {
-            const canvas = document.getElementById('bg-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            for(let i=0; i<80; i++) {
-                ctx.fillStyle = "rgba(212, 175, 55, 0.3)";
-                ctx.beginPath();
-                ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*1.5, 0, Math.PI*2);
-                ctx.fill();
-            }
-        }
-
-        window.onload = () => {
-            loadGrid();
-            initCanvas();
-        };
+        window.onload = initOasis;
     </script>
 </body>
 </html>
