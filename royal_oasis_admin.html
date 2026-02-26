@@ -3,105 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MASTER ADMIN | ROYAL OASIS PROTOCOL</title>
+    <title>ADMIN | ROYAL OASIS V2</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
     
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <style>
         :root {
-            --bg: #0B0E11;
-            --card-bg: #1E2329;
-            --accent: #FCD535;
-            --success: #2ebd85;
-            --danger: #f6465d;
-            --text: #eaeaea;
+            --bg: #050505;
+            --gold: #D4AF37;
+            --cyan: #00FFCC;
+            --card: #111;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            padding: 40px 5%; 
-            display: none; 
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 20px;
         }
 
-        .header {
+        h1 { font-family: 'Cinzel'; color: var(--cyan); letter-spacing: 5px; text-align: center; margin-bottom: 40px; }
+
+        .admin-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .panel-box {
+            background: var(--card);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #222;
+        }
+
+        h3 { font-family: 'Cinzel'; color: var(--gold); margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+
+        /* Form Elements */
+        label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .btn-update {
+            width: 100%;
+            padding: 15px;
+            background: var(--cyan);
+            color: #000;
+            border: none;
+            font-weight: 900;
+            font-family: 'Cinzel';
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-update:hover { background: #fff; box-shadow: 0 0 20px var(--cyan); }
+
+        /* Order List */
+        .order-item {
+            background: #000;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--cyan);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 20px;
         }
 
-        h1 { font-family: 'Cinzel'; color: var(--accent); font-size: 22px; letter-spacing: 2px; }
-
-        .card { 
-            background: var(--card-bg); 
-            padding: 25px; 
-            border-radius: 12px; 
-            border-left: 8px solid var(--accent);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .info { flex: 1; min-width: 150px; }
-        .info b { color: var(--accent); font-size: 18px; display: block; }
-
-        input { 
-            padding: 12px; 
-            background: #0B0E11; 
-            border: 1px solid #444; 
-            color: #fff; 
-            border-radius: 6px; 
-            flex: 1;
-            min-width: 200px;
-        }
-
-        button { 
-            padding: 12px 20px; 
-            cursor: pointer; 
-            border-radius: 6px; 
-            border: none; 
-            font-weight: 700; 
-            font-family: 'Cinzel';
+        .order-info b { color: var(--cyan); }
+        .btn-delete {
+            background: #ff4444;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
             font-size: 10px;
-            text-transform: uppercase;
         }
 
-        .btn-approve { background: var(--success); color: #fff; }
-        .btn-reject { background: var(--danger); color: #fff; }
-
-        .loading { text-align: center; color: var(--accent); padding: 50px; font-family: 'Cinzel'; }
+        @media (max-width: 850px) {
+            .admin-container { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-    <script>
-        // CEO Security Layer
-        if(prompt("Access Protocol Key:") === "zoomlink34@gmail.com") { 
-            document.body.style.display = "block"; 
-        } else { 
-            alert("ACCESS DENIED.");
-            window.location.href = "index.html"; 
-        }
-    </script>
+    <h1>ROYAL OASIS COMMAND CENTER</h1>
 
-    <div class="header">
-        <h1>ROYAL OASIS | CEO COMMAND</h1>
-        <div id="status" style="font-size: 10px; color: var(--success);">RULES: ACTIVE</div>
+    <div class="admin-container">
+        
+        <div class="panel-box">
+            <h3>MANAGE PLOTS</h3>
+            <label>PLOT NUMBER (1-35)</label>
+            <input type="number" id="plotId" placeholder="e.g. 1">
+            
+            <label>BRAND LOGO URL</label>
+            <input type="text" id="imgUrl" placeholder="https://image-link.com/logo.png">
+            
+            <label>WEBSITE LINK (Optional)</label>
+            <input type="text" id="siteLink" placeholder="https://brandwebsite.com">
+            
+            <button class="btn-update" onclick="updatePlot()">ACTIVATE PLOT</button>
+            
+            <p style="margin-top: 30px; font-size: 11px; color: #555;">
+                * To clear a plot, enter the Plot Number and leave Logo URL empty, then click Update.
+            </p>
+        </div>
+
+        <div class="panel-box">
+            <h3>LATEST ORDERS</h3>
+            <div id="orderList">
+                <p style="color: #444;">Monitoring live requests...</p>
+            </div>
+        </div>
+
     </div>
-
-    <div id="order-list" class="loading">CONNECTING TO GRID...</div>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -113,72 +141,69 @@
             messagingSenderId: "440824313752",
             appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
         };
-        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function loadOrders() {
-            // আপনার রুলস অনুযায়ী 'orders' পাথ থেকে ডাটা পড়া হচ্ছে
-            db.ref('orders').on('value', snapshot => {
-                const list = document.getElementById('order-list'); 
-                list.innerHTML = "";
-                const data = snapshot.val(); 
-                
-                if(!data) {
-                    list.innerHTML = "<div style='color:#444; padding:40px;'>NO PENDING ACQUISITIONS.</div>";
+        // ১. প্লট আপডেট করা (V2 পাথ)
+        function updatePlot() {
+            const id = document.getElementById('plotId').value;
+            const url = document.getElementById('imgUrl').value;
+            const link = document.getElementById('siteLink').value || "#";
+
+            if(!id) return alert("Enter Plot Number");
+
+            if(url === "") {
+                // লোগো না দিলে ডিলিট হবে
+                db.ref('royal_oasis_v2/live/' + id).remove()
+                .then(() => alert("Plot #" + id + " has been cleared."));
+            } else {
+                // লোগো দিলে আপডেট হবে
+                db.ref('royal_oasis_v2/live/' + id).set({
+                    imageUrl: url,
+                    link: link,
+                    name: "Active Plot"
+                }).then(() => {
+                    alert("Plot #" + id + " is now LIVE!");
+                    document.getElementById('imgUrl').value = "";
+                });
+            }
+        }
+
+        // ২. লাইভ অর্ডার মনিটর করা
+        function fetchOrders() {
+            db.ref('royal_oasis_v2/orders').limitToLast(10).on('value', snapshot => {
+                const orders = snapshot.val();
+                const listDiv = document.getElementById('orderList');
+                listDiv.innerHTML = "";
+
+                if(!orders) {
+                    listDiv.innerHTML = "<p style='color:#444;'>No orders found.</p>";
                     return;
                 }
-                
-                Object.keys(data).forEach(id => {
-                    const order = data[id];
-                    // আপনার রুলস অনুযায়ী ID এবং Brand Name এখানে শো করবে
-                    list.innerHTML += `
-                        <div class="card">
-                            <div class="info">
-                                <b>PLOT #${order.plot || id}</b>
-                                <span style="font-size:11px; color:#888;">BRAND: ${order.brand || order.name}</span>
-                            </div>
-                            <input type="text" id="img_${id}" placeholder="Direct Logo URL (Required)">
-                            <input type="text" id="web_${id}" placeholder="External Link (Optional)">
-                            <div style="display:flex; gap:10px;">
-                                <button class="btn-approve" onclick="approve('${id}', '${order.plot || id}', '${order.brand || order.name}')">PUBLISH</button>
-                                <button class="btn-reject" onclick="reject('${id}')">DELETE</button>
-                            </div>
+
+                Object.keys(orders).reverse().forEach(key => {
+                    const order = orders[key];
+                    const item = document.createElement('div');
+                    item.className = 'order-item';
+                    item.innerHTML = `
+                        <div class="order-info">
+                            <b>#${order.plot}</b> - ${order.brand} <br>
+                            <small style="color:#555;">Value: $${order.price}</small>
                         </div>
+                        <button class="btn-delete" onclick="deleteOrder('${key}')">Archive</button>
                     `;
+                    listDiv.appendChild(item);
                 });
             });
         }
 
-        function approve(orderId, plotNum, brandName) {
-            const img = document.getElementById('img_'+orderId).value;
-            const web = document.getElementById('web_'+orderId).value;
-            
-            if(!img) return alert("Error: Please provide a direct logo link.");
-
-            // আপনার রুলস অনুযায়ী 'pixels' পাথে ডাটা পাঠানো হচ্ছে
-            db.ref('pixels/' + plotNum).set({
-                name: brandName,
-                imageUrl: img,
-                link: web || "#",
-                plotID: plotNum
-            }).then(() => {
-                // এপ্রুভ হয়ে গেলে রিকোয়েস্টটি মুছে ফেলা হচ্ছে
-                db.ref('orders/' + orderId).remove();
-                alert(`SUCCESS: Plot #${plotNum} is now Live!`);
-            }).catch(error => {
-                console.error(error);
-                alert("PERMISSION_DENIED: আপনি কি ফায়ারবেস কনসোলে লগইন করা আছেন? রুলস অনুযায়ী .write এর জন্য Auth প্রয়োজন।");
-            });
-        }
-
-        function reject(id) {
-            if(confirm("Purge this request?")) {
-                db.ref('orders/' + id).remove();
+        function deleteOrder(key) {
+            if(confirm("Archive this order?")) {
+                db.ref('royal_oasis_v2/orders/' + key).remove();
             }
         }
 
-        window.onload = loadOrders;
+        window.onload = fetchOrders;
     </script>
 </body>
 </html>
