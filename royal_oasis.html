@@ -1,94 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MASTER CONTROL V2 | ROYAL OASIS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROYAL OASIS | THE GLOBAL CREATOR</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <style>
-        body { background: #0B0E11; color: #fff; font-family: sans-serif; padding: 20px; display: none; }
-        .container { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .card { background: #1E2329; padding: 20px; border-radius: 10px; border-left: 5px solid #FCD535; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #0B0E11; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; background: #FCD535; color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 4px; text-transform: uppercase; }
-        .item { padding: 10px; background: #000; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-radius: 4px; font-size: 13px; }
-        h2 { color: #FCD535; font-size: 16px; margin-bottom: 15px; }
+        :root {
+            --bg: #030303;
+            --gold: #D4AF37;
+            --cyan: #00FFCC;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding-bottom: 50px;
+            text-align: center;
+        }
+
+        /* Header Style */
+        .header-box {
+            padding: 60px 20px;
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(30px, 8vw, 60px);
+            color: var(--cyan);
+            letter-spacing: 10px;
+            text-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+            margin: 0;
+        }
+
+        /* Grid System */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .plot-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* ৫টি কলাম */
+            gap: 15px;
+        }
+
+        .plot-card {
+            aspect-ratio: 1/1;
+            background: rgba(0, 255, 204, 0.05);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+            overflow: hidden;
+        }
+
+        /* যখন এডমিন থেকে লোগো সেট করবেন তখন এই স্টাইলটি হবে */
+        .plot-card.active {
+            background: #ffffff; /* লোগো স্পষ্ট দেখার জন্য সাদা ব্যাকগ্রাউন্ড */
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .plot-card:hover {
+            transform: scale(1.03);
+            border-color: var(--cyan);
+        }
+
+        .brand-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 5px;
+        }
+
+        .plot-num {
+            font-family: 'Cinzel';
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--cyan);
+        }
+
+        .plot-price {
+            font-size: 10px;
+            color: #444;
+            margin-top: 5px;
+        }
+
+        /* Responsive for Mobile */
+        @media (max-width: 700px) {
+            .plot-grid { grid-template-columns: repeat(3, 1fr); }
+        }
     </style>
 </head>
 <body>
-    <script>
-        if(prompt("Enter Admin Key:") === "zoomlink34@gmail.com") document.body.style.display = "block";
-        else window.location.href = "royal_oasis.html";
-    </script>
 
-    <h1 style="text-align:center; color:#FCD535; margin-bottom:30px;">ROYAL OASIS V2 COMMAND CENTER</h1>
-
-    <div class="container">
-        <div class="card">
-            <h2>DIRECT GRID UPDATE</h2>
-            <input type="number" id="mPlot" placeholder="Plot ID (1-35)">
-            <input type="text" id="mBrand" placeholder="Brand Name">
-            <input type="text" id="mImg" placeholder="Direct Logo URL">
-            <input type="text" id="mWeb" placeholder="Website URL">
-            <button class="btn" onclick="publish()">Update Live Map</button>
-            <h2 style="margin-top:30px;">LIVE RECORDS</h2>
-            <div id="liveList"></div>
-        </div>
-
-        <div class="card">
-            <h2>PENDING REQUESTS</h2>
-            <div id="orderList">Loading orders...</div>
-        </div>
+    <div class="header-box">
+        <h1 class="title">ROYAL OASIS</h1>
+        <p style="color:#555; letter-spacing: 5px; font-size: 10px;">GLOBAL CREATOR PROPERTY</p>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <div class="container">
+        <div class="plot-grid" id="plotContainer">
+            </div>
+    </div>
+
     <script>
+        // আপনার ফায়ারবেস কনফিগারেশন
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
             databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
             projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
             appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Manual Update
-        function publish() {
-            const id = document.getElementById('mPlot').value;
-            const name = document.getElementById('mBrand').value;
-            const img = document.getElementById('mImg').value;
-            const web = document.getElementById('mWeb').value;
-            if(!id || !img) return alert("Fill Plot ID and Logo URL");
-            db.ref('royal_oasis_v2/live/' + id).set({name, imageUrl: img, link: web||"#"}).then(() => alert("Grid Updated!"));
+        // ম্যাপ লোড করার মেইন ফাংশন
+        function fetchLiveMap() {
+            // নতুন ডাটা পাথ: royal_oasis_v2/live
+            db.ref('royal_oasis_v2/live').on('value', snapshot => {
+                const data = snapshot.val() || {};
+                const container = document.getElementById('plotContainer');
+                container.innerHTML = ""; // আগের সব পরিষ্কার করা
+
+                for (let i = 1; i <= 35; i++) {
+                    const card = document.createElement('div');
+                    
+                    if (data[i]) {
+                        // যদি প্লটটিতে লোগো থাকে
+                        card.className = 'plot-card active';
+                        card.onclick = () => window.open(data[i].link, '_blank');
+                        card.innerHTML = `<img src="${data[i].imageUrl}" class="brand-logo" alt="${data[i].name}">`;
+                    } else {
+                        // যদি প্লট খালি থাকে
+                        card.className = 'plot-card';
+                        let price = i <= 5 ? 99 : (i <= 10 ? 89 : 39);
+                        card.innerHTML = `
+                            <span class="plot-num">${i}</span>
+                            <span class="plot-price">$${price}</span>
+                        `;
+                        card.onclick = () => alert("Plot #" + i + " is available for booking.");
+                    }
+                    container.appendChild(card);
+                }
+            });
         }
 
-        // Load Pending Orders (V2 path)
-        db.ref('royal_oasis_v2/orders').on('value', s => {
-            const list = document.getElementById('orderList'); list.innerHTML = "";
-            const data = s.val(); if(!data) return list.innerHTML = "No pending orders.";
-            Object.keys(data).forEach(id => {
-                list.innerHTML += `<div class="item">
-                    <span>#${data[id].plot} - ${data[id].brand}</span>
-                    <button onclick="approveOrder('${id}', '${data[id].plot}', '${data[id].brand}')" style="background:#FCD535; border:none; padding:5px 10px; cursor:pointer;">Approve</button>
-                </div>`;
-            });
-        });
-
-        function approveOrder(key, plot, brand) {
-            const img = prompt("Enter Direct Logo URL:");
-            if(!img) return;
-            db.ref('royal_oasis_v2/live/' + plot).set({name: brand, imageUrl: img, link: "#"}).then(() => {
-                db.ref('royal_oasis_v2/orders/' + key).remove();
-            });
-        }
-
-        // Load Live Records
-        db.ref('royal_oasis_v2/live').on('value', s => {
-            const list = document.getElementById('liveList'); list.innerHTML = "";
-            const data = s.val(); if(!data) return;
-            Object.keys(data).forEach(id => {
-                list.innerHTML += `<div class="item"><span>#${id} ${data[id].name}</span><button onclick="db.ref('royal_oasis_v2/live/${id}').remove()" style="background:red; color:#fff; border:none; cursor:pointer;">X</button></div>`;
-            });
-        });
+        // পেজ লোড হলে ফাংশনটি চালু হবে
+        window.onload = fetchLiveMap;
     </script>
 </body>
 </html>
