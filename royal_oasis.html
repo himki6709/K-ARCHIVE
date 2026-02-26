@@ -10,7 +10,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
@@ -21,61 +20,63 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg); color: var(--white); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; padding-bottom: 100px; text-align: center; }
+        body { background-color: var(--bg); color: var(--white); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; text-align: center; }
 
-        /* Navigation & Header */
-        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 5%; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .nav-link { text-decoration: none; color: var(--white); font-family: 'Cinzel'; font-size: 10px; letter-spacing: 2px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 15px; transition: 0.3s; }
-        .nav-link:hover { color: var(--cyan-glow); border-color: var(--cyan-glow); }
-        .btn-download { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 8px 15px; font-family: 'Cinzel'; font-size: 10px; cursor: pointer; }
+        .royal-title { font-family: 'Cinzel'; font-size: clamp(35px, 7vw, 75px); font-weight: 900; color: var(--cyan-glow); letter-spacing: 12px; text-shadow: 0 0 30px rgba(0, 255, 204, 0.4); margin-top: 50px; }
+        .sub-title { font-size: 10px; letter-spacing: 8px; color: #666; text-transform: uppercase; margin-bottom: 30px; display: block; }
 
-        .royal-title { font-family: 'Cinzel'; font-size: clamp(35px, 7vw, 75px); font-weight: 900; color: var(--cyan-glow); letter-spacing: 12px; text-shadow: 0 0 30px rgba(0, 255, 204, 0.4); margin-top: 80px; }
-        .sub-title { font-size: 10px; letter-spacing: 8px; color: #666; text-transform: uppercase; margin-bottom: 50px; display: block; }
-
-        /* Grid System */
+        /* Grid */
         .canvas-container { max-width: 1100px; margin: 0 auto; padding: 20px; }
-        .plot-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-        
-        .plot-card { aspect-ratio: 1/1; background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.3); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: 0.4s; overflow: hidden; }
+        .plot-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
+        .plot-card { aspect-ratio: 1/1; background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.2); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
         .plot-card.occupied { background: #fff; border: 2px solid var(--gold); }
-        .plot-card:hover { transform: translateY(-5px); box-shadow: 0 0 30px rgba(0, 255, 204, 0.5); }
-
         .plot-logo { width: 100%; height: 100%; object-fit: contain; padding: 5px; }
-        .plot-id { font-family: 'Cinzel'; font-size: 24px; color: var(--cyan-glow); font-weight: 900; }
-        .plot-val { font-size: 10px; color: #444; margin-top: 5px; }
+        .plot-id { font-family: 'Cinzel'; font-size: 20px; color: var(--cyan-glow); font-weight: 900; }
+        .plot-val { font-size: 9px; color: #444; margin-top: 4px; }
 
-        /* Modal UI */
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(10px); }
-        .modal-box { background: #000; border: 1px solid var(--cyan-glow); padding: 50px; width: 90%; max-width: 500px; box-shadow: 0 0 50px rgba(0, 255, 204, 0.2); }
-        input { width: 100%; padding: 15px; margin-bottom: 20px; background: #0a0a0a; border: 1px solid #222; color: #fff; outline: none; }
-        .btn-submit { width: 100%; padding: 18px; background: var(--cyan-glow); color: #000; border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer; }
-        .btn-wa { display: block; width: 100%; padding: 15px; background: var(--gold); color: #000; text-align: center; text-decoration: none; font-weight: bold; margin-top: 20px; font-family: 'Cinzel'; }
+        /* Buy Button */
+        .buy-btn-container { margin: 40px 0; }
+        .btn-buy-master { background: transparent; color: var(--cyan-glow); border: 2px solid var(--cyan-glow); padding: 15px 40px; font-family: 'Cinzel'; font-weight: 900; letter-spacing: 3px; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(0, 255, 204, 0.2); }
+        .btn-buy-master:hover { background: var(--cyan-glow); color: #000; box-shadow: 0 0 40px var(--cyan-glow); }
+
+        /* Modals */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(15px); }
+        .modal-box { background: #000; border: 1px solid var(--cyan-glow); padding: 40px; width: 90%; max-width: 450px; box-shadow: 0 0 50px rgba(0, 255, 204, 0.2); text-align: center; }
+        
+        input { width: 100%; padding: 15px; margin-bottom: 15px; background: #0a0a0a; border: 1px solid #222; color: #fff; outline: none; font-family: 'Plus Jakarta Sans'; }
+        .btn-submit { width: 100%; padding: 18px; background: var(--cyan-glow); color: #000; border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer; margin-top: 10px; }
+
+        /* Success & Info Popups */
+        .success-msg { font-family: 'Cinzel'; color: var(--cyan-glow); font-size: 24px; letter-spacing: 2px; }
+        .info-list { text-align: left; background: #0a0a0a; padding: 20px; border-radius: 5px; margin: 20px 0; border: 1px solid #111; }
+        .info-list li { font-size: 13px; color: #aaa; margin-bottom: 10px; list-style: none; border-left: 2px solid var(--gold); padding-left: 10px; }
+        
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .btn-send { background: var(--gold); color: #000; padding: 15px; text-decoration: none; font-family: 'Cinzel'; font-weight: 900; font-size: 12px; }
+        .btn-back { background: transparent; color: #555; border: 1px solid #222; padding: 15px; font-family: 'Cinzel'; cursor: pointer; font-size: 12px; }
 
         @media (max-width: 800px) { .plot-grid { grid-template-columns: repeat(3, 1fr); } }
     </style>
 </head>
 <body>
 
-    <div class="top-nav">
-        <a href="index.html" class="nav-link">← HOMEPAGE</a>
-        <button class="btn-download" onclick="exportMap()">DOWNLOAD MAP</button>
-    </div>
-
     <h1 class="royal-title">ROYAL OASIS</h1>
     <span class="sub-title">The Sovereign Dynasty Legacy</span>
 
-    <div class="canvas-container" id="capture-map">
+    <div class="canvas-container">
         <div class="plot-grid" id="mainGrid"></div>
     </div>
 
-    <div class="overlay" id="orderSystem">
-        <div class="modal-box" id="modalUI">
-            <h2>ACQUISITION</h2>
-            <input type="text" id="brandTag" placeholder="BRAND IDENTITY">
-            <input type="hidden" id="pID">
-            <input type="hidden" id="pVal">
-            <div id="infoBar" style="text-align:center; color:#555; margin-bottom:20px; font-size:10px;"></div>
-            <button class="btn-submit" onclick="confirmOrder()">INITIATE PROTOCOL</button>
+    <div class="buy-btn-container">
+        <button class="btn-buy-master" onclick="openOrderModal()">BUY PLOTS</button>
+    </div>
+
+    <div class="overlay" id="orderOverlay">
+        <div class="modal-box" id="modalContent">
+            <h2 style="font-family:'Cinzel'; color:var(--cyan-glow); margin-bottom:25px;">ACQUISITION</h2>
+            <input type="text" id="custName" placeholder="BRAND / YOUR NAME">
+            <input type="number" id="plotNum" placeholder="PLOT NUMBER (1-35)">
+            <button class="btn-submit" onclick="initiateProtocol()">SUBMIT REQUEST</button>
         </div>
     </div>
 
@@ -92,25 +93,19 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ১. ম্যাপ লোড করা (V2 পাথ থেকে)
         function loadMap() {
             db.ref('royal_oasis_v2/live').on('value', snapshot => {
                 const liveData = snapshot.val() || {};
                 const grid = document.getElementById('mainGrid');
                 grid.innerHTML = "";
-
                 for (let i = 1; i <= 35; i++) {
                     const card = document.createElement('div');
-                    const row = Math.floor((i - 1) / 5);
                     const price = i <= 5 ? 99 : (i <= 10 ? 89 : 39);
-
                     if (liveData[i]) {
                         card.className = 'plot-card occupied';
-                        card.onclick = () => window.open(liveData[i].link, '_blank');
                         card.innerHTML = `<img src="${liveData[i].imageUrl}" class="plot-logo">`;
                     } else {
                         card.className = 'plot-card';
-                        card.onclick = () => openModal(i, price);
                         card.innerHTML = `<span class="plot-id">${i}</span><span class="plot-val">$${price}</span>`;
                     }
                     grid.appendChild(card);
@@ -118,38 +113,46 @@
             });
         }
 
-        function openModal(id, price) {
-            document.getElementById('pID').value = id;
-            document.getElementById('pVal').value = price;
-            document.getElementById('infoBar').innerText = `RESERVING COORDINATE #${id} | VALUE $${price}`;
-            document.getElementById('orderSystem').style.display = 'flex';
+        function openOrderModal() {
+            document.getElementById('orderOverlay').style.display = 'flex';
         }
 
-        function confirmOrder() {
-            const brand = document.getElementById('brandTag').value;
-            const id = document.getElementById('pID').value;
-            const val = document.getElementById('pVal').value;
-            if(!brand) return alert("Enter brand name.");
+        function initiateProtocol() {
+            const name = document.getElementById('custName').value;
+            const pNo = document.getElementById('plotNum').value;
+            
+            if(!name || !pNo || pNo < 1 || pNo > 35) {
+                return alert("Please enter valid Name and Plot No (1-35)");
+            }
 
-            db.ref('royal_oasis_v2/orders/' + Date.now()).set({ brand, plot: id, price: val, timestamp: Date.now() })
-            .then(() => {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#00FFCC', '#D4AF37'] });
-                const wa = `https://wa.me/8801576940717?text=ACQUISITION_ID_${id}_BRAND_${brand}`;
-                document.getElementById('modalUI').innerHTML = `
-                    <h2 style="color:var(--cyan-glow)">SENT</h2>
-                    <a href="${wa}" target="_blank" class="btn-wa">CONTACT CONCIERGE</a>
-                    <button onclick="location.reload()" style="background:none; border:none; color:#333; cursor:pointer; font-size:10px; width:100%; margin-top:10px;">Return</button>
+            const price = pNo <= 5 ? 99 : (pNo <= 10 ? 89 : 39);
+
+            // Step 2: Show Congratulations & Confetti
+            const content = document.getElementById('modalContent');
+            content.innerHTML = `<div class="success-msg">CONGRATULATIONS!<br><span style="color:#fff; font-size:14px;">${name}</span></div>`;
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#00FFCC', '#D4AF37'] });
+
+            // Step 3: Wait 3 seconds then show Support Info
+            setTimeout(() => {
+                const waMessage = window.encodeURIComponent(`Hello Support,\nI want to purchase a plot.\n\nDetails:\n- Plot Number: ${pNo}\n- Brand Name: ${name}\n- Price: $${price}`);
+                const waLink = `https://wa.me/8801576940717?text=${waMessage}`;
+
+                content.innerHTML = `
+                    <h2 style="font-family:'Cinzel'; color:var(--gold); font-size:18px;">SUPPORT PROTOCOL</h2>
+                    <div class="info-list">
+                        <li>Provide your Brand Logo (HD)</li>
+                        <li>Submit your Website/Social Link</li>
+                        <li>Complete Payment for Plot #${pNo}</li>
+                    </div>
+                    <div class="action-grid">
+                        <a href="${waLink}" target="_blank" class="btn-send">SEND MESSAGE</a>
+                        <button class="btn-back" onclick="location.reload()">BACK</button>
+                    </div>
                 `;
-            });
-        }
+            }, 3000);
 
-        function exportMap() {
-            html2canvas(document.getElementById('capture-map'), { backgroundColor: '#030303', scale: 2 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Royal-Oasis-Map.png';
-                link.href = canvas.toDataURL();
-                link.click();
-            });
+            // Save to Firebase for Admin
+            db.ref('royal_oasis_v2/orders/' + Date.now()).set({ brand: name, plot: pNo, price: price, timestamp: Date.now() });
         }
 
         window.onload = loadMap;
