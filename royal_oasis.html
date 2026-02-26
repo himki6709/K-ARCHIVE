@@ -10,13 +10,12 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
             --bg: #030303;
             --gold: #D4AF37;
-            --cyan-glow: #00FFCC; /* আপনার পাঠানো সিগনেচার কালার */
+            --cyan-glow: #00FFCC; 
             --white: #E0E0E0;
         }
 
@@ -30,7 +29,7 @@
             padding-bottom: 100px;
         }
 
-        /* Top Bar with Navigation */
+        /* Navigation */
         .top-nav {
             display: flex;
             justify-content: space-between;
@@ -56,18 +55,7 @@
             box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
         }
 
-        .btn-download {
-            background: transparent;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            padding: 8px 15px;
-            font-family: 'Cinzel';
-            font-size: 10px;
-            letter-spacing: 2px;
-            cursor: pointer;
-        }
-
-        /* Luxury Header */
+        /* Luxury Header - Rolls Royce Style */
         .brand-header {
             text-align: center;
             padding: 80px 20px;
@@ -91,7 +79,7 @@
             text-transform: uppercase;
         }
 
-        /* Plot Canvas with Glow Effect */
+        /* Plot Canvas Grid */
         .canvas-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -101,54 +89,48 @@
         .plot-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 25px;
+            gap: 20px;
         }
 
         .plot-card {
             aspect-ratio: 1/1;
-            background: var(--cyan-glow); /* ইমেজ অনুযায়ী সলিড গ্লো ব্যাকগ্রাউন্ড */
-            border-radius: 12px; /* হালকা রাউন্ডেড কর্নার */
+            background: rgba(0, 255, 204, 0.05);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            border-radius: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             position: relative;
-            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+            transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            overflow: hidden;
+        }
+
+        /* Occupied Plot Styling */
+        .plot-card.occupied {
+            background: #fff; /* White background to make logo pop */
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
         }
 
         .plot-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(0, 255, 204, 0.7);
+            transform: translateY(-5px);
+            border-color: var(--cyan-glow);
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
         }
 
-        .plot-id { 
-            font-family: 'Cinzel'; 
-            font-size: 24px; 
-            color: #000; /* গ্লোয়িং ব্যাকগ্রাউন্ডে ডার্ক টেক্সট */
-            font-weight: 900; 
+        .plot-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 5px;
         }
 
-        .plot-val { 
-            font-size: 10px; 
-            color: rgba(0, 0, 0, 0.6); 
-            margin-top: 5px; 
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
+        .empty-id { font-family: 'Cinzel'; font-size: 22px; color: var(--cyan-glow); font-weight: 900; }
+        .empty-price { font-size: 10px; color: #444; margin-top: 5px; letter-spacing: 1px; }
 
-        /* Pulse Animation for glowing */
-        .plot-card {
-            animation: pulse-glow 3s infinite alternate;
-        }
-
-        @keyframes pulse-glow {
-            from { box-shadow: 0 0 15px rgba(0, 255, 204, 0.3); }
-            to { box-shadow: 0 0 35px rgba(0, 255, 204, 0.6); }
-        }
-
-        /* Modal / Pop-up System */
+        /* Order Modal */
         .overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.95);
             display: none; align-items: center; justify-content: center; z-index: 1000;
@@ -183,8 +165,8 @@
 <body>
 
     <div class="top-nav">
-        <a href="royal_oasis_index.html" class="nav-link">← BACK TO HOMEPAGE</a>
-        <button class="btn-download" onclick="exportMap()">DOWNLOAD MAP</button>
+        <a href="index.html" class="nav-link">← BACK TO HOMEPAGE</a>
+        <div style="font-size: 10px; color: #333; letter-spacing: 3px;">ROYAL OASIS CONCIERGE</div>
     </div>
 
     <div class="brand-header">
@@ -192,7 +174,7 @@
         <span class="sub-title">The Sovereign Dynasty Legacy</span>
     </div>
 
-    <div class="canvas-container" id="capture-map">
+    <div class="canvas-container">
         <div class="plot-grid" id="mainGrid">
             </div>
     </div>
@@ -200,11 +182,11 @@
     <div class="overlay" id="orderSystem">
         <div class="modal-box" id="modalUI">
             <h2>ACQUISITION</h2>
-            <input type="text" id="brandTag" placeholder="BRAND IDENTITY">
+            <input type="text" id="brandTag" placeholder="YOUR BRAND IDENTITY">
             <input type="hidden" id="pID">
             <input type="hidden" id="pVal">
             <div id="infoBar" style="text-align:center; color:#555; margin-bottom:20px; font-size:10px; letter-spacing: 1px;"></div>
-            <button class="btn-submit" onclick="confirmOrder()">INITIATE PROTOCOL</button>
+            <button class="btn-submit" onclick="confirmOrder()">SEND PROTOCOL</button>
         </div>
     </div>
 
@@ -221,23 +203,42 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function generatePlots() {
-            const grid = document.getElementById('mainGrid');
-            for (let i = 1; i <= 35; i++) {
-                const row = Math.floor((i - 1) / 5);
-                const price = 9999 - (row * 100);
-                const card = document.createElement('div');
-                card.className = 'plot-card';
-                card.onclick = () => openModal(i, price);
-                card.innerHTML = `<span class="plot-id">${i}</span><span class="plot-val">$${price.toLocaleString()}</span>`;
-                grid.appendChild(card);
-            }
+        // Load Grid and Live Data
+        function loadMap() {
+            db.ref('pixels').on('value', snapshot => {
+                const liveData = snapshot.val() || {};
+                const grid = document.getElementById('mainGrid');
+                grid.innerHTML = "";
+
+                for (let i = 1; i <= 35; i++) {
+                    const card = document.createElement('div');
+                    
+                    if (liveData[i]) {
+                        // Plot is Occupied
+                        card.className = 'plot-card occupied';
+                        card.onclick = () => window.open(liveData[i].link, '_blank');
+                        card.innerHTML = `<img src="${liveData[i].imageUrl}" class="plot-logo" title="${liveData[i].name}">`;
+                    } else {
+                        // Plot is Empty
+                        card.className = 'plot-card';
+                        const row = Math.floor((i - 1) / 5);
+                        let price = 39; // Default price
+                        if(row === 0) price = 99;
+                        else if(row === 1) price = 89;
+                        else if(row === 2) price = 59;
+
+                        card.onclick = () => openModal(i, price);
+                        card.innerHTML = `<span class="empty-id">${i}</span><span class="empty-price">$${price}</span>`;
+                    }
+                    grid.appendChild(card);
+                }
+            });
         }
 
         function openModal(id, price) {
             document.getElementById('pID').value = id;
             document.getElementById('pVal').value = price;
-            document.getElementById('infoBar').innerText = `RESERVING COORDINATE #${id} | VALUE $${price.toLocaleString()}`;
+            document.getElementById('infoBar').innerText = `RESERVING PLOT #${id} | VALUE $${price}`;
             document.getElementById('orderSystem').style.display = 'flex';
         }
 
@@ -246,33 +247,29 @@
             const id = document.getElementById('pID').value;
             const val = document.getElementById('pVal').value;
 
-            if(!brand) return;
+            if(!brand) return alert("Please enter brand name.");
 
-            db.ref('orders/' + Date.now()).set({ brand, plot: id, price: val, timestamp: Date.now() })
-            .then(() => {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#00FFCC', '#D4AF37', '#FFFFFF'] });
+            // Send to 'orders' path as per your Rules
+            db.ref('orders/' + Date.now()).set({
+                brand: brand,
+                plot: id,
+                price: val,
+                timestamp: Date.now()
+            }).then(() => {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#00FFCC', '#D4AF37'] });
                 const ui = document.getElementById('modalUI');
-                const wa = `https://wa.me/8801576940717?text=ACQUISITION_ID_${id}_BRAND_${brand}`;
+                const wa = `https://wa.me/8801576940717?text=NEW_ACQUISITION_REQUEST%0APlot:%20${id}%0ABrand:%20${brand}%0APrice:%20$${val}`;
                 
                 ui.innerHTML = `
-                    <h2 style="color:var(--cyan-glow)">PROTOCOL ACTIVE</h2>
-                    <p style="text-align:center; font-size:12px; color:#666; margin-bottom:20px;">Identity Recorded: ${brand}</p>
+                    <h2 style="color:var(--cyan-glow)">SENT</h2>
+                    <p style="text-align:center; font-size:12px; color:#666; margin-bottom:20px;">Identity Protocol Initiated for ${brand}</p>
                     <a href="${wa}" target="_blank" class="btn-wa">CONTACT CONCIERGE</a>
                     <button onclick="location.reload()" style="display:block; width:100%; margin-top:20px; background:none; border:none; color:#333; cursor:pointer; font-size:10px;">Return to Map</button>
                 `;
             });
         }
 
-        function exportMap() {
-            html2canvas(document.getElementById('capture-map'), { backgroundColor: '#030303', scale: 2 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Royal-Oasis-Legacy-Map.png';
-                link.href = canvas.toDataURL();
-                link.click();
-            });
-        }
-
-        window.onload = generatePlots;
+        window.onload = loadMap;
     </script>
 </body>
 </html>
