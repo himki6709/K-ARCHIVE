@@ -10,34 +10,38 @@
     <style>
         :root { --bg: #020202; --cyan: #00FFCC; --gold: #D4AF37; }
         body { background-color: var(--bg); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; padding: 40px 20px; text-align: center; }
+        
+        /* Hidden by default */
         .form-container { display: none; max-width: 500px; margin: 0 auto; background: #0a0a0a; padding: 40px; border: 1px solid #1a1a1a; border-radius: 15px; text-align: left; }
+        
         .login-box { max-width: 400px; margin: 100px auto; background: #0a0a0a; padding: 40px; border: 1px solid var(--gold); }
-        input { width: 100%; padding: 15px; margin-bottom: 20px; background: #000; border: 1px solid #333; color: #fff; outline: none; }
-        .btn-push { width: 100%; padding: 20px; background: var(--cyan); color: #000; font-family: 'Cinzel'; font-weight: 900; border: none; cursor: pointer; }
-        label { display: block; font-size: 11px; color: var(--gold); margin-bottom: 8px; }
+        input { width: 100%; padding: 15px; margin-bottom: 20px; background: #000; border: 1px solid #333; color: #fff; outline: none; border-radius: 4px; }
+        .btn-push { width: 100%; padding: 20px; background: var(--cyan); color: #000; font-family: 'Cinzel'; font-weight: 900; border: none; cursor: pointer; transition: 0.3s; }
+        .btn-push:hover { background: #fff; }
+        label { display: block; font-size: 11px; color: var(--gold); margin-bottom: 8px; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
     <div id="loginArea" class="login-box">
-        <h2 style="font-family:'Cinzel'; color:var(--gold); margin-bottom:20px;">MANUAL OVERRIDE LOCK</h2>
+        <h2 style="font-family:'Cinzel'; color:var(--gold); margin-bottom:20px;">SYSTEM LOCK</h2>
         <input type="password" id="passInput" placeholder="ENTER MASTER PASSWORD">
-        <button class="btn-push" onclick="checkPass()">UNLOCK SYSTEM</button>
+        <button class="btn-push" onclick="checkPass()">UNLOCK DATA OVERRIDE</button>
     </div>
 
     <div id="manualArea" class="form-container">
         <h2 style="font-family:'Cinzel'; color:var(--cyan); margin-bottom:30px; text-align:center;">MANUAL DATA PUSH</h2>
         <label>TARGET PLOT NUMBER</label>
-        <input type="number" id="plot_id">
+        <input type="number" id="plot_id" placeholder="1-35">
         <label>BRAND IDENTITY NAME</label>
-        <input type="text" id="brand_name">
+        <input type="text" id="brand_name" placeholder="Name">
         <label>HIGH-RES LOGO URL</label>
-        <input type="text" id="logo_url">
+        <input type="text" id="logo_url" placeholder="URL">
         <label>EXTERNAL REDIRECT LINK</label>
-        <input type="text" id="site_link">
+        <input type="text" id="site_link" placeholder="Link">
         <label>CUSTOM PRICE ($)</label>
         <input type="text" id="custom_price" value="9999">
-        <button class="btn-push" onclick="manualUpdate()">PUSH TO LIVE MAP</button>
+        <button class="btn-push" onclick="manualUpdate()">EXECUTE OVERRIDE</button>
     </div>
 
     <script>
@@ -55,11 +59,19 @@
 
         function checkPass() {
             const pass = document.getElementById('passInput').value;
-            if(pass === "KAWSARahmed22@@") {
+            if(pass === "zoomlink34@gmail.com") {
                 document.getElementById('loginArea').style.display = 'none';
                 document.getElementById('manualArea').style.display = 'block';
-            } else { alert("WRONG PASSWORD!"); }
+            } else { 
+                alert("INVALID MASTER KEY"); 
+                document.getElementById('passInput').value = "";
+            }
         }
+
+        // এন্টার বাটন সাপোর্ট
+        document.getElementById('passInput').addEventListener("keyup", function(event) {
+            if (event.key === "Enter") { checkPass(); }
+        });
 
         function manualUpdate() {
             const pId = document.getElementById('plot_id').value;
@@ -69,7 +81,10 @@
                 imageUrl: document.getElementById('logo_url').value,
                 link: document.getElementById('site_link').value || "#",
                 price: document.getElementById('custom_price').value
-            }).then(() => { alert("Manual Update Successful!"); location.reload(); });
+            }).then(() => { 
+                alert("PROTOCOL SUCCESS: Plot #" + pId + " is now LIVE!"); 
+                location.reload(); 
+            });
         }
     </script>
 </body>
