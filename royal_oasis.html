@@ -10,6 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
@@ -22,53 +23,89 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg); color: var(--white); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; text-align: center; }
 
-        .royal-title { font-family: 'Cinzel'; font-size: clamp(35px, 7vw, 75px); font-weight: 900; color: var(--cyan-glow); letter-spacing: 12px; text-shadow: 0 0 30px rgba(0, 255, 204, 0.4); margin-top: 50px; }
-        .sub-title { font-size: 10px; letter-spacing: 8px; color: #666; text-transform: uppercase; margin-bottom: 30px; display: block; }
+        /* Navigation Header */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            margin-top: 10px;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            color: var(--white);
+            font-family: 'Cinzel';
+            font-size: 10px;
+            letter-spacing: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 18px;
+            transition: 0.3s;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover {
+            color: var(--cyan-glow);
+            border-color: var(--cyan-glow);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+        }
+
+        .btn-buy-now {
+            background: var(--cyan-glow);
+            color: #000;
+            font-weight: 900;
+            border: none;
+        }
+
+        .royal-title { font-family: 'Cinzel'; font-size: clamp(30px, 6vw, 65px); font-weight: 900; color: var(--cyan-glow); letter-spacing: 12px; text-shadow: 0 0 30px rgba(0, 255, 204, 0.4); margin-top: 30px; }
+        .sub-title { font-size: 9px; letter-spacing: 7px; color: #666; text-transform: uppercase; margin-bottom: 20px; display: block; }
 
         /* Grid */
-        .canvas-container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .canvas-container { max-width: 1100px; margin: 0 auto; padding: 20px; background: var(--bg); }
         .plot-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
-        .plot-card { aspect-ratio: 1/1; background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.2); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .plot-card { aspect-ratio: 1/1; background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.2); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
         .plot-card.occupied { background: #fff; border: 2px solid var(--gold); }
         .plot-logo { width: 100%; height: 100%; object-fit: contain; padding: 5px; }
         .plot-id { font-family: 'Cinzel'; font-size: 20px; color: var(--cyan-glow); font-weight: 900; }
         .plot-val { font-size: 9px; color: #444; margin-top: 4px; }
 
-        /* Buy Button */
-        .buy-btn-container { margin: 40px 0; }
-        .btn-buy-master { background: transparent; color: var(--cyan-glow); border: 2px solid var(--cyan-glow); padding: 15px 40px; font-family: 'Cinzel'; font-weight: 900; letter-spacing: 3px; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(0, 255, 204, 0.2); }
-        .btn-buy-master:hover { background: var(--cyan-glow); color: #000; box-shadow: 0 0 40px var(--cyan-glow); }
-
         /* Modals */
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(15px); }
         .modal-box { background: #000; border: 1px solid var(--cyan-glow); padding: 40px; width: 90%; max-width: 450px; box-shadow: 0 0 50px rgba(0, 255, 204, 0.2); text-align: center; }
         
-        input { width: 100%; padding: 15px; margin-bottom: 15px; background: #0a0a0a; border: 1px solid #222; color: #fff; outline: none; font-family: 'Plus Jakarta Sans'; }
-        .btn-submit { width: 100%; padding: 18px; background: var(--cyan-glow); color: #000; border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer; margin-top: 10px; }
+        input { width: 100%; padding: 15px; margin-bottom: 15px; background: #0a0a0a; border: 1px solid #222; color: #fff; outline: none; }
+        .btn-submit { width: 100%; padding: 18px; background: var(--cyan-glow); color: #000; border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer; }
 
-        /* Success & Info Popups */
         .success-msg { font-family: 'Cinzel'; color: var(--cyan-glow); font-size: 24px; letter-spacing: 2px; }
-        .info-list { text-align: left; background: #0a0a0a; padding: 20px; border-radius: 5px; margin: 20px 0; border: 1px solid #111; }
+        .info-list { text-align: left; background: #0a0a0a; padding: 20px; margin: 20px 0; border: 1px solid #111; }
         .info-list li { font-size: 13px; color: #aaa; margin-bottom: 10px; list-style: none; border-left: 2px solid var(--gold); padding-left: 10px; }
         
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .btn-send { background: var(--gold); color: #000; padding: 15px; text-decoration: none; font-family: 'Cinzel'; font-weight: 900; font-size: 12px; }
-        .btn-back { background: transparent; color: #555; border: 1px solid #222; padding: 15px; font-family: 'Cinzel'; cursor: pointer; font-size: 12px; }
+        .btn-back { background: transparent; color: #555; border: 1px solid #222; padding: 15px; font-family: 'Cinzel'; cursor: pointer; }
 
-        @media (max-width: 800px) { .plot-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 800px) { 
+            .plot-grid { grid-template-columns: repeat(3, 1fr); }
+            .top-nav { flex-direction: column; gap: 10px; }
+        }
     </style>
 </head>
 <body>
 
+    <div class="top-nav">
+        <a href="index.html" class="nav-btn">← MAIN HOME</a>
+        <div style="display:flex; gap:10px;">
+            <button class="nav-btn" onclick="exportCanvas()">DOWNLOAD MAP</button>
+            <button class="nav-btn btn-buy-now" onclick="openOrderModal()">BUY PLOTS</button>
+        </div>
+    </div>
+
     <h1 class="royal-title">ROYAL OASIS</h1>
     <span class="sub-title">The Sovereign Dynasty Legacy</span>
 
-    <div class="canvas-container">
+    <div class="canvas-container" id="capture-area">
         <div class="plot-grid" id="mainGrid"></div>
-    </div>
-
-    <div class="buy-btn-container">
-        <button class="btn-buy-master" onclick="openOrderModal()">BUY PLOTS</button>
     </div>
 
     <div class="overlay" id="orderOverlay">
@@ -122,7 +159,7 @@
             const pNo = document.getElementById('plotNum').value;
             
             if(!name || !pNo || pNo < 1 || pNo > 35) {
-                return alert("Please enter valid Name and Plot No (1-35)");
+                return alert("Please enter valid Name and Plot No");
             }
 
             const price = pNo <= 5 ? 99 : (pNo <= 10 ? 89 : 39);
@@ -130,7 +167,9 @@
             // Step 2: Show Congratulations & Confetti
             const content = document.getElementById('modalContent');
             content.innerHTML = `<div class="success-msg">CONGRATULATIONS!<br><span style="color:#fff; font-size:14px;">${name}</span></div>`;
-            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#00FFCC', '#D4AF37'] });
+            
+            // Confetti Trigger
+            confetti({ particleCount: 250, spread: 100, origin: { y: 0.5 }, zIndex: 2000, colors: ['#00FFCC', '#D4AF37', '#ffffff'] });
 
             // Step 3: Wait 3 seconds then show Support Info
             setTimeout(() => {
@@ -151,8 +190,17 @@
                 `;
             }, 3000);
 
-            // Save to Firebase for Admin
             db.ref('royal_oasis_v2/orders/' + Date.now()).set({ brand: name, plot: pNo, price: price, timestamp: Date.now() });
+        }
+
+        function exportCanvas() {
+            const area = document.getElementById('capture-area');
+            html2canvas(area, { backgroundColor: '#030303' }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Royal-Oasis-Map.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
         }
 
         window.onload = loadMap;
