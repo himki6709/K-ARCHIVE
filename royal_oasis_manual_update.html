@@ -3,45 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MANUAL PROTOCOL | ROYAL OASIS</title>
+    <title>SECURE MANUAL | ROYAL OASIS</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <style>
         :root { --bg: #020202; --cyan: #00FFCC; --gold: #D4AF37; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; padding: 40px 20px; text-align: center; }
         
-        /* Hidden by default */
-        .form-container { display: none; max-width: 500px; margin: 0 auto; background: #0a0a0a; padding: 40px; border: 1px solid #1a1a1a; border-radius: 15px; text-align: left; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; overflow: hidden; }
+
+        /* Full Screen Login Gateway */
+        #lockScreen {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .lock-box { 
+            width: 90%; max-width: 400px; padding: 40px; background: #0a0a0a; 
+            border: 1px solid var(--gold); text-align: center;
+        }
+
+        /* Form Area - Hidden by default */
+        #manualArea { display: none; padding: 60px 20px; text-align: center; height: 100vh; overflow-y: auto; }
+
+        .form-container {
+            max-width: 500px; margin: 0 auto; background: #0a0a0a; padding: 40px; 
+            border: 1px solid #1a1a1a; border-radius: 15px; text-align: left;
+        }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
         
-        .login-box { max-width: 400px; margin: 100px auto; background: #0a0a0a; padding: 40px; border: 1px solid var(--gold); }
-        input { width: 100%; padding: 15px; margin-bottom: 20px; background: #000; border: 1px solid #333; color: #fff; outline: none; border-radius: 4px; }
-        .btn-push { width: 100%; padding: 20px; background: var(--cyan); color: #000; font-family: 'Cinzel'; font-weight: 900; border: none; cursor: pointer; transition: 0.3s; }
-        .btn-push:hover { background: #fff; }
-        label { display: block; font-size: 11px; color: var(--gold); margin-bottom: 8px; letter-spacing: 1px; }
+        input {
+            width: 100%; padding: 15px; background: #000; border: 1px solid #333; 
+            color: #fff; font-size: 14px; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: var(--cyan); }
+
+        .btn-push {
+            width: 100%; padding: 20px; background: var(--cyan); color: #000; 
+            font-family: 'Cinzel'; font-weight: 900; border: none; cursor: pointer; 
+            letter-spacing: 2px; margin-top: 10px; transition: 0.4s;
+        }
+        .btn-push:hover { background: #fff; transform: translateY(-2px); }
+
+        .status-msg { margin-top: 20px; font-size: 12px; text-align: center; color: #555; }
     </style>
 </head>
 <body>
 
-    <div id="loginArea" class="login-box">
-        <h2 style="font-family:'Cinzel'; color:var(--gold); margin-bottom:20px;">SYSTEM LOCK</h2>
-        <input type="password" id="passInput" placeholder="ENTER MASTER PASSWORD">
-        <button class="btn-push" onclick="checkPass()">UNLOCK DATA OVERRIDE</button>
+    <div id="lockScreen">
+        <div class="lock-box">
+            <h2 style="font-family:'Cinzel'; color:var(--gold); margin-bottom:20px;">SYSTEM OVERRIDE LOCK</h2>
+            <input type="password" id="passInput" placeholder="ENTER MASTER PASSWORD" style="text-align:center;" autofocus>
+            <button class="btn-push" onclick="verifySystem()" style="margin-top:20px;">AUTHENTICATE</button>
+        </div>
     </div>
 
-    <div id="manualArea" class="form-container">
-        <h2 style="font-family:'Cinzel'; color:var(--cyan); margin-bottom:30px; text-align:center;">MANUAL DATA PUSH</h2>
-        <label>TARGET PLOT NUMBER</label>
-        <input type="number" id="plot_id" placeholder="1-35">
-        <label>BRAND IDENTITY NAME</label>
-        <input type="text" id="brand_name" placeholder="Name">
-        <label>HIGH-RES LOGO URL</label>
-        <input type="text" id="logo_url" placeholder="URL">
-        <label>EXTERNAL REDIRECT LINK</label>
-        <input type="text" id="site_link" placeholder="Link">
-        <label>CUSTOM PRICE ($)</label>
-        <input type="text" id="custom_price" value="9999">
-        <button class="btn-push" onclick="manualUpdate()">EXECUTE OVERRIDE</button>
+    <div id="manualArea">
+        <h1 style="font-family:'Cinzel'; color:var(--cyan); letter-spacing: 5px; margin-bottom:40px;">MANUAL DATA PUSH</h1>
+        
+        <div class="form-container">
+            <div class="form-group">
+                <label>Target Plot Number</label>
+                <input type="number" id="plot_id" placeholder="1-35">
+            </div>
+
+            <div class="form-group">
+                <label>Brand Identity Name</label>
+                <input type="text" id="brand_name" placeholder="BRAND NAME">
+            </div>
+
+            <div class="form-group">
+                <label>High-Res Logo URL</label>
+                <input type="text" id="logo_url" placeholder="https://link.to/image.png">
+            </div>
+
+            <div class="form-group">
+                <label>External Redirect Link</label>
+                <input type="text" id="site_link" placeholder="https://website.com">
+            </div>
+
+            <div class="form-group">
+                <label>Custom Price Display ($)</label>
+                <input type="text" id="custom_price" value="9999">
+            </div>
+
+            <button class="btn-push" onclick="manualUpdate()">EXECUTE OVERRIDE</button>
+            <div class="status-msg" id="status">Secure connection established.</div>
+        </div>
     </div>
 
     <script>
@@ -57,33 +110,43 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function checkPass() {
+        // পাসওয়ার্ড ভেরিফিকেশন
+        function verifySystem() {
             const pass = document.getElementById('passInput').value;
             if(pass === "zoomlink34@gmail.com") {
-                document.getElementById('loginArea').style.display = 'none';
+                document.getElementById('lockScreen').style.display = 'none';
                 document.getElementById('manualArea').style.display = 'block';
-            } else { 
-                alert("INVALID MASTER KEY"); 
+                document.body.style.overflow = 'auto'; 
+            } else {
+                alert("INVALID MASTER KEY. ACCESS DENIED!");
                 document.getElementById('passInput').value = "";
             }
         }
 
-        // এন্টার বাটন সাপোর্ট
-        document.getElementById('passInput').addEventListener("keyup", function(event) {
-            if (event.key === "Enter") { checkPass(); }
-        });
+        // Enter Key সাপোর্ট
+        document.getElementById('passInput').addEventListener("keyup", function(e) { if(e.key === "Enter") verifySystem(); });
 
         function manualUpdate() {
             const pId = document.getElementById('plot_id').value;
-            if(!pId) return alert("Plot ID required");
+            const status = document.getElementById('status');
+            if (!pId) return alert("Target Plot Number is required.");
+
+            status.innerText = "Processing Update...";
+
             db.ref('royal_oasis_v2/live/' + pId).set({
                 name: document.getElementById('brand_name').value,
                 imageUrl: document.getElementById('logo_url').value,
                 link: document.getElementById('site_link').value || "#",
-                price: document.getElementById('custom_price').value
-            }).then(() => { 
-                alert("PROTOCOL SUCCESS: Plot #" + pId + " is now LIVE!"); 
+                price: document.getElementById('custom_price').value,
+                timestamp: Date.now()
+            })
+            .then(() => {
+                alert("PROTOCOL SUCCESS: Plot #" + pId + " Updated!");
                 location.reload(); 
+            })
+            .catch((error) => {
+                status.style.color = "#ff4444";
+                status.innerText = "Error: " + error.message;
             });
         }
     </script>
