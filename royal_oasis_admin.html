@@ -11,38 +11,44 @@
     <style>
         :root { --bg: #050505; --gold: #D4AF37; --cyan: #00FFCC; --card: #111; }
         body { background-color: var(--bg); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; text-align: center; }
-        .admin-container { display: none; grid-template-columns: 1fr 1.5fr; gap: 30px; max-width: 1200px; margin: 0 auto; text-align: left; }
+        
+        /* Initial state is hidden */
+        #adminArea { display: none; grid-template-columns: 1fr 1.5fr; gap: 30px; max-width: 1200px; margin: 0 auto; text-align: left; }
+        
         .panel-box { background: var(--card); padding: 25px; border-radius: 12px; border: 1px solid #222; }
         h1 { font-family: 'Cinzel'; color: var(--cyan); letter-spacing: 5px; margin-bottom: 40px; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; background: #000; border: 1px solid #333; color: #fff; border-radius: 5px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; background: #000; border: 1px solid #333; color: #fff; border-radius: 5px; outline: none; }
         .btn-update { width: 100%; padding: 15px; background: var(--cyan); color: #000; border: none; font-weight: 900; font-family: 'Cinzel'; cursor: pointer; }
-        .login-box { max-width: 400px; margin: 100px auto; background: #111; padding: 40px; border: 1px solid var(--cyan); }
-        .order-item { background: #000; padding: 15px; margin-bottom: 10px; border-left: 3px solid var(--cyan); display: flex; justify-content: space-between; align-items: center; }
-        .btn-delete { background: #ff4444; color: #fff; border: none; padding: 5px 10px; cursor: pointer; }
-        @media (max-width: 850px) { .admin-container { grid-template-columns: 1fr; } }
+        
+        .login-box { max-width: 400px; margin: 100px auto; background: #000; padding: 40px; border: 1px solid var(--cyan); box-shadow: 0 0 20px rgba(0, 255, 204, 0.2); }
+        .order-item { background: #080808; padding: 15px; margin-bottom: 10px; border-left: 3px solid var(--cyan); display: flex; justify-content: space-between; align-items: center; }
+        .btn-delete { background: #ff4444; color: #fff; border: none; padding: 5px 10px; cursor: pointer; font-size: 11px; }
+        
+        @media (max-width: 850px) { #adminArea { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <div id="loginArea" class="login-box">
-        <h2 style="font-family:'Cinzel'; color:var(--cyan); margin-bottom:20px;">SECURITY CHECK</h2>
-        <input type="password" id="passInput" placeholder="ENTER ADMIN PASSWORD">
-        <button class="btn-update" onclick="checkPass()">ACCESS PANAL</button>
+        <h2 style="font-family:'Cinzel'; color:var(--cyan); margin-bottom:20px;">ADMIN AUTH</h2>
+        <p style="font-size: 10px; color: #555; margin-bottom: 15px;">RESTRICTED ACCESS</p>
+        <input type="password" id="passInput" placeholder="ENTER PASSWORD">
+        <button class="btn-update" onclick="checkPass()">LOGIN</button>
     </div>
 
-    <div id="adminArea" class="admin-container">
+    <div id="adminArea">
         <div class="panel-box">
             <h3 style="color:var(--gold); font-family:'Cinzel'; margin-bottom:20px;">MANAGE PLOTS</h3>
-            <label>PLOT NUMBER (1-35)</label>
+            <label style="font-size:11px; color:#666;">PLOT ID (1-35)</label>
             <input type="number" id="plotId">
-            <label>BRAND LOGO URL</label>
+            <label style="font-size:11px; color:#666;">LOGO IMAGE URL</label>
             <input type="text" id="imgUrl">
-            <label>WEBSITE LINK</label>
+            <label style="font-size:11px; color:#666;">TARGET WEBSITE LINK</label>
             <input type="text" id="siteLink">
-            <button class="btn-update" onclick="updatePlot()">ACTIVATE PLOT</button>
+            <button class="btn-update" onclick="updatePlot()">UPDATE LIVE MAP</button>
         </div>
         <div class="panel-box">
-            <h3 style="color:var(--gold); font-family:'Cinzel'; margin-bottom:20px;">LATEST ORDERS</h3>
+            <h3 style="color:var(--gold); font-family:'Cinzel'; margin-bottom:20px;">LIVE ORDERS</h3>
             <div id="orderList"></div>
         </div>
     </div>
@@ -60,14 +66,23 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // পাসওয়ার্ড চেক ফাংশন
         function checkPass() {
             const pass = document.getElementById('passInput').value;
-            if(pass === "KAWSARahmed22@@") {
+            if(pass === "zoomlink34@gmail.com") {
                 document.getElementById('loginArea').style.display = 'none';
                 document.getElementById('adminArea').style.display = 'grid';
-                fetchOrders();
-            } else { alert("WRONG PASSWORD, ACCESS DENIED!"); }
+                fetchOrders(); // লগইন সফল হলে অর্ডার লোড হবে
+            } else { 
+                alert("ACCESS DENIED: INCORRECT PASSWORD"); 
+                document.getElementById('passInput').value = "";
+            }
         }
+
+        // এন্টার বাটন চাপলে লগইন হবে
+        document.getElementById('passInput').addEventListener("keyup", function(event) {
+            if (event.key === "Enter") { checkPass(); }
+        });
 
         function updatePlot() {
             const id = document.getElementById('plotId').value;
@@ -75,9 +90,9 @@
             const link = document.getElementById('siteLink').value || "#";
             if(!id) return alert("Enter Plot Number");
             if(url === "") {
-                db.ref('royal_oasis_v2/live/' + id).remove().then(() => alert("Plot Cleared"));
+                db.ref('royal_oasis_v2/live/' + id).remove().then(() => alert("Plot #" + id + " Cleared"));
             } else {
-                db.ref('royal_oasis_v2/live/' + id).set({ imageUrl: url, link: link }).then(() => alert("Plot Activated"));
+                db.ref('royal_oasis_v2/live/' + id).set({ imageUrl: url, link: link }).then(() => alert("Plot #" + id + " Updated"));
             }
         }
 
@@ -86,14 +101,14 @@
                 const orders = snap.val();
                 const list = document.getElementById('orderList');
                 list.innerHTML = "";
-                if(!orders) return;
+                if(!orders) { list.innerHTML = "<p style='color:#333;'>No pending orders.</p>"; return; }
                 Object.keys(orders).reverse().forEach(key => {
                     const o = orders[key];
                     list.innerHTML += `<div class="order-item"><div><b>#${o.plot}</b> - ${o.brand}</div><button class="btn-delete" onclick="deleteOrder('${key}')">Archive</button></div>`;
                 });
             });
         }
-        function deleteOrder(key) { if(confirm("Archive?")) db.ref('royal_oasis_v2/orders/' + key).remove(); }
+        function deleteOrder(key) { if(confirm("Archive this order?")) db.ref('royal_oasis_v2/orders/' + key).remove(); }
     </script>
 </body>
 </html>
