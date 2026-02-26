@@ -3,155 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MASTER PANEL | ROYAL OASIS CONCIERGE</title>
+    <title>MANUAL PROTOCOL | ROYAL OASIS</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <style>
-        body { 
-            background: #0B0E11; 
-            color: #fff; 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            padding: 40px 20px; 
-            display: none; 
+        :root {
+            --bg: #020202;
+            --cyan: #00FFCC;
+            --gold: #D4AF37;
         }
+
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header-section { margin-bottom: 50px; }
+        .header-section h1 { font-family: 'Cinzel'; font-size: 30px; color: var(--cyan); letter-spacing: 5px; }
+
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #0a0a0a;
+            padding: 40px;
+            border: 1px solid #1a1a1a;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.05);
+            text-align: left;
+        }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
         
-        .grid { 
-            max-width: 1000px; 
-            margin: 0 auto; 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 30px; 
-        }
-
-        .card { 
-            background: #1E2329; 
-            padding: 30px; 
-            border-radius: 12px; 
-            border: 1px solid #333; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-        }
-
-        h2 { 
-            color: #FCD535; 
-            font-size: 18px; 
-            letter-spacing: 2px; 
-            margin-bottom: 25px; 
-            text-transform: uppercase;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-        }
-
-        .label { font-size: 12px; color: #888; margin-top: 10px; display: block; }
-
-        input { 
-            width: 100%; 
-            padding: 14px; 
-            margin: 8px 0 18px; 
-            background: #0B0E11; 
-            border: 1px solid #444; 
-            color: #fff; 
-            border-radius: 6px; 
-            box-sizing: border-box; 
+        input {
+            width: 100%;
+            padding: 15px;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            font-size: 14px;
             outline: none;
             transition: 0.3s;
         }
 
-        input:focus { border-color: #FCD535; }
+        input:focus { border-color: var(--cyan); box-shadow: 0 0 10px rgba(0, 255, 204, 0.2); }
 
-        .btn { 
-            width: 100%; 
-            padding: 16px; 
-            background: #FCD535; 
-            color: #000; 
-            font-weight: bold; 
-            border: none; 
-            cursor: pointer; 
-            border-radius: 6px; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
+        .btn-push {
+            width: 100%;
+            padding: 20px;
+            background: var(--cyan);
+            color: #000;
+            font-family: 'Cinzel';
+            font-weight: 900;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            transition: 0.4s;
         }
 
-        .btn:hover { background: #e2be2d; transform: translateY(-2px); }
+        .btn-push:hover { background: #fff; transform: scale(1.02); }
 
-        .item { 
-            padding: 15px; 
-            background: #161a1e; 
-            border-bottom: 1px solid #222; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-radius: 4px;
-            margin-bottom: 8px;
-        }
-
-        .item span { font-size: 13px; color: #eaeaea; }
-        .item small { color: #FCD535; font-weight: bold; margin-right: 10px; }
-
-        .del-btn { 
-            background: #f6465d; 
-            color: white; 
-            border: none; 
-            cursor: pointer; 
-            padding: 8px 12px; 
-            border-radius: 4px; 
-            font-size: 11px;
-            transition: 0.3s;
-        }
-
-        .del-btn:hover { opacity: 0.8; }
-
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+        .status-msg { margin-top: 20px; font-size: 12px; text-align: center; color: #555; }
     </style>
 </head>
 <body>
 
-    <script>
-        // CEO Access Security
-        const pass = prompt("Enter Master Key:");
-        if(pass === "zoomlink34@gmail.com") { 
-            document.body.style.display = "block"; 
-        } else { 
-            alert("UNAUTHORIZED ACCESS DETECTED.");
-            window.location.href = "royal_oasis.html"; 
-        }
-    </script>
-
-    <div style="text-align: center; margin-bottom: 40px;">
-        <h1 style="color:#FCD535; letter-spacing: 5px; font-family: sans-serif;">ROYAL OASIS MASTER COMMAND</h1>
-        <p style="color:#555; font-size: 11px;">MANUAL PLOT OVERRIDE SYSTEM</p>
+    <div class="header-section">
+        <h1>MANUAL DATA OVERRIDE</h1>
+        <p style="color: #444; font-size: 10px; letter-spacing: 3px;">ROYAL OASIS V2 ARCHITECTURE</p>
     </div>
 
-    <div class="grid">
-        <div class="card">
-            <h2>Direct Publish</h2>
-            
-            <span class="label">Coordinate ID</span>
-            <input type="number" id="mPlot" placeholder="Range: 1 to 35">
-            
-            <span class="label">Sovereign Identity</span>
-            <input type="text" id="mBrand" placeholder="Brand/Sheikh Name">
-            
-            <span class="label">Visual Assets (Logo URL)</span>
-            <input type="text" id="mImg" placeholder="https://image.link/logo.png">
-            
-            <span class="label">External Portal (Link)</span>
-            <input type="text" id="mWeb" placeholder="https://website.com">
-            
-            <button class="btn" onclick="directPublish()">Update Live Map</button>
+    <div class="form-container">
+        <div class="form-group">
+            <label>Target Plot Number</label>
+            <input type="number" id="plot_id" placeholder="Enter ID (1-35)">
         </div>
 
-        <div class="card">
-            <h2>Current Live Plots</h2>
-            <div id="liveRecords" style="height: 480px; overflow-y: auto; padding-right: 10px;">
-                <p style="color:#444">Scanning Grid...</p>
-            </div>
+        <hr style="border: 0; border-top: 1px solid #1a1a1a; margin-bottom: 25px;">
+
+        <div class="form-group">
+            <label>Brand Identity Name</label>
+            <input type="text" id="brand_name" placeholder="e.g. ROLEX / KAWSAR">
         </div>
+
+        <div class="form-group">
+            <label>High-Res Logo URL</label>
+            <input type="text" id="logo_url" placeholder="Paste image link here">
+        </div>
+
+        <div class="form-group">
+            <label>External Redirect Link</label>
+            <input type="text" id="site_link" placeholder="https://website.com">
+        </div>
+
+        <div class="form-group">
+            <label>Custom Price Display ($)</label>
+            <input type="text" id="custom_price" value="9999">
+        </div>
+
+        <button class="btn-push" onclick="manualUpdate()">PUSH TO LIVE MAP</button>
+        
+        <div class="status-msg" id="status">Waiting for input...</div>
     </div>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -163,65 +124,45 @@
             messagingSenderId: "440824313752",
             appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
         };
-        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ম্যানুয়ালি সরাসরি আপডেট করার ফাংশন
-        function directPublish() {
-            const pid = document.getElementById('mPlot').value;
-            const name = document.getElementById('mBrand').value;
-            const img = document.getElementById('mImg').value;
-            const web = document.getElementById('mWeb').value;
+        function manualUpdate() {
+            const pId = document.getElementById('plot_id').value;
+            const bName = document.getElementById('brand_name').value;
+            const lUrl = document.getElementById('logo_url').value;
+            const sLink = document.getElementById('site_link').value || "#";
+            const price = document.getElementById('custom_price').value;
+            const status = document.getElementById('status');
 
-            if(!pid || pid < 1 || pid > 35) {
-                return alert("ERROR: Royal Oasis consists of plots 1-35 only.");
-            }
-            if(!name || !img) {
-                return alert("ERROR: Identity and Visual Assets are mandatory.");
-            }
-
-            db.ref('royal_oasis_live/' + pid).set({
-                brand: name,
-                logo: img,
-                link: web || "#",
-                updatedBy: "CEO_MANUAL"
-            }).then(() => {
-                alert(`SUCCESS: Plot #${pid} is now under the sovereignty of ${name}.`);
-                // ক্লিয়ার ইনপুট
-                document.getElementById('mPlot').value = "";
-                document.getElementById('mBrand').value = "";
-                document.getElementById('mImg').value = "";
-                document.getElementById('mWeb').value = "";
-            });
-        }
-
-        // লাইভ রেকর্ড সিঙ্ক্রোনাইজেশন
-        db.ref('royal_oasis_live').on('value', snapshot => {
-            const list = document.getElementById('liveRecords');
-            list.innerHTML = "";
-            const data = snapshot.val();
-            
-            if(!data) {
-                list.innerHTML = "<p style='color:#444; text-align:center; margin-top:20px;'>NO LIVE DATA IN GRID.</p>";
+            if (!pId) {
+                alert("Target Plot Number is mandatory.");
                 return;
             }
 
-            Object.keys(data).forEach(id => {
-                list.innerHTML += `
-                    <div class="item">
-                        <span><small>#${id}</small> ${data[id].brand}</span>
-                        <button class="del-btn" onclick="deleteRecord('${id}')">REVOKE</button>
-                    </div>
-                `;
-            });
-        });
+            status.innerText = "Processing Update...";
 
-        // রেকর্ড মুছে ফেলার ফাংশন
-        function deleteRecord(id) {
-            if(confirm(`REVOKE ACCESS: Are you sure you want to remove Plot #${id} from live map?`)) {
-                db.ref('royal_oasis_live/' + id).remove();
-            }
+            // ডাটাবেসে ম্যানুয়াল পুশ
+            db.ref('royal_oasis_v2/live/' + pId).set({
+                name: bName,
+                imageUrl: lUrl,
+                link: sLink,
+                price: price,
+                manual_entry: true,
+                timestamp: Date.now()
+            })
+            .then(() => {
+                status.style.color = "#00FFCC";
+                status.innerText = "PROTOCOL SUCCESS: Plot #" + pId + " Updated!";
+                // ফর্ম ক্লিয়ার করা
+                document.getElementById('plot_id').value = "";
+                document.getElementById('brand_name').value = "";
+                document.getElementById('logo_url').value = "";
+            })
+            .catch((error) => {
+                status.style.color = "#ff4444";
+                status.innerText = "Error: " + error.message;
+            });
         }
     </script>
 </body>
