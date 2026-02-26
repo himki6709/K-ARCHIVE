@@ -3,123 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROYAL OASIS | THE GLOBAL CREATOR</title>
+    <title>ROYAL OASIS | THE SOVEREIGN DYNASTY</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;600&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
             --bg: #030303;
             --gold: #D4AF37;
-            --cyan: #00FFCC;
+            --cyan-glow: #00FFCC; 
+            --white: #E0E0E0;
         }
 
-        body {
-            background-color: var(--bg);
-            color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            margin: 0;
-            padding-bottom: 50px;
-            text-align: center;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg); color: var(--white); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; padding-bottom: 100px; text-align: center; }
 
-        /* Header Style */
-        .header-box {
-            padding: 60px 20px;
-        }
+        /* Navigation & Header */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 5%; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .nav-link { text-decoration: none; color: var(--white); font-family: 'Cinzel'; font-size: 10px; letter-spacing: 2px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 15px; transition: 0.3s; }
+        .nav-link:hover { color: var(--cyan-glow); border-color: var(--cyan-glow); }
+        .btn-download { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 8px 15px; font-family: 'Cinzel'; font-size: 10px; cursor: pointer; }
 
-        .title {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(30px, 8vw, 60px);
-            color: var(--cyan);
-            letter-spacing: 10px;
-            text-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
-            margin: 0;
-        }
+        .royal-title { font-family: 'Cinzel'; font-size: clamp(35px, 7vw, 75px); font-weight: 900; color: var(--cyan-glow); letter-spacing: 12px; text-shadow: 0 0 30px rgba(0, 255, 204, 0.4); margin-top: 80px; }
+        .sub-title { font-size: 10px; letter-spacing: 8px; color: #666; text-transform: uppercase; margin-bottom: 50px; display: block; }
 
         /* Grid System */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        .canvas-container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .plot-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+        
+        .plot-card { aspect-ratio: 1/1; background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.3); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: 0.4s; overflow: hidden; }
+        .plot-card.occupied { background: #fff; border: 2px solid var(--gold); }
+        .plot-card:hover { transform: translateY(-5px); box-shadow: 0 0 30px rgba(0, 255, 204, 0.5); }
 
-        .plot-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr); /* ৫টি কলাম */
-            gap: 15px;
-        }
+        .plot-logo { width: 100%; height: 100%; object-fit: contain; padding: 5px; }
+        .plot-id { font-family: 'Cinzel'; font-size: 24px; color: var(--cyan-glow); font-weight: 900; }
+        .plot-val { font-size: 10px; color: #444; margin-top: 5px; }
 
-        .plot-card {
-            aspect-ratio: 1/1;
-            background: rgba(0, 255, 204, 0.05);
-            border: 1px solid rgba(0, 255, 204, 0.2);
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            cursor: pointer;
-            transition: 0.3s;
-            overflow: hidden;
-        }
+        /* Modal UI */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(10px); }
+        .modal-box { background: #000; border: 1px solid var(--cyan-glow); padding: 50px; width: 90%; max-width: 500px; box-shadow: 0 0 50px rgba(0, 255, 204, 0.2); }
+        input { width: 100%; padding: 15px; margin-bottom: 20px; background: #0a0a0a; border: 1px solid #222; color: #fff; outline: none; }
+        .btn-submit { width: 100%; padding: 18px; background: var(--cyan-glow); color: #000; border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer; }
+        .btn-wa { display: block; width: 100%; padding: 15px; background: var(--gold); color: #000; text-align: center; text-decoration: none; font-weight: bold; margin-top: 20px; font-family: 'Cinzel'; }
 
-        /* যখন এডমিন থেকে লোগো সেট করবেন তখন এই স্টাইলটি হবে */
-        .plot-card.active {
-            background: #ffffff; /* লোগো স্পষ্ট দেখার জন্য সাদা ব্যাকগ্রাউন্ড */
-            border: 2px solid var(--gold);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-        }
-
-        .plot-card:hover {
-            transform: scale(1.03);
-            border-color: var(--cyan);
-        }
-
-        .brand-logo {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 5px;
-        }
-
-        .plot-num {
-            font-family: 'Cinzel';
-            font-size: 20px;
-            font-weight: 900;
-            color: var(--cyan);
-        }
-
-        .plot-price {
-            font-size: 10px;
-            color: #444;
-            margin-top: 5px;
-        }
-
-        /* Responsive for Mobile */
-        @media (max-width: 700px) {
-            .plot-grid { grid-template-columns: repeat(3, 1fr); }
-        }
+        @media (max-width: 800px) { .plot-grid { grid-template-columns: repeat(3, 1fr); } }
     </style>
 </head>
 <body>
 
-    <div class="header-box">
-        <h1 class="title">ROYAL OASIS</h1>
-        <p style="color:#555; letter-spacing: 5px; font-size: 10px;">GLOBAL CREATOR PROPERTY</p>
+    <div class="top-nav">
+        <a href="index.html" class="nav-link">← HOMEPAGE</a>
+        <button class="btn-download" onclick="exportMap()">DOWNLOAD MAP</button>
     </div>
 
-    <div class="container">
-        <div class="plot-grid" id="plotContainer">
-            </div>
+    <h1 class="royal-title">ROYAL OASIS</h1>
+    <span class="sub-title">The Sovereign Dynasty Legacy</span>
+
+    <div class="canvas-container" id="capture-map">
+        <div class="plot-grid" id="mainGrid"></div>
+    </div>
+
+    <div class="overlay" id="orderSystem">
+        <div class="modal-box" id="modalUI">
+            <h2>ACQUISITION</h2>
+            <input type="text" id="brandTag" placeholder="BRAND IDENTITY">
+            <input type="hidden" id="pID">
+            <input type="hidden" id="pVal">
+            <div id="infoBar" style="text-align:center; color:#555; margin-bottom:20px; font-size:10px;"></div>
+            <button class="btn-submit" onclick="confirmOrder()">INITIATE PROTOCOL</button>
+        </div>
     </div>
 
     <script>
-        // আপনার ফায়ারবেস কনফিগারেশন
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -132,39 +92,67 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ম্যাপ লোড করার মেইন ফাংশন
-        function fetchLiveMap() {
-            // নতুন ডাটা পাথ: royal_oasis_v2/live
+        // ১. ম্যাপ লোড করা (V2 পাথ থেকে)
+        function loadMap() {
             db.ref('royal_oasis_v2/live').on('value', snapshot => {
-                const data = snapshot.val() || {};
-                const container = document.getElementById('plotContainer');
-                container.innerHTML = ""; // আগের সব পরিষ্কার করা
+                const liveData = snapshot.val() || {};
+                const grid = document.getElementById('mainGrid');
+                grid.innerHTML = "";
 
                 for (let i = 1; i <= 35; i++) {
                     const card = document.createElement('div');
-                    
-                    if (data[i]) {
-                        // যদি প্লটটিতে লোগো থাকে
-                        card.className = 'plot-card active';
-                        card.onclick = () => window.open(data[i].link, '_blank');
-                        card.innerHTML = `<img src="${data[i].imageUrl}" class="brand-logo" alt="${data[i].name}">`;
+                    const row = Math.floor((i - 1) / 5);
+                    const price = i <= 5 ? 99 : (i <= 10 ? 89 : 39);
+
+                    if (liveData[i]) {
+                        card.className = 'plot-card occupied';
+                        card.onclick = () => window.open(liveData[i].link, '_blank');
+                        card.innerHTML = `<img src="${liveData[i].imageUrl}" class="plot-logo">`;
                     } else {
-                        // যদি প্লট খালি থাকে
                         card.className = 'plot-card';
-                        let price = i <= 5 ? 99 : (i <= 10 ? 89 : 39);
-                        card.innerHTML = `
-                            <span class="plot-num">${i}</span>
-                            <span class="plot-price">$${price}</span>
-                        `;
-                        card.onclick = () => alert("Plot #" + i + " is available for booking.");
+                        card.onclick = () => openModal(i, price);
+                        card.innerHTML = `<span class="plot-id">${i}</span><span class="plot-val">$${price}</span>`;
                     }
-                    container.appendChild(card);
+                    grid.appendChild(card);
                 }
             });
         }
 
-        // পেজ লোড হলে ফাংশনটি চালু হবে
-        window.onload = fetchLiveMap;
+        function openModal(id, price) {
+            document.getElementById('pID').value = id;
+            document.getElementById('pVal').value = price;
+            document.getElementById('infoBar').innerText = `RESERVING COORDINATE #${id} | VALUE $${price}`;
+            document.getElementById('orderSystem').style.display = 'flex';
+        }
+
+        function confirmOrder() {
+            const brand = document.getElementById('brandTag').value;
+            const id = document.getElementById('pID').value;
+            const val = document.getElementById('pVal').value;
+            if(!brand) return alert("Enter brand name.");
+
+            db.ref('royal_oasis_v2/orders/' + Date.now()).set({ brand, plot: id, price: val, timestamp: Date.now() })
+            .then(() => {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#00FFCC', '#D4AF37'] });
+                const wa = `https://wa.me/8801576940717?text=ACQUISITION_ID_${id}_BRAND_${brand}`;
+                document.getElementById('modalUI').innerHTML = `
+                    <h2 style="color:var(--cyan-glow)">SENT</h2>
+                    <a href="${wa}" target="_blank" class="btn-wa">CONTACT CONCIERGE</a>
+                    <button onclick="location.reload()" style="background:none; border:none; color:#333; cursor:pointer; font-size:10px; width:100%; margin-top:10px;">Return</button>
+                `;
+            });
+        }
+
+        function exportMap() {
+            html2canvas(document.getElementById('capture-map'), { backgroundColor: '#030303', scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Royal-Oasis-Map.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        window.onload = loadMap;
     </script>
 </body>
 </html>
