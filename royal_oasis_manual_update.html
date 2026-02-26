@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASTER PANEL | ROYAL OASIS CONCIERGE</title>
+    <style>
+        body { 
+            background: #0B0E11; 
+            color: #fff; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            padding: 40px 20px; 
+            display: none; 
+        }
+        
+        .grid { 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 30px; 
+        }
+
+        .card { 
+            background: #1E2329; 
+            padding: 30px; 
+            border-radius: 12px; 
+            border: 1px solid #333; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        h2 { 
+            color: #FCD535; 
+            font-size: 18px; 
+            letter-spacing: 2px; 
+            margin-bottom: 25px; 
+            text-transform: uppercase;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .label { font-size: 12px; color: #888; margin-top: 10px; display: block; }
+
+        input { 
+            width: 100%; 
+            padding: 14px; 
+            margin: 8px 0 18px; 
+            background: #0B0E11; 
+            border: 1px solid #444; 
+            color: #fff; 
+            border-radius: 6px; 
+            box-sizing: border-box; 
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: #FCD535; }
+
+        .btn { 
+            width: 100%; 
+            padding: 16px; 
+            background: #FCD535; 
+            color: #000; 
+            font-weight: bold; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 6px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .btn:hover { background: #e2be2d; transform: translateY(-2px); }
+
+        .item { 
+            padding: 15px; 
+            background: #161a1e; 
+            border-bottom: 1px solid #222; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .item span { font-size: 13px; color: #eaeaea; }
+        .item small { color: #FCD535; font-weight: bold; margin-right: 10px; }
+
+        .del-btn { 
+            background: #f6465d; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            padding: 8px 12px; 
+            border-radius: 4px; 
+            font-size: 11px;
+            transition: 0.3s;
+        }
+
+        .del-btn:hover { opacity: 0.8; }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <script>
+        // CEO Access Security
+        const pass = prompt("Enter Master Key:");
+        if(pass === "zoomlink34@gmail.com") { 
+            document.body.style.display = "block"; 
+        } else { 
+            alert("UNAUTHORIZED ACCESS DETECTED.");
+            window.location.href = "royal_oasis.html"; 
+        }
+    </script>
+
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h1 style="color:#FCD535; letter-spacing: 5px; font-family: sans-serif;">ROYAL OASIS MASTER COMMAND</h1>
+        <p style="color:#555; font-size: 11px;">MANUAL PLOT OVERRIDE SYSTEM</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h2>Direct Publish</h2>
+            
+            <span class="label">Coordinate ID</span>
+            <input type="number" id="mPlot" placeholder="Range: 1 to 35">
+            
+            <span class="label">Sovereign Identity</span>
+            <input type="text" id="mBrand" placeholder="Brand/Sheikh Name">
+            
+            <span class="label">Visual Assets (Logo URL)</span>
+            <input type="text" id="mImg" placeholder="https://image.link/logo.png">
+            
+            <span class="label">External Portal (Link)</span>
+            <input type="text" id="mWeb" placeholder="https://website.com">
+            
+            <button class="btn" onclick="directPublish()">Update Live Map</button>
+        </div>
+
+        <div class="card">
+            <h2>Current Live Plots</h2>
+            <div id="liveRecords" style="height: 480px; overflow-y: auto; padding-right: 10px;">
+                <p style="color:#444">Scanning Grid...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // ম্যানুয়ালি সরাসরি আপডেট করার ফাংশন
+        function directPublish() {
+            const pid = document.getElementById('mPlot').value;
+            const name = document.getElementById('mBrand').value;
+            const img = document.getElementById('mImg').value;
+            const web = document.getElementById('mWeb').value;
+
+            if(!pid || pid < 1 || pid > 35) {
+                return alert("ERROR: Royal Oasis consists of plots 1-35 only.");
+            }
+            if(!name || !img) {
+                return alert("ERROR: Identity and Visual Assets are mandatory.");
+            }
+
+            db.ref('royal_oasis_live/' + pid).set({
+                brand: name,
+                logo: img,
+                link: web || "#",
+                updatedBy: "CEO_MANUAL"
+            }).then(() => {
+                alert(`SUCCESS: Plot #${pid} is now under the sovereignty of ${name}.`);
+                // ক্লিয়ার ইনপুট
+                document.getElementById('mPlot').value = "";
+                document.getElementById('mBrand').value = "";
+                document.getElementById('mImg').value = "";
+                document.getElementById('mWeb').value = "";
+            });
+        }
+
+        // লাইভ রেকর্ড সিঙ্ক্রোনাইজেশন
+        db.ref('royal_oasis_live').on('value', snapshot => {
+            const list = document.getElementById('liveRecords');
+            list.innerHTML = "";
+            const data = snapshot.val();
+            
+            if(!data) {
+                list.innerHTML = "<p style='color:#444; text-align:center; margin-top:20px;'>NO LIVE DATA IN GRID.</p>";
+                return;
+            }
+
+            Object.keys(data).forEach(id => {
+                list.innerHTML += `
+                    <div class="item">
+                        <span><small>#${id}</small> ${data[id].brand}</span>
+                        <button class="del-btn" onclick="deleteRecord('${id}')">REVOKE</button>
+                    </div>
+                `;
+            });
+        });
+
+        // রেকর্ড মুছে ফেলার ফাংশন
+        function deleteRecord(id) {
+            if(confirm(`REVOKE ACCESS: Are you sure you want to remove Plot #${id} from live map?`)) {
+                db.ref('royal_oasis_live/' + id).remove();
+            }
+        }
+    </script>
+</body>
+</html>
