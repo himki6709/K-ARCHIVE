@@ -3,75 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SECURE ADMIN | ROYAL OASIS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <title>CEO ADMIN | ROYAL OASIS V2</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
         :root { --bg: #050505; --gold: #D4AF37; --cyan: #00FFCC; --card: #111; }
+        
         body { background-color: var(--bg); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; overflow: hidden; }
 
-        /* Full Screen Login Overlay */
+        /* Full Screen Login Gateway */
         #loginArea {
-            position: fixed; inset: 0; background: #000; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
         }
 
         .login-box { 
             width: 90%; max-width: 400px; padding: 40px; background: #080808; 
-            border: 1px solid var(--cyan); box-shadow: 0 0 30px rgba(0, 255, 204, 0.1); text-align: center;
+            border: 1px solid var(--cyan); text-align: center; box-shadow: 0 0 30px rgba(0, 255, 204, 0.1);
         }
 
-        /* Admin Content - Hidden by default */
-        #adminContent { display: none; padding: 20px; overflow-y: auto; height: 100vh; }
+        /* Content Area - Hidden by default */
+        #adminArea { display: none; padding: 40px 20px; max-width: 1000px; margin: 0 auto; height: 100vh; overflow-y: auto; }
 
-        .admin-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; max-width: 1200px; margin: 20px auto; text-align: left; }
-        .panel-box { background: var(--card); padding: 25px; border-radius: 12px; border: 1px solid #222; }
-        
-        input { width: 100%; padding: 12px; margin-bottom: 15px; background: #000; border: 1px solid #333; color: #fff; border-radius: 5px; outline: none; font-size: 14px; }
+        h1 { font-family: 'Cinzel'; color: var(--cyan); letter-spacing: 5px; text-align: center; margin-bottom: 40px; }
+
+        .card { 
+            background: var(--card); border: 1px solid #222; border-left: 5px solid var(--gold);
+            padding: 25px; border-radius: 12px; margin-bottom: 20px; transition: 0.3s;
+        }
+        .card:hover { border-color: var(--cyan); transform: translateX(5px); }
+
+        .plot-header { font-family: 'Cinzel'; font-size: 18px; color: var(--cyan); margin-bottom: 15px; display: flex; justify-content: space-between; }
+        .brand-label { color: #888; font-size: 12px; text-transform: uppercase; }
+
+        input { 
+            width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; 
+            color: #fff; border-radius: 5px; outline: none; box-sizing: border-box;
+        }
         input:focus { border-color: var(--cyan); }
-        .btn-action { width: 100%; padding: 15px; background: var(--cyan); color: #000; border: none; font-weight: 900; font-family: 'Cinzel'; cursor: pointer; transition: 0.3s; }
-        .btn-action:hover { background: #fff; box-shadow: 0 0 15px var(--cyan); }
 
-        .order-item { background: #000; padding: 15px; margin-bottom: 10px; border-left: 3px solid var(--cyan); display: flex; justify-content: space-between; align-items: center; }
-        .btn-delete { background: #ff4444; color: #fff; border: none; padding: 5px 10px; cursor: pointer; font-size: 11px; }
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
 
-        @media (max-width: 850px) { .admin-grid { grid-template-columns: 1fr; } body { overflow: auto; } }
+        button { 
+            padding: 15px; cursor: pointer; border-radius: 5px; border: none; 
+            font-weight: 900; font-family: 'Cinzel'; letter-spacing: 1px; transition: 0.3s; 
+        }
+        .btn-approve { background: var(--cyan); color: #000; }
+        .btn-approve:hover { background: #fff; box-shadow: 0 0 15px var(--cyan); }
+        .btn-reject { background: #ff4444; color: #fff; }
+        .btn-reject:hover { background: #cc0000; }
+
+        #order-list { margin-top: 20px; }
+        .empty-msg { color: #444; text-align: center; margin-top: 50px; font-style: italic; }
     </style>
 </head>
 <body>
 
     <div id="loginArea">
         <div class="login-box">
-            <h1 style="font-family:'Cinzel'; color:var(--cyan); font-size: 24px; margin-bottom: 10px;">ROYAL OASIS</h1>
-            <p style="font-size: 9px; color: #555; letter-spacing: 2px; margin-bottom: 25px;">SECURE ACCESS ONLY</p>
-            <input type="password" id="passInput" placeholder="ENTER MASTER PASSWORD" autofocus>
-            <button class="btn-action" onclick="checkPass()">ACCESS DASHBOARD</button>
+            <h2 style="font-family:'Cinzel'; color:var(--cyan); margin-bottom:10px;">CEO AUTHORITY</h2>
+            <p style="font-size: 9px; color: #555; letter-spacing: 2px; margin-bottom: 25px;">RESTRICTED COMMAND CENTER</p>
+            <input type="password" id="passInput" placeholder="ENTER MASTER PASSWORD" style="text-align:center;" autofocus>
+            <button class="btn-approve" onclick="checkAuth()" style="width:100%; margin-top:15px;">UNLOCK SYSTEM</button>
         </div>
     </div>
 
-    <div id="adminContent">
-        <h2 style="font-family:'Cinzel'; color:var(--cyan); text-align:center; margin-bottom:30px; letter-spacing:5px;">COMMAND CENTER</h2>
-        <div class="admin-grid">
-            <div class="panel-box">
-                <h3 style="color:var(--gold); font-family:'Cinzel'; margin-bottom:20px;">PLOT MANAGEMENT</h3>
-                <label style="font-size:11px; color:#666;">PLOT NUMBER (1-35)</label>
-                <input type="number" id="plotId">
-                <label style="font-size:11px; color:#666;">LOGO URL</label>
-                <input type="text" id="imgUrl">
-                <label style="font-size:11px; color:#666;">LINK URL</label>
-                <input type="text" id="siteLink">
-                <button class="btn-action" onclick="updatePlot()">UPDATE LIVE</button>
-            </div>
-            <div class="panel-box">
-                <h3 style="color:var(--gold); font-family:'Cinzel'; margin-bottom:20px;">LATEST ORDERS</h3>
-                <div id="orderList"></div>
-            </div>
-        </div>
+    <div id="adminArea">
+        <h1>PENDING APPROVALS</h1>
+        <div id="order-list"><p class="empty-msg">Establishing secure connection...</p></div>
     </div>
 
     <script>
+        // আপনার কনফিগারেশন
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -81,51 +88,76 @@
             messagingSenderId: "440824313752",
             appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
         };
+        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // মাস্টার পাসওয়ার্ড চেক
-        function checkPass() {
+        // পাসওয়ার্ড চেক ফাংশন
+        function checkAuth() {
             const pass = document.getElementById('passInput').value;
             if(pass === "zoomlink34@gmail.com") {
-                document.getElementById('loginArea').style.display = 'none';
-                document.getElementById('adminContent').style.display = 'block';
-                document.body.style.overflow = 'auto'; // স্ক্রল এনাবল করা
-                fetchOrders();
+                document.getElementById('loginArea').style.display = "none";
+                document.getElementById('adminArea').style.display = "block";
+                document.body.style.overflow = "auto";
+                loadOrders();
             } else {
-                alert("ACCESS DENIED!");
+                alert("ACCESS DENIED: WRONG PASSWORD");
                 document.getElementById('passInput').value = "";
             }
         }
 
-        // Enter Key Support
-        document.getElementById('passInput').addEventListener("keyup", function(e) { if(e.key === "Enter") checkPass(); });
+        // Enter বাটন সাপোর্ট
+        document.getElementById('passInput').addEventListener("keyup", (e) => { if(e.key === "Enter") checkAuth(); });
 
-        function updatePlot() {
-            const id = document.getElementById('plotId').value;
-            const url = document.getElementById('imgUrl').value;
-            const link = document.getElementById('siteLink').value || "#";
-            if(!id) return alert("Select Plot");
-            if(url === "") {
-                db.ref('royal_oasis_v2/live/' + id).remove().then(() => alert("Plot Cleared"));
-            } else {
-                db.ref('royal_oasis_v2/live/' + id).set({ imageUrl: url, link: link }).then(() => alert("Plot Updated"));
-            }
-        }
-
-        function fetchOrders() {
-            db.ref('royal_oasis_v2/orders').on('value', snap => {
-                const orders = snap.val();
-                const list = document.getElementById('orderList');
+        // ডাটা লোড করা
+        function loadOrders() {
+            db.ref('orders').on('value', s => {
+                const list = document.getElementById('order-list'); 
                 list.innerHTML = "";
-                if(!orders) return;
-                Object.keys(orders).reverse().forEach(key => {
-                    const o = orders[key];
-                    list.innerHTML += `<div class="order-item"><div><b>#${o.plot}</b> - ${o.brand}</div><button class="btn-delete" onclick="deleteOrder('${key}')">Archive</button></div>`;
+                const data = s.val(); 
+                if(!data) return list.innerHTML = "<p class='empty-msg'>No pending acquisition requests.</p>";
+                
+                Object.keys(data).reverse().forEach(id => {
+                    list.innerHTML += `
+                    <div class="card">
+                        <div class="plot-header">
+                            <span>PLOT #${id}</span>
+                            <span class="brand-label">REQUESTED BY: ${data[id].name}</span>
+                        </div>
+                        <input type="text" id="img_${id}" placeholder="IMAGE LOGO URL (HTTPS)">
+                        <input type="text" id="web_${id}" placeholder="DESTINATION WEBSITE URL">
+                        <div class="btn-group">
+                            <button class="btn-approve" onclick="approve('${id}', '${data[id].name}')">APPROVE & LIVE</button>
+                            <button class="btn-reject" onclick="reject('${id}')">REJECT ORDER</button>
+                        </div>
+                    </div>`;
                 });
             });
         }
-        function deleteOrder(key) { if(confirm("Archive?")) db.ref('royal_oasis_v2/orders/' + key).remove(); }
+
+        function approve(id, name) {
+            const img = document.getElementById('img_'+id).value;
+            const web = document.getElementById('web_'+id).value;
+            if(!img) return alert("Logo URL is required to go LIVE!");
+            
+            // pixels পাথে ডাটা সেভ হবে (আপনার আগের কোড অনুযায়ী)
+            db.ref('pixels/'+id).set({
+                name: name,
+                imageUrl: img,
+                link: web || "#",
+                plotID: id
+            }).then(() => {
+                db.ref('notifications/'+id).set({status: "Approved", message: "Your Brand is Live!"});
+                db.ref('orders/'+id).remove();
+                alert("SUCCESS: Plot #" + id + " is now Public!");
+            });
+        }
+
+        function reject(id) {
+            if(confirm("Are you sure you want to PERMANENTLY DELETE this request?")) {
+                db.ref('orders/'+id).remove();
+            }
+        }
     </script>
 </body>
 </html>
