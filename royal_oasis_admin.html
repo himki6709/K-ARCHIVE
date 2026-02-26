@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEO ADMIN | ROYAL OASIS PROTOCOL</title>
+    <title>MASTER ADMIN | ROYAL OASIS PROTOCOL</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
     
@@ -36,13 +36,7 @@
             padding-bottom: 20px;
         }
 
-        h1 { font-family: 'Cinzel'; color: var(--accent); font-size: 24px; letter-spacing: 2px; }
-
-        #order-list {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
+        h1 { font-family: 'Cinzel'; color: var(--accent); font-size: 22px; letter-spacing: 2px; }
 
         .card { 
             background: var(--card-bg); 
@@ -53,37 +47,32 @@
             flex-wrap: wrap;
             gap: 15px;
             align-items: center;
+            margin-bottom: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .info { flex: 1; min-width: 200px; }
-        .info b { color: var(--accent); font-size: 18px; display: block; margin-bottom: 5px; }
-        .info span { font-size: 12px; color: #888; text-transform: uppercase; }
+        .info { flex: 1; min-width: 150px; }
+        .info b { color: var(--accent); font-size: 18px; display: block; }
 
         input { 
-            padding: 12px 15px; 
+            padding: 12px; 
             background: #0B0E11; 
             border: 1px solid #444; 
             color: #fff; 
             border-radius: 6px; 
-            outline: none;
             flex: 1;
-            min-width: 220px;
+            min-width: 200px;
         }
 
-        input:focus { border-color: var(--accent); }
-
-        .btn-group { display: flex; gap: 10px; }
-
         button { 
-            padding: 12px 25px; 
+            padding: 12px 20px; 
             cursor: pointer; 
             border-radius: 6px; 
             border: none; 
             font-weight: 700; 
             font-family: 'Cinzel';
-            font-size: 11px;
-            transition: 0.3s;
+            font-size: 10px;
+            text-transform: uppercase;
         }
 
         .btn-approve { background: var(--success); color: #fff; }
@@ -95,23 +84,21 @@
 <body>
 
     <script>
-        // CEO Access Check
-        if(prompt("Sovereign Access Key:") === "zoomlink34@gmail.com") { 
+        // CEO Security Layer
+        if(prompt("Access Protocol Key:") === "zoomlink34@gmail.com") { 
             document.body.style.display = "block"; 
         } else { 
             alert("ACCESS DENIED.");
-            window.location.href = "royal_oasis.html"; 
+            window.location.href = "index.html"; 
         }
     </script>
 
     <div class="header">
-        <h1>ROYAL OASIS | ADMIN TERMINAL</h1>
-        <div style="font-size: 11px; color: #555;">v4.0 Protocol Fixed</div>
+        <h1>ROYAL OASIS | CEO COMMAND</h1>
+        <div id="status" style="font-size: 10px; color: var(--success);">RULES: ACTIVE</div>
     </div>
 
-    <h2 style="font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; color: #666;">PENDING APPROVALS</h2>
-    
-    <div id="order-list" class="loading">SYNCING DATABASE...</div>
+    <div id="order-list" class="loading">CONNECTING TO GRID...</div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -131,29 +118,31 @@
         const db = firebase.database();
 
         function loadOrders() {
+            // আপনার রুলস অনুযায়ী 'orders' পাথ থেকে ডাটা পড়া হচ্ছে
             db.ref('orders').on('value', snapshot => {
                 const list = document.getElementById('order-list'); 
                 list.innerHTML = "";
                 const data = snapshot.val(); 
                 
                 if(!data) {
-                    list.innerHTML = "<div style='color:#444; padding:40px;'>NO PENDING REQUESTS.</div>";
+                    list.innerHTML = "<div style='color:#444; padding:40px;'>NO PENDING ACQUISITIONS.</div>";
                     return;
                 }
                 
-                Object.keys(data).forEach(key => {
-                    const order = data[key];
+                Object.keys(data).forEach(id => {
+                    const order = data[id];
+                    // আপনার রুলস অনুযায়ী ID এবং Brand Name এখানে শো করবে
                     list.innerHTML += `
                         <div class="card">
                             <div class="info">
-                                <b>PLOT #${order.plot}</b>
-                                <span>BRAND: ${order.brand}</span>
+                                <b>PLOT #${order.plot || id}</b>
+                                <span style="font-size:11px; color:#888;">BRAND: ${order.brand || order.name}</span>
                             </div>
-                            <input type="text" id="img_${key}" placeholder="Direct Logo Link (PNG/JPG)">
-                            <input type="text" id="web_${key}" placeholder="Website/Social Link">
-                            <div class="btn-group">
-                                <button class="btn-approve" onclick="approve('${key}', '${order.plot}', '${order.brand}')">APPROVE & LIVE</button>
-                                <button class="btn-reject" onclick="reject('${key}')">PURGE</button>
+                            <input type="text" id="img_${id}" placeholder="Direct Logo URL (Required)">
+                            <input type="text" id="web_${id}" placeholder="External Link (Optional)">
+                            <div style="display:flex; gap:10px;">
+                                <button class="btn-approve" onclick="approve('${id}', '${order.plot || id}', '${order.brand || order.name}')">PUBLISH</button>
+                                <button class="btn-reject" onclick="reject('${id}')">DELETE</button>
                             </div>
                         </div>
                     `;
@@ -161,32 +150,31 @@
             });
         }
 
-        function approve(key, plotID, brandName) {
-            const imgLink = document.getElementById('img_'+key).value;
-            const webLink = document.getElementById('web_'+key).value;
+        function approve(orderId, plotNum, brandName) {
+            const img = document.getElementById('img_'+orderId).value;
+            const web = document.getElementById('web_'+orderId).value;
             
-            if(!imgLink) return alert("Error: Logo direct link is required.");
+            if(!img) return alert("Error: Please provide a direct logo link.");
 
-            // ১. লাইভ ডাটাবেসে পুশ (path: royal_oasis_live)
-            db.ref('royal_oasis_live/' + plotID).set({
-                brand: brandName,
-                logo: imgLink,
-                link: webLink || "#",
-                plotID: plotID,
-                timestamp: Date.now()
+            // আপনার রুলস অনুযায়ী 'pixels' পাথে ডাটা পাঠানো হচ্ছে
+            db.ref('pixels/' + plotNum).set({
+                name: brandName,
+                imageUrl: img,
+                link: web || "#",
+                plotID: plotNum
             }).then(() => {
-                // ২. পেন্ডিং লিস্ট থেকে রিমুভ
-                db.ref('orders/' + key).remove();
-                alert(`Plot #${plotID} is now Live for ${brandName}!`);
+                // এপ্রুভ হয়ে গেলে রিকোয়েস্টটি মুছে ফেলা হচ্ছে
+                db.ref('orders/' + orderId).remove();
+                alert(`SUCCESS: Plot #${plotNum} is now Live!`);
             }).catch(error => {
                 console.error(error);
-                alert("Database Error: " + error.message);
+                alert("PERMISSION_DENIED: আপনি কি ফায়ারবেস কনসোলে লগইন করা আছেন? রুলস অনুযায়ী .write এর জন্য Auth প্রয়োজন।");
             });
         }
 
-        function reject(key) {
-            if(confirm("Delete this request?")) {
-                db.ref('orders/' + key).remove();
+        function reject(id) {
+            if(confirm("Purge this request?")) {
+                db.ref('orders/' + id).remove();
             }
         }
 
