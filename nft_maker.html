@@ -3,158 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENDANGERED SPECIES NFT | CEO PANEL</title>
+    <title>SOVEREIGN NFT GEN | ROYAL OASIS V2</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #D4AF37; --neon: #00FFCC; --bg: #080808; }
-        body { background: var(--bg); color: #fff; font-family: 'Space Mono', monospace; text-align: center; padding: 20px; }
+        :root { --gold: #FCD535; --dark-bg: #0B0E11; --card-bg: #121619; }
+        body { background: var(--dark-bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px; }
+
+        /* প্যানেল স্টাইল */
+        .admin-box { background: #1E2329; padding: 25px; border-radius: 12px; margin-bottom: 40px; width: 100%; max-width: 500px; border: 1px solid #333; }
+        select, input { width: 100%; padding: 12px; margin: 8px 0 20px 0; background: #0B0E11; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
+        .btn-download { width: 100%; padding: 15px; background: var(--gold); color: #000; font-weight: 900; border: none; cursor: pointer; border-radius: 6px; text-transform: uppercase; }
+
+        /* আপনার পাঠানো ইমেজের মতো এনএফটি ডিজাইন */
+        #nft-export {
+            width: 400px; height: 520px; background: #fff; border-radius: 15px;
+            overflow: hidden; position: relative; color: #000;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* প্রাণীর ছবির জন্য ব্যাকগ্রাউন্ড (সেকশন অনুযায়ী রং বদলাবে) */
+        .image-holder {
+            width: 100%; height: 380px; display: flex; align-items: center; 
+            justify-content: center; position: relative;
+        }
+        .image-holder img { width: 85%; height: 85%; object-fit: contain; z-index: 2; }
+
+        /* নিচের টেক্সট অংশ */
+        .details-holder {
+            padding: 15px 20px; background: #fff; height: 140px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .collection-name { font-size: 12px; color: #666; font-weight: 600; display: flex; align-items: center; }
+        .collection-name::after { content: ' ✔'; color: #1d9bf0; margin-left: 5px; font-size: 14px; }
         
-        /* Layout */
-        .master-grid { display: grid; grid-template-columns: 1fr 450px; gap: 40px; max-width: 1200px; margin: 0 auto; align-items: start; }
+        .main-title { font-size: 20px; font-weight: 900; margin: 5px 0; text-transform: uppercase; letter-spacing: -0.5px; }
         
-        .control-panel { background: #111; padding: 30px; border-radius: 20px; border: 1px solid #222; text-align: left; }
-        h2 { font-family: 'Cinzel'; color: var(--gold); margin-top: 0; letter-spacing: 2px; }
-
-        label { display: block; font-size: 11px; color: #666; margin-top: 15px; text-transform: uppercase; }
-        input, select { width: 100%; padding: 12px; margin-top: 5px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; outline: none; box-sizing: border-box; }
-        input:focus { border-color: var(--neon); }
-
-        /* NFT Design Styling (BAYC Inspired) */
-        #nft-canvas {
-            width: 400px; height: 580px; background: #121212; border-radius: 30px;
-            position: relative; overflow: hidden; border: 10px solid #1a1a1a;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8); margin: 0 auto;
-        }
-
-        /* Dynamic Background Color based on rarity */
-        .nft-bg { position: absolute; inset: 0; transition: 0.5s; opacity: 0.8; }
-        
-        .character-frame {
-            position: relative; z-index: 5; margin-top: 40px; height: 320px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .character-frame img { width: 85%; height: 85%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
-
-        .info-overlay {
-            position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px); padding: 25px; box-sizing: border-box;
-            border-top: 1px solid rgba(255,255,255,0.1); text-align: left; z-index: 10;
-        }
-
-        .species-label { color: var(--neon); font-weight: bold; font-size: 12px; letter-spacing: 2px; }
-        .owner-title { font-family: 'Cinzel'; font-size: 22px; margin: 5px 0; color: #fff; }
-        .stats-row { display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid #222; padding-top: 10px; }
-        .stat-box span { display: block; font-size: 9px; color: #555; }
-        .stat-box b { font-size: 14px; color: var(--gold); }
-
-        .dl-btn {
-            background: var(--gold); color: #000; padding: 20px 40px; border: none;
-            border-radius: 50px; font-weight: 900; font-family: 'Cinzel'; cursor: pointer;
-            margin-top: 30px; width: 100%; transition: 0.3s;
-        }
-        .dl-btn:hover { background: #fff; transform: scale(1.02); }
+        .stats-grid { display: flex; justify-content: space-between; margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px; }
+        .stat-item span { display: block; font-size: 10px; color: #888; text-transform: uppercase; }
+        .stat-item b { font-size: 14px; color: #000; }
     </style>
 </head>
 <body>
 
-    <h1 style="font-family:'Cinzel'; color:var(--gold);">ROYAL OASIS | ENDANGERED NFT MAKER</h1>
+    <div class="admin-box">
+        <h2 style="margin:0 0 20px 0; color:var(--gold)">CEO NFT ENGINE</h2>
+        
+        <label>Select Section & Species</label>
+        <select id="sectionSelect" onchange="updateUI()">
+            <option value="9999" data-color="#FFD700" data-img="https://cdn-icons-png.flaticon.com/512/614/614131.png">Royal Oasis (Amur Leopard)</option>
+            <option value="7999" data-color="#A9A9A9" data-img="https://cdn-icons-png.flaticon.com/512/3520/3520775.png">Tycoon Plaza (Javan Rhino)</option>
+            <option value="4999" data-color="#00FFCC" data-img="https://cdn-icons-png.flaticon.com/512/4148/4148490.png">Gamer Studio (Axolotl)</option>
+            <option value="5999" data-color="#8B4513" data-img="https://cdn-icons-png.flaticon.com/512/4148/4148507.png">Crown Summit (Mountain Gorilla)</option>
+            <option value="3999" data-color="#FFA500" data-img="https://cdn-icons-png.flaticon.com/512/10545/10545412.png">Elite Legacy (Sumatran Elephant)</option>
+            <option value="2999" data-color="#00BFFF" data-img="https://cdn-icons-png.flaticon.com/512/2906/2906233.png">Heritage Vault (Vaquita)</option>
+            <option value="1999" data-color="#FF4500" data-img="https://cdn-icons-png.flaticon.com/512/10545/10545419.png">Global Horizon (Bengal Tiger)</option>
+        </select>
 
-    <div class="master-grid">
-        <div class="control-panel">
-            <h2>ACQUISITION DETAILS</h2>
-            
-            <label>Select Territory Section</label>
-            <select id="selSection" onchange="updateNFT()">
-                <option value="9999" data-color="#FFD700" data-animal="https://cdn-icons-png.flaticon.com/512/614/614131.png">ROYAL OASIS (AMUR LEOPARD)</option>
-                <option value="7999" data-color="#E5E4E2" data-animal="https://cdn-icons-png.flaticon.com/512/3520/3520775.png">TYCOON PLAZA (JAVAN RHINO)</option>
-                <option value="4999" data-color="#00FFCC" data-animal="https://cdn-icons-png.flaticon.com/512/4148/4148490.png">GAMER STUDIO (AXOLOTL)</option>
-                <option value="5999" data-color="#CD7F32" data-animal="https://cdn-icons-png.flaticon.com/512/4148/4148507.png">CROWN SUMMIT (MOUNTAIN GORILLA)</option>
-                <option value="3999" data-color="#FF4500" data-animal="https://cdn-icons-png.flaticon.com/512/10545/10545412.png">ELITE LEGACY (SUMATRAN ELEPHANT)</option>
-                <option value="2999" data-color="#8A2BE2" data-animal="https://cdn-icons-png.flaticon.com/512/2906/2906233.png">HERITAGE VAULT (VAQUITA)</option>
-                <option value="1999" data-color="#4169E1" data-animal="https://cdn-icons-png.flaticon.com/512/10545/10545419.png">GLOBAL HORIZON (BENGAL TIGER)</option>
-            </select>
+        <input type="text" id="ownerName" placeholder="Owner / Dynasty Name" oninput="updateUI()">
+        <input type="text" id="plotID" placeholder="Plot ID (e.g. RO-01)" oninput="updateUI()">
+        
+        <button class="btn-download" onclick="downloadNFT()">Download High-Res NFT</button>
+    </div>
 
-            <label>Owner / Brand Name</label>
-            <input type="text" id="inName" placeholder="e.g. EMIRATES GROUP" oninput="updateNFT()">
-
-            <label>Plot Identifier</label>
-            <input type="text" id="inPlot" placeholder="OASIS-001" oninput="updateNFT()">
-
-            <label>Manual Price (USD)</label>
-            <input type="text" id="inPrice" placeholder="9999" oninput="updateNFT()">
-
-            <button class="dl-btn" onclick="downloadNFT()">SAVE AS PNG ASSET</button>
+    <div id="nft-export">
+        <div class="image-holder" id="nftBg">
+            <img id="nftImage" src="" crossOrigin="anonymous">
         </div>
-
-        <div id="nft-canvas">
-            <div class="nft-bg" id="nftBg"></div>
+        <div class="details-holder">
+            <div class="collection-name" id="dispColl">Royal Oasis V2</div>
+            <div class="main-title" id="dispOwner">OWNER NAME</div>
             
-            <div class="character-frame">
-                <img id="animalImg" src="">
-            </div>
-
-            <div class="info-overlay">
-                <div class="species-label" id="dispSection">ROYAL OASIS</div>
-                <div class="owner-title" id="dispName">BRAND NAME</div>
-                
-                <div class="stats-row">
-                    <div class="stat-box">
-                        <span>ASSET ID</span>
-                        <b id="dispPlot">#000</b>
-                    </div>
-                    <div class="stat-box" style="text-align: right;">
-                        <span>VALUATION</span>
-                        <b id="dispPrice">$0.00</b>
-                    </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span>Plot Identifier</span>
+                    <b id="dispPlot">#000</b>
                 </div>
-                <p style="font-size: 7px; color:#444; margin-top:10px; letter-spacing: 1px;">VERIFIED BLOCKCHAIN DEED • ROYAL OASIS V2</p>
+                <div class="stat-item" style="text-align: right;">
+                    <span>Market Value</span>
+                    <b id="dispPrice">$9,999</b>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        function updateNFT() {
-            const select = document.getElementById('selSection');
-            const selectedOption = select.options[select.selectedIndex];
+        function updateUI() {
+            const sel = document.getElementById('sectionSelect');
+            const opt = sel.options[sel.selectedIndex];
             
-            // ডাটা সংগ্রহ
-            const sectionName = selectedOption.text.split(' (')[0];
-            const animalImg = selectedOption.getAttribute('data-animal');
-            const bgColor = selectedOption.getAttribute('data-color');
-            const price = document.getElementById('inPrice').value || selectedOption.value;
-            const name = document.getElementById('inName').value || "BRAND NAME";
-            const plot = document.getElementById('inPlot').value || "N/A";
-
-            // ইউআই আপডেট
-            document.getElementById('dispSection').innerText = sectionName;
-            document.getElementById('dispName').innerText = name.toUpperCase();
-            document.getElementById('dispPlot').innerText = plot.toUpperCase();
-            document.getElementById('dispPrice').innerText = "$" + price;
-            document.getElementById('animalImg').src = animalImg;
+            // ডাটা আপডেট
+            document.getElementById('nftBg').style.backgroundColor = opt.getAttribute('data-color');
+            document.getElementById('nftImage').src = opt.getAttribute('data-img');
+            document.getElementById('dispColl').innerText = opt.text.split(' (')[0];
+            document.getElementById('dispPrice').innerText = "$" + opt.value;
             
-            // ব্যাকগ্রাউন্ড গ্রাডিয়েন্ট সেট করা (Crypto Style)
-            document.getElementById('nftBg').style.background = `linear-gradient(180deg, ${bgColor}44 0%, #000 100%)`;
+            const name = document.getElementById('ownerName').value || "OWNER NAME";
+            const plot = document.getElementById('plotID').value || "RO-00";
+            
+            document.getElementById('dispOwner').innerText = name;
+            document.getElementById('dispPlot').innerText = "#" + plot;
         }
 
         function downloadNFT() {
-            const btn = document.querySelector('.dl-btn');
-            btn.innerText = "GENERATING...";
-            html2canvas(document.querySelector("#nft-canvas"), {
-                scale: 2,
-                backgroundColor: null,
-                useCORS: true
+            const element = document.getElementById('nft-export');
+            html2canvas(element, {
+                useCORS: true, // এটি ছবির সমস্যা সমাধান করবে
+                scale: 3, // ছবি ফাটা রোধ করতে হাই স্কেল
+                logging: false,
+                allowTaint: false
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'NFT-' + document.getElementById('dispPlot').innerText + '.png';
-                link.href = canvas.toDataURL();
+                link.download = 'Royal-Oasis-NFT.png';
+                link.href = canvas.toDataURL("image/png");
                 link.click();
-                btn.innerText = "SAVE AS PNG ASSET";
             });
         }
 
-        // ইনিশিয়াল রান
-        updateNFT();
+        // শুরুতে লোড করা
+        window.onload = updateUI;
     </script>
 </body>
 </html>
