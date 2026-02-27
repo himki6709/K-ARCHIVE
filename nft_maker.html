@@ -24,6 +24,7 @@
             width: 100%; height: 70%; background: #f0f0f0; 
             display: flex; align-items: center; justify-content: center;
             border-bottom: 5px solid #D4AF37;
+            overflow: hidden;
         }
         .nft-image-container img { width: 90%; height: 90%; object-fit: contain; }
         
@@ -50,13 +51,13 @@
     <div class="controls">
         <label>সেকশন নির্বাচন করুন</label>
         <select id="sectionSelect" onchange="updatePreview()">
-            <option value="9999" data-animal="images/amur-leopard.png" data-rarity="Legendary">ROYAL OASIS</option>
-            <option value="8999" data-animal="images/javan-rhino.png" data-rarity="Ultra Rare">TYCOON PLAZA</option>
-            <option value="7999" data-animal="images/axolotl.png" data-rarity="Rare">GAMER STUDIO</option>
-            <option value="6999" data-animal="images/mountain-gorilla.png" data-rarity="Rare">CROWN SUMMIT</option>
-            <option value="5999" data-animal="images/elephant.png" data-rarity="Common">ELITE LEGACY</option>
-            <option value="4999" data-animal="images/vaquita.png" data-rarity="Common">HERITAGE VAULT</option>
-            <option value="3999" data-animal="images/bengal-tiger.png" data-rarity="Common">GLOBAL HORIZON</option>
+            <option value="9999" data-animal="https://cdn-icons-png.flaticon.com/512/10545/10545419.png" data-rarity="Legendary">ROYAL OASIS</option>
+            <option value="8999" data-animal="https://cdn-icons-png.flaticon.com/512/3520/3520775.png" data-rarity="Ultra Rare">TYCOON PLAZA</option>
+            <option value="7999" data-animal="https://cdn-icons-png.flaticon.com/512/4148/4148490.png" data-rarity="Rare">GAMER STUDIO</option>
+            <option value="6999" data-animal="https://cdn-icons-png.flaticon.com/512/4148/4148507.png" data-rarity="Rare">CROWN SUMMIT</option>
+            <option value="5999" data-animal="https://cdn-icons-png.flaticon.com/512/10545/10545412.png" data-rarity="Common">ELITE LEGACY</option>
+            <option value="4999" data-animal="https://cdn-icons-png.flaticon.com/512/2906/2906233.png" data-rarity="Common">HERITAGE VAULT</option>
+            <option value="3999" data-animal="https://cdn-icons-png.flaticon.com/512/10545/10545419.png" data-rarity="Common">GLOBAL HORIZON</option>
         </select>
         
         <label>কাস্টমারের নাম</label>
@@ -76,7 +77,7 @@
 
     <div id="nft-capture" class="nft-card">
         <div class="nft-image-container">
-            <img id="animalImg" src="images/amur-leopard.png">
+            <img id="animalImg" src="https://cdn-icons-png.flaticon.com/512/10545/10545419.png" crossorigin="anonymous">
         </div>
         <div class="nft-content">
             <div>
@@ -125,10 +126,11 @@
         }
 
         function downloadNFT() {
-            // High quality capture
+            // High quality capture with CORS support
             html2canvas(document.querySelector("#nft-capture"), { 
                 backgroundColor: null,
-                scale: 3 // Higher resolution
+                scale: 3, // Higher resolution
+                useCORS: true // Essential to capture external images
             }).then(canvas => {
                 let link = document.createElement('a');
                 link.download = 'ARK-NFT-' + document.getElementById('plotID').value + '.png';
@@ -136,6 +138,9 @@
                 link.click();
             });
         }
+        
+        // Initialize view
+        updatePreview();
     </script>
 </body>
 </html>
