@@ -1,84 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CEO ADMIN | ROYAL OASIS V2</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
-    
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-
     <style>
-        :root { --bg: #050505; --gold: #D4AF37; --cyan: #00FFCC; --card: #111; }
-        
-        body { background-color: var(--bg); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; overflow: hidden; }
-
-        /* Full Screen Login Gateway */
-        #loginArea {
-            position: fixed; inset: 0; background: #000; z-index: 10000;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .login-box { 
-            width: 90%; max-width: 400px; padding: 40px; background: #080808; 
-            border: 1px solid var(--cyan); text-align: center; box-shadow: 0 0 30px rgba(0, 255, 204, 0.1);
-        }
-
-        /* Content Area - Hidden by default */
-        #adminArea { display: none; padding: 40px 20px; max-width: 1000px; margin: 0 auto; height: 100vh; overflow-y: auto; }
-
-        h1 { font-family: 'Cinzel'; color: var(--cyan); letter-spacing: 5px; text-align: center; margin-bottom: 40px; }
-
-        .card { 
-            background: var(--card); border: 1px solid #222; border-left: 5px solid var(--gold);
-            padding: 25px; border-radius: 12px; margin-bottom: 20px; transition: 0.3s;
-        }
-        .card:hover { border-color: var(--cyan); transform: translateX(5px); }
-
-        .plot-header { font-family: 'Cinzel'; font-size: 18px; color: var(--cyan); margin-bottom: 15px; display: flex; justify-content: space-between; }
-        .brand-label { color: #888; font-size: 12px; text-transform: uppercase; }
-
-        input { 
-            width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; 
-            color: #fff; border-radius: 5px; outline: none; box-sizing: border-box;
-        }
-        input:focus { border-color: var(--cyan); }
-
-        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-
-        button { 
-            padding: 15px; cursor: pointer; border-radius: 5px; border: none; 
-            font-weight: 900; font-family: 'Cinzel'; letter-spacing: 1px; transition: 0.3s; 
-        }
-        .btn-approve { background: var(--cyan); color: #000; }
-        .btn-approve:hover { background: #fff; box-shadow: 0 0 15px var(--cyan); }
-        .btn-reject { background: #ff4444; color: #fff; }
-        .btn-reject:hover { background: #cc0000; }
-
-        #order-list { margin-top: 20px; }
-        .empty-msg { color: #444; text-align: center; margin-top: 50px; font-style: italic; }
+        body { font-family: sans-serif; background: #0B0E11; color: #fff; padding: 20px; display: none; }
+        .card { background: #1E2329; padding: 20px; margin-bottom: 20px; border-radius: 10px; border-left: 8px solid #FCD535; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        h1 { color: #FCD535; letter-spacing: 2px; }
+        input { padding: 12px; width: 250px; margin-right: 10px; border: 1px solid #444; background: #0B0E11; color: #fff; border-radius: 4px; margin-top: 10px; }
+        button { padding: 12px 25px; cursor: pointer; border-radius: 5px; border: none; font-weight: bold; transition: 0.3s; }
+        .btn-approve { background: #2ebd85; color: white; }
+        .btn-approve:hover { background: #25a070; }
+        .btn-reject { background: #f6465d; color: white; margin-left: 10px; }
+        .btn-reject:hover { background: #d93e52; }
+        .plot-info { font-size: 18px; margin-bottom: 10px; display: block; }
     </style>
 </head>
 <body>
+    <script>
+        const accessPass = prompt("Access Password:");
+        if(accessPass === "zoomlink34@gmail.com") { 
+            document.body.style.display = "block"; 
+        } else { 
+            alert("ভুল পাসওয়ার্ড!");
+            window.location.href = "index.html"; 
+        }
+    </script>
 
-    <div id="loginArea">
-        <div class="login-box">
-            <h2 style="font-family:'Cinzel'; color:var(--cyan); margin-bottom:10px;">CEO AUTHORITY</h2>
-            <p style="font-size: 9px; color: #555; letter-spacing: 2px; margin-bottom: 25px;">RESTRICTED COMMAND CENTER</p>
-            <input type="password" id="passInput" placeholder="ENTER MASTER PASSWORD" style="text-align:center;" autofocus>
-            <button class="btn-approve" onclick="checkAuth()" style="width:100%; margin-top:15px;">UNLOCK SYSTEM</button>
-        </div>
-    </div>
+    <h1>PENDING APPROVALS (V2)</h1>
+    <div id="order-list">Establishing Secure Connection...</div>
 
-    <div id="adminArea">
-        <h1>PENDING APPROVALS</h1>
-        <div id="order-list"><p class="empty-msg">Establishing secure connection...</p></div>
-    </div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <script>
-        // আপনার কনফিগারেশন
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -92,72 +46,51 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // পাসওয়ার্ড চেক ফাংশন
-        function checkAuth() {
-            const pass = document.getElementById('passInput').value;
-            if(pass === "zoomlink34@gmail.com") {
-                document.getElementById('loginArea').style.display = "none";
-                document.getElementById('adminArea').style.display = "block";
-                document.body.style.overflow = "auto";
-                loadOrders();
-            } else {
-                alert("ACCESS DENIED: WRONG PASSWORD");
-                document.getElementById('passInput').value = "";
-            }
-        }
-
-        // Enter বাটন সাপোর্ট
-        document.getElementById('passInput').addEventListener("keyup", (e) => { if(e.key === "Enter") checkAuth(); });
-
-        // ডাটা লোড করা
         function loadOrders() {
-            db.ref('orders').on('value', s => {
+            db.ref('royal_oasis_v2/orders').on('value', s => {
                 const list = document.getElementById('order-list'); 
                 list.innerHTML = "";
                 const data = s.val(); 
-                if(!data) return list.innerHTML = "<p class='empty-msg'>No pending acquisition requests.</p>";
+                if(!data) return list.innerHTML = "<p style='color:#666'>No pending sovereign requests.</p>";
                 
-                Object.keys(data).reverse().forEach(id => {
-                    list.innerHTML += `
-                    <div class="card">
-                        <div class="plot-header">
-                            <span>PLOT #${id}</span>
-                            <span class="brand-label">REQUESTED BY: ${data[id].name}</span>
-                        </div>
-                        <input type="text" id="img_${id}" placeholder="IMAGE LOGO URL (HTTPS)">
-                        <input type="text" id="web_${id}" placeholder="DESTINATION WEBSITE URL">
-                        <div class="btn-group">
-                            <button class="btn-approve" onclick="approve('${id}', '${data[id].name}')">APPROVE & LIVE</button>
-                            <button class="btn-reject" onclick="reject('${id}')">REJECT ORDER</button>
-                        </div>
+                Object.keys(data).forEach(id => {
+                    list.innerHTML += `<div class="card">
+                        <b class="plot-info">PLOT #${data[id].plot || id}</b> 
+                        BRAND: <span style="color:#FCD535">${data[id].brand || data[id].name}</span> <br>
+                        <input type="text" id="img_${id}" placeholder="Logo URL (https://...)">
+                        <input type="text" id="web_${id}" placeholder="Redirect Website URL">
+                        <br><br>
+                        <button class="btn-approve" onclick="approve('${id}', '${data[id].brand}', '${data[id].plot}')">APPROVE & PUBLISH</button>
+                        <button class="btn-reject" onclick="reject('${id}')">REJECT ORDER</button>
                     </div>`;
                 });
             });
         }
 
-        function approve(id, name) {
+        function approve(id, brandName, plotNo) {
             const img = document.getElementById('img_'+id).value;
             const web = document.getElementById('web_'+id).value;
-            if(!img) return alert("Logo URL is required to go LIVE!");
+            if(!img) return alert("Logo URL missing!");
             
-            // pixels পাথে ডাটা সেভ হবে (আপনার আগের কোড অনুযায়ী)
-            db.ref('pixels/'+id).set({
-                name: name,
+            db.ref('royal_oasis_v2/live/' + plotNo).set({
+                name: brandName,
                 imageUrl: img,
                 link: web || "#",
-                plotID: id
+                plotID: plotNo,
+                status: "Sovereign"
             }).then(() => {
-                db.ref('notifications/'+id).set({status: "Approved", message: "Your Brand is Live!"});
-                db.ref('orders/'+id).remove();
-                alert("SUCCESS: Plot #" + id + " is now Public!");
+                db.ref('royal_oasis_v2/orders/' + id).remove();
+                alert("Plot #" + plotNo + " is now LIVE on Royal Oasis!");
             });
         }
 
         function reject(id) {
-            if(confirm("Are you sure you want to PERMANENTLY DELETE this request?")) {
-                db.ref('orders/'+id).remove();
+            if(confirm("Permanently delete this acquisition request?")) {
+                db.ref('royal_oasis_v2/orders/' + id).remove();
             }
         }
+
+        loadOrders();
     </script>
 </body>
 </html>
