@@ -3,113 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign NFT Generator | Royal Oasis</title>
+    <title>SOVEREIGN NFT FACTORY | CEO EDITION</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Orbitron:wght@400;700;900&family=Inter:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #FCD535; --dark: #0B0E11; }
-        body { background: var(--dark); color: #fff; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        
-        /* input area */
-        .input-panel { background: #1E2329; padding: 25px; border-radius: 15px; width: 100%; max-width: 450px; margin-bottom: 30px; border: 1px solid #333; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
-        .gen-btn { width: 100%; padding: 15px; background: var(--gold); color: #000; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        :root { --main-color: #00FFCC; --bg: #050505; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px 10px; margin: 0; }
 
-        /* NFT Card Design - BAYC Inspired */
-        #nft-card {
-            width: 400px; height: 530px; background: #fff; border-radius: 20px;
-            overflow: hidden; position: relative; color: #000;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        /* Control Panel */
+        .admin-box { 
+            background: rgba(20, 20, 20, 0.9); padding: 30px; border-radius: 20px; 
+            border: 1px solid #333; width: 100%; max-width: 600px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,1); margin-bottom: 50px;
         }
-        .image-section {
-            width: 100%; height: 380px; background: #f3f3f3; 
-            display: flex; align-items: center; justify-content: center; position: relative;
-        }
-        .animal-name-overlay {
-            position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.7);
-            color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold;
-        }
-        .placeholder-art { font-size: 80px; filter: grayscale(1); }
-
-        .details-section { padding: 20px; background: #fff; height: 150px; display: flex; flex-direction: column; justify-content: space-between; }
-        .verified { font-size: 12px; color: #666; font-weight: 600; }
-        .verified::after { content: ' ✔'; color: #1d9bf0; }
-        .owner-title { font-size: 24px; font-weight: 900; margin: 5px 0; text-transform: uppercase; }
+        h1 { font-family: 'Syncopate'; font-size: 18px; color: var(--main-color); text-align: center; margin-bottom: 30px; letter-spacing: 2px; }
         
-        .footer-stats { display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 10px; }
-        .stat-box span { display: block; font-size: 10px; color: #999; font-weight: bold; text-transform: uppercase; }
-        .stat-box b { font-size: 16px; color: #000; }
+        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: span 2; }
+
+        label { display: block; font-size: 10px; color: #777; text-transform: uppercase; margin-top: 10px; font-weight: 700; }
+        input { 
+            width: 100%; padding: 12px; margin-top: 5px; background: #000; 
+            border: 1px solid #222; color: #fff; border-radius: 8px; outline: none; box-sizing: border-box;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--main-color); box-shadow: 0 0 10px var(--main-color); }
+
+        .btn-download { 
+            width: 100%; padding: 20px; background: var(--main-color); color: #000; 
+            border: none; border-radius: 10px; font-weight: 900; cursor: pointer; 
+            text-transform: uppercase; margin-top: 25px; font-family: 'Orbitron'; font-size: 16px;
+        }
+
+        /* The NFT Masterpiece Design */
+        #nft-render-target {
+            width: 450px; height: 650px; background: #000; border-radius: 30px;
+            position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.5s;
+        }
+
+        /* Dynamic Glow Effect */
+        .card-glow {
+            position: absolute; width: 150%; height: 150%; top: -25%; left: -25%;
+            background: radial-gradient(circle, var(--main-color) 0%, transparent 60%);
+            opacity: 0.15; z-index: 1; pointer-events: none;
+        }
+
+        .animal-display {
+            width: 100%; height: 450px; display: flex; align-items: center; justify-content: center;
+            position: relative; z-index: 2; padding-top: 20px;
+        }
+        .animal-display img { 
+            width: 90%; height: 90%; object-fit: contain; 
+            filter: drop-shadow(0 0 20px var(--main-color)); 
+            transition: 0.5s transform cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Text Overlay / Glassmorphism */
+        .glass-info {
+            position: absolute; bottom: 0; width: 100%; height: 200px;
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1); z-index: 10;
+            padding: 25px; box-sizing: border-box;
+        }
+
+        .section-tag { font-family: 'Orbitron'; color: var(--main-color); font-size: 11px; letter-spacing: 2px; font-weight: 900; margin-bottom: 5px; }
+        .owner-name { font-family: 'Orbitron'; font-size: 28px; font-weight: 900; margin: 0; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        
+        .footer-grid { display: flex; justify-content: space-between; margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
+        .meta-box span { display: block; font-size: 9px; color: #aaa; text-transform: uppercase; font-weight: 700; margin-bottom: 3px; }
+        .meta-box b { font-family: 'Orbitron'; font-size: 18px; color: #fff; }
+
+        .certified-label { position: absolute; top: 30px; right: -40px; background: var(--main-color); color: #000; padding: 5px 50px; transform: rotate(45deg); font-weight: 900; font-size: 10px; letter-spacing: 1px; }
+
     </style>
 </head>
 <body>
 
-    <div class="input-panel">
-        <h2 style="color:var(--gold); text-align:center;">NFT DATA INPUT</h2>
-        <input type="text" id="inAnimal" placeholder="Enter Animal Name (e.g. Amur Leopard)" oninput="draw()">
-        <input type="text" id="inOwner" placeholder="Customer Name" oninput="draw()">
-        <input type="text" id="inPlot" placeholder="Plot Number (e.g. #01)" oninput="draw()">
-        <input type="text" id="inSection" placeholder="Section Name (e.g. Royal Oasis)" oninput="draw()">
-        <input type="text" id="inPrice" placeholder="Plot Price (e.g. $9999)" oninput="draw()">
-        <button class="gen-btn" onclick="downloadNFT()">Download NFT Image</button>
+    <div class="admin-box">
+        <h1>NFT MASTER FACTORY (V4)</h1>
+        <div class="grid-inputs">
+            <div class="full-width">
+                <label>Species Name (Full Body Search)</label>
+                <input type="text" id="inSpecies" placeholder="e.g. White Tiger" oninput="updateNFT()">
+            </div>
+            <div>
+                <label>Customer Name</label>
+                <input type="text" id="inOwner" placeholder="e.g. AL-FAYED" oninput="updateNFT()">
+            </div>
+            <div>
+                <label>Section Name</label>
+                <input type="text" id="inSection" placeholder="e.g. ELITE LEGACY" oninput="updateNFT()">
+            </div>
+            <div>
+                <label>Plot Identifier</label>
+                <input type="text" id="inPlot" placeholder="e.g. #77" oninput="updateNFT()">
+            </div>
+            <div>
+                <label>Market Value ($)</label>
+                <input type="text" id="inPrice" placeholder="e.g. 99,999" oninput="updateNFT()">
+            </div>
+            <div class="full-width">
+                <label>Theme Color (Name or Hex Code)</label>
+                <input type="text" id="inColor" placeholder="e.g. Gold, #FF0055, Neon Green" oninput="updateNFT()">
+            </div>
+        </div>
+        <button class="btn-download" onclick="exportNFT()">Download Ultra-HD Asset</button>
     </div>
 
-    <div id="nft-card">
-        <div class="image-section" id="bgBox">
-            <div class="animal-name-overlay" id="outAnimal">ANIMAL NAME</div>
-            <div class="placeholder-art">🐾</div>
-        </div>
+    <div id="nft-render-target">
+        <div class="certified-label">SOVEREIGN</div>
+        <div class="card-glow" id="glowEffect"></div>
         
-        <div class="details-section">
-            <div class="verified" id="outSection">SECTION NAME</div>
-            <div class="owner-title" id="outOwner">CUSTOMER NAME</div>
-            
-            <div class="footer-stats">
-                <div class="stat-box">
-                    <span>Plot Number</span>
-                    <b id="outPlot">#00</b>
+        <div class="animal-display">
+            <img id="outImage" src="" crossOrigin="anonymous">
+        </div>
+
+        <div class="glass-info">
+            <div class="section-tag" id="outSection">ROYAL OASIS</div>
+            <h2 class="owner-name" id="outOwner">OWNER NAME</h2>
+
+            <div class="footer-grid">
+                <div class="meta-box">
+                    <span>Plot Identifier</span>
+                    <b id="outPlot">#000</b>
                 </div>
-                <div class="stat-box" style="text-align: right;">
-                    <span>Price</span>
-                    <b id="outPrice">$0000</b>
+                <div class="meta-box" style="text-align: right;">
+                    <span>Market Valuation</span>
+                    <b id="outPrice">$0.00</b>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function draw() {
-            // Mapping values
-            document.getElementById('outAnimal').innerText = document.getElementById('inAnimal').value || "ANIMAL NAME";
-            document.getElementById('outOwner').innerText = document.getElementById('inOwner').value || "CUSTOMER NAME";
-            document.getElementById('outPlot').innerText = document.getElementById('inPlot').value || "#00";
-            document.getElementById('outSection').innerText = document.getElementById('inSection').value || "SECTION NAME";
-            document.getElementById('outPrice').innerText = document.getElementById('inPrice').value || "$0000";
+        function updateNFT() {
+            // ১. ইনপুট থেকে ডাটা নেয়া
+            const species = document.getElementById('inSpecies').value || "Tiger";
+            const owner = document.getElementById('inOwner').value || "OWNER NAME";
+            const section = document.getElementById('inSection').value || "ARK SECTION";
+            const plot = document.getElementById('inPlot').value || "#00";
+            const price = document.getElementById('inPrice').value || "0.00";
+            const color = document.getElementById('inColor').value || "#00FFCC";
 
-            // Dynamic Background Color logic
-            const section = document.getElementById('inSection').value.toLowerCase();
-            const bg = document.getElementById('bgBox');
-            if(section.includes("royal")) bg.style.background = "#FFD700";
-            else if(section.includes("tycoon")) bg.style.background = "#E5E4E2";
-            else if(section.includes("gamer")) bg.style.background = "#00FFCC";
-            else bg.style.background = "#f3f3f3";
+            // ২. কালার ও থিম আপডেট
+            document.documentElement.style.setProperty('--main-color', color);
+            
+            // ৩. টেক্সট আপডেট
+            document.getElementById('outOwner').innerText = owner.toUpperCase();
+            document.getElementById('outSection').innerText = section.toUpperCase();
+            document.getElementById('outPlot').innerText = plot.toUpperCase();
+            document.getElementById('outPrice').innerText = "$" + price;
+
+            // ৪. ডাইনামিক ইমেজ আপডেট (ফুল বডি পিএনজি)
+            // আমি এখানে একটি হাই-কোয়ালিটি সোর্স লিঙ্ক দিচ্ছি যা আপনার টাইপ করা নাম অনুযায়ী ছবি খুজবে
+            const cleanSpecies = species.replace(/\s+/g, '-').toLowerCase();
+            const imageUrl = `https://source.unsplash.com/featured/?${cleanSpecies},animal,full-body`;
+            
+            // Note: ফোল্ডারে নিজের ছবি থাকলে নিচের লাইনটি ব্যবহার করুন:
+            // document.getElementById('outImage').src = "images/" + species.toLowerCase() + ".png";
+            
+            const imgEl = document.getElementById('outImage');
+            if(imgEl.src !== imageUrl) {
+                imgEl.src = imageUrl;
+            }
         }
 
-        function downloadNFT() {
-            const btn = document.querySelector('.gen-btn');
-            btn.innerText = "GENERATING...";
+        async function exportNFT() {
+            const btn = document.querySelector('.btn-download');
+            const target = document.getElementById('nft-render-target');
             
-            html2canvas(document.querySelector("#nft-card"), {
-                scale: 3, // High quality
+            btn.innerText = "CAPTURING HIGH-RES...";
+            btn.disabled = true;
+
+            // ছবির সোর্স নিশ্চিত করার জন্য একটু সময় দেয়া
+            await new Promise(r => setTimeout(r, 1000));
+
+            html2canvas(target, {
                 useCORS: true,
-                allowTaint: false
+                scale: 4, // 4K রেজোলিউশনের জন্য স্কেল বৃদ্ধি করা হলো
+                backgroundColor: null,
+                logging: false,
+                letterRendering: true
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'Sovereign-NFT.png';
-                link.href = canvas.toDataURL("image/png");
+                const plotName = document.getElementById('outPlot').innerText;
+                link.download = `SOVEREIGN-NFT-${plotName}.png`;
+                link.href = canvas.toDataURL("image/png", 1.0);
                 link.click();
-                btn.innerText = "Download NFT Image";
+                
+                btn.innerText = "Download Ultra-HD Asset";
+                btn.disabled = false;
             });
         }
+
+        // শুরুতে ডিফল্ট রান
+        window.onload = updateNFT;
     </script>
 </body>
 </html>
