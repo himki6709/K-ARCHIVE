@@ -3,114 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign 3D NFT Factory | CEO Edition</title>
+    <title>SOVEREIGN NFT MASTER FACTORY | V5</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --accent: #00FFCC; --bg: #050505; }
-        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        
-        /* Control Panel */
-        .panel { background: #111; padding: 25px; border-radius: 15px; border: 1px solid #333; width: 100%; max-width: 500px; margin-bottom: 30px; }
-        input { width: 100%; padding: 10px; margin: 8px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 5px; }
-        .btn { width: 100%; padding: 15px; background: var(--accent); color: #000; border: none; font-weight: 900; cursor: pointer; border-radius: 8px; text-transform: uppercase; margin-top: 10px; }
+        :root { --p-color: #00FFCC; --s-color: #0088FF; --bg: #050505; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px 10px; margin: 0; }
 
-        /* High-Quality NFT Card */
-        #nft-card {
-            width: 400px; height: 580px; background: #000; border-radius: 25px;
-            position: relative; overflow: hidden; border: 2px solid var(--accent);
-            box-shadow: 0 0 30px var(--accent);
+        /* Admin Input Panel */
+        .admin-panel { 
+            background: #111; padding: 30px; border-radius: 20px; border: 1px solid #333;
+            width: 100%; max-width: 650px; margin-bottom: 40px; box-shadow: 0 10px 40px rgba(0,0,0,1);
         }
-        .image-container { 
-            width: 100%; height: 400px; display: flex; align-items: center; justify-content: center; 
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-        }
-        #animalImg { 
-            width: 90%; height: 90%; object-fit: contain; 
-            filter: drop-shadow(0 0 15px var(--accent));
-        }
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full { grid-column: span 2; }
         
-        .info-section { 
-            position: absolute; bottom: 0; width: 100%; height: 180px;
-            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
-            padding: 20px; box-sizing: border-box; border-top: 1px solid rgba(255,255,255,0.1);
+        label { font-size: 11px; color: #777; text-transform: uppercase; font-weight: 800; margin-top: 10px; display: block; }
+        input { 
+            width: 100%; padding: 12px; margin-top: 5px; background: #000; border: 1px solid #222; 
+            color: #fff; border-radius: 10px; outline: none; box-sizing: border-box; transition: 0.3s;
         }
-        .tag { font-family: 'Orbitron'; font-size: 10px; color: var(--accent); letter-spacing: 2px; }
-        .name { font-family: 'Orbitron'; font-size: 24px; font-weight: 900; margin: 5px 0; }
-        .footer { display: flex; justify-content: space-between; margin-top: 20px; border-top: 1px solid #333; padding-top: 10px; }
-        .f-item span { display: block; font-size: 9px; color: #888; text-transform: uppercase; }
-        .f-item b { font-size: 16px; }
+        input:focus { border-color: var(--p-color); box-shadow: 0 0 15px var(--p-color); }
+
+        .dl-btn { 
+            width: 100%; padding: 20px; background: var(--p-color); color: #000; border: none; 
+            border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; 
+            margin-top: 25px; font-family: 'Orbitron'; font-size: 16px; transition: 0.3s;
+        }
+        .dl-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        /* NFT Artwork Container */
+        #nft-master-wrap {
+            width: 450px; height: 650px; background: #000; border-radius: 35px;
+            position: relative; overflow: hidden; border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        /* Dynamic Multi-Color Background & Glow */
+        .dynamic-bg {
+            position: absolute; width: 100%; height: 100%;
+            background: radial-gradient(circle at top right, var(--p-color) 0%, transparent 40%),
+                        radial-gradient(circle at bottom left, var(--s-color) 0%, transparent 40%);
+            opacity: 0.2; z-index: 1;
+        }
+
+        .animal-frame {
+            width: 100%; height: 450px; display: flex; align-items: center; justify-content: center;
+            position: relative; z-index: 5;
+        }
+        /* 3D Animal Rendering */
+        #outImage { 
+            width: 95%; height: 95%; object-fit: contain; 
+            filter: drop-shadow(0 0 30px var(--p-color));
+            transition: 0.5s ease-in-out;
+        }
+
+        /* Information Area (Glassmorphism) */
+        .info-glass {
+            position: absolute; bottom: 0; width: 100%; height: 220px;
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1); z-index: 10;
+            padding: 30px; box-sizing: border-box;
+        }
+
+        .section-name { font-family: 'Orbitron'; color: var(--p-color); font-size: 12px; letter-spacing: 3px; font-weight: 900; }
+        .customer-name { font-family: 'Orbitron'; font-size: 32px; font-weight: 900; margin: 10px 0; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        
+        .stats-row { display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
+        .box span { display: block; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 700; }
+        .box b { font-family: 'Orbitron'; font-size: 20px; color: #fff; }
+
+        .sov-ribbon { position: absolute; top: 40px; right: -50px; background: var(--p-color); color: #000; padding: 8px 60px; transform: rotate(45deg); font-weight: 900; font-size: 12px; z-index: 20; }
     </style>
 </head>
 <body>
 
-    <div class="panel">
-        <h2 style="text-align:center; color:var(--accent);">3D NFT GENERATOR</h2>
-        <input type="text" id="inAnimal" placeholder="Animal Name (e.g. Lion, Tiger, Crocodile)" oninput="update()">
-        <input type="text" id="inOwner" placeholder="Customer Name" oninput="update()">
-        <input type="text" id="inSection" placeholder="Section Name" oninput="update()">
-        <input type="text" id="inPlot" placeholder="Plot ID (e.g. #05)" oninput="update()">
-        <input type="text" id="inPrice" placeholder="Price (e.g. $999)" oninput="update()">
-        <input type="text" id="inColor" placeholder="Theme Color (e.g. Gold, Cyan, #FF0000)" oninput="update()">
-        <button class="btn" onclick="download()">Download 4K NFT Image</button>
+    <div class="admin-panel">
+        <h1 style="color:var(--p-color); text-align:center; font-family:'Orbitron';">ARK NFT FACTORY V5</h1>
+        <div class="input-grid">
+            <div class="full">
+                <label>3D Animal Name (Auto-Render)</label>
+                <input type="text" id="inSpecies" placeholder="e.g. Lion, Shark, Eagle" oninput="liveUpdate()">
+            </div>
+            <div>
+                <label>Customer Name</label>
+                <input type="text" id="inOwner" placeholder="e.g. S.F.D" oninput="liveUpdate()">
+            </div>
+            <div>
+                <label>Section Name (Unlimited)</label>
+                <input type="text" id="inSection" placeholder="e.g. ROYAL OASIS" oninput="liveUpdate()">
+            </div>
+            <div>
+                <label>Plot Number</label>
+                <input type="text" id="inPlot" placeholder="e.g. #01" oninput="liveUpdate()">
+            </div>
+            <div>
+                <label>Market Price ($)</label>
+                <input type="text" id="inPrice" placeholder="e.g. 9,999" oninput="liveUpdate()">
+            </div>
+            <div>
+                <label>Primary Color (Glow)</label>
+                <input type="text" id="inColor1" placeholder="e.g. Gold, Cyan, #00FFCC" oninput="liveUpdate()">
+            </div>
+            <div>
+                <label>Secondary Color (Theme)</label>
+                <input type="text" id="inColor2" placeholder="e.g. Purple, Blue" oninput="liveUpdate()">
+            </div>
+        </div>
+        <button class="dl-btn" onclick="downloadHD()">Download 4K Sovereign Asset</button>
     </div>
 
-    <div id="nft-card">
-        <div class="image-container">
-            <img id="animalImg" src="https://source.unsplash.com/featured/?3d,render,animal" crossorigin="anonymous">
+    <div id="nft-master-wrap">
+        <div class="sov-ribbon">SOVEREIGN</div>
+        <div class="dynamic-bg" id="bgGlow"></div>
+        
+        <div class="animal-frame">
+            <img id="outImage" src="https://source.unsplash.com/featured/?3d,render,animal" crossorigin="anonymous">
         </div>
-        <div class="info-section">
-            <div class="tag" id="outSection">ROYAL OASIS</div>
-            <div class="name" id="outOwner">CUSTOMER NAME</div>
-            <div class="footer">
-                <div class="f-item"><span>Plot Identifier</span><b id="outPlot">#01</b></div>
-                <div class="f-item" style="text-align:right;"><span>Market Value</span><b id="outPrice">$0.00</b></div>
+
+        <div class="info-glass">
+            <div class="section-name" id="outSection">ROYAL OASIS</div>
+            <h2 class="customer-name" id="outOwner">CUSTOMER NAME</h2>
+
+            <div class="stats-row">
+                <div class="box">
+                    <span>Plot Identifier</span>
+                    <b id="outPlot">#01</b>
+                </div>
+                <div class="box" style="text-align: right;">
+                    <span>Current Price</span>
+                    <b id="outPrice">$0.00</b>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        function update() {
-            const animal = document.getElementById('inAnimal').value || "Animal";
-            const owner = document.getElementById('inOwner').value || "CUSTOMER NAME";
-            const section = document.getElementById('inSection').value || "ROYAL OASIS";
-            const plot = document.getElementById('inPlot').value || "#01";
+        function liveUpdate() {
+            // Data Inputs
+            const species = document.getElementById('inSpecies').value || "Animal";
+            const owner = document.getElementById('inOwner').value || "OWNER NAME";
+            const section = document.getElementById('inSection').value || "SECTION NAME";
+            const plot = document.getElementById('inPlot').value || "#00";
             const price = document.getElementById('inPrice').value || "0.00";
-            const color = document.getElementById('inColor').value || "#00FFCC";
+            const c1 = document.getElementById('inColor1').value || "#00FFCC";
+            const c2 = document.getElementById('inColor2').value || "#0088FF";
 
+            // Update Theme Colors
+            document.documentElement.style.setProperty('--p-color', c1);
+            document.documentElement.style.setProperty('--s-color', c2);
+            
             // Update Text
             document.getElementById('outOwner').innerText = owner.toUpperCase();
             document.getElementById('outSection').innerText = section.toUpperCase();
             document.getElementById('outPlot').innerText = plot;
             document.getElementById('outPrice').innerText = "$" + price;
 
-            // Update Theme Color
-            document.documentElement.style.setProperty('--accent', color);
-
-            // Update 3D Animal Image (Auto-search)
-            const img = document.getElementById('animalImg');
-            // Using a high-quality 3D render API based on keywords
-            const newUrl = `https://source.unsplash.com/featured/?3d,render,${animal.replace(/\s+/g, ',')}`;
-            if(img.src !== newUrl) { img.src = newUrl; }
+            // Update 3D Animal Image (Smart Search)
+            const img = document.getElementById('outImage');
+            const newUrl = `https://source.unsplash.com/featured/?3d,render,fullbody,${species.replace(/\s+/g, ',')}`;
+            
+            // প্রিভেন্টিং ফ্লিকারিং
+            if(!img.src.includes(species.toLowerCase())) {
+                img.src = newUrl;
+            }
         }
 
-        function download() {
-            const btn = document.querySelector('.btn');
-            btn.innerText = "GENERATING HD IMAGE...";
+        async function downloadHD() {
+            const btn = document.querySelector('.dl-btn');
+            const target = document.getElementById('nft-master-wrap');
             
-            html2canvas(document.querySelector("#nft-card"), {
-                scale: 3, // For 4K/Ultra-HD Quality
+            btn.innerText = "CAPTURING ULTRA-HD...";
+            btn.disabled = true;
+
+            // ইমেজের হাই-রেজোলিউশন লোড হওয়ার জন্য ১ সেকেন্ড ওয়েট করা
+            await new Promise(r => setTimeout(r, 1200));
+
+            html2canvas(target, {
                 useCORS: true,
-                backgroundColor: null
+                scale: 4, // 4K রেজোলিউশন
+                backgroundColor: null,
+                logging: false
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `SOVEREIGN-NFT-${document.getElementById('outPlot').innerText}.png`;
-                link.href = canvas.toDataURL("image/png");
+                const name = document.getElementById('outOwner').innerText;
+                link.download = `SOVEREIGN-V5-${name}.png`;
+                link.href = canvas.toDataURL("image/png", 1.0);
                 link.click();
-                btn.innerText = "Download 4K NFT Image";
+                
+                btn.innerText = "Download 4K Sovereign Asset";
+                btn.disabled = false;
             });
         }
-        window.onload = update;
+
+        window.onload = liveUpdate;
     </script>
 </body>
 </html>
