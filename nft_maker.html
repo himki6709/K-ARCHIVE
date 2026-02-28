@@ -156,12 +156,8 @@
             document.getElementById('outPrice').innerText = "$" + price;
 
             // ৪. ডাইনামিক ইমেজ আপডেট (ফুল বডি পিএনজি)
-            // আমি এখানে একটি হাই-কোয়ালিটি সোর্স লিঙ্ক দিচ্ছি যা আপনার টাইপ করা নাম অনুযায়ী ছবি খুজবে
             const cleanSpecies = species.replace(/\s+/g, '-').toLowerCase();
             const imageUrl = `https://source.unsplash.com/featured/?${cleanSpecies},animal,full-body`;
-            
-            // Note: ফোল্ডারে নিজের ছবি থাকলে নিচের লাইনটি ব্যবহার করুন:
-            // document.getElementById('outImage').src = "images/" + species.toLowerCase() + ".png";
             
             const imgEl = document.getElementById('outImage');
             if(imgEl.src !== imageUrl) {
@@ -176,12 +172,11 @@
             btn.innerText = "CAPTURING HIGH-RES...";
             btn.disabled = true;
 
-            // ছবির সোর্স নিশ্চিত করার জন্য একটু সময় দেয়া
             await new Promise(r => setTimeout(r, 1000));
 
             html2canvas(target, {
                 useCORS: true,
-                scale: 4, // 4K রেজোলিউশনের জন্য স্কেল বৃদ্ধি করা হলো
+                scale: 4, 
                 backgroundColor: null,
                 logging: false,
                 letterRendering: true
@@ -197,7 +192,6 @@
             });
         }
 
-        // শুরুতে ডিফল্ট রান
         window.onload = updateNFT;
     </script>
 </body>
