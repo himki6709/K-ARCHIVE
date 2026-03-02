@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE ETERNAL ARK | KAWSAR6700</title>
+    <title>THE ETERNAL ARK | KAWSAR</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
@@ -27,7 +27,6 @@
 
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.5; }
 
-        /* Custom Cursor Ring */
         #cursor-ring {
             position: fixed; width: 22px; height: 22px; border: 1.5px solid var(--gold); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
@@ -42,78 +41,66 @@
         }
         .logo { font-family: 'Cinzel'; font-size: 26px; letter-spacing: 12px; color: var(--gold); text-decoration: none; font-weight: 900; }
         
-        /* Unified Glow Effect for Buttons and Icons */
-        .registry-block-btn, .btn-connect, .social-icon { 
+        .registry-block-btn, .btn-affiliate, .social-icon { 
             font-size: 10px; color: var(--gold); letter-spacing: 2px; cursor: pointer; 
             text-transform: uppercase; font-family: 'Cinzel'; transition: 0.4s; 
             background: rgba(212, 175, 55, 0.03); border: 1px solid var(--gold);
+            text-decoration: none; display: flex; align-items: center; justify-content: center;
         }
 
         .registry-block-btn { padding: 10px 20px; margin-top: 12px; display: inline-block; }
-        .btn-connect { padding: 10px 20px; }
+        .btn-affiliate { padding: 12px 25px; font-weight: bold; }
 
-        /* Hover Effect: Same as Gateway Button */
-        .registry-block-btn:hover, .btn-connect:hover, .social-icon:hover { 
+        .registry-block-btn:hover, .btn-affiliate:hover, .social-icon:hover { 
             background: var(--gold); color: #000; box-shadow: 0 0 25px var(--gold);
         }
 
-        .wallet-nav { display: flex; gap: 15px; }
-
-        .main-container { padding: 220px 6% 80px; max-width: 1440px; margin: 0 auto; text-align: center; }
+        .main-container { padding: 180px 6% 80px; max-width: 1440px; margin: 0 auto; text-align: center; }
         .hero-title { font-family: 'Cinzel'; font-size: 15px; letter-spacing: 12px; color: var(--gold); margin-bottom: 70px; }
 
         .gateways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
         .gate-card {
-            height: 420px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border);
+            height: 450px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border);
             padding: 40px; text-align: left; transition: 0.5s; text-decoration: none; color: #fff;
             display: flex; flex-direction: column; justify-content: flex-end;
         }
-        .gate-card:hover { transform: translateY(-12px); border-color: var(--gold); }
+        .gate-card:hover { transform: translateY(-12px); border-color: var(--gold); background: rgba(212, 175, 55, 0.02); }
         .gate-card h3 { font-family: 'Cinzel'; font-size: 22px; margin-bottom: 15px; }
-        .gate-card p { font-size: 11px; color: #aaa; line-height: 1.8; margin-bottom: 20px; }
+        .gate-card p { font-size: 11px; color: #aaa; line-height: 1.8; margin-bottom: 15px; }
+        .promo-text { font-size: 10px; color: var(--gold); font-style: italic; margin-bottom: 20px; border-left: 2px solid var(--gold); padding-left: 10px; }
         
         .tag { font-size: 8px; padding: 4px 8px; border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold); text-transform: uppercase; margin-right: 5px; }
 
-        .footer-ark {
-            padding: 80px 6% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 80px;
-            font-size: 11px; color: #666; line-height: 2.2;
-        }
-        .footer-ark strong { color: var(--gold); }
-
-        /* Payment Drawer */
+        /* Drawer Style */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 500px; height: 100vh;
             background: #080808; border-left: 1px solid var(--gold); z-index: 9999;
             padding: 50px 30px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto;
         }
         #drawer.active { right: 0; }
-        
         .step-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
         .address-item { margin-bottom: 25px; }
         .address-name { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: bold; margin-bottom: 8px; display: block; }
-        .verified-user { color: #25D366; font-size: 11px; font-weight: bold; margin-left: 5px; }
-
         .full-address { 
             background: #000; padding: 15px; border: 1px dashed var(--gold); font-size: 11px; 
             display: flex; justify-content: space-between; align-items: center; 
             cursor: pointer; word-break: break-all; font-family: monospace; color: #ccc;
         }
 
-        .action-btn { 
-            width: 100%; padding: 20px; background: var(--gold); color: #000; 
-            border: none; font-family: 'Cinzel'; font-weight: 900; cursor: pointer; margin-top: 15px;
-        }
+        .info-list { margin-top: 20px; font-size: 11px; color: #888; text-align: left; line-height: 2; }
+        .info-list li { list-style: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 5px 0; }
 
         .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 5000; }
-        
-        /* Updated Icon Sizes */
-        .social-icon { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 22px; }
+        .social-icon { width: 55px; height: 55px; border-radius: 50%; font-size: 22px; }
+
+        footer { padding: 80px 6% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 80px; font-size: 11px; color: #666; }
+        footer strong { color: var(--gold); }
 
         @media (max-width: 768px) {
-            header { flex-direction: column; gap: 15px; }
+            header { flex-direction: column; gap: 15px; padding: 15px; }
             #cursor-ring { display: none; }
             body { cursor: auto; }
-            #drawer { max-width: 100%; }
+            .main-container { padding-top: 250px; }
         }
     </style>
 </head>
@@ -129,46 +116,43 @@
                 <i class="fa-solid fa-crown"></i> Official Payment Gateway
             </div>
         </div>
-        <div class="wallet-nav">
-            <button class="btn-connect" onclick="connectMetamask()">METAMASK</button>
-            <button class="btn-connect" onclick="connectPhantom()">PHANTOM</button>
+        <div class="nav-btns">
+            <a href="affiliate_reg.html" class="btn-affiliate">AFFILIATE PROGRAM</a>
         </div>
     </header>
 
     <main class="main-container">
-        <h2 class="hero-title">The Seven Realms of Eternity</h2>
+        <h2 class="hero-title">The Three Realms of Ark</h2>
+        
         <div class="gateways-grid">
-            <a href="royal_oasis.html" class="gate-card" style="border-top: 4px solid var(--royal-emerald);">
-                <h3 style="color:var(--royal-emerald)">ROYAL OASIS</h3>
-                <p>Top-tier legacy plots for Sovereign Dynasties. Includes Exclusive NFT & Golden Title Deed.</p>
-                <div><span class="tag">NFT</span><span class="tag">Deed</span></div>
-                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--royal-emerald);">$9,999</div>
-            </a>
-            <a href="tycoon_plaza.html" class="gate-card" style="border-top: 4px solid var(--tycoon-silver);">
-                <h3 style="color:var(--tycoon-silver)">TYCOON PLAZA</h3>
-                <p>Global corporate headquarters. Includes Business NFT & Heritage Documents.</p>
-                <div style="font-family:'Cinzel'; color:var(--tycoon-silver);">$4,999</div>
-            </a>
-            <a href="creator_studio.html" class="gate-card" style="border-top: 4px solid var(--creator-red);">
+            <div class="gate-card" style="border-top: 4px solid var(--tycoon-silver);">
+                <h3 style="color:var(--tycoon-silver)">UNIVERSAL HORIZON</h3>
+                <p>আমাদের গ্লোবাল ম্যাপের অংশ হোন। যেকোনো সাধারণ ইউজার বা ব্র্যান্ডের জন্য এটি একটি চিরস্থায়ী ডিজিটাল উপস্থিতি।</p>
+                <div class="promo-text">আপনার ব্র্যান্ডকে হাজার হাজার মানুষের কাছে পৌঁছে দিতে আজই একটি প্লট বুক করুন।</div>
+                <div><span class="tag">UNLIMITED PLOTS</span><span class="tag">PUBLIC ACCESS</span></div>
+                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--tycoon-silver); font-size: 24px;">$1 / PLOT</div>
+                <a href="order.html" class="registry-block-btn" style="margin-top:20px; text-align:center;">RESERVE NOW</a>
+            </div>
+
+            <div class="gate-card" style="border-top: 4px solid var(--creator-red);">
                 <h3 style="color:var(--creator-red)">GAMER STUDIO</h3>
-                <p>Reserved for the top 100 creators. Custom Immortal NFTs included.</p>
-                <div style="font-family:'Cinzel'; color:var(--creator-red);">$999</div>
-            </a>
-            <a href="crown_summit.html" class="gate-card" style="border-top: 4px solid var(--gold);">
-                <h3 style="color:var(--gold)">CROWN SUMMIT</h3>
-                <p>The pioneer district for the first wave of Ark visionaries.</p>
-                <div style="font-family:'Cinzel'; color:var(--gold);">$599</div>
-            </a>
-            <a href="elite_legacy.html" class="gate-card"><h3>ELITE LEGACY</h3><p>Heritage units for established leaders.</p><div style="font-family:'Cinzel';">$249</div></a>
-            <a href="heritage_vault.html" class="gate-card"><h3>HERITAGE VAULT</h3><p>Family history and memory preservation.</p><div style="font-family:'Cinzel';">$129</div></a>
-            <a href="global_horizon.html" class="gate-card"><h3>GLOBAL HORIZON</h3><p>Universal digital presence for all.</p><div style="font-family:'Cinzel';">$79</div></a>
+                <p>গেমার এবং কন্টেন্ট ক্রিয়েটরদের জন্য বিশেষ জোন। এখানে আপনার গেমিং প্রোফাইল বা স্টুডিও হাইলাইট করুন।</p>
+                <div class="promo-text">সীমিত ১০,০০০ প্লট! দ্রুত বর্ধনশীল গেমিং কমিউনিটির কেন্দ্রবিন্দুতে আপনার স্থান নিশ্চিত করুন।</div>
+                <div><span class="tag">10,000 BLOCKS</span><span class="tag">CREATOR ZONE</span></div>
+                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--creator-red); font-size: 24px;">$29 / PLOT</div>
+                <a href="order.html" class="registry-block-btn" style="margin-top:20px; text-align:center;">JOIN STUDIO</a>
+            </div>
+
+            <div class="gate-card" style="border-top: 4px solid var(--gold);">
+                <h3 style="color:var(--gold)">ROYAL OASIS</h3>
+                <p>সবচেয়ে প্রিমিয়াম এবং লাক্সারি জোন। বড় ইনভেস্টর এবং এলিট ব্র্যান্ডগুলোর জন্য সংরক্ষিত বিশেষ এলাকা।</p>
+                <div class="promo-text">মাত্র ১,০০০টি বিশেষ প্লট। আভিজাত্যের লড়াইয়ে নিজেকে সবার উপরে স্থান দিন।</div>
+                <div><span class="tag">1,000 PLOTS</span><span class="tag">ELITE ONLY</span></div>
+                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--gold); font-size: 24px;">$99 / PLOT</div>
+                <a href="order.html" class="registry-block-btn" style="margin-top:20px; text-align:center;">CLAIM ROYALTY</a>
+            </div>
         </div>
     </main>
-
-    <footer class="footer-ark">
-        <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>. All rights reserved.</p>
-        <p>I am not responsible for the content of external sites. Images featured on ARK are © of their respective owners.</p>
-    </footer>
 
     <div class="social-bar">
         <a href="https://x.com/kawsar6700" target="_blank" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
@@ -182,41 +166,47 @@
         </div>
 
         <div class="step-box">
-            <h4 style="font-size:11px; color:var(--gold); margin-bottom:20px;">VERIFIED ADDRESSES</h4>
-            
             <div class="address-item">
-                <span class="address-name">PHANTOM / SOLANA</span>
-                <div class="full-address" onclick="copy('8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7')">
-                    <span>8jcsctesLuABv3iqjREsJcnSZ1jrVQuEKeLkd1fCixd7</span> <i class="fa-regular fa-copy"></i>
+                <span class="address-name">BKASH (PERSONAL) <span class="verified-user">[VERIFIED]</span></span>
+                <div class="full-address" onclick="copy('+8801756206213')">
+                    <span>+8801756206213</span> <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
 
             <div class="address-item">
-                <span class="address-name">METAMASK (ERC20 / ETH)</span>
-                <div class="full-address" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-                    <span>0x443792A4884e8e855f954ccEF910778Aff1eb78E</span> <i class="fa-regular fa-copy"></i>
+                <span class="address-name">ROCKET (PERSONAL)</span>
+                <div class="full-address" onclick="copy('+8801756206213')">
+                    <span>+8801756206213</span> <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
 
             <div class="address-item">
-                <span class="address-name">USDT (TRC20)</span>
-                <div class="full-address" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-                    <span>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</span> <i class="fa-regular fa-copy"></i>
-                </div>
-            </div>
-
-            <div class="address-item">
-                <span class="address-name">BINANCE PAY UID <span class="verified-user">[KAWSAR6700]</span></span>
+                <span class="address-name">BINANCE PAY UID</span>
                 <div class="full-address" onclick="copy('912221034')">
                     <span>912221034</span> <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
         </div>
 
+        <div style="padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border);">
+            <h4 style="font-size:11px; color:var(--gold); margin-bottom:10px; font-family:'Cinzel';">REQUIRED INFO FOR SUPPORT:</h4>
+            <ul class="info-list">
+                <li>• Target Plot Name / Business Name</li>
+                <li>• High-Resolution Image/Logo Link</li>
+                <li>• External Website or Social Link</li>
+                <li>• Transaction Screenshot / TxID</li>
+            </ul>
+        </div>
+
         <a href="https://wa.me/8801576940717" target="_blank" style="text-decoration:none;">
-            <button class="action-btn" style="background:#25D366; color:#fff;">VERIFY ON WHATSAPP</button>
+            <button class="action-btn" style="background:#25D366; color:#fff; border:none; width:100%; padding:20px; font-family:'Cinzel'; font-weight:900; cursor:pointer; margin-top:20px;">VERIFY ON WHATSAPP</button>
         </a>
     </div>
+
+    <footer>
+        <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>. All rights reserved.</p>
+        <p>I am not responsible for the content of external sites. Images featured on ARK are © of their respective owners.</p>
+    </footer>
 
     <script>
         const ring = document.getElementById('cursor-ring');
@@ -229,33 +219,16 @@
         function closeDrawer() { document.getElementById('drawer').classList.remove('active'); }
         function copy(text) { navigator.clipboard.writeText(text); alert("Address Copied!"); }
 
-        async function connectMetamask() {
-            if (window.ethereum) {
-                try {
-                    await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    alert("MetaMask Connected");
-                } catch (err) { alert("Rejected"); }
-            } else { window.open('https://metamask.io/download/', '_blank'); }
-        }
-
-        async function connectPhantom() {
-            if (window.solana && window.solana.isPhantom) {
-                try {
-                    await window.solana.connect();
-                    alert("Phantom Connected");
-                } catch (err) { alert("Rejected"); }
-            } else { window.open('https://phantom.app/download', '_blank'); }
-        }
-
+        // Background Animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
-        let stars = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
         class Star {
             constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.size = Math.random()*1.2; }
             draw() { ctx.fillStyle = "rgba(212,175,55,0.3)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); }
         }
+        let stars = [];
         for(let i=0; i<100; i++) stars.push(new Star());
         function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
         animate();
