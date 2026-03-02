@@ -60,14 +60,14 @@
 
         .gateways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
         .gate-card {
-            height: 450px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border);
+            height: 460px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border);
             padding: 40px; text-align: left; transition: 0.5s; text-decoration: none; color: #fff;
             display: flex; flex-direction: column; justify-content: flex-end;
         }
-        .gate-card:hover { transform: translateY(-12px); border-color: var(--gold); background: rgba(212, 175, 55, 0.02); }
+        .gate-card:hover { transform: translateY(-12px); }
         .gate-card h3 { font-family: 'Cinzel'; font-size: 22px; margin-bottom: 15px; }
         .gate-card p { font-size: 11px; color: #aaa; line-height: 1.8; margin-bottom: 15px; }
-        .promo-text { font-size: 10px; color: var(--gold); font-style: italic; margin-bottom: 20px; border-left: 2px solid var(--gold); padding-left: 10px; }
+        .promo-text { font-size: 10px; color: inherit; opacity: 0.8; font-style: italic; margin-bottom: 20px; border-left: 2px solid; padding-left: 10px; }
         
         .tag { font-size: 8px; padding: 4px 8px; border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold); text-transform: uppercase; margin-right: 5px; }
 
@@ -82,7 +82,7 @@
         .address-item { margin-bottom: 25px; }
         .address-name { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: bold; margin-bottom: 8px; display: block; }
         .full-address { 
-            background: #000; padding: 15px; border: 1px dashed var(--gold); font-size: 11px; 
+            background: #000; padding: 15px; border: 1px dashed var(--gold); font-size: 10px; 
             display: flex; justify-content: space-between; align-items: center; 
             cursor: pointer; word-break: break-all; font-family: monospace; color: #ccc;
         }
@@ -101,6 +101,7 @@
             #cursor-ring { display: none; }
             body { cursor: auto; }
             .main-container { padding-top: 250px; }
+            #drawer { max-width: 100%; }
         }
     </style>
 </head>
@@ -127,26 +128,26 @@
         <div class="gateways-grid">
             <div class="gate-card" style="border-top: 4px solid var(--tycoon-silver);">
                 <h3 style="color:var(--tycoon-silver)">UNIVERSAL HORIZON</h3>
-                <p>আমাদের গ্লোবাল ম্যাপের অংশ হোন। যেকোনো সাধারণ ইউজার বা ব্র্যান্ডের জন্য এটি একটি চিরস্থায়ী ডিজিটাল উপস্থিতি।</p>
-                <div class="promo-text">আপনার ব্র্যান্ডকে হাজার হাজার মানুষের কাছে পৌঁছে দিতে আজই একটি প্লট বুক করুন।</div>
+                <p>Be part of our global map. A permanent digital presence for any user or brand looking for worldwide visibility.</p>
+                <div class="promo-text" style="color:var(--tycoon-silver)">Boost your brand reach to thousands. Reserve your spot on the eternal grid today!</div>
                 <div><span class="tag">UNLIMITED PLOTS</span><span class="tag">PUBLIC ACCESS</span></div>
                 <div style="font-family:'Cinzel'; margin-top:10px; color:var(--tycoon-silver); font-size: 24px;">$1 / PLOT</div>
-                <a href="order.html" class="registry-block-btn" style="margin-top:20px; text-align:center;">RESERVE NOW</a>
+                <a href="order.html" class="registry-block-btn" style="margin-top:20px; text-align:center; border-color:var(--tycoon-silver); color:var(--tycoon-silver);">RESERVE NOW</a>
             </div>
 
             <div class="gate-card" style="border-top: 4px solid var(--creator-red);">
                 <h3 style="color:var(--creator-red)">GAMER STUDIO</h3>
-                <p>গেমার এবং কন্টেন্ট ক্রিয়েটরদের জন্য বিশেষ জোন। এখানে আপনার গেমিং প্রোফাইল বা স্টুডিও হাইলাইট করুন।</p>
-                <div class="promo-text">সীমিত ১০,০০০ প্লট! দ্রুত বর্ধনশীল গেমিং কমিউনিটির কেন্দ্রবিন্দুতে আপনার স্থান নিশ্চিত করুন।</div>
+                <p>Exclusive zone for gamers and content creators. Highlight your gaming profile or studio right here in the gamer district.</p>
+                <div class="promo-text" style="color:var(--creator-red)">Limited 10,000 blocks! Secure your place at the heart of the fastest-growing community.</div>
                 <div><span class="tag">10,000 BLOCKS</span><span class="tag">CREATOR ZONE</span></div>
                 <div style="font-family:'Cinzel'; margin-top:10px; color:var(--creator-red); font-size: 24px;">$29 / PLOT</div>
-                <a href="order.html" class="registry-block-btn" style="margin-top:20px; text-align:center;">JOIN STUDIO</a>
+                <a href="order.html" class="registry-block-btn" style="margin-top:20px; text-align:center; border-color:var(--creator-red); color:var(--creator-red);">JOIN STUDIO</a>
             </div>
 
             <div class="gate-card" style="border-top: 4px solid var(--gold);">
                 <h3 style="color:var(--gold)">ROYAL OASIS</h3>
-                <p>সবচেয়ে প্রিমিয়াম এবং লাক্সারি জোন। বড় ইনভেস্টর এবং এলিট ব্র্যান্ডগুলোর জন্য সংরক্ষিত বিশেষ এলাকা।</p>
-                <div class="promo-text">মাত্র ১,০০০টি বিশেষ প্লট। আভিজাত্যের লড়াইয়ে নিজেকে সবার উপরে স্থান দিন।</div>
+                <p>Our most premium and luxury zone. Reserved for high-tier investors and elite global brands looking for dominance.</p>
+                <div class="promo-text" style="color:var(--gold)">Only 1,000 elite plots. Claim your supremacy and stand above the rest of the digital world.</div>
                 <div><span class="tag">1,000 PLOTS</span><span class="tag">ELITE ONLY</span></div>
                 <div style="font-family:'Cinzel'; margin-top:10px; color:var(--gold); font-size: 24px;">$99 / PLOT</div>
                 <a href="order.html" class="registry-block-btn" style="margin-top:20px; text-align:center;">CLAIM ROYALTY</a>
@@ -167,7 +168,7 @@
 
         <div class="step-box">
             <div class="address-item">
-                <span class="address-name">BKASH (PERSONAL) <span class="verified-user">[VERIFIED]</span></span>
+                <span class="address-name">BKASH (PERSONAL)</span>
                 <div class="full-address" onclick="copy('+8801756206213')">
                     <span>+8801756206213</span> <i class="fa-regular fa-copy"></i>
                 </div>
@@ -181,15 +182,22 @@
             </div>
 
             <div class="address-item">
-                <span class="address-name">BINANCE PAY UID</span>
+                <span class="address-name">BINANCE PAY UID <span style="color:#F3BA2F; margin-left:5px;">[KAWSAR6700]</span></span>
                 <div class="full-address" onclick="copy('912221034')">
                     <span>912221034</span> <i class="fa-regular fa-copy"></i>
+                </div>
+            </div>
+
+            <div class="address-item">
+                <span class="address-name">USDT (TRC20 ADDRESS)</span>
+                <div class="full-address" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
+                    <span style="font-size: 9px;">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</span> <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
         </div>
 
         <div style="padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border);">
-            <h4 style="font-size:11px; color:var(--gold); margin-bottom:10px; font-family:'Cinzel';">REQUIRED INFO FOR SUPPORT:</h4>
+            <h4 style="font-size:11px; color:var(--gold); margin-bottom:10px; font-family:'Cinzel';">REQUIRED SUBMISSION INFO:</h4>
             <ul class="info-list">
                 <li>• Target Plot Name / Business Name</li>
                 <li>• High-Resolution Image/Logo Link</li>
@@ -199,16 +207,34 @@
         </div>
 
         <a href="https://wa.me/8801576940717" target="_blank" style="text-decoration:none;">
-            <button class="action-btn" style="background:#25D366; color:#fff; border:none; width:100%; padding:20px; font-family:'Cinzel'; font-weight:900; cursor:pointer; margin-top:20px;">VERIFY ON WHATSAPP</button>
+            <button style="width:100%; padding:20px; background:#25D366; color:#fff; border:none; font-family:'Cinzel'; font-weight:900; cursor:pointer; margin-top:20px;">VERIFY ON WHATSAPP</button>
         </a>
     </div>
 
     <footer>
         <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>. All rights reserved.</p>
-        <p>I am not responsible for the content of external sites. Images featured on ARK are © of their respective owners.</p>
+        <p>Disclaimer: We are not responsible for the content of external sites. All featured images are © of their respective owners.</p>
     </footer>
 
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics-compat.js"></script>
+
     <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded",
+            measurementId: "G-6KEYY60YGG"
+        };
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        // UI Interactions
         const ring = document.getElementById('cursor-ring');
         document.addEventListener('mousemove', (e) => {
             ring.style.left = e.clientX + 'px';
@@ -219,7 +245,7 @@
         function closeDrawer() { document.getElementById('drawer').classList.remove('active'); }
         function copy(text) { navigator.clipboard.writeText(text); alert("Address Copied!"); }
 
-        // Background Animation
+        // Background Star Animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
