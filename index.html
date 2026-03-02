@@ -12,7 +12,7 @@
         :root { 
             --bg: #030303; 
             --gold: #D4AF37; 
-            --gold-glow: rgba(212, 175, 55, 0.4);
+            --gold-glow: rgba(212, 175, 55, 0.6);
             --royal-emerald: #00ffcc;
             --tycoon-silver: #E0E0E0;
             --creator-red: #ff0033;
@@ -41,35 +41,57 @@
         }
         .logo { font-family: 'Cinzel'; font-size: 26px; letter-spacing: 12px; color: var(--gold); text-decoration: none; font-weight: 900; }
         
-        .registry-block-btn, .btn-affiliate, .social-icon { 
-            font-size: 10px; color: var(--gold); letter-spacing: 2px; cursor: pointer; 
+        /* Basic Buttons */
+        .btn-base { 
+            font-size: 10px; letter-spacing: 2px; cursor: pointer; 
             text-transform: uppercase; font-family: 'Cinzel'; transition: 0.4s; 
-            background: rgba(212, 175, 55, 0.03); border: 1px solid var(--gold);
             text-decoration: none; display: flex; align-items: center; justify-content: center;
+            border-radius: 2px;
         }
 
-        .registry-block-btn { padding: 10px 20px; margin-top: 12px; display: inline-block; }
-        .btn-affiliate { padding: 12px 25px; font-weight: bold; }
+        .registry-block-btn { padding: 10px 20px; margin-top: 12px; color: var(--gold); border: 1px solid var(--gold); }
+        .registry-block-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold-glow); }
 
-        .registry-block-btn:hover, .btn-affiliate:hover, .social-icon:hover { 
-            background: var(--gold); color: #000; box-shadow: 0 0 25px var(--gold);
-        }
+        .btn-affiliate { padding: 12px 25px; font-weight: bold; border: 1px solid var(--gold); color: var(--gold); }
+        .btn-affiliate:hover { background: var(--gold); color: #000; }
 
+        /* Main Container */
         .main-container { padding: 180px 6% 80px; max-width: 1440px; margin: 0 auto; text-align: center; }
         .hero-title { font-family: 'Cinzel'; font-size: 15px; letter-spacing: 12px; color: var(--gold); margin-bottom: 70px; }
 
+        /* Grid & Cards */
         .gateways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
         .gate-card {
-            height: 460px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border);
+            height: 480px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border);
             padding: 40px; text-align: left; transition: 0.5s; text-decoration: none; color: #fff;
-            display: flex; flex-direction: column; justify-content: flex-end;
+            display: flex; flex-direction: column; justify-content: flex-end; position: relative;
         }
-        .gate-card:hover { transform: translateY(-12px); }
+        .gate-card:hover { transform: translateY(-12px); border-color: rgba(255,255,255,0.3); }
+
         .gate-card h3 { font-family: 'Cinzel'; font-size: 22px; margin-bottom: 15px; }
         .gate-card p { font-size: 11px; color: #aaa; line-height: 1.8; margin-bottom: 15px; }
-        .promo-text { font-size: 10px; color: inherit; opacity: 0.8; font-style: italic; margin-bottom: 20px; border-left: 2px solid; padding-left: 10px; }
+        .promo-text { font-size: 10px; opacity: 0.8; font-style: italic; margin-bottom: 20px; border-left: 2px solid; padding-left: 10px; }
         
-        .tag { font-size: 8px; padding: 4px 8px; border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold); text-transform: uppercase; margin-right: 5px; }
+        .tag { font-size: 8px; padding: 4px 8px; border: 1px solid rgba(255,255,255,0.1); color: #888; text-transform: uppercase; margin-right: 5px; }
+
+        /* Section Specific Action Buttons */
+        .action-btn { 
+            width: 100%; padding: 18px; font-family: 'Cinzel'; font-weight: 900; 
+            text-align: center; text-decoration: none; font-size: 13px; margin-top: 15px;
+            transition: 0.4s; letter-spacing: 2px;
+        }
+
+        /* 1. Silver Theme */
+        .btn-silver { background: transparent; border: 1px solid var(--tycoon-silver); color: var(--tycoon-silver); }
+        .btn-silver:hover { background: var(--tycoon-silver); color: #000; box-shadow: 0 0 25px rgba(224, 224, 224, 0.4); }
+
+        /* 2. Red Theme */
+        .btn-red { background: transparent; border: 1px solid var(--creator-red); color: var(--creator-red); }
+        .btn-red:hover { background: var(--creator-red); color: #fff; box-shadow: 0 0 25px rgba(255, 0, 51, 0.4); }
+
+        /* 3. Gold Theme */
+        .btn-gold-action { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+        .btn-gold-action:hover { background: var(--gold); color: #000; box-shadow: 0 0 25px var(--gold-glow); }
 
         /* Drawer Style */
         #drawer {
@@ -78,23 +100,19 @@
             padding: 50px 30px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto;
         }
         #drawer.active { right: 0; }
-        .step-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
         .address-item { margin-bottom: 25px; }
         .address-name { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: bold; margin-bottom: 8px; display: block; }
         .full-address { 
             background: #000; padding: 15px; border: 1px dashed var(--gold); font-size: 10px; 
             display: flex; justify-content: space-between; align-items: center; 
-            cursor: pointer; word-break: break-all; font-family: monospace; color: #ccc;
+            cursor: pointer; font-family: monospace; color: #ccc;
         }
 
-        .info-list { margin-top: 20px; font-size: 11px; color: #888; text-align: left; line-height: 2; }
-        .info-list li { list-style: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 5px 0; }
-
         .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 5000; }
-        .social-icon { width: 55px; height: 55px; border-radius: 50%; font-size: 22px; }
+        .social-icon { width: 55px; height: 55px; border-radius: 50%; font-size: 22px; border: 1px solid var(--gold); color: var(--gold); background: rgba(0,0,0,0.8); transition: 0.4s; }
+        .social-icon:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); }
 
         footer { padding: 80px 6% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 80px; font-size: 11px; color: #666; }
-        footer strong { color: var(--gold); }
 
         @media (max-width: 768px) {
             header { flex-direction: column; gap: 15px; padding: 15px; }
@@ -113,12 +131,12 @@
     <header>
         <div class="logo-box">
             <a href="#" class="logo">ARK</a>
-            <div class="registry-block-btn" onclick="openDrawer()">
-                <i class="fa-solid fa-crown"></i> Official Payment Gateway
+            <div class="btn-base registry-block-btn" onclick="openDrawer()">
+                <i class="fa-solid fa-crown" style="margin-right:8px"></i> Payment Gateway
             </div>
         </div>
         <div class="nav-btns">
-            <a href="affiliate_reg.html" class="btn-affiliate">AFFILIATE PROGRAM</a>
+            <a href="affiliate_reg.html" class="btn-base btn-affiliate">AFFILIATE PROGRAM</a>
         </div>
     </header>
 
@@ -129,28 +147,28 @@
             <div class="gate-card" style="border-top: 4px solid var(--tycoon-silver);">
                 <h3 style="color:var(--tycoon-silver)">UNIVERSAL HORIZON</h3>
                 <p>Be part of our global map. A permanent digital presence for any user or brand looking for worldwide visibility.</p>
-                <div class="promo-text" style="color:var(--tycoon-silver)">Boost your brand reach to thousands. Reserve your spot on the eternal grid today!</div>
+                <div class="promo-text" style="color:var(--tycoon-silver); border-color:var(--tycoon-silver)">Boost your brand reach to thousands. Reserve your spot on the eternal grid today!</div>
                 <div><span class="tag">UNLIMITED PLOTS</span><span class="tag">PUBLIC ACCESS</span></div>
                 <div style="font-family:'Cinzel'; margin-top:10px; color:var(--tycoon-silver); font-size: 24px;">$1 / PLOT</div>
-                <a href="order.html" class="registry-block-btn" style="margin-top:20px; text-align:center; border-color:var(--tycoon-silver); color:var(--tycoon-silver);">RESERVE NOW</a>
+                <a href="order.html" class="action-btn btn-silver">RESERVE NOW</a>
             </div>
 
             <div class="gate-card" style="border-top: 4px solid var(--creator-red);">
                 <h3 style="color:var(--creator-red)">GAMER STUDIO</h3>
-                <p>Exclusive zone for gamers and content creators. Highlight your gaming profile or studio right here in the gamer district.</p>
-                <div class="promo-text" style="color:var(--creator-red)">Limited 10,000 blocks! Secure your place at the heart of the fastest-growing community.</div>
+                <p>Exclusive zone for gamers and content creators. Highlight your gaming profile or studio in the dedicated gamer district.</p>
+                <div class="promo-text" style="color:var(--creator-red); border-color:var(--creator-red)">Limited 10,000 blocks! Secure your place at the heart of the fastest-growing community.</div>
                 <div><span class="tag">10,000 BLOCKS</span><span class="tag">CREATOR ZONE</span></div>
                 <div style="font-family:'Cinzel'; margin-top:10px; color:var(--creator-red); font-size: 24px;">$29 / PLOT</div>
-                <a href="order.html" class="registry-block-btn" style="margin-top:20px; text-align:center; border-color:var(--creator-red); color:var(--creator-red);">JOIN STUDIO</a>
+                <a href="order.html" class="action-btn btn-red">JOIN STUDIO</a>
             </div>
 
             <div class="gate-card" style="border-top: 4px solid var(--gold);">
                 <h3 style="color:var(--gold)">ROYAL OASIS</h3>
                 <p>Our most premium and luxury zone. Reserved for high-tier investors and elite global brands looking for dominance.</p>
-                <div class="promo-text" style="color:var(--gold)">Only 1,000 elite plots. Claim your supremacy and stand above the rest of the digital world.</div>
+                <div class="promo-text" style="color:var(--gold); border-color:var(--gold)">Only 1,000 elite plots. Claim your supremacy and stand above the rest of the digital world.</div>
                 <div><span class="tag">1,000 PLOTS</span><span class="tag">ELITE ONLY</span></div>
                 <div style="font-family:'Cinzel'; margin-top:10px; color:var(--gold); font-size: 24px;">$99 / PLOT</div>
-                <a href="order.html" class="registry-block-btn" style="margin-top:20px; text-align:center;">CLAIM ROYALTY</a>
+                <a href="order.html" class="action-btn btn-gold-action">CLAIM ROYALTY</a>
             </div>
         </div>
     </main>
@@ -166,7 +184,7 @@
             <i class="fa-solid fa-xmark" style="color:var(--gold); cursor:pointer; font-size:24px;" onclick="closeDrawer()"></i>
         </div>
 
-        <div class="step-box">
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; margin-bottom: 20px;">
             <div class="address-item">
                 <span class="address-name">BKASH (PERSONAL)</span>
                 <div class="full-address" onclick="copy('+8801756206213')">
@@ -196,14 +214,9 @@
             </div>
         </div>
 
-        <div style="padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border);">
-            <h4 style="font-size:11px; color:var(--gold); margin-bottom:10px; font-family:'Cinzel';">REQUIRED SUBMISSION INFO:</h4>
-            <ul class="info-list">
-                <li>• Target Plot Name / Business Name</li>
-                <li>• High-Resolution Image/Logo Link</li>
-                <li>• External Website or Social Link</li>
-                <li>• Transaction Screenshot / TxID</li>
-            </ul>
+        <div style="padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); font-size: 11px; color: #888;">
+            <h4 style="color:var(--gold); margin-bottom:10px; font-family:'Cinzel';">REQUIRED INFO:</h4>
+            <p>• Plot Name/Business Name<br>• Logo/Image Link<br>• Website/Social Link<br>• Screenshot/TxID</p>
         </div>
 
         <a href="https://wa.me/8801576940717" target="_blank" style="text-decoration:none;">
@@ -212,15 +225,13 @@
     </div>
 
     <footer>
-        <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>. All rights reserved.</p>
-        <p>Disclaimer: We are not responsible for the content of external sites. All featured images are © of their respective owners.</p>
+        <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>.</p>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics-compat.js"></script>
 
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -234,7 +245,6 @@
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
 
-        // UI Interactions
         const ring = document.getElementById('cursor-ring');
         document.addEventListener('mousemove', (e) => {
             ring.style.left = e.clientX + 'px';
@@ -243,9 +253,8 @@
 
         function openDrawer() { document.getElementById('drawer').classList.add('active'); }
         function closeDrawer() { document.getElementById('drawer').classList.remove('active'); }
-        function copy(text) { navigator.clipboard.writeText(text); alert("Address Copied!"); }
+        function copy(text) { navigator.clipboard.writeText(text); alert("Copied!"); }
 
-        // Background Star Animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
