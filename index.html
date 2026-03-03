@@ -25,10 +25,9 @@
             overflow-x: hidden; cursor: none;
         }
 
-        /* Canvas Background Animation Area */
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.5; }
 
-        /* Custom Gold Ring Cursor */
+        /* Custom Cursor Ring */
         #cursor-ring {
             position: fixed; width: 22px; height: 22px; border: 1.5px solid var(--gold); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
@@ -36,7 +35,6 @@
             box-shadow: 0 0 10px var(--gold-glow);
         }
 
-        /* Header Style */
         header {
             position: fixed; top: 0; width: 100%; padding: 25px 6%;
             display: flex; justify-content: space-between; align-items: center; z-index: 5000;
@@ -44,6 +42,7 @@
         }
         .logo { font-family: 'Cinzel'; font-size: 26px; letter-spacing: 12px; color: var(--gold); text-decoration: none; font-weight: 900; }
         
+        /* Unified Glow Effect for Buttons and Icons */
         .registry-block-btn, .btn-affiliate, .social-icon { 
             font-size: 10px; color: var(--gold); letter-spacing: 2px; cursor: pointer; 
             text-transform: uppercase; font-family: 'Cinzel'; transition: 0.4s; 
@@ -54,14 +53,15 @@
         .registry-block-btn { padding: 10px 20px; margin-top: 12px; display: inline-block; }
         .btn-affiliate { padding: 12px 25px; font-weight: bold; }
 
+        /* Hover Effect: Same as Gateway Button */
         .registry-block-btn:hover, .btn-affiliate:hover, .social-icon:hover { 
             background: var(--gold); color: #000; box-shadow: 0 0 25px var(--gold);
         }
 
-        /* Main Grid Area */
         .main-container { padding: 220px 6% 80px; max-width: 1440px; margin: 0 auto; text-align: center; }
         .hero-title { font-family: 'Cinzel'; font-size: 15px; letter-spacing: 12px; color: var(--gold); margin-bottom: 70px; }
 
+        /* gateways-grid to use specific colors based on gateway */
         .gateways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
         .gate-card {
             height: 480px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border);
@@ -71,26 +71,32 @@
         .gate-card:hover { transform: translateY(-12px); border-color: var(--gold); background: rgba(212, 175, 55, 0.02); }
         .gate-card h3 { font-family: 'Cinzel'; font-size: 22px; margin-bottom: 15px; }
         .gate-card p { font-size: 11px; color: #aaa; line-height: 1.8; margin-bottom: 15px; }
+        
+        /* Updated Promotional Text (Now in English and prominent) */
         .promo-text { font-size: 10px; color: inherit; font-style: italic; margin-bottom: 20px; border-left: 2px solid; padding-left: 10px; opacity: 0.9; }
         
         .tag { font-size: 8px; padding: 4px 8px; border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold); text-transform: uppercase; margin-right: 5px; }
 
+        /* Updated Action Button with Solid Glow */
         .action-btn { 
             width: 100%; padding: 18px; font-family: 'Cinzel'; font-weight: 900; 
             text-align: center; text-decoration: none; font-size: 14px; margin-top: 15px;
             transition: 0.4s; letter-spacing: 2px;
         }
 
+        /* 1. Silver Theme (Solid & Glow) */
         .btn-silver { background: #E0E0E0; color: #000; border: none; }
         .btn-silver:hover { background: #fff; box-shadow: 0 0 35px rgba(224, 224, 224, 0.7); }
 
+        /* 2. Red Theme (Solid & Glow) */
         .btn-red { background: #ff0033; color: #fff; border: none; }
         .btn-red:hover { background: #ff4444; box-shadow: 0 0 35px rgba(255, 0, 51, 0.7); }
 
+        /* 3. Gold Theme (Solid & Glow) */
         .btn-gold-action { background: #D4AF37; color: #000; border: none; }
         .btn-gold-action:hover { background: #fff; box-shadow: 0 0 35px rgba(212, 175, 55, 0.7); }
 
-        /* Drawer Area */
+        /* Payment Drawer */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 500px; height: 100vh;
             background: #080808; border-left: 1px solid var(--gold); z-index: 9999;
@@ -99,10 +105,10 @@
         #drawer.active { right: 0; }
         .step-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
         .address-item { margin-bottom: 25px; }
-        
-        /* Fixed Professional Original Logos Style */
-        .gateway-header { display: flex; align-items: center; margin-bottom: 8px; gap: 15px; }
-        .gw-img { width: 38px; height: 38px; object-fit: contain; background: #fff; padding: 4px; border-radius: 8px; border: 1px solid var(--gold); }
+
+        /* Gateway Original Logo Style */
+        .gateway-header { display: flex; align-items: center; margin-bottom: 10px; gap: 12px; }
+        .gw-img { width: 32px; height: 32px; object-fit: contain; background: #fff; padding: 3px; border-radius: 6px; }
 
         .address-name { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
         .full-address { 
@@ -111,8 +117,11 @@
             cursor: pointer; word-break: break-all; font-family: monospace; color: #ccc;
         }
 
-        /* Socials & Footer */
+        .info-list { margin-top: 20px; font-size: 11px; color: #888; text-align: left; line-height: 2; }
+        .info-list li { list-style: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 5px 0; }
+
         .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 5000; }
+        /* Social Icons - Size Fixed to 55x55 as requested */
         .social-icon { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 22px; }
 
         footer { padding: 80px 6% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 80px; font-size: 11px; color: #666; }
@@ -192,7 +201,7 @@
             <div class="address-item">
                 <div class="gateway-header">
                     <img src="https://searchvectorlogo.com/wp-content/uploads/2020/02/bkash-logo-vector.png" class="gw-img" alt="bKash">
-                    <span class="address-name">BKASH (SEND MONEY) <span style="color:#00ffcc;">[VERIFIED]</span></span>
+                    <span class="address-name">BKASH (SEND MONEY) <span style="color:var(--royal-emerald)">[VERIFIED]</span></span>
                 </div>
                 <div class="full-address" onclick="copy('+8801756206213')">
                     <span>+8801756206213</span> <i class="fa-regular fa-copy"></i>
@@ -212,7 +221,7 @@
             <div class="address-item">
                 <div class="gateway-header">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Binance_Logo.png" class="gw-img" alt="Binance">
-                    <span class="address-name">BINANCE PAY UID <span style="color:#F3BA2F;">[KAWSAR6700]</span></span>
+                    <span class="address-name">BINANCE PAY UID <span style="color:#F3BA2F; margin-left:5px;">[KAWSAR6700]</span></span>
                 </div>
                 <div class="full-address" onclick="copy('912221034')">
                     <span>912221034</span> <i class="fa-regular fa-copy"></i>
@@ -232,7 +241,7 @@
 
         <div style="padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border);">
             <h4 style="font-size:11px; color:var(--gold); margin-bottom:10px; font-family:'Cinzel';">REQUIRED SUBMISSION INFO:</h4>
-            <ul style="font-size: 11px; color: #888; list-style: none; line-height: 2;">
+            <ul class="info-list">
                 <li>• Target Plot Name / Business Name</li>
                 <li>• High-Resolution Image/Logo Link</li>
                 <li>• External Website or Social Link</li>
@@ -247,12 +256,14 @@
 
     <footer>
         <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>. All rights reserved.</p>
+        <p>Disclaimer: We are not responsible for the content of external sites. All featured images are © of their respective owners.</p>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics-compat.js"></script>
 
     <script>
+        // Firebase Configuration (Unchanged)
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -266,19 +277,16 @@
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
 
-        // Cursor Ring Animation
         const ring = document.getElementById('cursor-ring');
         document.addEventListener('mousemove', (e) => {
             ring.style.left = e.clientX + 'px';
             ring.style.top = e.clientY + 'px';
         });
 
-        // UI Functions
         function openDrawer() { document.getElementById('drawer').classList.add('active'); }
         function closeDrawer() { document.getElementById('drawer').classList.remove('active'); }
         function copy(text) { navigator.clipboard.writeText(text); alert("Address Copied!"); }
 
-        // Background Star Animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
