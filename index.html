@@ -86,7 +86,6 @@
         .btn-gold-action { background: #D4AF37; color: #000; border: none; }
         .btn-gold-action:hover { background: #fff; box-shadow: 0 0 35px rgba(212, 175, 55, 0.7); }
 
-        /* Payment Drawer Styles */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 500px; height: 100vh;
             background: #080808; border-left: 1px solid var(--gold); z-index: 9999;
@@ -96,10 +95,9 @@
         .step-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
         .address-item { margin-bottom: 25px; }
         
-        /* Payment Logo Design */
-        .gateway-header { display: flex; align-items: center; margin-bottom: 8px; gap: 10px; }
-        .gateway-logo { width: 24px; height: 24px; border-radius: 4px; object-fit: contain; background: transparent; }
-        
+        .gateway-header { display: flex; align-items: center; margin-bottom: 8px; gap: 12px; }
+        .gw-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+
         .address-name { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
         .full-address { 
             background: #000; padding: 15px; border: 1px dashed var(--gold); font-size: 11px; 
@@ -186,7 +184,9 @@
         <div class="step-box">
             <div class="address-item">
                 <div class="gateway-header">
-                    <img src="https://searchvectorlogo.com/wp-content/uploads/2020/02/bkash-logo-vector.png" class="gateway-logo" alt="bKash">
+                    <div class="gw-icon">
+                        <svg viewBox="0 0 128 128"><path fill="#D12053" d="M128 64c0 35.3-28.7 64-64 64S0 99.3 0 64 28.7 0 64 0s64 28.7 64 64z"/><path fill="#FFF" d="M96.4 56.4c-2.8-5.3-7.3-8.1-12.7-8.1h-4.6v23.2h4.6c5.4 0 9.9-2.8 12.7-8.1 1.4-2.6 2.1-5.6 2.1-8.5 0-2.9-.7-5.9-2.1-8.5zM45.6 48.3h-4.6c-5.4 0-9.9 2.8-12.7 8.1-1.4 2.6-2.1 5.6-2.1 8.5 0 2.9.7 5.9 2.1 8.5 2.8 5.3 7.3 8.1 12.7 8.1h4.6V48.3z"/></svg>
+                    </div>
                     <span class="address-name">BKASH (SEND MONEY) <span style="color:#00ffcc;">[VERIFIED]</span></span>
                 </div>
                 <div class="full-address" onclick="copy('+8801756206213')">
@@ -196,7 +196,9 @@
 
             <div class="address-item">
                 <div class="gateway-header">
-                    <img src="https://download.logo.wine/logo/Dutch_Bangla_Bank/Dutch_Bangla_Bank-Logo.wine.png" class="gateway-logo" alt="Rocket">
+                    <div class="gw-icon">
+                        <svg viewBox="0 0 128 128"><rect width="128" height="128" rx="20" fill="#8C3494"/><path fill="#FFF" d="M64 20L30 80h68L64 20z"/></svg>
+                    </div>
                     <span class="address-name">ROCKET (PERSONAL)</span>
                 </div>
                 <div class="full-address" onclick="copy('+8801756206213')">
@@ -206,8 +208,10 @@
 
             <div class="address-item">
                 <div class="gateway-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Binance_Logo.png" class="gateway-logo" alt="Binance">
-                    <span class="address-name">BINANCE PAY UID <span style="color:#F3BA2F; margin-left:5px;">[KAWSAR6700]</span></span>
+                    <div class="gw-icon">
+                        <svg viewBox="0 0 24 24" fill="#F3BA2F"><path d="M16.624 13.9202l2.711 2.71172l-5.335 5.33514l-5.335-5.33514l2.711-2.71172l2.624 2.62477l2.624-2.62477zM9.003 9.00319l2.997-2.9978l2.997 2.9978l-2.997 2.99781l-2.997-2.99781zM5.335 13.9202l2.711 2.71172l-5.335 5.33514l-5.335-5.33514l2.711-2.71172l2.624 2.62477l2.624-2.62477zM12 0l5.335 5.33514l-2.711 2.71172l-2.624-2.62477l-2.624 2.62477l-2.711-2.71172L12 0z"/></svg>
+                    </div>
+                    <span class="address-name">BINANCE PAY UID <span style="color:#F3BA2F;">[KAWSAR6700]</span></span>
                 </div>
                 <div class="full-address" onclick="copy('912221034')">
                     <span>912221034</span> <i class="fa-regular fa-copy"></i>
@@ -216,7 +220,9 @@
 
             <div class="address-item">
                 <div class="gateway-header">
-                    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" class="gateway-logo" alt="USDT">
+                    <div class="gw-icon">
+                        <svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="64" fill="#26A17B"/><path fill="#FFF" d="M73 45h21V31H34v14h21v30h18V45zM34 81c15 6 45 6 60 0v-4c-15 5-45 5-60 0v4zm0 8c15 6 45 6 60 0v-4c-15 5-45 5-60 0v4z"/></svg>
+                    </div>
                     <span class="address-name">USDT (TRC20 ADDRESS)</span>
                 </div>
                 <div class="full-address" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
