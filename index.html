@@ -17,17 +17,14 @@
             --tycoon-silver: #E0E0E0;
             --creator-red: #ff0033;
             --border: rgba(212, 175, 55, 0.15);
+            --bkash: #D12053;
+            --binance: #F3BA2F;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
-            overflow-x: hidden; cursor: none;
-        }
+        body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; cursor: none; }
 
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.5; }
-
-        /* Custom Cursor Ring */
         #cursor-ring {
             position: fixed; width: 22px; height: 22px; border: 1.5px solid var(--gold); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
@@ -42,18 +39,14 @@
         }
         .logo { font-family: 'Cinzel'; font-size: 26px; letter-spacing: 12px; color: var(--gold); text-decoration: none; font-weight: 900; }
         
-        /* Unified Glow Effect for Buttons and Icons */
         .registry-block-btn, .btn-affiliate, .social-icon { 
             font-size: 10px; color: var(--gold); letter-spacing: 2px; cursor: pointer; 
             text-transform: uppercase; font-family: 'Cinzel'; transition: 0.4s; 
             background: rgba(212, 175, 55, 0.03); border: 1px solid var(--gold);
             text-decoration: none; display: flex; align-items: center; justify-content: center;
         }
-
         .registry-block-btn { padding: 10px 20px; margin-top: 12px; display: inline-block; }
         .btn-affiliate { padding: 12px 25px; font-weight: bold; }
-
-        /* Hover Effect */
         .registry-block-btn:hover, .btn-affiliate:hover, .social-icon:hover { 
             background: var(--gold); color: #000; box-shadow: 0 0 25px var(--gold);
         }
@@ -61,7 +54,6 @@
         .main-container { padding: 220px 6% 80px; max-width: 1440px; margin: 0 auto; text-align: center; }
         .hero-title { font-family: 'Cinzel'; font-size: 15px; letter-spacing: 12px; color: var(--gold); margin-bottom: 70px; }
 
-        /* gateways-grid */
         .gateways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
         .gate-card {
             height: 480px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border);
@@ -72,22 +64,17 @@
         .gate-card h3 { font-family: 'Cinzel'; font-size: 22px; margin-bottom: 15px; }
         .gate-card p { font-size: 11px; color: #aaa; line-height: 1.8; margin-bottom: 15px; }
         .promo-text { font-size: 10px; color: inherit; font-style: italic; margin-bottom: 20px; border-left: 2px solid; padding-left: 10px; opacity: 0.9; }
-        .tag { font-size: 8px; padding: 4px 8px; border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold); text-transform: uppercase; margin-right: 5px; }
 
-        /* Action Buttons */
         .action-btn { 
             width: 100%; padding: 18px; font-family: 'Cinzel'; font-weight: 900; 
             text-align: center; text-decoration: none; font-size: 14px; margin-top: 15px;
             transition: 0.4s; letter-spacing: 2px;
         }
         .btn-silver { background: #E0E0E0; color: #000; border: none; }
-        .btn-silver:hover { background: #fff; box-shadow: 0 0 35px rgba(224, 224, 224, 0.7); }
         .btn-red { background: #ff0033; color: #fff; border: none; }
-        .btn-red:hover { background: #ff4444; box-shadow: 0 0 35px rgba(255, 0, 51, 0.7); }
         .btn-gold-action { background: #D4AF37; color: #000; border: none; }
-        .btn-gold-action:hover { background: #fff; box-shadow: 0 0 35px rgba(212, 175, 55, 0.7); }
 
-        /* Payment Drawer */
+        /* Drawer Fix with Iconic Visuals */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 500px; height: 100vh;
             background: #080808; border-left: 1px solid var(--gold); z-index: 9999;
@@ -95,32 +82,29 @@
         }
         #drawer.active { right: 0; }
         .step-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
-        .address-item { margin-bottom: 25px; }
         
-        /* Guaranteed Logos Style (Base64 Inline) */
-        .gateway-header { display: flex; align-items: center; margin-bottom: 10px; gap: 15px; }
-        .gw-img { width: 38px; height: 38px; object-fit: contain; background: #fff; padding: 4px; border-radius: 8px; border: 1px solid var(--gold); }
+        .gw-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .gw-icon-box { 
+            width: 45px; height: 45px; background: rgba(212,175,55,0.1); 
+            border: 1px solid var(--gold); display: flex; align-items: center; 
+            justify-content: center; border-radius: 8px; font-size: 20px; color: var(--gold);
+        }
 
-        .address-name { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
         .full-address { 
             background: #000; padding: 15px; border: 1px dashed var(--gold); font-size: 11px; 
             display: flex; justify-content: space-between; align-items: center; 
-            cursor: pointer; word-break: break-all; font-family: monospace; color: #ccc;
+            cursor: pointer; font-family: monospace; color: #ccc;
         }
 
-        /* Footer & Socials */
         .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 5000; }
-        .social-icon { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 22px; }
+        .social-icon { width: 55px; height: 55px; border-radius: 50%; text-decoration: none; font-size: 22px; }
 
         footer { padding: 80px 6% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 80px; font-size: 11px; color: #666; }
-        footer strong { color: var(--gold); }
 
         @media (max-width: 768px) {
             header { flex-direction: column; gap: 15px; padding: 15px; }
             #cursor-ring { display: none; }
-            body { cursor: auto; }
             .main-container { padding-top: 250px; }
-            #drawer { max-width: 100%; }
         }
     </style>
 </head>
@@ -143,29 +127,26 @@
 
     <main class="main-container">
         <h2 class="hero-title">The Three Realms of Ark</h2>
-        
         <div class="gateways-grid">
             <div class="gate-card" style="border-top: 4px solid var(--tycoon-silver);">
                 <h3 style="color:var(--tycoon-silver)">UNIVERSAL HORIZON</h3>
                 <p>Be part of our global map. A permanent digital presence for worldwide visibility.</p>
-                <div class="promo-text" style="color:var(--tycoon-silver); border-color:var(--tycoon-silver)">Boost your brand reach to thousands. Reserve your spot today!</div>
-                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--tycoon-silver); font-size: 24px;">$1 / PLOT</div>
+                <div class="promo-text" style="color:var(--tycoon-silver); border-color:var(--tycoon-silver)">Boost your brand reach today!</div>
+                <div style="font-family:'Cinzel'; color:var(--tycoon-silver); font-size: 24px;">$1 / PLOT</div>
                 <a href="order.html" class="action-btn btn-silver">RESERVE NOW</a>
             </div>
-
             <div class="gate-card" style="border-top: 4px solid var(--creator-red);">
                 <h3 style="color:var(--creator-red)">GAMER STUDIO</h3>
                 <p>Exclusive zone for gamers and content creators. Highlight your gaming profile.</p>
-                <div class="promo-text" style="color:var(--creator-red); border-color:var(--creator-red)">Limited 10,000 blocks! Secure your place at the heart.</div>
-                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--creator-red); font-size: 24px;">$29 / PLOT</div>
+                <div class="promo-text" style="color:var(--creator-red); border-color:var(--creator-red)">Secure your place at the heart!</div>
+                <div style="font-family:'Cinzel'; color:var(--creator-red); font-size: 24px;">$29 / PLOT</div>
                 <a href="order.html" class="action-btn btn-red">JOIN STUDIO</a>
             </div>
-
             <div class="gate-card" style="border-top: 4px solid var(--gold);">
                 <h3 style="color:var(--gold)">ROYAL OASIS</h3>
                 <p>Our most premium zone. Reserved for high-tier investors and elite brands.</p>
-                <div class="promo-text" style="color:var(--gold); border-color:var(--gold)">Only 1,000 elite plots. Claim your supremacy.</div>
-                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--gold); font-size: 24px;">$99 / PLOT</div>
+                <div class="promo-text" style="color:var(--gold); border-color:var(--gold)">Claim your supremacy now.</div>
+                <div style="font-family:'Cinzel'; color:var(--gold); font-size: 24px;">$99 / PLOT</div>
                 <a href="order.html" class="action-btn btn-gold-action">CLAIM ROYALTY</a>
             </div>
         </div>
@@ -183,71 +164,58 @@
         </div>
 
         <div class="step-box">
-            <div class="address-item">
-                <div class="gateway-header">
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HuAAAAbFBMVEVHcEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///95v4UuAAAAEnRSTlMA9v4W8PrfCPX3XfP09vb8+fK+E3QAAAGTSURBVFjD7dXbcsMgEAVQYVvS+P8fW9N4X2fSSZpMc546o5e5C8suL5P5z28CUNpSgNJWAnZ7mNf4tYI9Z74v6Hvm44K+Zz4v6Hvm44K+Z84W9D1ztqDvmSsqWND3TByIAtvN/FrBnrvYI0vHjSwwN5UvFey5iz2yxpM9snS6qWCPXN5UsN8XN9VnC5bW4qaCPb7N9fX4SAt6Hre2vT7X5wXpIuC5WtxUsIeF/WovC9JFwOfqvN9XvEywl935Wb5MsOdqcVPCnjXfZ/myIF0EeqpYVsK+7N7v82NBuu6F8bE/R+9lgv5c5vO/X6OfLkhmC7oXp5vj7R2Y7wty7u8K8v1fI0v3jyz59YI0HdjvC5L9PULf65v67m1BPX+wIK4XpK8I4qXF669lYn7XfW4rSDpA3b/387V6uSBqCOb3/bteLpAnAn4nCJ9H7Hq5YfE6gP96vKj5mYI8E/CaAnXv+q7GxwY87e/oD6/6e/K64Zl49f4BAXyYI8UuA1IAAAAASUVORK5CYII=" class="gw-img" alt="bKash">
-                    <span class="address-name">BKASH (SEND MONEY) <span style="color:var(--royal-emerald);">[VERIFIED]</span></span>
+            <div style="margin-bottom: 25px;">
+                <div class="gw-header">
+                    <div class="gw-icon-box" style="border-color: #D12053; color: #D12053;"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                    <span style="font-size:10px; font-weight:bold; letter-spacing:2px; color:#D12053;">BKASH (PERSONAL)</span>
                 </div>
                 <div class="full-address" onclick="copy('+8801756206213')">
                     <span>+8801756206213</span> <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
 
-            <div class="address-item">
-                <div class="gateway-header">
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HuAAAAZlBMVEX///8AsP8Asf8AmfwAmv8AlfwAlv8AlPwAkv8AkP8Aiv8AnP8AoP8Anv8ApP8As/8AuP8At/8Atf8Au/8AvP8AtP8Asv8Axf8Asf+4+P+6+v9W7P9I5v9U4v+u9f+M7P9k8/+84v+h8f+N3P8AAAChI88tAAAAUnRSTlMA/v7+/vz9/P38/fv9/fz8+/z7/Pv7+/z8+/38/Pz9/fv7/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/gjG7j0AAAEvSURBVFjD7dbbcsIgEAVQwSbaVqutrW3t//9jWy/13Wk5mUknOV89Kx7A6CQAoy0FKL4fUL4/4Hh/IPw9UP4WKL8XKL8XyP8YIuF7iP4WwuGHYAhvIUh9EIQ+CEIfBKEPgkxU4X4V6b8S+l8f/f965W9E/f6h5/fX9u+qX0R0X94bYfP5vRE2X98bYfP4vRG+u68w/Z37Cpt/vS+w/G6/w+Z36x0m39vvsPHqC/7w7R9/vIeP587j+f04X5w4d/LFCXMnP7M48X6j76H91R5+Of7rXzN+Of79X+N/Of47X+N/Of47X+On4X85fRqeX7M48X6j76H91R5+Of47X+On4X85fRqeX7M48X6j76H91R5+Of47X+On4X85fRqeX/8T+Xn6W54XJ878X6b8S+n/f/YjBPsE7fX9Nf2747s48wT9/tHwD/BvKECoM/bIAAAAAElFTkSuQmCC" class="gw-img" alt="Rocket">
-                    <span class="address-name">ROCKET (PERSONAL)</span>
+            <div style="margin-bottom: 25px;">
+                <div class="gw-header">
+                    <div class="gw-icon-box" style="border-color: #8C3494; color: #8C3494;"><i class="fa-solid fa-rocket"></i></div>
+                    <span style="font-size:10px; font-weight:bold; letter-spacing:2px; color:#8C3494;">ROCKET (PERSONAL)</span>
                 </div>
                 <div class="full-address" onclick="copy('+8801756206213')">
                     <span>+8801756206213</span> <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
 
-            <div class="address-item">
-                <div class="gateway-header">
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HuAAAAYFBMVEX///9zvpXy9vYAsv/9/v/f7+7u9vb4+/vz9/fH4+P2+vry9PTo8PDm7u709PTk8PD3+vru8vLq7+95xYm429vb7+/r8vLh7u6S05RovZVgvZWH0Yl5xYnt9vbv8fL19ffj8fH77fR0AAAAWklEQVRIx+3W2w6DIAwFUKwDVPX//9Ym46Ixm5p5cK898VAmhV8WwFgKUHxPQPHdAsV3CxTfLVD8uSDm+R4vG89pCqT3AtKHgvQTIVw5CH0XhK4LQtcLQu8PQt/fL86737B47X7D5rb7DXu7P7B47X7D5rb7DZvb7jf8zL4P/8Xp15j+Yvov5v8jph8E+3K5XW7K5bSgbAnE/nu/fK3PC6IVQTvffq9fL0iC7XW5N9fTglpBeiaIlxe9vlZp5nfD57OC5GVAugqoz5fP9WVB3E7ofV+f6/OCeE6QHgXp+4w53/Wf5wuyO9r5fX6ezwvS7YHe6/N6WdA7g/R9xtwz+T0V4J2C3hXoH77N67MBwT3r/Y5m9X9i7D4E5N2D03NAnv5/QQA/CjgH2uI+i/gAAAAASUVORK5CYII=" class="gw-img" alt="Binance">
-                    <span class="address-name">BINANCE PAY UID <span style="color:#F3BA2F; margin-left:5px;">[KAWSAR6700]</span></span>
+            <div style="margin-bottom: 25px;">
+                <div class="gw-header">
+                    <div class="gw-icon-box" style="border-color: var(--binance); color: var(--binance);"><i class="fa-solid fa-coins"></i></div>
+                    <span style="font-size:10px; font-weight:bold; letter-spacing:2px; color:var(--binance);">BINANCE PAY UID</span>
                 </div>
                 <div class="full-address" onclick="copy('912221034')">
                     <span>912221034</span> <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
 
-            <div class="address-item">
-                <div class="gateway-header">
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HuAAAAYFBMVEX///8AsP8Asf8AmfwAmv8AlfwAlv8AlPwAkv8AkP8Aiv8AnP8AoP8Anv8ApP8As/8AuP8At/8Atf8Au/8AvP8AtP8Asv8Axf8Asf+4+P+6+v9W7P9I5v9U4v+u9f+M7P9k8/+84v+h8f+N3P8AAAChI88tAAAAWklEQVRIx+3W2w6DIAwFUKwDVPX//9Ym46Ixm5p5cK898VAmhV8WwFgKUHxPQPHdAsV3CxTfLVD8uSDm+R4vG89pCqT3AtKHgvQTIVw5CH0XhK4LQtcLQu8PQt/fL86737B47X7D5rb7DXu7P7B47X7D5rb7DZvb7jf8zL4P/8Xp15j+Yvov5v8jph8E+3K5XW7K5bSgbAnE/nu/fK3PC6IVQTvffq9fL0iC7XW5N9fTglpBeiaIlxe9vlZp5nfD57OC5GVAugqoz5fP9WVB3E7ofV+f6/OCeE6QHgXp+4w53/Wf5wuyO9r5fX6ezwvS7YHe6/N6WdA7g/R9xtwz+T0V4J2C3hXoH77N67MBwT3r/Y5m9X9i7D4E5N2D03NAnv5/QQA/CjgH2uI+i/gAAAAASUVORK5CYII=" class="gw-img" alt="USDT">
-                    <span class="address-name">USDT (TRC20 ADDRESS)</span>
+            <div style="margin-bottom: 25px;">
+                <div class="gw-header">
+                    <div class="gw-icon-box" style="border-color: #26A17B; color: #26A17B;"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                    <span style="font-size:10px; font-weight:bold; letter-spacing:2px; color:#26A17B;">USDT (TRC20)</span>
                 </div>
                 <div class="full-address" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-                    <span style="font-size: 9px;">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</span> <i class="fa-regular fa-copy"></i>
+                    <span style="font-size: 8.5px;">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</span> <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
         </div>
 
-        <div style="padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border);">
-            <h4 style="font-size:11px; color:var(--gold); margin-bottom:10px; font-family:'Cinzel';">REQUIRED SUBMISSION INFO:</h4>
-            <ul style="font-size: 11px; color: #888; list-style: none; line-height: 2;">
-                <li>• Target Plot Name / Business Name</li>
-                <li>• High-Resolution Image/Logo Link</li>
-                <li>• External Website or Social Link</li>
-                <li>• Transaction Screenshot / TxID</li>
-            </ul>
-        </div>
-
         <a href="https://wa.me/8801576940717" target="_blank" style="text-decoration:none;">
-            <button class="action-btn" style="background:#25D366; color:#fff; border:none; width:100%; padding:20px; font-family:'Cinzel'; font-weight:900; cursor:pointer; margin-top:20px;">VERIFY ON WHATSAPP</button>
+            <button class="action-btn" style="background:#25D366; color:#fff; border:none; width:100%; padding:20px; font-family:'Cinzel'; cursor:pointer; margin-top:20px;">VERIFY ON WHATSAPP</button>
         </a>
     </div>
 
-    <footer>
-        <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>. All rights reserved.</p>
-    </footer>
+    <footer><p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>. All rights reserved.</p></footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics-compat.js"></script>
 
     <script>
-        // Firebase Configuration (Corrected)
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -259,7 +227,7 @@
             measurementId: "G-6KEYY60YGG"
         };
         firebase.initializeApp(firebaseConfig);
-        firebase.analytics(); // Analytics Initialized
+        firebase.analytics();
 
         const ring = document.getElementById('cursor-ring');
         document.addEventListener('mousemove', (e) => {
@@ -271,7 +239,6 @@
         function closeDrawer() { document.getElementById('drawer').classList.remove('active'); }
         function copy(text) { navigator.clipboard.writeText(text); alert("Address Copied!"); }
 
-        // Background Animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
