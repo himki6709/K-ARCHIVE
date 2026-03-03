@@ -66,7 +66,11 @@
         }
         .gate-card:hover { transform: translateY(-12px); border-color: var(--gold); background: rgba(212, 175, 55, 0.02); }
         .gate-card h3 { font-family: 'Cinzel'; font-size: 22px; margin-bottom: 15px; }
+        .gate-card p { font-size: 11px; color: #aaa; line-height: 1.8; margin-bottom: 15px; }
         
+        .promo-text { font-size: 10px; color: inherit; font-style: italic; margin-bottom: 20px; border-left: 2px solid; padding-left: 10px; opacity: 0.9; }
+        .tag { font-size: 8px; padding: 4px 8px; border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold); text-transform: uppercase; margin-right: 5px; }
+
         .action-btn { 
             width: 100%; padding: 18px; font-family: 'Cinzel'; font-weight: 900; 
             text-align: center; text-decoration: none; font-size: 14px; margin-top: 15px;
@@ -80,7 +84,7 @@
         .btn-gold-action { background: #D4AF37; color: #000; border: none; }
         .btn-gold-action:hover { background: #fff; box-shadow: 0 0 35px rgba(212, 175, 55, 0.7); }
 
-        /* Drawer & Payment Icons Style */
+        /* Payment Drawer Styling */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 500px; height: 100vh;
             background: #080808; border-left: 1px solid var(--gold); z-index: 9999;
@@ -89,20 +93,26 @@
         #drawer.active { right: 0; }
         .step-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
         
+        /* New Payment Logo Styles */
         .gw-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-        .gw-img { width: 45px; height: 45px; border-radius: 10px; object-fit: contain; background: #fff; padding: 4px; border: 1.5px solid var(--gold); }
+        .gw-icon { width: 35px; height: 35px; object-fit: contain; border-radius: 5px; background: #fff; padding: 2px; }
         
-        .address-name { font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
+        .address-item { margin-bottom: 25px; }
+        .address-name { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: bold; margin-bottom: 8px; display: block; }
         .full-address { 
             background: #000; padding: 15px; border: 1px dashed var(--gold); font-size: 11px; 
             display: flex; justify-content: space-between; align-items: center; 
             cursor: pointer; word-break: break-all; font-family: monospace; color: #ccc;
         }
 
+        .info-list { margin-top: 20px; font-size: 11px; color: #888; text-align: left; line-height: 2; }
+        .info-list li { list-style: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 5px 0; }
+
         .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 5000; }
         .social-icon { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 22px; }
 
         footer { padding: 80px 6% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 80px; font-size: 11px; color: #666; }
+        footer strong { color: var(--gold); }
 
         @media (max-width: 768px) {
             header { flex-direction: column; gap: 15px; padding: 15px; }
@@ -132,24 +142,41 @@
 
     <main class="main-container">
         <h2 class="hero-title">The Three Realms of Ark</h2>
+        
         <div class="gateways-grid">
             <div class="gate-card" style="border-top: 4px solid var(--tycoon-silver);">
                 <h3 style="color:var(--tycoon-silver)">UNIVERSAL HORIZON</h3>
+                <p>Be part of our global map. A permanent digital presence for any user or brand looking for worldwide visibility.</p>
+                <div class="promo-text" style="color:var(--tycoon-silver); border-color:var(--tycoon-silver)">Boost your brand reach to thousands. Reserve your spot on the eternal grid today!</div>
+                <div><span class="tag">UNLIMITED PLOTS</span><span class="tag">PUBLIC ACCESS</span></div>
                 <div style="font-family:'Cinzel'; margin-top:10px; color:var(--tycoon-silver); font-size: 24px;">$1 / PLOT</div>
                 <a href="order.html" class="action-btn btn-silver">RESERVE NOW</a>
             </div>
+
             <div class="gate-card" style="border-top: 4px solid var(--creator-red);">
                 <h3 style="color:var(--creator-red)">GAMER STUDIO</h3>
+                <p>Exclusive zone for gamers and content creators. Highlight your gaming profile or studio in the dedicated gamer district.</p>
+                <div class="promo-text" style="color:var(--creator-red); border-color:var(--creator-red)">Limited 10,000 blocks! Secure your place at the heart of the fastest-growing community.</div>
+                <div><span class="tag">10,000 BLOCKS</span><span class="tag">CREATOR ZONE</span></div>
                 <div style="font-family:'Cinzel'; margin-top:10px; color:var(--creator-red); font-size: 24px;">$29 / PLOT</div>
                 <a href="order.html" class="action-btn btn-red">JOIN STUDIO</a>
             </div>
+
             <div class="gate-card" style="border-top: 4px solid var(--gold);">
                 <h3 style="color:var(--gold)">ROYAL OASIS</h3>
+                <p>Our most premium and luxury zone. Reserved for high-tier investors and elite global brands looking for dominance.</p>
+                <div class="promo-text" style="color:var(--gold); border-color:var(--gold)">Only 1,000 elite plots. Claim your supremacy and stand above the rest of the digital world.</div>
+                <div><span class="tag">1,000 PLOTS</span><span class="tag">ELITE ONLY</span></div>
                 <div style="font-family:'Cinzel'; margin-top:10px; color:var(--gold); font-size: 24px;">$99 / PLOT</div>
                 <a href="order.html" class="action-btn btn-gold-action">CLAIM ROYALTY</a>
             </div>
         </div>
     </main>
+
+    <div class="social-bar">
+        <a href="https://x.com/kawsar6700" target="_blank" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://wa.me/8801576940717" target="_blank" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
 
     <div id="drawer">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
@@ -158,19 +185,19 @@
         </div>
 
         <div class="step-box">
-            <div style="margin-bottom: 25px;">
+            <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d5b8b.png" class="gw-img" alt="bKash">
-                    <span class="address-name">BKASH (SEND MONEY)</span>
+                    <img src="image_8d5b8b.png" class="gw-icon" alt="bKash">
+                    <span class="address-name">BKASH (SEND MONEY) <span class="verified-user" style="color:var(--royal-emerald)">[VERIFIED]</span></span>
                 </div>
                 <div class="full-address" onclick="copy('+8801756206213')">
                     <span>+8801756206213</span> <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
 
-            <div style="margin-bottom: 25px;">
+            <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d5846.png" class="gw-img" alt="Rocket">
+                    <img src="image_8d5846.png" class="gw-icon" alt="Rocket">
                     <span class="address-name">ROCKET (PERSONAL)</span>
                 </div>
                 <div class="full-address" onclick="copy('+8801756206213')">
@@ -178,39 +205,45 @@
                 </div>
             </div>
 
-            <div style="margin-bottom: 25px;">
+            <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d57e4.jpg" class="gw-img" alt="Binance">
-                    <span class="address-name">BINANCE PAY UID</span>
+                    <img src="image_8d57e4.jpg" class="gw-icon" alt="Binance">
+                    <span class="address-name">BINANCE PAY UID <span style="color:#F3BA2F; margin-left:5px;">[KAWSAR6700]</span></span>
                 </div>
                 <div class="full-address" onclick="copy('912221034')">
                     <span>912221034</span> <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
 
-            <div style="margin-bottom: 25px;">
+            <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d54c3.png" class="gw-img" alt="USDT">
-                    <span class="address-name">USDT (TRC20)</span>
+                    <img src="image_8d54c3.png" class="gw-icon" alt="USDT">
+                    <span class="address-name">USDT (TRC20 ADDRESS)</span>
                 </div>
                 <div class="full-address" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-                    <span style="font-size: 10px;">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</span> <i class="fa-regular fa-copy"></i>
+                    <span style="font-size: 9px;">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</span> <i class="fa-regular fa-copy"></i>
                 </div>
             </div>
         </div>
 
+        <div style="padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border);">
+            <h4 style="font-size:11px; color:var(--gold); margin-bottom:10px; font-family:'Cinzel';">REQUIRED SUBMISSION INFO:</h4>
+            <ul class="info-list">
+                <li>• Target Plot Name / Business Name</li>
+                <li>• High-Resolution Image/Logo Link</li>
+                <li>• External Website or Social Link</li>
+                <li>• Transaction Screenshot / TxID</li>
+            </ul>
+        </div>
+
         <a href="https://wa.me/8801576940717" target="_blank" style="text-decoration:none;">
-            <button class="action-btn" style="background:#25D366; color:#fff; border:none; width:100%; padding:20px; font-family:'Cinzel'; cursor:pointer; margin-top:10px;">VERIFY ON WHATSAPP</button>
+            <button class="action-btn" style="background:#25D366; color:#fff; border:none; width:100%; padding:20px; font-family:'Cinzel'; font-weight:900; cursor:pointer; margin-top:20px;">VERIFY ON WHATSAPP</button>
         </a>
     </div>
 
-    <div class="social-bar">
-        <a href="https://x.com/kawsar6700" target="_blank" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
-        <a href="https://wa.me/8801576940717" target="_blank" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
-    </div>
-
     <footer>
-        <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>.</p>
+        <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>. All rights reserved.</p>
+        <p>Disclaimer: We are not responsible for the content of external sites.</p>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -232,18 +265,25 @@
 
         const ring = document.getElementById('cursor-ring');
         document.addEventListener('mousemove', (e) => {
-            ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
+            ring.style.left = e.clientX + 'px';
+            ring.style.top = e.clientY + 'px';
         });
 
         function openDrawer() { document.getElementById('drawer').classList.add('active'); }
         function closeDrawer() { document.getElementById('drawer').classList.remove('active'); }
-        function copy(text) { navigator.clipboard.writeText(text); alert("Copied!"); }
+        function copy(text) { navigator.clipboard.writeText(text); alert("Address Copied!"); }
 
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
-        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); requestAnimationFrame(animate); }
+        class Star {
+            constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.size = Math.random()*1.2; }
+            draw() { ctx.fillStyle = "rgba(212,175,55,0.3)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); }
+        }
+        let stars = [];
+        for(let i=0; i<100; i++) stars.push(new Star());
+        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
         animate();
     </script>
 </body>
