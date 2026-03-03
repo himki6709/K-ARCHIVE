@@ -84,7 +84,7 @@
         .btn-gold-action { background: #D4AF37; color: #000; border: none; }
         .btn-gold-action:hover { background: #fff; box-shadow: 0 0 35px rgba(212, 175, 55, 0.7); }
 
-        /* Payment Drawer Styling */
+        /* Drawer & Payment Gateway Styling */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 500px; height: 100vh;
             background: #080808; border-left: 1px solid var(--gold); z-index: 9999;
@@ -93,9 +93,8 @@
         #drawer.active { right: 0; }
         .step-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
         
-        /* New Payment Logo Styles */
-        .gw-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-        .gw-icon { width: 35px; height: 35px; object-fit: contain; border-radius: 5px; background: #fff; padding: 2px; }
+        .gw-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .gw-logo-img { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; border: 1px solid var(--gold); }
         
         .address-item { margin-bottom: 25px; }
         .address-name { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: bold; margin-bottom: 8px; display: block; }
@@ -187,8 +186,8 @@
         <div class="step-box">
             <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d5b8b.png" class="gw-icon" alt="bKash">
-                    <span class="address-name">BKASH (SEND MONEY) <span class="verified-user" style="color:var(--royal-emerald)">[VERIFIED]</span></span>
+                    <img src="image_8d5b8b.png" class="gw-logo-img" alt="bKash">
+                    <span class="address-name">BKASH (SEND MONEY) <span class="verified-user" style="color:#00ffcc;">[VERIFIED]</span></span>
                 </div>
                 <div class="full-address" onclick="copy('+8801756206213')">
                     <span>+8801756206213</span> <i class="fa-regular fa-copy"></i>
@@ -197,7 +196,7 @@
 
             <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d5846.png" class="gw-icon" alt="Rocket">
+                    <img src="image_8d5846.png" class="gw-logo-img" alt="Rocket">
                     <span class="address-name">ROCKET (PERSONAL)</span>
                 </div>
                 <div class="full-address" onclick="copy('+8801756206213')">
@@ -207,7 +206,7 @@
 
             <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d57e4.jpg" class="gw-icon" alt="Binance">
+                    <img src="image_8d57e4.jpg" class="gw-logo-img" alt="Binance">
                     <span class="address-name">BINANCE PAY UID <span style="color:#F3BA2F; margin-left:5px;">[KAWSAR6700]</span></span>
                 </div>
                 <div class="full-address" onclick="copy('912221034')">
@@ -217,7 +216,7 @@
 
             <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d54c3.png" class="gw-icon" alt="USDT">
+                    <img src="image_8d54c3.png" class="gw-logo-img" alt="USDT">
                     <span class="address-name">USDT (TRC20 ADDRESS)</span>
                 </div>
                 <div class="full-address" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
