@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAMER STUDIO | THE GLOBAL CREATOR HOMEPAGE</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@300;600&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root { 
+            --b-yellow: #FCD535; 
+            --b-dark: #1E2329; 
+            --b-bg: #0B0E11; 
+            --gamer-red: #ff0033;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--b-bg); color: #EAECEF; font-family: 'Plus Jakarta Sans', sans-serif; text-align: center; }
+
+        /* Top Nav - From Global Creator Design */
+        .top-nav { display: flex; justify-content: space-between; padding: 15px 5%; background: var(--b-dark); border-bottom: 1px solid #333; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .payment-pills { display: flex; gap: 10px; }
+        .pill { padding: 8px 15px; border: 1px solid var(--b-yellow); color: var(--b-yellow); border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .pill:hover { background: var(--b-yellow); color: #000; }
+        .social-icons a { color: #fff; margin-left: 15px; font-size: 18px; transition: 0.3s; }
+        .social-icons a:hover { color: var(--b-yellow); }
+
+        /* Hero Section */
+        .hero { padding: 40px 20px; }
+        .shimmer-title { font-family: 'Cinzel'; font-size: clamp(28px, 5vw, 45px); font-weight: 900; color: var(--gamer-red); margin-bottom: 10px; text-shadow: 0 0 20px rgba(255, 0, 51, 0.2); }
+        .tagline { color: #848e9c; font-size: 12px; letter-spacing: 3px; margin-bottom: 30px; text-transform: uppercase; }
+
+        /* Statistics Row */
+        .stats-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .stat-box { background: var(--b-dark); padding: 10px 20px; border-radius: 5px; border: 1px solid #333; font-size: 12px; font-weight: bold; }
+        .stat-box.sold { border-color: var(--gamer-red); color: var(--gamer-red); }
+
+        /* Map Container & Grid Logic */
+        .map-container { 
+            width: 95%; max-width: 1100px; margin: 0 auto; 
+            border: 2px solid #333; border-radius: 10px; 
+            background: #000; overflow-x: auto; padding: 20px;
+        }
+        
+        /* Grid: 20 Plots per row */
+        .plot-grid { 
+            display: grid; 
+            grid-template-columns: repeat(20, 1fr); 
+            gap: 2px; 
+            width: fit-content; 
+            margin: 0 auto; 
+        }
+
+        /* Plot Size: Half of original (approx 40px - 50px) */
+        .plot { 
+            width: 48px; height: 48px; 
+            background: #161A1E; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; position: relative; transition: 0.2s;
+        }
+        .plot:hover { border-color: var(--gamer-red); transform: scale(1.15); z-index: 10; box-shadow: 0 0 15px rgba(255,0,51,0.5); }
+        .plot img { width: 100%; height: 100%; object-fit: cover; }
+        .plot-id { font-size: 9px; color: #444; font-family: 'Cinzel'; }
+
+        /* Action Buttons */
+        .actions { margin-top: 30px; }
+        .cta-gold { background: var(--gamer-red); color: #fff; padding: 15px 35px; border-radius: 5px; font-weight: bold; text-decoration: none; display: inline-block; font-family: 'Cinzel'; }
+        .cta-outline { border: 1px solid #5e6673; color: #fff; padding: 15px 35px; border-radius: 5px; text-decoration: none; display: inline-block; margin-left: 10px; cursor: pointer; background: transparent; }
+
+        /* Tooltip */
+        #legacy-tooltip { 
+            position: fixed; display: none; background: rgba(0,0,0,0.95); 
+            color: var(--gamer-red); padding: 8px 15px; border-radius: 4px; 
+            font-size: 12px; z-index: 10001; pointer-events: none; 
+            border: 1px solid var(--gamer-red); font-family: 'Cinzel';
+        }
+
+        .future-notice { margin: 40px auto; max-width: 800px; padding: 20px; background: rgba(255, 0, 51, 0.05); border: 1px dashed var(--gamer-red); color: #ccc; font-size: 13px; line-height: 1.6; }
+        
+        footer { padding: 40px; color: #5e6673; font-size: 12px; border-top: 1px solid #222; margin-top: 50px; }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #2ebd85; color: #fff; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
+        @media (max-width: 768px) {
+            .top-nav { flex-direction: column; gap: 15px; }
+            .plot { width: 40px; height: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-nav">
+    <div class="payment-pills">
+        <div class="pill" onclick="copyVal('912221034')">BINANCE ID: 912221034</div>
+        <div class="pill" onclick="copyVal('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">USDT (TRC20)</div>
+    </div>
+    <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="hero">
+    <h1 class="shimmer-title">GAMER STUDIO</h1>
+    <p class="tagline">Exclusive District for 10,000 Global Creators & Streamers</p>
+    
+    <div class="stats-row">
+        <div class="stat-box">TOTAL PLOTS: 10,000</div>
+        <div class="stat-box sold">CLAIMED: <span id="sold-count">0</span></div>
+        <div class="stat-box">PRICE: $29</div>
+    </div>
+
+    <div class="actions">
+        <a href="order.html" class="cta-gold">RESERVE MY STUDIO</a>
+        <button onclick="downloadMap()" class="cta-outline"><i class="fas fa-camera"></i> DOWNLOAD MAP</button>
+    </div>
+</div>
+
+<div class="map-container" id="capture-area">
+    <div class="plot-grid" id="mainGrid">
+        </div>
+</div>
+
+<div class="future-notice">
+    <p>🎮 <strong>GAMER EXCLUSIVE:</strong> This map section is strictly reserved for gaming profiles, studios, and content creators.</p>
+    <p style="color: var(--gamer-red); font-weight: bold; margin-top: 10px;">⚠️ LIMITED SUPPLY: Once 10,000 plots are filled, no new spots will be created in this district.</p>
+</div>
+
+<footer>GAMER STUDIO © 2026 KAWSAR AHMED | THE GLOBAL CREATOR PROJECT</footer>
+
+<a href="https://wa.me/8801576940717" class="wa-float"><i class="fab fa-whatsapp"></i> 24/7 CREATOR SUPPORT</a>
+
+<div id="legacy-tooltip"></div>
+
+<script>
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+        authDomain: "the-5k-elite-legacy.firebaseapp.com",
+        databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+        projectId: "the-5k-elite-legacy",
+        storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+        messagingSenderId: "440824313752",
+        appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const grid = document.getElementById('mainGrid');
+    const tooltip = document.getElementById('legacy-tooltip');
+
+    // ডাটাবেস থেকে লাইভ ডাটা লোড এবং গ্রিড তৈরি
+    function loadGamerMap() {
+        db.ref('gamer_studio/live').on('value', snapshot => {
+            const liveData = snapshot.val() || {};
+            grid.innerHTML = "";
+            
+            // মোট ১০,০০০ প্লট তৈরি (এক লাইনে ২০টি)
+            // পারফরম্যান্সের জন্য শুরুতে ২০০-৫০০টি লোড করা ভালো, তবে আপনার চাহিদা অনুযায়ী এখানে লুপ সেট করা আছে
+            for (let i = 1; i <= 200; i++) { 
+                const plot = document.createElement('div');
+                plot.className = 'plot';
+                
+                if (liveData[i]) {
+                    plot.innerHTML = `<img src="${liveData[i].imageUrl}" alt="logo">`;
+                    plot.onclick = () => window.open(liveData[i].link, '_blank');
+                } else {
+                    plot.innerHTML = `<span class="plot-id">${i}</span>`;
+                }
+
+                // Tooltip Logic
+                plot.onmouseenter = (e) => {
+                    tooltip.style.display = 'block';
+                    tooltip.innerHTML = `<strong>${liveData[i] ? liveData[i].name : 'VACANT'}</strong><br>Studio Plot #${i}`;
+                };
+                plot.onmousemove = (e) => {
+                    tooltip.style.left = (e.clientX + 15) + 'px';
+                    tooltip.style.top = (e.clientY + 15) + 'px';
+                };
+                plot.onmouseleave = () => tooltip.style.display = 'none';
+
+                grid.appendChild(plot);
+            }
+            document.getElementById('sold-count').innerText = Object.keys(liveData).length;
+        });
+    }
+
+    function copyVal(txt) {
+        navigator.clipboard.writeText(txt);
+        alert("Copied: " + txt);
+    }
+
+    function downloadMap() {
+        const area = document.getElementById('capture-area');
+        html2canvas(area, { backgroundColor: '#0B0E11', scale: 2 }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'Gamer-Studio-Elite-Map.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
+
+    window.onload = loadGamerMap;
+</script>
+
+</body>
+</html>
