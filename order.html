@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RESERVE | THE ETERNAL ARK</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: #1E2329; padding: 40px; border-radius: 15px; border: 2px solid #FCD535; text-align: center; width: 380px; }
+        input { width: 100%; padding: 14px; margin: 12px 0; background: #2B3139; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; }
+        .btn { width: 100%; padding: 16px; background: #FCD535; color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 8px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="box" id="f-box">
+        <h2 style="color:#FCD535; font-family: serif;">RESERVE PLOT</h2>
+        <input type="text" id="bn" placeholder="Brand Name">
+        <input type="number" id="pn" placeholder="Plot Number">
+        <button class="btn" onclick="submitOrder()">SUBMIT REQUEST</button>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script>
+        firebase.initializeApp({databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com/"});
+        function submitOrder() {
+            const n = document.getElementById('bn').value, p = document.getElementById('pn').value;
+            if(!n || !p) return alert("Fill all fields!");
+            firebase.database().ref('orders/'+p).set({name:n, plotID:p}).then(() => {
+                confetti();
+                alert("Request Sent! Contact support for activation.");
+                window.location.href="index.html";
+            });
+        }
+    </script>
+</body>
+</html>
