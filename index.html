@@ -10,14 +10,14 @@
 
     <style>
         :root { 
-            --bg: #0B0E11; /* Binance Dark Background */
-            --gold: #F3BA2F; /* Binance Gold */
+            --bg: #0B0E11; 
+            --gold: #F3BA2F; 
             --gold-glow: rgba(243, 186, 47, 0.3);
             --royal-emerald: #00ffcc;
             --tycoon-silver: #E0E0E0;
             --creator-red: #ff0033;
             --border: rgba(243, 186, 47, 0.15);
-            --card-bg: #1E2329; /* Binance Card Color */
+            --card-bg: #1E2329; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,7 +31,6 @@
         #cursor-ring {
             position: fixed; width: 22px; height: 22px; border: 2px solid var(--gold); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
-            transform: translate(-50%, -50%); 
             will-change: transform;
             box-shadow: 0 0 10px var(--gold-glow);
         }
@@ -86,7 +85,7 @@
         .btn-gold-action { background: var(--gold); color: #000; border: none; }
         .btn-gold-action:hover { background: #fff; box-shadow: 0 0 35px var(--gold-glow); }
 
-        /* Drawer & Payment Gateway Styling */
+        /* Drawer Styling */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 500px; height: 100vh;
             background: #0B0E11; border-left: 1px solid var(--gold); z-index: 9999;
@@ -109,11 +108,13 @@
         .info-list { margin-top: 20px; font-size: 11px; color: #848E9C; text-align: left; line-height: 2; }
         .info-list li { list-style: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 5px 0; }
 
+        /* Social Icons Fixing Size */
         .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 5000; }
-        .social-icon { width: 55px; height: 55px; border-radius: 50%; }
+        .social-icon { width: 60px; height: 60px; border-radius: 50%; font-size: 26px; }
 
         footer { padding: 80px 6% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 80px; font-size: 11px; color: #848E9C; }
         footer strong { color: var(--gold); }
+        .disclaimer { margin-top: 10px; opacity: 0.7; }
 
         @media (max-width: 768px) {
             header { flex-direction: column; gap: 15px; padding: 15px; }
@@ -244,6 +245,7 @@
 
     <footer>
         <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>. All rights reserved.</p>
+        <p class="disclaimer">Disclaimer: We are not responsible for the content of external sites.</p>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -263,15 +265,9 @@
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
 
-        // Optimized Cursor Ring (Lags fixed)
         const ring = document.getElementById('cursor-ring');
         let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
+        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
         function moveRing() {
             ringX += (mouseX - ringX) * 0.2; 
             ringY += (mouseY - ringY) * 0.2;
@@ -284,7 +280,6 @@
         function closeDrawer() { document.getElementById('drawer').classList.remove('active'); }
         function copy(text) { navigator.clipboard.writeText(text); alert("Address Copied!"); }
 
-        // Background Animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
