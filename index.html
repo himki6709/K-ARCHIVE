@@ -10,13 +10,14 @@
 
     <style>
         :root { 
-            --bg: #030303; 
-            --gold: #D4AF37; 
-            --gold-glow: rgba(212, 175, 55, 0.4);
+            --bg: #0B0E11; /* Binance Dark Background */
+            --gold: #F3BA2F; /* Binance Gold */
+            --gold-glow: rgba(243, 186, 47, 0.3);
             --royal-emerald: #00ffcc;
             --tycoon-silver: #E0E0E0;
             --creator-red: #ff0033;
-            --border: rgba(212, 175, 55, 0.15);
+            --border: rgba(243, 186, 47, 0.15);
+            --card-bg: #1E2329; /* Binance Card Color */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,26 +26,27 @@
             overflow-x: hidden; cursor: none;
         }
 
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.5; }
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.3; }
 
         #cursor-ring {
-            position: fixed; width: 22px; height: 22px; border: 1.5px solid var(--gold); 
+            position: fixed; width: 22px; height: 22px; border: 2px solid var(--gold); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
-            transform: translate(-50%, -50%); transition: 0.1s ease-out;
+            transform: translate(-50%, -50%); 
+            will-change: transform;
             box-shadow: 0 0 10px var(--gold-glow);
         }
 
         header {
             position: fixed; top: 0; width: 100%; padding: 25px 6%;
             display: flex; justify-content: space-between; align-items: center; z-index: 5000;
-            background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
+            background: rgba(11, 14, 17, 0.95); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
         }
         .logo { font-family: 'Cinzel'; font-size: 26px; letter-spacing: 12px; color: var(--gold); text-decoration: none; font-weight: 900; }
         
         .registry-block-btn, .btn-affiliate, .social-icon { 
             font-size: 10px; color: var(--gold); letter-spacing: 2px; cursor: pointer; 
-            text-transform: uppercase; font-family: 'Cinzel'; transition: 0.4s; 
-            background: rgba(212, 175, 55, 0.03); border: 1px solid var(--gold);
+            text-transform: uppercase; font-family: 'Cinzel'; transition: 0.3s; 
+            background: rgba(243, 186, 47, 0.05); border: 1px solid var(--gold);
             text-decoration: none; display: flex; align-items: center; justify-content: center;
         }
 
@@ -52,7 +54,7 @@
         .btn-affiliate { padding: 12px 25px; font-weight: bold; }
 
         .registry-block-btn:hover, .btn-affiliate:hover, .social-icon:hover { 
-            background: var(--gold); color: #000; box-shadow: 0 0 25px var(--gold);
+            background: var(--gold); color: #000; box-shadow: 0 0 25px var(--gold-glow);
         }
 
         .main-container { padding: 220px 6% 80px; max-width: 1440px; margin: 0 auto; text-align: center; }
@@ -60,16 +62,16 @@
 
         .gateways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
         .gate-card {
-            height: 480px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border);
+            height: 480px; background: var(--card-bg); border: 1px solid var(--border);
             padding: 40px; text-align: left; transition: 0.5s; text-decoration: none; color: #fff;
             display: flex; flex-direction: column; justify-content: flex-end;
         }
-        .gate-card:hover { transform: translateY(-12px); border-color: var(--gold); background: rgba(212, 175, 55, 0.02); }
+        .gate-card:hover { transform: translateY(-12px); border-color: var(--gold); }
         .gate-card h3 { font-family: 'Cinzel'; font-size: 22px; margin-bottom: 15px; }
-        .gate-card p { font-size: 11px; color: #aaa; line-height: 1.8; margin-bottom: 15px; }
+        .gate-card p { font-size: 11px; color: #848E9C; line-height: 1.8; margin-bottom: 15px; }
         
         .promo-text { font-size: 10px; color: inherit; font-style: italic; margin-bottom: 20px; border-left: 2px solid; padding-left: 10px; opacity: 0.9; }
-        .tag { font-size: 8px; padding: 4px 8px; border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold); text-transform: uppercase; margin-right: 5px; }
+        .tag { font-size: 8px; padding: 4px 8px; border: 1px solid rgba(243, 186, 47, 0.3); color: var(--gold); text-transform: uppercase; margin-right: 5px; }
 
         .action-btn { 
             width: 100%; padding: 18px; font-family: 'Cinzel'; font-weight: 900; 
@@ -81,36 +83,36 @@
         .btn-silver:hover { background: #fff; box-shadow: 0 0 35px rgba(224, 224, 224, 0.7); }
         .btn-red { background: #ff0033; color: #fff; border: none; }
         .btn-red:hover { background: #ff4444; box-shadow: 0 0 35px rgba(255, 0, 51, 0.7); }
-        .btn-gold-action { background: #D4AF37; color: #000; border: none; }
-        .btn-gold-action:hover { background: #fff; box-shadow: 0 0 35px rgba(212, 175, 55, 0.7); }
+        .btn-gold-action { background: var(--gold); color: #000; border: none; }
+        .btn-gold-action:hover { background: #fff; box-shadow: 0 0 35px var(--gold-glow); }
 
         /* Drawer & Payment Gateway Styling */
         #drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 500px; height: 100vh;
-            background: #080808; border-left: 1px solid var(--gold); z-index: 9999;
+            background: #0B0E11; border-left: 1px solid var(--gold); z-index: 9999;
             padding: 50px 30px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto;
         }
         #drawer.active { right: 0; }
-        .step-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
+        .step-box { background: #1E2329; border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
         
-        .gw-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-        .gw-logo-img { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; border: 1px solid var(--gold); }
+        .gw-header { display: flex; align-items: center; gap: 15px; margin-bottom: 12px; }
+        .gw-icon-box { width: 45px; height: 45px; border-radius: 8px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--gold); }
         
         .address-item { margin-bottom: 25px; }
         .address-name { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: bold; margin-bottom: 8px; display: block; }
         .full-address { 
-            background: #000; padding: 15px; border: 1px dashed var(--gold); font-size: 11px; 
+            background: #0B0E11; padding: 15px; border: 1px dashed var(--gold); font-size: 11px; 
             display: flex; justify-content: space-between; align-items: center; 
-            cursor: pointer; word-break: break-all; font-family: monospace; color: #ccc;
+            cursor: pointer; word-break: break-all; font-family: monospace; color: #EAECEF;
         }
 
-        .info-list { margin-top: 20px; font-size: 11px; color: #888; text-align: left; line-height: 2; }
+        .info-list { margin-top: 20px; font-size: 11px; color: #848E9C; text-align: left; line-height: 2; }
         .info-list li { list-style: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 5px 0; }
 
         .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 5000; }
-        .social-icon { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 22px; }
+        .social-icon { width: 55px; height: 55px; border-radius: 50%; }
 
-        footer { padding: 80px 6% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 80px; font-size: 11px; color: #666; }
+        footer { padding: 80px 6% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 80px; font-size: 11px; color: #848E9C; }
         footer strong { color: var(--gold); }
 
         @media (max-width: 768px) {
@@ -131,7 +133,7 @@
         <div class="logo-box">
             <a href="#" class="logo">ARK</a>
             <div class="registry-block-btn" onclick="openDrawer()">
-                <i class="fa-solid fa-crown" style="margin-right:8px"></i> Payment Gateway
+                <i class="fa-solid fa-bolt" style="margin-right:8px"></i> Payment Gateway
             </div>
         </div>
         <div class="nav-btns">
@@ -148,7 +150,7 @@
                 <p>Be part of our global map. A permanent digital presence for any user or brand looking for worldwide visibility.</p>
                 <div class="promo-text" style="color:var(--tycoon-silver); border-color:var(--tycoon-silver)">Boost your brand reach to thousands. Reserve your spot on the eternal grid today!</div>
                 <div><span class="tag">UNLIMITED PLOTS</span><span class="tag">PUBLIC ACCESS</span></div>
-                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--tycoon-silver); font-size: 24px;">$1 / PLOT</div>
+                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--tycoon-silver); font-size: 24px;">$10 / PLOT</div>
                 <a href="order.html" class="action-btn btn-silver">RESERVE NOW</a>
             </div>
 
@@ -186,8 +188,8 @@
         <div class="step-box">
             <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d5b8b.png" class="gw-logo-img" alt="bKash">
-                    <span class="address-name">BKASH (SEND MONEY) <span class="verified-user" style="color:#00ffcc;">[VERIFIED]</span></span>
+                    <div class="gw-icon-box"><i class="fa-solid fa-mobile-screen"></i></div>
+                    <span class="address-name">BKASH (SEND MONEY) <span style="color:#00ffcc;">[VERIFIED]</span></span>
                 </div>
                 <div class="full-address" onclick="copy('+8801756206213')">
                     <span>+8801756206213</span> <i class="fa-regular fa-copy"></i>
@@ -196,7 +198,7 @@
 
             <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d5846.png" class="gw-logo-img" alt="Rocket">
+                    <div class="gw-icon-box"><i class="fa-solid fa-wallet"></i></div>
                     <span class="address-name">ROCKET (PERSONAL)</span>
                 </div>
                 <div class="full-address" onclick="copy('+8801756206213')">
@@ -206,8 +208,8 @@
 
             <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d57e4.jpg" class="gw-logo-img" alt="Binance">
-                    <span class="address-name">BINANCE PAY UID <span style="color:#F3BA2F; margin-left:5px;">[KAWSAR6700]</span></span>
+                    <div class="gw-icon-box"><i class="fa-solid fa-coins"></i></div>
+                    <span class="address-name">BINANCE PAY UID <span style="color:var(--gold); margin-left:5px;">[KAWSAR6700]</span></span>
                 </div>
                 <div class="full-address" onclick="copy('912221034')">
                     <span>912221034</span> <i class="fa-regular fa-copy"></i>
@@ -216,7 +218,7 @@
 
             <div class="address-item">
                 <div class="gw-header">
-                    <img src="image_8d54c3.png" class="gw-logo-img" alt="USDT">
+                    <div class="gw-icon-box"><i class="fa-brands fa-ethereum"></i></div>
                     <span class="address-name">USDT (TRC20 ADDRESS)</span>
                 </div>
                 <div class="full-address" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
@@ -242,7 +244,6 @@
 
     <footer>
         <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>. All rights reserved.</p>
-        <p>Disclaimer: We are not responsible for the content of external sites.</p>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -262,26 +263,38 @@
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
 
+        // Optimized Cursor Ring (Lags fixed)
         const ring = document.getElementById('cursor-ring');
+        let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
         document.addEventListener('mousemove', (e) => {
-            ring.style.left = e.clientX + 'px';
-            ring.style.top = e.clientY + 'px';
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
+
+        function moveRing() {
+            ringX += (mouseX - ringX) * 0.2; 
+            ringY += (mouseY - ringY) * 0.2;
+            ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+            requestAnimationFrame(moveRing);
+        }
+        moveRing();
 
         function openDrawer() { document.getElementById('drawer').classList.add('active'); }
         function closeDrawer() { document.getElementById('drawer').classList.remove('active'); }
         function copy(text) { navigator.clipboard.writeText(text); alert("Address Copied!"); }
 
+        // Background Animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
         class Star {
             constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.size = Math.random()*1.2; }
-            draw() { ctx.fillStyle = "rgba(212,175,55,0.3)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); }
+            draw() { ctx.fillStyle = "rgba(243,186,47,0.3)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); }
         }
         let stars = [];
-        for(let i=0; i<100; i++) stars.push(new Star());
+        for(let i=0; i<80; i++) stars.push(new Star());
         function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
         animate();
     </script>
