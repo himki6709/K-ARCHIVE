@@ -4,86 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAMER STUDIO | THE CREATOR DISTRICT</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@300;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    
+
     <style>
-        :root { --bg: #0B0E11; --gold: #FCD535; --gamer-red: #ff0033; --dark: #1E2329; }
-        body { background: var(--bg); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding-bottom: 50px; }
-        
+        :root { 
+            --b-yellow: #FCD535; 
+            --b-dark: #1E2329; 
+            --b-bg: #0B0E11; 
+            --gamer-red: #ff0033;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--b-bg); color: #EAECEF; font-family: 'Plus Jakarta Sans', sans-serif; text-align: center; overflow-x: hidden; }
+
         /* Navbar */
-        .top-nav { display: flex; justify-content: space-between; padding: 15px 5%; background: var(--dark); border-bottom: 1px solid #333; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .pill { padding: 8px 15px; border: 1px solid var(--gold); color: var(--gold); border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: bold; }
+        .top-nav { display: flex; justify-content: space-between; padding: 15px 5%; background: var(--b-dark); border-bottom: 1px solid #333; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .back-btn { color: #fff; text-decoration: none; font-size: 12px; font-weight: bold; }
+        .pill { padding: 8px 15px; border: 1px solid var(--b-yellow); color: var(--b-yellow); border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: bold; }
 
-        .hero { padding: 40px 20px; text-align: center; }
-        .shimmer-title { font-family: 'Cinzel'; font-size: clamp(24px, 5vw, 45px); color: var(--gamer-red); letter-spacing: 5px; margin: 0; }
+        /* Hero Section */
+        .hero { padding: 60px 20px; background: linear-gradient(to bottom, #161a1e, #0b0e11); }
+        .shimmer-title { font-family: 'Cinzel'; font-size: clamp(30px, 8vw, 55px); color: var(--gamer-red); margin: 0; text-shadow: 0 0 20px rgba(255, 0, 51, 0.4); letter-spacing: 5px; }
+        .tagline { color: #848e9c; font-size: 12px; letter-spacing: 4px; margin-top: 15px; text-transform: uppercase; }
         
-        /* Map Container & Grid - এটিই আপনার ক্যানভাস */
+        .stats-row { display: flex; justify-content: center; gap: 15px; margin: 30px 0; }
+        .stat-box { background: var(--b-dark); padding: 12px 25px; border-radius: 5px; border: 1px solid #333; font-weight: bold; font-size: 13px; font-family: 'Cinzel'; }
+
+        /* Map Canvas Grid */
         .map-container { 
-            width: 95%; 
-            max-width: 1200px; 
-            margin: 20px auto; 
-            background: #000; 
-            border: 2px solid #333; 
-            border-radius: 8px;
-            padding: 10px;
-            overflow: auto; /* মোবাইলে স্ক্রল করার জন্য */
-            min-height: 400px;
+            width: 95%; max-width: 1100px; margin: 20px auto; 
+            border: 2px solid #333; border-radius: 10px; background: #000; 
+            overflow: auto; padding: 20px; min-height: 450px;
         }
-
         .plot-grid { 
-            display: grid; 
-            grid-template-columns: repeat(20, 1fr); /* প্রতি লাইনে ২০টি প্লট */
-            gap: 3px; 
-            width: fit-content; 
-            margin: 0 auto;
+            display: grid; grid-template-columns: repeat(20, 1fr); 
+            gap: 3px; width: fit-content; margin: 0 auto; 
         }
-
-        /* প্লট স্টাইল (সাইজ অর্ধেক করা হয়েছে) */
         .plot { 
-            width: 45px; 
-            height: 45px; 
-            background: #161A1E; 
-            border: 1px solid rgba(255,255,255,0.05); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            cursor: pointer; 
-            transition: 0.2s;
-            position: relative;
+            width: 48px; height: 48px; background: #161A1E; 
+            border: 1px solid rgba(255,255,255,0.05); display: flex; 
+            align-items: center; justify-content: center; cursor: pointer; 
+            position: relative; transition: 0.2s;
         }
+        .plot:hover { border-color: var(--gamer-red); transform: scale(1.15); z-index: 5; background: #23282e; }
+        .plot img { width: 100%; height: 100%; object-fit: cover; }
+        .plot-id { font-size: 9px; color: #444; font-family: 'Cinzel'; }
 
-        .plot:hover { 
-            border-color: var(--gamer-red); 
-            transform: scale(1.1); 
-            z-index: 10; 
-            background: #1c2127;
+        /* Integrated Modal (Booking Form) */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); z-index: 9999; 
+            display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); 
         }
+        .modal-box { 
+            background: #1E2329; border: 2px solid var(--gamer-red); 
+            padding: 40px; width: 90%; max-width: 400px; border-radius: 15px; text-align: center; 
+        }
+        .modal-box h2 { font-family: 'Cinzel'; color: var(--gamer-red); margin-bottom: 20px; }
+        input { 
+            width: 100%; padding: 15px; margin: 10px 0; 
+            background: #2B3139; border: 1px solid #444; 
+            color: #fff; border-radius: 8px; outline: none; font-size: 15px;
+        }
+        input:focus { border-color: var(--b-yellow); }
+        .btn-submit { 
+            width: 100%; padding: 16px; background: var(--gamer-red); 
+            color: #fff; font-weight: bold; border: none; cursor: pointer; 
+            border-radius: 8px; font-size: 16px; margin-top: 15px; font-family: 'Cinzel';
+        }
+        .close-link { display: block; margin-top: 20px; color: #848e9c; cursor: pointer; font-size: 12px; }
 
-        .plot img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
-        .plot-id { font-size: 8px; color: #444; font-family: 'Cinzel'; font-weight: bold; }
+        /* Success State */
+        #success-state { display: none; }
+        .wa-btn { 
+            display: block; background: #2ebd85; color: #fff; padding: 15px; 
+            text-decoration: none; border-radius: 8px; font-weight: bold; margin-top: 20px; 
+        }
 
         /* Tooltip */
-        #tooltip { position: fixed; display: none; background: #000; color: var(--gamer-red); padding: 5px 10px; border: 1px solid var(--gamer-red); font-size: 11px; z-index: 10000; pointer-events: none; border-radius: 3px; }
-
-        .cta-gold { background: var(--gamer-red); color: #fff; padding: 15px 35px; border-radius: 5px; font-weight: bold; text-decoration: none; display: inline-block; font-family: 'Cinzel'; margin-top: 20px; }
-        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #2ebd85; color: #fff; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        #tooltip { position: fixed; display: none; background: #000; color: var(--gamer-red); padding: 5px 10px; border: 1px solid var(--gamer-red); font-size: 11px; z-index: 10000; pointer-events: none; }
+        
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #2ebd85; color: #fff; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
     <div class="top-nav">
-        <div class="pill" onclick="navigator.clipboard.writeText('912221034'); alert('Copied!')">BINANCE ID: 912221034</div>
-        <a href="index.html" style="color: #fff; text-decoration: none; font-size: 12px; font-family: 'Cinzel';">← BACK TO HOME</a>
+        <a href="index.html" class="back-btn">← EXIT DISTRICT</a>
+        <div class="pill" onclick="navigator.clipboard.writeText('912221034'); alert('Binance ID Copied!')">BINANCE ID: 912221034</div>
     </div>
 
     <div class="hero">
         <h1 class="shimmer-title">GAMER STUDIO</h1>
-        <p style="color: #848e9c; font-size: 10px; letter-spacing: 4px; margin-top: 10px;">A LIMITED LEGACY FOR 10,000 CREATORS</p>
-        <a href="order.html" class="cta-gold">RESERVE MY PLOT ($29)</a>
+        <p class="tagline">Exclusive Zone for Creators & Gamers</p>
+        
+        <div class="stats-row">
+            <div class="stat-box">10,000 BLOCKS</div>
+            <div class="stat-box" style="color:var(--gamer-red)">$29 / PLOT</div>
+        </div>
     </div>
 
     <div class="map-container">
@@ -91,66 +115,116 @@
             </div>
     </div>
 
+    <div id="booking-modal" class="modal-overlay">
+        <div class="modal-box" id="form-state">
+            <h2>RESERVE PLOT</h2>
+            <p style="font-size: 11px; color: #848e9c; margin-bottom: 10px;">GAMER DISTRICT SECTION 01</p>
+            <input type="text" id="brand-name" placeholder="Enter Your Gaming Studio Name">
+            <input type="number" id="plot-number" placeholder="Selected Plot Number" readonly>
+            <button class="btn-submit" onclick="submitGamerOrder()">CONFIRM SELECTION</button>
+            <span class="close-link" onclick="closeModal()">CANCEL</span>
+        </div>
+
+        <div class="modal-box" id="success-state">
+            <h2 style="color: #2ebd85;">REQUEST SENT!</h2>
+            <p id="success-msg" style="font-size: 13px; color: #ccc; margin: 15px 0;"></p>
+            <div style="text-align: left; background: #111; padding: 15px; font-size: 11px; color: #888; border-radius: 5px;">
+                1. Pay $29 to Binance ID: 912221034<br>
+                2. Send Screenshot to WhatsApp Support.<br>
+                3. Provide your Profile/Website Link.
+            </div>
+            <a href="#" id="wa-link" target="_blank" class="wa-btn"><i class="fab fa-whatsapp"></i> CONTACT FOR ACTIVATION</a>
+            <span class="close-link" onclick="location.reload()">CLOSE</span>
+        </div>
+    </div>
+
     <div id="tooltip"></div>
     <a href="https://wa.me/8801576940717" class="wa-float"><i class="fab fa-whatsapp"></i> SUPPORT</a>
 
     <script>
-        // Firebase Initialize
+        // Firebase Config
         const firebaseConfig = {
-            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
-            authDomain: "the-5k-elite-legacy.firebaseapp.com",
-            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
-            projectId: "the-5k-elite-legacy",
-            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
-            messagingSenderId: "440824313752",
-            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com/"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        const grid = document.getElementById('mainGrid');
-        const tooltip = document.getElementById('tooltip');
+        // 1. Load Grid Data
+        function loadGamerGrid() {
+            const grid = document.getElementById('mainGrid');
+            const tooltip = document.getElementById('tooltip');
 
-        // গ্রিড রেন্ডার ফাংশন
-        function renderGrid(data = {}) {
-            grid.innerHTML = ""; // আগের কন্টেন্ট ক্লিয়ার
-            for (let i = 1; i <= 200; i++) { // ২০ কলাম x ১০ সারি = ২০০ প্লট (প্রাথমিক)
-                const p = document.createElement('div');
-                p.className = 'plot';
-                
-                if (data[i]) {
-                    p.innerHTML = `<img src="${data[i].imageUrl}" alt="Logo">`;
-                    p.onclick = () => window.open(data[i].link, '_blank');
-                } else {
-                    p.innerHTML = `<span class="plot-id">${i}</span>`;
+            db.ref('gamer_studio_live').on('value', snap => {
+                const liveData = snap.val() || {};
+                grid.innerHTML = "";
+
+                // Displaying first 200 plots as initial canvas
+                for (let i = 1; i <= 200; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'plot';
+                    
+                    if (liveData[i]) {
+                        p.innerHTML = `<img src="${liveData[i].logo}">`;
+                        p.onclick = () => window.open(liveData[i].url, '_blank');
+                    } else {
+                        p.innerHTML = `<span class="plot-id">${i}</span>`;
+                        p.onclick = () => openModal(i);
+                    }
+
+                    p.onmouseenter = () => {
+                        tooltip.style.display = 'block';
+                        tooltip.innerText = liveData[i] ? liveData[i].name : `VACANT STUDIO #${i}`;
+                    };
+                    p.onmousemove = (e) => {
+                        tooltip.style.left = e.clientX + 15 + 'px';
+                        tooltip.style.top = e.clientY + 15 + 'px';
+                    };
+                    p.onmouseout = () => tooltip.style.display = 'none';
+
+                    grid.appendChild(p);
                 }
-
-                // মাউস ইভেন্ট
-                p.onmouseenter = () => { 
-                    tooltip.style.display = 'block'; 
-                    tooltip.innerText = data[i] ? data[i].name : `VACANT PLOT #${i}`; 
-                };
-                p.onmousemove = (e) => { 
-                    tooltip.style.left = e.clientX + 15 + 'px'; 
-                    tooltip.style.top = e.clientY + 15 + 'px'; 
-                };
-                p.onmouseleave = () => { tooltip.style.display = 'none'; };
-
-                grid.appendChild(p);
-            }
+            });
         }
 
-        // ডাটাবেস থেকে ডাটা শোনা
-        db.ref('gamer_studio/live').on('value', snap => {
-            const data = snap.val() || {};
-            renderGrid(data);
-        }, error => {
-            console.error("Firebase Error:", error);
-            renderGrid(); // এরর হলেও খালি গ্রিড দেখাবে
-        });
+        // 2. Modal Controls
+        function openModal(n) {
+            document.getElementById('plot-number').value = n;
+            document.getElementById('booking-modal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('booking-modal').style.display = 'none';
+        }
 
-        // শুরুতে একবার গ্রিড কল করা
-        renderGrid();
+        // 3. Submit Order
+        function submitGamerOrder() {
+            const name = document.getElementById('brand-name').value;
+            const plotNum = document.getElementById('plot-number').value;
+
+            if(!name) return alert("Please enter your Studio/Brand name!");
+
+            db.ref('gamer_studio_inquiries/' + plotNum).set({
+                studioName: name,
+                plotID: plotNum,
+                price: "$29",
+                status: "Pending",
+                time: Date.now()
+            }).then(() => {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                showSuccessState(name, plotNum);
+            });
+        }
+
+        // 4. Show Success
+        function showSuccessState(name, id) {
+            document.getElementById('form-state').style.display = 'none';
+            document.getElementById('success-state').style.display = 'block';
+            document.getElementById('success-msg').innerText = `Hello ${name}, your request for Studio #${id} has been submitted.`;
+
+            const waMsg = encodeURIComponent(`Hi ARK Support,\nI want to activate my Gamer Studio Plot.\nStudio Name: ${name}\nPlot ID: #${id}\nPrice: $29`);
+            document.getElementById('wa-link').href = `https://wa.me/8801576940717?text=${waMsg}`;
+        }
+
+        window.onload = loadGamerGrid;
     </script>
 </body>
 </html>
