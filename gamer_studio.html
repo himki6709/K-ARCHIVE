@@ -6,44 +6,97 @@
     <title>GAMER STUDIO | THE CREATOR DISTRICT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
         :root { --bg: #0B0E11; --gold: #FCD535; --gamer-red: #ff0033; --dark: #1E2329; }
-        body { background: var(--bg); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; text-align: center; }
+        body { background: var(--bg); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding-bottom: 50px; }
+        
+        /* Navbar */
         .top-nav { display: flex; justify-content: space-between; padding: 15px 5%; background: var(--dark); border-bottom: 1px solid #333; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .pill { padding: 8px 15px; border: 1px solid var(--gold); color: var(--gold); border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: bold; }
-        .hero { padding: 40px 20px; }
-        .shimmer-title { font-family: 'Cinzel'; font-size: clamp(24px, 5vw, 45px); color: var(--gamer-red); letter-spacing: 5px; text-shadow: 0 0 15px rgba(255, 0, 51, 0.3); }
-        .map-container { width: 95%; max-width: 1100px; margin: 0 auto; border: 2px solid #333; border-radius: 10px; background: #000; overflow-x: auto; padding: 20px; }
-        .plot-grid { display: grid; grid-template-columns: repeat(20, 1fr); gap: 2px; width: fit-content; margin: 0 auto; }
-        .plot { width: 48px; height: 48px; background: #161A1E; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: 0.2s; }
-        .plot:hover { border-color: var(--gamer-red); transform: scale(1.15); z-index: 10; box-shadow: 0 0 15px rgba(255,0,51,0.5); }
-        .plot img { width: 100%; height: 100%; object-fit: cover; }
-        .plot-id { font-size: 9px; color: #444; font-family: 'Cinzel'; }
-        #tooltip { position: fixed; display: none; background: #000; color: var(--gamer-red); padding: 5px 10px; border: 1px solid var(--gamer-red); font-size: 11px; z-index: 10000; pointer-events: none; border-radius: 3px; font-family: 'Cinzel'; }
+
+        .hero { padding: 40px 20px; text-align: center; }
+        .shimmer-title { font-family: 'Cinzel'; font-size: clamp(24px, 5vw, 45px); color: var(--gamer-red); letter-spacing: 5px; margin: 0; }
+        
+        /* Map Container & Grid - এটিই আপনার ক্যানভাস */
+        .map-container { 
+            width: 95%; 
+            max-width: 1200px; 
+            margin: 20px auto; 
+            background: #000; 
+            border: 2px solid #333; 
+            border-radius: 8px;
+            padding: 10px;
+            overflow: auto; /* মোবাইলে স্ক্রল করার জন্য */
+            min-height: 400px;
+        }
+
+        .plot-grid { 
+            display: grid; 
+            grid-template-columns: repeat(20, 1fr); /* প্রতি লাইনে ২০টি প্লট */
+            gap: 3px; 
+            width: fit-content; 
+            margin: 0 auto;
+        }
+
+        /* প্লট স্টাইল (সাইজ অর্ধেক করা হয়েছে) */
+        .plot { 
+            width: 45px; 
+            height: 45px; 
+            background: #161A1E; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .plot:hover { 
+            border-color: var(--gamer-red); 
+            transform: scale(1.1); 
+            z-index: 10; 
+            background: #1c2127;
+        }
+
+        .plot img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
+        .plot-id { font-size: 8px; color: #444; font-family: 'Cinzel'; font-weight: bold; }
+
+        /* Tooltip */
+        #tooltip { position: fixed; display: none; background: #000; color: var(--gamer-red); padding: 5px 10px; border: 1px solid var(--gamer-red); font-size: 11px; z-index: 10000; pointer-events: none; border-radius: 3px; }
+
         .cta-gold { background: var(--gamer-red); color: #fff; padding: 15px 35px; border-radius: 5px; font-weight: bold; text-decoration: none; display: inline-block; font-family: 'Cinzel'; margin-top: 20px; }
-        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #2ebd85; color: #fff; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 1000; }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #2ebd85; color: #fff; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
+
     <div class="top-nav">
-        <div class="pill" onclick="navigator.clipboard.writeText('912221034'); alert('Binance ID Copied!')">BINANCE ID: 912221034</div>
+        <div class="pill" onclick="navigator.clipboard.writeText('912221034'); alert('Copied!')">BINANCE ID: 912221034</div>
         <a href="index.html" style="color: #fff; text-decoration: none; font-size: 12px; font-family: 'Cinzel';">← BACK TO HOME</a>
     </div>
+
     <div class="hero">
         <h1 class="shimmer-title">GAMER STUDIO</h1>
         <p style="color: #848e9c; font-size: 10px; letter-spacing: 4px; margin-top: 10px;">A LIMITED LEGACY FOR 10,000 CREATORS</p>
         <a href="order.html" class="cta-gold">RESERVE MY PLOT ($29)</a>
     </div>
-    <div class="map-container" id="capture-area">
-        <div class="plot-grid" id="mainGrid"></div>
+
+    <div class="map-container">
+        <div class="plot-grid" id="mainGrid">
+            </div>
     </div>
+
     <div id="tooltip"></div>
     <a href="https://wa.me/8801576940717" class="wa-float"><i class="fab fa-whatsapp"></i> SUPPORT</a>
+
     <script>
-        firebase.initializeApp({
+        // Firebase Initialize
+        const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
             databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
@@ -51,31 +104,53 @@
             storageBucket: "the-5k-elite-legacy.firebasestorage.app",
             messagingSenderId: "440824313752",
             appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
-        });
+        };
+        firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        function loadGrid() {
-            const grid = document.getElementById('mainGrid');
-            const tooltip = document.getElementById('tooltip');
-            db.ref('gamer_studio/live').on('value', snap => {
-                const data = snap.val() || {};
-                grid.innerHTML = "";
-                for (let i = 1; i <= 200; i++) {
-                    const p = document.createElement('div');
-                    p.className = 'plot';
-                    if (data[i]) {
-                        p.innerHTML = `<img src="${data[i].imageUrl}">`;
-                        p.onclick = () => window.open(data[i].link, '_blank');
-                    } else {
-                        p.innerHTML = `<span class="plot-id">${i}</span>`;
-                    }
-                    p.onmouseenter = () => { tooltip.style.display = 'block'; tooltip.innerText = `STUDIO #${i}`; };
-                    p.onmousemove = (e) => { tooltip.style.left = e.clientX + 10 + 'px'; tooltip.style.top = e.clientY + 10 + 'px'; };
-                    p.onmouseleave = () => tooltip.style.display = 'none';
-                    grid.appendChild(p);
+
+        const grid = document.getElementById('mainGrid');
+        const tooltip = document.getElementById('tooltip');
+
+        // গ্রিড রেন্ডার ফাংশন
+        function renderGrid(data = {}) {
+            grid.innerHTML = ""; // আগের কন্টেন্ট ক্লিয়ার
+            for (let i = 1; i <= 200; i++) { // ২০ কলাম x ১০ সারি = ২০০ প্লট (প্রাথমিক)
+                const p = document.createElement('div');
+                p.className = 'plot';
+                
+                if (data[i]) {
+                    p.innerHTML = `<img src="${data[i].imageUrl}" alt="Logo">`;
+                    p.onclick = () => window.open(data[i].link, '_blank');
+                } else {
+                    p.innerHTML = `<span class="plot-id">${i}</span>`;
                 }
-            });
+
+                // মাউস ইভেন্ট
+                p.onmouseenter = () => { 
+                    tooltip.style.display = 'block'; 
+                    tooltip.innerText = data[i] ? data[i].name : `VACANT PLOT #${i}`; 
+                };
+                p.onmousemove = (e) => { 
+                    tooltip.style.left = e.clientX + 15 + 'px'; 
+                    tooltip.style.top = e.clientY + 15 + 'px'; 
+                };
+                p.onmouseleave = () => { tooltip.style.display = 'none'; };
+
+                grid.appendChild(p);
+            }
         }
-        window.onload = loadGrid;
+
+        // ডাটাবেস থেকে ডাটা শোনা
+        db.ref('gamer_studio/live').on('value', snap => {
+            const data = snap.val() || {};
+            renderGrid(data);
+        }, error => {
+            console.error("Firebase Error:", error);
+            renderGrid(); // এরর হলেও খালি গ্রিড দেখাবে
+        });
+
+        // শুরুতে একবার গ্রিড কল করা
+        renderGrid();
     </script>
 </body>
 </html>
