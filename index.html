@@ -3,295 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE ETERNAL ARK | KAWSAR</title>
-    
+    <title>THE ETERNAL ARK | OWN A PIECE OF HISTORY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    
     <style>
-        :root { 
-            --bg: #0B0E11; 
-            --gold: #F3BA2F; 
-            --gold-glow: rgba(243, 186, 47, 0.3);
-            --royal-emerald: #00ffcc;
-            --tycoon-silver: #E0E0E0;
-            --creator-red: #ff0033;
-            --border: rgba(243, 186, 47, 0.15);
-            --card-bg: #1E2329; 
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
-            overflow-x: hidden; cursor: none;
-        }
-
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.3; }
-
-        #cursor-ring {
-            position: fixed; width: 22px; height: 22px; border: 2px solid var(--gold); 
-            border-radius: 50%; pointer-events: none; z-index: 10000; 
-            will-change: transform;
-            box-shadow: 0 0 10px var(--gold-glow);
-        }
-
-        header {
-            position: fixed; top: 0; width: 100%; padding: 25px 6%;
-            display: flex; justify-content: space-between; align-items: center; z-index: 5000;
-            background: rgba(11, 14, 17, 0.95); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
-        }
-        .logo { font-family: 'Cinzel'; font-size: 26px; letter-spacing: 12px; color: var(--gold); text-decoration: none; font-weight: 900; }
+        :root { --gold: #F3BA2F; --bg: #0B0E11; --grid-line: #1E2329; --selection: rgba(243, 186, 47, 0.4); }
         
-        .registry-block-btn, .btn-affiliate, .social-icon { 
-            font-size: 10px; color: var(--gold); letter-spacing: 2px; cursor: pointer; 
-            text-transform: uppercase; font-family: 'Cinzel'; transition: 0.3s; 
-            background: rgba(243, 186, 47, 0.05); border: 1px solid var(--gold);
-            text-decoration: none; display: flex; align-items: center; justify-content: center;
-        }
-
-        .registry-block-btn { padding: 10px 20px; margin-top: 12px; display: inline-block; }
-        .btn-affiliate { padding: 12px 25px; font-weight: bold; }
-
-        .registry-block-btn:hover, .btn-affiliate:hover, .social-icon:hover { 
-            background: var(--gold); color: #000; box-shadow: 0 0 25px var(--gold-glow);
-        }
-
-        .main-container { padding: 220px 6% 80px; max-width: 1440px; margin: 0 auto; text-align: center; }
-        .hero-title { font-family: 'Cinzel'; font-size: 15px; letter-spacing: 12px; color: var(--gold); margin-bottom: 70px; }
-
-        .gateways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
-        .gate-card {
-            height: 480px; background: var(--card-bg); border: 1px solid var(--border);
-            padding: 40px; text-align: left; transition: 0.5s; text-decoration: none; color: #fff;
-            display: flex; flex-direction: column; justify-content: flex-end;
-        }
-        .gate-card:hover { transform: translateY(-12px); border-color: var(--gold); }
-        .gate-card h3 { font-family: 'Cinzel'; font-size: 22px; margin-bottom: 15px; }
-        .gate-card p { font-size: 11px; color: #848E9C; line-height: 1.8; margin-bottom: 15px; }
+        body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; }
         
-        .promo-text { font-size: 10px; color: inherit; font-style: italic; margin-bottom: 20px; border-left: 2px solid; padding-left: 10px; opacity: 0.9; }
-        .tag { font-size: 8px; padding: 4px 8px; border: 1px solid rgba(243, 186, 47, 0.3); color: var(--gold); text-transform: uppercase; margin-right: 5px; }
+        /* Header & Navigation */
+        header { padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--grid-line); background: #000; }
+        header h1 { font-family: 'Cinzel'; font-size: clamp(24px, 5vw, 45px); color: var(--gold); margin: 0; letter-spacing: 5px; }
+        header p { font-size: 12px; color: #848e9c; margin-top: 10px; text-transform: uppercase; letter-spacing: 2px; }
 
-        .action-btn { 
-            width: 100%; padding: 18px; font-family: 'Cinzel'; font-weight: 900; 
-            text-align: center; text-decoration: none; font-size: 14px; margin-top: 15px;
-            transition: 0.4s; letter-spacing: 2px;
-        }
+        /* Stats Bar */
+        .stats-bar { display: flex; justify-content: center; gap: 20px; background: #161A1E; padding: 15px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--gold); }
+        .stat-item { font-size: 13px; font-weight: bold; }
+        .stat-item span { color: var(--gold); }
 
-        .btn-silver { background: #E0E0E0; color: #000; border: none; }
-        .btn-silver:hover { background: #fff; box-shadow: 0 0 35px rgba(224, 224, 224, 0.7); }
-        .btn-red { background: #ff0033; color: #fff; border: none; }
-        .btn-red:hover { background: #ff4444; box-shadow: 0 0 35px rgba(255, 0, 51, 0.7); }
-        .btn-gold-action { background: var(--gold); color: #000; border: none; }
-        .btn-gold-action:hover { background: #fff; box-shadow: 0 0 35px var(--gold-glow); }
-
-        /* Drawer Styling */
-        #drawer {
-            position: fixed; top: 0; right: -100%; width: 100%; max-width: 500px; height: 100vh;
-            background: #0B0E11; border-left: 1px solid var(--gold); z-index: 9999;
-            padding: 50px 30px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto;
-        }
-        #drawer.active { right: 0; }
-        .step-box { background: #1E2329; border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
+        /* Million Dollar Grid Section */
+        .canvas-section { padding: 40px 0; display: flex; flex-direction: column; align-items: center; }
         
-        .gw-header { display: flex; align-items: center; gap: 15px; margin-bottom: 12px; }
-        .gw-icon-box { width: 45px; height: 45px; border-radius: 8px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--gold); }
-        
-        .address-item { margin-bottom: 25px; }
-        .address-name { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: bold; margin-bottom: 8px; display: block; }
-        .full-address { 
-            background: #0B0E11; padding: 15px; border: 1px dashed var(--gold); font-size: 11px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            cursor: pointer; word-break: break-all; font-family: monospace; color: #EAECEF;
+        #grid-container { 
+            position: relative; 
+            background: #fff; /* Original Homepage Style */
+            border: 5px solid var(--grid-line);
+            display: grid;
+            grid-template-columns: repeat(30, 10px); /* 30 columns, 10px each */
+            width: 300px; /* 30 * 10px */
+            image-rendering: pixelated;
+            cursor: crosshair;
+            margin: 0 auto;
         }
 
-        .info-list { margin-top: 20px; font-size: 11px; color: #848E9C; text-align: left; line-height: 2; }
-        .info-list li { list-style: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 5px 0; }
+        .block { width: 10px; height: 10px; border: 0.1px solid rgba(0,0,0,0.05); box-sizing: border-box; }
+        .block.selected { background-color: var(--selection) !important; border: 0.5px solid var(--gold); }
+        .block.sold { background-color: transparent; border: none; }
 
-        /* Social Icons Fixing Size */
-        .social-bar { position: fixed; bottom: 40px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 5000; }
-        .social-icon { width: 60px; height: 60px; border-radius: 50%; font-size: 26px; }
+        /* Tooltip Style */
+        .tooltip { position: absolute; background: #000; color: #fff; padding: 5px 10px; border: 1px solid var(--gold); font-size: 11px; pointer-events: none; z-index: 1000; display: none; border-radius: 3px; }
 
-        footer { padding: 80px 6% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 80px; font-size: 11px; color: #848E9C; }
-        footer strong { color: var(--gold); }
-        .disclaimer { margin-top: 10px; opacity: 0.7; }
+        /* Floating Checkout Bar */
+        .checkout-bar { 
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
+            background: #F3BA2F; color: #000; padding: 15px 30px; 
+            border-radius: 50px; display: none; align-items: center; gap: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 1000;
+        }
+        .checkout-bar b { font-family: 'Cinzel'; font-size: 18px; }
+        .buy-btn { background: #000; color: #fff; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; font-family: 'Montserrat'; }
 
-        @media (max-width: 768px) {
-            header { flex-direction: column; gap: 15px; padding: 15px; }
-            #cursor-ring { display: none; }
-            body { cursor: auto; }
-            .main-container { padding-top: 250px; }
-            #drawer { max-width: 100%; }
+        /* Mobile Zoom Warning */
+        @media (max-width: 600px) {
+            header h1 { font-size: 28px; }
+            #grid-container { transform: scale(1.2); margin: 50px 0; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
-    <div id="cursor-ring"></div>
-
     <header>
-        <div class="logo-box">
-            <a href="#" class="logo">ARK</a>
-            <div class="registry-block-btn" onclick="openDrawer()">
-                <i class="fa-solid fa-bolt" style="margin-right:8px"></i> Payment Gateway
-            </div>
-        </div>
-        <div class="nav-btns">
-            <a href="affiliate_reg.html" class="btn-affiliate">AFFILIATE PROGRAM</a>
-        </div>
+        <h1>THE ETERNAL ARK</h1>
+        <p>Your Legacy, $1 per Pixel Block</p>
     </header>
 
-    <main class="main-container">
-        <h2 class="hero-title">The Three Realms of Ark</h2>
-        
-        <div class="gateways-grid">
-            <div class="gate-card" style="border-top: 4px solid var(--tycoon-silver);">
-                <h3 style="color:var(--tycoon-silver)">UNIVERSAL HORIZON</h3>
-                <p>Be part of our global map. A permanent digital presence for any user or brand looking for worldwide visibility.</p>
-                <div class="promo-text" style="color:var(--tycoon-silver); border-color:var(--tycoon-silver)">Boost your brand reach to thousands. Reserve your spot on the eternal grid today!</div>
-                <div><span class="tag">UNLIMITED PLOTS</span><span class="tag">PUBLIC ACCESS</span></div>
-                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--tycoon-silver); font-size: 24px;">$10 / PLOT</div>
-                <a href="order.html" class="action-btn btn-silver">RESERVE NOW</a>
-            </div>
-
-            <div class="gate-card" style="border-top: 4px solid var(--creator-red);">
-                <h3 style="color:var(--creator-red)">GAMER STUDIO</h3>
-                <p>Exclusive zone for gamers and content creators. Highlight your gaming profile or studio in the dedicated gamer district.</p>
-                <div class="promo-text" style="color:var(--creator-red); border-color:var(--creator-red)">Limited 10,000 blocks! Secure your place at the heart of the fastest-growing community.</div>
-                <div><span class="tag">10,000 BLOCKS</span><span class="tag">CREATOR ZONE</span></div>
-                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--creator-red); font-size: 24px;">$29 / PLOT</div>
-                <a href="order.html" class="action-btn btn-red">JOIN STUDIO</a>
-            </div>
-
-            <div class="gate-card" style="border-top: 4px solid var(--gold);">
-                <h3 style="color:var(--gold)">ROYAL OASIS</h3>
-                <p>Our most premium and luxury zone. Reserved for high-tier investors and elite global brands looking for dominance.</p>
-                <div class="promo-text" style="color:var(--gold); border-color:var(--gold)">Only 1,000 elite plots. Claim your supremacy and stand above the rest of the digital world.</div>
-                <div><span class="tag">1,000 PLOTS</span><span class="tag">ELITE ONLY</span></div>
-                <div style="font-family:'Cinzel'; margin-top:10px; color:var(--gold); font-size: 24px;">$99 / PLOT</div>
-                <a href="order.html" class="action-btn btn-gold-action">CLAIM ROYALTY</a>
-            </div>
-        </div>
-    </main>
-
-    <div class="social-bar">
-        <a href="https://x.com/kawsar6700" target="_blank" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
-        <a href="https://wa.me/8801576940717" target="_blank" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
+    <div class="stats-bar">
+        <div class="stat-item">PRICE: <span>$1 / BLOCK</span></div>
+        <div class="stat-item">GRID: <span id="total-blocks">1000</span> BLOCKS</div>
+        <div class="stat-item">OWNERS: <span>1,240</span></div>
     </div>
 
-    <div id="drawer">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
-            <h2 style="font-family:'Cinzel'; color:var(--gold);">ARK REGISTRY</h2>
-            <i class="fa-solid fa-xmark" style="color:var(--gold); cursor:pointer; font-size:24px;" onclick="closeDrawer()"></i>
-        </div>
-
-        <div class="step-box">
-            <div class="address-item">
-                <div class="gw-header">
-                    <div class="gw-icon-box"><i class="fa-solid fa-mobile-screen"></i></div>
-                    <span class="address-name">BKASH (SEND MONEY) <span style="color:#00ffcc;">[VERIFIED]</span></span>
-                </div>
-                <div class="full-address" onclick="copy('+8801756206213')">
-                    <span>+8801756206213</span> <i class="fa-regular fa-copy"></i>
-                </div>
+    <section class="canvas-section">
+        <div id="grid-container">
             </div>
+    </section>
 
-            <div class="address-item">
-                <div class="gw-header">
-                    <div class="gw-icon-box"><i class="fa-solid fa-wallet"></i></div>
-                    <span class="address-name">ROCKET (PERSONAL)</span>
-                </div>
-                <div class="full-address" onclick="copy('+8801756206213')">
-                    <span>+8801756206213</span> <i class="fa-regular fa-copy"></i>
-                </div>
-            </div>
-
-            <div class="address-item">
-                <div class="gw-header">
-                    <div class="gw-icon-box"><i class="fa-solid fa-coins"></i></div>
-                    <span class="address-name">BINANCE PAY UID <span style="color:var(--gold); margin-left:5px;">[KAWSAR6700]</span></span>
-                </div>
-                <div class="full-address" onclick="copy('912221034')">
-                    <span>912221034</span> <i class="fa-regular fa-copy"></i>
-                </div>
-            </div>
-
-            <div class="address-item">
-                <div class="gw-header">
-                    <div class="gw-icon-box"><i class="fa-brands fa-ethereum"></i></div>
-                    <span class="address-name">USDT (TRC20 ADDRESS)</span>
-                </div>
-                <div class="full-address" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-                    <span style="font-size: 9px;">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</span> <i class="fa-regular fa-copy"></i>
-                </div>
-            </div>
-        </div>
-
-        <div style="padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border);">
-            <h4 style="font-size:11px; color:var(--gold); margin-bottom:10px; font-family:'Cinzel';">REQUIRED SUBMISSION INFO:</h4>
-            <ul class="info-list">
-                <li>• Target Plot Name / Business Name</li>
-                <li>• High-Resolution Image/Logo Link</li>
-                <li>• External Website or Social Link</li>
-                <li>• Transaction Screenshot / TxID</li>
-            </ul>
-        </div>
-
-        <a href="https://wa.me/8801576940717" target="_blank" style="text-decoration:none;">
-            <button class="action-btn" style="background:#25D366; color:#fff; border:none; width:100%; padding:20px; font-family:'Cinzel'; font-weight:900; cursor:pointer; margin-top:20px;">VERIFY ON WHATSAPP</button>
-        </a>
+    <div class="checkout-bar" id="checkout-bar">
+        <span>Selected: <b id="count">0</b> Blocks</span>
+        <span>Total: <b id="price">$0</b></span>
+        <button class="buy-btn" onclick="goToPayment()">BUY NOW</button>
     </div>
 
-    <footer>
-        <p>© 2026 <strong>ARK</strong>. Owned by <strong>KAWSAR</strong>. All rights reserved.</p>
-        <p class="disclaimer">Disclaimer: We are not responsible for the content of external sites.</p>
-    </footer>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics-compat.js"></script>
+    <div class="tooltip" id="tooltip"></div>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
-            authDomain: "the-5k-elite-legacy.firebaseapp.com",
-            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
-            projectId: "the-5k-elite-legacy",
-            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
-            messagingSenderId: "440824313752",
-            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded",
-            measurementId: "G-6KEYY60YGG"
-        };
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
+        const grid = document.getElementById('grid-container');
+        const checkoutBar = document.getElementById('checkout-bar');
+        const countEl = document.getElementById('count');
+        const priceEl = document.getElementById('price');
+        const tooltip = document.getElementById('tooltip');
 
-        const ring = document.getElementById('cursor-ring');
-        let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-        function moveRing() {
-            ringX += (mouseX - ringX) * 0.2; 
-            ringY += (mouseY - ringY) * 0.2;
-            ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
-            requestAnimationFrame(moveRing);
+        let selectedBlocks = new Set();
+        let totalBlocksCount = 1000;
+
+        // 1. Generate Blocks
+        function createGrid(start, end) {
+            for (let i = start; i <= end; i++) {
+                const block = document.createElement('div');
+                block.className = 'block';
+                block.dataset.id = i;
+                
+                // Click to Select Logic
+                block.addEventListener('click', () => toggleBlock(i, block));
+                
+                // Hover Logic for Tooltip
+                block.addEventListener('mouseover', (e) => showTooltip(e, i));
+                block.addEventListener('mouseout', hideTooltip);
+
+                grid.appendChild(block);
+            }
         }
-        moveRing();
 
-        function openDrawer() { document.getElementById('drawer').classList.add('active'); }
-        function closeDrawer() { document.getElementById('drawer').classList.remove('active'); }
-        function copy(text) { navigator.clipboard.writeText(text); alert("Address Copied!"); }
-
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.onresize = resize; resize();
-        class Star {
-            constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.size = Math.random()*1.2; }
-            draw() { ctx.fillStyle = "rgba(243,186,47,0.3)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); }
+        function toggleBlock(id, el) {
+            if (selectedBlocks.has(id)) {
+                selectedBlocks.delete(id);
+                el.classList.remove('selected');
+            } else {
+                selectedBlocks.add(id);
+                el.classList.add('selected');
+            }
+            updateCheckout();
         }
-        let stars = [];
-        for(let i=0; i<80; i++) stars.push(new Star());
-        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
-        animate();
+
+        function updateCheckout() {
+            const count = selectedBlocks.size;
+            if (count > 0) {
+                checkoutBar.style.display = 'flex';
+                countEl.innerText = count;
+                priceEl.innerText = '$' + count;
+            } else {
+                checkoutBar.style.display = 'none';
+            }
+        }
+
+        function showTooltip(e, id) {
+            // Here you would check if the block is sold
+            // For now, it's a demo
+            tooltip.style.display = 'block';
+            tooltip.style.left = e.pageX + 10 + 'px';
+            tooltip.style.top = e.pageY + 10 + 'px';
+            tooltip.innerText = "Empty Plot #" + id + " ($1)";
+        }
+
+        function hideTooltip() { tooltip.style.display = 'none'; }
+
+        function goToPayment() {
+            const count = selectedBlocks.size;
+            window.location.href = `payment.html?blocks=${count}&ids=${Array.from(selectedBlocks).join(',')}`;
+        }
+
+        // Infinite Scroll Logic (Simplified)
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                const nextBatch = totalBlocksCount + 1000;
+                createGrid(totalBlocksCount + 1, nextBatch);
+                totalBlocksCount = nextBatch;
+                document.getElementById('total-blocks').innerText = totalBlocksCount;
+            }
+        });
+
+        // Initialize
+        createGrid(1, totalBlocksCount);
     </script>
 </body>
 </html>
