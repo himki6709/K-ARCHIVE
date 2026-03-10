@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LOGO ADMIN | THE ETERNAL ARK</title>
+    <style>
+        body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #1E2329; padding: 40px; border-radius: 20px; border: 1px solid #2ebd85; width: 400px; text-align: center; }
+        input { width: 100%; padding: 15px; margin: 20px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 10px; }
+        .btn { width: 100%; padding: 15px; background: #2ebd85; color: #fff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        #preview { max-height: 80px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>LOGO CONTROL</h2>
+        <img id="preview" src="https://via.placeholder.com/250x80?text=PREVIEW">
+        <input type="text" id="url" placeholder="Paste New Logo Image URL">
+        <button class="btn" onclick="update()">SAVE CHANGES</button>
+        <p id="msg" style="margin-top:10px; font-size:12px;"></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script>
+        firebase.initializeApp({databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com"});
+        const db = firebase.database();
+
+        db.ref('siteSettings/logo').on('value', s => {
+            if(s.val()) document.getElementById('preview').src = s.val();
+        });
+
+        function update() {
+            const val = document.getElementById('url').value;
+            if(!val) return alert("Enter URL");
+            db.ref('siteSettings/logo').set(val).then(() => {
+                document.getElementById('msg').innerText = "Logo updated!";
+                document.getElementById('url').value = "";
+            });
+        }
+    </script>
+</body>
+</html>
