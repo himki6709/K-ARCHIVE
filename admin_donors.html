@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DONOR ADMIN | THE ETERNAL ARK</title>
+    <style>
+        body { background: #0B0E11; color: #fff; font-family: sans-serif; padding: 20px; }
+        .admin-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .card { background: #1E2329; padding: 30px; border-radius: 15px; border: 1px solid #2ebd85; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
+        .btn-add { width: 100%; padding: 15px; background: #2ebd85; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .donor-list-item { background: #000; padding: 10px; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #2ebd85; }
+        .del-btn { background: #ff4d4d; color: #fff; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-grid">
+        <div class="card">
+            <h2 style="color:#2ebd85;">APPROVE NEW DONOR</h2>
+            <input type="text" id="dName" placeholder="Donor Full Name">
+            <input type="number" id="dTrees" placeholder="Number of Trees (e.g. 500)">
+            <input type="text" id="dImg" placeholder="Donor Photo URL (Square Image)">
+            <button class="btn-add" onclick="approveDonor()">APPROVE & ADD TO ARK</button>
+        </div>
+
+        <div class="card">
+            <h2 style="color:#fff;">LIVE GUARDIANS</h2>
+            <div id="guardianList">Loading...</div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase Configuration (Using your existing DB)
+        const firebaseConfig = {
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // ডোনার অ্যাপ্রুভ ফাংশন
+        function approveDonor() {
+            const name = document.getElementById('dName').value;
+            const trees = parseInt(document.getElementById('dTrees').value);
+            const img = document.getElementById('dImg').value || "https://via.placeholder.com/150";
+
+            if(!name || !trees) return alert("Please enter Name and Tree count!");
+
+            const donorData = {
+                name: name,
+                trees: trees,
+                image: img,
+                timestamp: Date.now()
+            };
+
+            // ডাটাবেসে সেভ করা
+            db.ref('donors').push(donorData).then(() => {
+                alert("Donor Approved Successfully!");
+                document.getElementById('dName').value = "";
+                document.getElementById('dTrees').value = "";
+                document.getElementById('dImg').value = "";
+            });
+        }
+
+        // ডোনার লিস্ট রিফ্রেশ করা
+        db.ref('donors').on('value', (snapshot) => {
+            const listDiv = document.getElementById('guardianList');
+            listDiv.innerHTML = "";
+            const data = snapshot.val();
+
+            if(!data) {
+                listDiv.innerHTML = "No donors yet.";
+                return;
+            }
+
+            Object.keys(data).forEach(key => {
+                const donor = data[key];
+                listDiv.innerHTML += `
+                    <div class="donor-list-item">
+                        <span><strong>${donor.name}</strong> (${donor.trees} Trees)</span>
+                        <button class="del-btn" onclick="deleteDonor('${key}')">Remove</button>
+                    </div>
+                `;
+            });
+        });
+
+        function deleteDonor(id) {
+            if(confirm("Are you sure you want to remove this donor?")) {
+                db.ref('donors/' + id).remove();
+            }
+        }
+    </script>
+</body>
+</html>
