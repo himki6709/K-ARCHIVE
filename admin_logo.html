@@ -1,40 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>LOGO ADMIN | THE ETERNAL ARK</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARK LOGO ADMIN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #1E2329; padding: 40px; border-radius: 20px; border: 1px solid #2ebd85; width: 400px; text-align: center; }
-        input { width: 100%; padding: 15px; margin: 20px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 10px; }
-        .btn { width: 100%; padding: 15px; background: #2ebd85; color: #fff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        #preview { max-height: 80px; margin-bottom: 20px; }
+        body { background: #0B0E11; color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .admin-card { background: #1E2329; padding: 40px; border-radius: 20px; border: 1px solid #2ebd85; width: 450px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; }
+        h2 { color: #2ebd85; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        input { width: 100%; padding: 15px; margin-bottom: 20px; background: #000; border: 1px solid #444; color: #fff; border-radius: 10px; box-sizing: border-box; outline: none; }
+        input:focus { border-color: #2ebd85; }
+        .btn-update { width: 100%; padding: 15px; background: #2ebd85; color: #fff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
+        .btn-update:hover { background: #24b07a; transform: translateY(-2px); }
+        .preview-box { margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; }
+        #currentLogoPreview { max-width: 200px; max-height: 80px; margin-top: 15px; border: 1px dashed #444; padding: 10px; object-fit: contain; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>LOGO CONTROL</h2>
-        <img id="preview" src="https://via.placeholder.com/250x80?text=PREVIEW">
-        <input type="text" id="url" placeholder="Paste New Logo Image URL">
-        <button class="btn" onclick="update()">SAVE CHANGES</button>
-        <p id="msg" style="margin-top:10px; font-size:12px;"></p>
+
+    <div class="admin-card">
+        <h2>Update Ark Logo</h2>
+        <p style="font-size: 13px; color: #848e9c; margin-bottom: 20px;">Paste the Direct Image URL (PNG/JPG)</p>
+        
+        <input type="text" id="logoUrl" placeholder="https://example.com/logo.png">
+        <button class="btn-update" onclick="updateLogo()">SAVE & UPDATE LIVE</button>
+
+        <div class="preview-box">
+            <p style="font-size: 12px; color: #555;">CURRENT ACTIVE LOGO</p>
+            <img src="" id="currentLogoPreview" alt="No Logo Set">
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
     <script>
-        firebase.initializeApp({databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com"});
+        // Your Specific Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        db.ref('siteSettings/logo').on('value', s => {
-            if(s.val()) document.getElementById('preview').src = s.val();
+        // ১. পেজ লোড হলে বর্তমান লোগো দেখানো
+        db.ref('siteSettings/logo').on('value', (snapshot) => {
+            const currentUrl = snapshot.val();
+            if(currentUrl) {
+                document.getElementById('currentLogoPreview').src = currentUrl;
+            }
         });
 
-        function update() {
-            const val = document.getElementById('url').value;
-            if(!val) return alert("Enter URL");
-            db.ref('siteSettings/logo').set(val).then(() => {
-                document.getElementById('msg').innerText = "Logo updated!";
-                document.getElementById('url').value = "";
+        // ২. লোগো আপডেট ফাংশন
+        function updateLogo() {
+            const newLogoUrl = document.getElementById('logoUrl').value;
+
+            if(!newLogoUrl || !newLogoUrl.includes('http')) {
+                alert("Please enter a valid image URL!");
+                return;
+            }
+
+            // ডাটাবেসে সেভ করা
+            db.ref('siteSettings/logo').set(newLogoUrl)
+            .then(() => {
+                alert("Ark Logo Updated Successfully!");
+                document.getElementById('logoUrl').value = ""; // বক্স ক্লিয়ার
+            })
+            .catch((error) => {
+                alert("Error: " + error.message);
             });
         }
     </script>
