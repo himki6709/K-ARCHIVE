@@ -20,108 +20,116 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--dark-bg); color: #fff; line-height: 1.6; overflow-x: hidden; }
 
-        /* --- LOGO SECTION --- */
+        /* --- HEADER --- */
         header {
-            padding: 20px 5%;
+            padding: 30px 5%;
             display: flex;
-            justify-content: center; /* লোগো মাঝখানে থাকবে Beast Philanthropy এর মত */
+            justify-content: center;
             border-bottom: 1px solid #222;
+            background: rgba(11, 14, 17, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        .main-logo { height: 60px; object-fit: contain; }
+        .main-logo { height: 70px; object-fit: contain; transition: 0.3s; }
 
-        /* --- HERO & DONATE SECTION --- */
+        /* --- HERO --- */
         .hero {
             display: flex;
             flex-wrap: wrap;
-            padding: 80px 8%;
+            padding: 100px 8%;
             gap: 60px;
             align-items: center;
-            background: radial-gradient(circle at top right, #1a1a1a, #0b0e11);
+            background: linear-gradient(180deg, #161a1e 0%, #0b0e11 100%);
         }
 
         .hero-text { flex: 1; min-width: 350px; }
         .hero-text h1 { 
             font-family: 'Cinzel', serif; 
-            font-size: clamp(32px, 5vw, 55px); 
+            font-size: clamp(35px, 6vw, 60px); 
             color: var(--alert-red); 
             line-height: 1.1;
             margin-bottom: 25px;
+            text-shadow: 0 0 20px rgba(255, 77, 77, 0.2);
         }
-        .hero-text p { font-size: 1.1rem; color: var(--text-gray); margin-bottom: 30px; max-width: 600px; }
+        .hero-text p { font-size: 1.2rem; color: var(--text-gray); margin-bottom: 40px; max-width: 650px; font-weight: 300; }
         
-        .impact-stats { border-left: 4px solid var(--primary-green); padding-left: 20px; }
-        .impact-stats span { display: block; font-size: 2.5rem; font-weight: 800; color: var(--primary-green); }
+        .impact-stats { border-left: 5px solid var(--primary-green); padding-left: 25px; }
+        .impact-stats span { display: block; font-size: 3rem; font-weight: 900; color: var(--primary-green); letter-spacing: -1px; }
 
         /* DONATION CARD */
         .donate-card {
             background: var(--card-bg);
-            padding: 40px;
-            border-radius: 24px;
+            padding: 45px;
+            border-radius: 30px;
             width: 100%;
-            max-width: 420px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            max-width: 450px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.6);
             border: 1px solid #333;
         }
-        .donate-card h2 { font-size: 24px; margin-bottom: 20px; text-align: center; }
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 12px; color: var(--text-gray); margin-bottom: 8px; text-transform: uppercase; }
+        .donate-card h2 { font-size: 26px; margin-bottom: 25px; text-align: center; color: #fff; }
+        .input-group { margin-bottom: 25px; }
+        .input-group label { display: block; font-size: 12px; color: var(--text-gray); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
         .input-group input { 
-            width: 100%; padding: 15px; background: #000; border: 1px solid #444; 
-            border-radius: 12px; color: #fff; font-size: 16px; outline: none;
+            width: 100%; padding: 18px; background: #000; border: 1px solid #444; 
+            border-radius: 15px; color: #fff; font-size: 16px; outline: none; transition: 0.3s;
         }
-        .input-group input:focus { border-color: var(--primary-green); }
+        .input-group input:focus { border-color: var(--primary-green); box-shadow: 0 0 10px rgba(46, 189, 133, 0.2); }
 
         .btn-donate { 
-            width: 100%; background: var(--primary-green); color: #fff; padding: 20px; 
-            border: none; border-radius: 12px; font-weight: 800; font-size: 18px; 
-            cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
+            width: 100%; background: var(--primary-green); color: #fff; padding: 22px; 
+            border: none; border-radius: 15px; font-weight: 800; font-size: 18px; 
+            cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px;
         }
-        .btn-donate:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(46, 189, 133, 0.3); }
+        .btn-donate:hover { transform: translateY(-5px); background: #24b07a; box-shadow: 0 15px 30px rgba(46, 189, 133, 0.4); }
 
-        /* --- DONOR LIST (CIRCULAR) --- */
-        .donor-section { padding: 100px 8%; text-align: center; }
-        .section-title { font-family: 'Cinzel', serif; font-size: 2rem; margin-bottom: 50px; color: var(--primary-green); }
+        /* --- DONOR LIST --- */
+        .donor-section { padding: 120px 8%; text-align: center; background: #0b0e11; }
+        .section-title { font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 60px; color: var(--primary-green); }
         
         .donor-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
             justify-content: center;
         }
-        .donor-box { text-align: center; }
+        .donor-box { text-align: center; width: 150px; }
         .donor-img { 
-            width: 100px; height: 100px; border-radius: 50%; 
-            border: 3px solid var(--primary-green); padding: 5px; 
-            object-fit: cover; margin-bottom: 15px;
+            width: 110px; height: 110px; border-radius: 50%; 
+            border: 4px solid var(--primary-green); padding: 5px; 
+            object-fit: cover; margin-bottom: 15px; background: #111;
         }
-        .donor-box b { display: block; font-size: 14px; color: #fff; }
-        .donor-box span { font-size: 12px; color: var(--primary-green); font-weight: bold; }
+        .donor-box b { display: block; font-size: 16px; color: #fff; margin-bottom: 5px; }
+        .donor-box span { font-size: 13px; color: var(--primary-green); font-weight: bold; background: rgba(46, 189, 133, 0.1); padding: 4px 12px; border-radius: 20px; }
 
-        /* --- MISSION UPDATES (LARGE PHOTOS) --- */
-        .mission-gallery { padding: 100px 8%; background: #000; }
+        /* --- MISSION UPDATES --- */
+        .mission-gallery { padding: 120px 8%; background: #000; }
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 40px;
         }
         .gallery-item {
             background: var(--card-bg);
-            border-radius: 20px;
+            border-radius: 25px;
             overflow: hidden;
             border: 1px solid #222;
+            transition: 0.4s;
         }
-        .gallery-item img { width: 100%; height: 300px; object-fit: cover; transition: 0.5s; }
-        .gallery-item:hover img { transform: scale(1.05); }
-        .gallery-text { padding: 20px; }
-        .gallery-text h4 { color: var(--primary-green); margin-bottom: 10px; }
-        .gallery-text p { font-size: 14px; color: var(--text-gray); }
+        .gallery-item:hover { transform: translateY(-10px); border-color: var(--primary-green); }
+        .gallery-item img { width: 100%; height: 350px; object-fit: cover; }
+        .gallery-text { padding: 30px; }
+        .gallery-text h4 { color: var(--primary-green); font-size: 20px; margin-bottom: 12px; font-family: 'Cinzel', serif; }
+        .gallery-text p { font-size: 15px; color: var(--text-gray); }
 
-        /* --- PAYMENT GATEWAYS --- */
-        .gateway-section { padding: 60px; text-align: center; opacity: 0.5; }
-        .gateway-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 40px; }
-        .gateway-container img { height: 35px; filter: grayscale(100%) invert(1); }
+        /* --- FOOTER GATEWAYS --- */
+        .gateway-section { padding: 80px; text-align: center; background: #0b0e11; border-top: 1px solid #222; }
+        .gateway-title { font-size: 14px; color: #555; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
+        .gateway-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 50px; }
+        .gateway-container img { height: 40px; filter: grayscale(100%) brightness(0.8); opacity: 0.6; transition: 0.3s; }
+        .gateway-container img:hover { filter: grayscale(0%) brightness(1); opacity: 1; }
 
-        footer { padding: 60px; text-align: center; border-top: 1px solid #222; font-size: 12px; color: #444; }
+        footer { padding: 50px; text-align: center; background: #000; font-size: 13px; color: #555; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -133,27 +141,27 @@
     <section class="hero">
         <div class="hero-text">
             <h1>SKY IS LEAKING OIL, NOT WATER.</h1>
-            <p>The explosions at the core factories have turned our atmosphere into a toxic cage. The oil rain is destroying life. Our only hope is a global bio-shield of 1 Billion trees to filter the air and save humanity.</p>
+            <p>Toxic industrial fallout has turned our atmosphere into a lethal trap. The oil rain is suffocating our land. "The Eternal Ark" is our last stand—a mission to plant 1 billion trees as a living bio-shield for the future.</p>
             
             <div class="impact-stats">
                 <span id="totalTrees">1,402,890</span>
-                TREES SPONSORED BY PEOPLE LIKE YOU
+                TREES SECURED BY GLOBAL GUARDIANS
             </div>
         </div>
 
         <div class="donate-card">
             <h2>START PLANTING</h2>
             <div class="input-group">
-                <label>Your Name</label>
-                <input type="text" id="donor_name" placeholder="John Doe">
+                <label>Your Guardian Name</label>
+                <input type="text" id="donor_name" placeholder="Enter name">
             </div>
             <div class="input-group">
-                <label>How many trees? ($1 per tree)</label>
-                <input type="number" id="tree_count" placeholder="Number of trees">
+                <label>Number of Trees ($1/Tree)</label>
+                <input type="number" id="tree_count" placeholder="e.g. 50">
             </div>
             <button class="btn-donate" onclick="openPayment()">Donate via Payoneer</button>
-            <p style="text-align: center; font-size: 11px; color: #555; margin-top: 15px;">
-                Secured by Global Payoneer Gateway
+            <p style="text-align: center; font-size: 11px; color: #555; margin-top: 20px;">
+                Secure Global Gateway • No Transaction Fees
             </p>
         </div>
     </section>
@@ -162,19 +170,14 @@
         <h2 class="section-title">THE ARK GUARDIANS</h2>
         <div class="donor-grid" id="donorDisplay">
             <div class="donor-box">
-                <img src="https://i.pravatar.cc/150?u=1" class="donor-img">
+                <img src="https://i.pravatar.cc/150?u=9" class="donor-img">
                 <b>Robert Fox</b>
                 <span>500 Trees</span>
             </div>
             <div class="donor-box">
-                <img src="https://i.pravatar.cc/150?u=2" class="donor-img">
+                <img src="https://i.pravatar.cc/150?u=12" class="donor-img">
                 <b>Jane Cooper</b>
                 <span>1,200 Trees</span>
-            </div>
-            <div class="donor-box">
-                <img src="https://i.pravatar.cc/150?u=3" class="donor-img">
-                <b>Cody Fisher</b>
-                <span>250 Trees</span>
             </div>
         </div>
     </section>
@@ -185,42 +188,55 @@
             <div class="gallery-item">
                 <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80">
                 <div class="gallery-text">
-                    <h4>Zone A: Reforestation</h4>
-                    <p>Fighting the toxic air in the northern sector. 5,000 saplings planted today with local community help.</p>
+                    <h4>Zone Alpha: Reforestation</h4>
+                    <p>Fighting the fallout in the northern sector. Our first batch of oxygen-rich saplings are taking root.</p>
                 </div>
             </div>
             <div class="gallery-item">
                 <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=800&q=80">
                 <div class="gallery-text">
-                    <h4>Bio-Shield Progress</h4>
-                    <p>Young trees are showing resilience against the acid/oil rain particles. Monitoring in progress.</p>
+                    <h4>Bio-Shield Stability</h4>
+                    <p>New growth is showing resistance to current air toxicity levels. The mission continues.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <section class="gateway-section">
+        <div class="gateway-title">SUPPORTED PAYMENT GATEWAYS</div>
         <div class="gateway-container" id="gatewayDisplay">
             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="Paypal">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
             <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" alt="Apple Pay">
         </div>
     </section>
 
     <footer>
-        THE ETERNAL ARK MISSION © 2026 | SAVE THE BREATHABLE WORLD
+        THE ETERNAL ARK MISSION © 2026 | ALL RIGHTS RESERVED
     </footer>
 
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
     <script>
+        // Firebase Config
+        const firebaseConfig = {
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // লোগো অটো-আপডেট
+        db.ref('siteSettings/logo').on('value', (s) => {
+            if(s.val()) document.getElementById('siteLogo').src = s.val();
+        });
+
         function openPayment() {
             const name = document.getElementById('donor_name').value;
             const trees = document.getElementById('tree_count').value;
-            if(!name || !trees) {
-                alert("Please enter your name and number of trees.");
-                return;
-            }
-            alert("Redirecting to Payoneer Secure Checkout for " + trees + " trees...");
-            // এখানে পায়োনিয়ার লিঙ্ক বা সাপোর্ট লিঙ্ক বসবে
+            if(!name || !trees) return alert("Fill details");
+            alert("Redirecting to Secure Payment...");
         }
     </script>
 </body>
