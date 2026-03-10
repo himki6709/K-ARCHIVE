@@ -3,145 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE ETERNAL ARK | 1 Billion Trees Mission</title>
+    <title>THE ETERNAL ARK | Global Reforestation Initiative</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
-            --primary-green: #2ebd85;
-            --dark-bg: #0B0E11;
-            --card-bg: #1E2329;
-            --text-gray: #848e9c;
-            --gold: #FCD535;
+            --primary: #2ebd85;
+            --accent: #FCD535;
+            --bg: #0B0E11;
+            --card: #1E2329;
+            --text-muted: #848e9c;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--dark-bg); color: #fff; line-height: 1.6; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; line-height: 1.6; overflow-x: hidden; }
 
-        /* --- HEADER --- */
-        header {
+        /* --- NAVIGATION --- */
+        nav {
             padding: 20px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(11, 14, 17, 0.98);
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(11, 14, 17, 0.95);
+            backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 1000;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .main-logo { height: 55px; object-fit: contain; }
-        .social-nav a { color: #fff; margin-left: 20px; font-size: 22px; transition: 0.3s; }
-        .social-nav a:hover { color: var(--primary-green); }
+        .logo { height: 50px; cursor: pointer; }
 
-        /* --- HERO --- */
-        .hero { padding: 100px 8% 60px; text-align: center; }
-        .hero h1 { 
-            font-family: 'Cinzel', serif; font-size: clamp(30px, 5vw, 55px); 
-            color: #fff; margin-bottom: 25px; line-height: 1.2;
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 120px 8% 80px;
+            text-align: center;
+            background: radial-gradient(circle at center, #161a1e 0%, #0b0e11 100%);
         }
-        .hero h1 span { color: var(--primary-green); }
-        .hero p { font-size: 1.1rem; color: var(--text-gray); max-width: 900px; margin: 0 auto 40px; }
+        .badge {
+            background: rgba(46, 189, 133, 0.1);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: inline-block;
+            border: 1px solid var(--primary);
+        }
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(35px, 6vw, 65px);
+            margin-bottom: 30px;
+            background: linear-gradient(to bottom, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            max-width: 850px; margin: 0 auto 40px;
+            font-size: 1.2rem; color: var(--text-muted);
+        }
 
-        /* --- STATS --- */
-        .stats-container { display: flex; justify-content: center; gap: 50px; margin-bottom: 50px; flex-wrap: wrap; }
-        .stat-box { border-left: 3px solid var(--primary-green); padding-left: 20px; text-align: left; }
-        .stat-box h3 { font-size: 2.5rem; color: var(--gold); line-height: 1; }
-        .stat-box p { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-gray); }
+        /* --- PROGRESS SECTION --- */
+        .stats-grid {
+            display: flex; justify-content: center; gap: 60px;
+            margin-bottom: 60px; flex-wrap: wrap;
+        }
+        .stat-item h2 { font-size: 3.5rem; color: var(--accent); font-weight: 900; line-height: 1; }
+        .stat-item p { text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); font-size: 12px; }
 
-        /* --- MOVING DONORS (NEWS TICKER STYLE) --- */
-        .ticker-wrap { background: #111; padding: 30px 0; border-top: 1px solid #222; border-bottom: 1px solid #222; overflow: hidden; }
-        .ticker-move { display: flex; width: max-content; animation: ticker 40s linear infinite; }
-        .ticker-move:hover { animation-play-state: paused; }
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        /* --- DONOR TICKER (News Headline Style) --- */
+        .ticker-container {
+            background: #000; padding: 25px 0;
+            border-top: 1px solid #222; border-bottom: 1px solid #222;
+            overflow: hidden; white-space: nowrap;
+        }
+        .ticker-track {
+            display: flex; width: max-content;
+            animation: scroll 40s linear infinite;
+        }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .ticker-item {
+            display: flex; align-items: center; gap: 15px;
+            background: var(--card); padding: 12px 25px;
+            border-radius: 50px; margin-right: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .ticker-item img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); }
+        .ticker-item b { font-size: 15px; }
+        .ticker-item span { color: var(--primary); font-weight: bold; }
 
-        .donor-card { display: flex; align-items: center; gap: 15px; background: var(--card-bg); padding: 10px 25px; border-radius: 50px; margin-right: 30px; border: 1px solid #333; }
-        .donor-card img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary-green); object-fit: cover; }
-        .donor-info b { font-size: 14px; display: block; }
-        .donor-info span { font-size: 12px; color: var(--primary-green); font-weight: 800; }
+        /* --- IMPACT GALLERY --- */
+        .mission-gallery { padding: 100px 8%; }
+        .gallery-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; }
+        .gallery-head h2 { font-family: 'Cinzel'; font-size: 2.5rem; }
+        
+        .gallery-scroll {
+            display: flex; gap: 25px; overflow-x: auto; padding-bottom: 30px;
+            scrollbar-width: none; /* Firefox */
+        }
+        .gallery-scroll::-webkit-scrollbar { display: none; }
+        .gallery-card {
+            min-width: 350px; height: 450px;
+            background: var(--card); border-radius: 20px;
+            overflow: hidden; position: relative;
+            border: 1px solid #333;
+        }
+        .gallery-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.5s; }
+        .gallery-card:hover img { opacity: 1; transform: scale(1.05); }
+        .card-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 30px; background: linear-gradient(transparent, rgba(0,0,0,0.9));
+        }
 
-        /* --- MISSION UPDATES (4x4 SLIDER STYLE) --- */
-        .mission-section { padding: 80px 8%; text-align: center; }
-        .update-ticker-wrap { overflow: hidden; padding: 20px 0; }
-        .update-move { display: flex; width: max-content; animation: ticker 60s linear infinite; }
-        .mission-card { width: 300px; height: 350px; background: #111; border: 1px dashed #444; border-radius: 15px; margin-right: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .mission-card img { width: 100%; height: 100%; object-fit: cover; }
+        /* --- CTA BOX --- */
+        .cta-box {
+            background: linear-gradient(135deg, #1e2329 0%, #0b0e11 100%);
+            padding: 80px 8%; text-align: center;
+            border-top: 1px solid #222;
+        }
+        .btn-prime {
+            background: var(--primary); color: #fff;
+            padding: 22px 60px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem;
+            text-transform: uppercase; border: none; cursor: pointer;
+            box-shadow: 0 15px 35px rgba(46, 189, 133, 0.3);
+            transition: 0.3s;
+        }
+        .btn-prime:hover { transform: translateY(-5px); background: #24b07a; }
 
-        /* --- BUTTONS --- */
-        .btn-main { background: var(--primary-green); color: #fff; padding: 18px 45px; border: none; border-radius: 50px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 10px 20px rgba(46, 189, 133, 0.2); }
-        .btn-main:hover { transform: scale(1.05); background: #24b07a; }
+        /* --- TRUST BADGES --- */
+        .trust-badges { margin-top: 40px; display: flex; justify-content: center; gap: 30px; opacity: 0.4; grayscale: 1; }
+        .trust-badges img { height: 25px; }
 
         /* --- FLOATING SUPPORT --- */
-        .float-support { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 9999; }
-        .support-icon { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); transition: 0.3s; }
-        .support-icon:hover { transform: scale(1.1); }
+        .support-float {
+            position: fixed; bottom: 30px; right: 30px;
+            display: flex; flex-direction: column; gap: 15px; z-index: 2000;
+        }
+        .s-icon {
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 26px; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transition: 0.4s; text-decoration: none;
+        }
         .wa { background: #25D366; }
-        .tw { background: #000; border: 1px solid #333; }
+        .tw { background: #000; border: 1px solid #444; }
+        .s-icon:hover { transform: rotate(360deg) scale(1.1); }
 
-        /* Modal */
-        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
-        .modal-content { background: var(--card-bg); padding: 40px; border-radius: 20px; width: 400px; border: 1px solid #333; }
+        /* --- MODAL --- */
+        .modal {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.9); z-index: 5000;
+            justify-content: center; align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        .modal-box {
+            background: var(--card); padding: 50px; border-radius: 30px;
+            width: 90%; max-width: 500px; text-align: center; border: 1px solid #333;
+        }
+        input {
+            width: 100%; padding: 18px; background: #000; border: 1px solid #444;
+            color: #fff; border-radius: 12px; margin-bottom: 20px; font-size: 16px;
+        }
+
+        footer { padding: 40px; text-align: center; color: #444; font-size: 13px; border-top: 1px solid #111; }
     </style>
 </head>
 <body>
 
-    <header>
-        <img src="" id="siteLogo" class="main-logo" alt="LOGO">
-        <div class="social-nav">
-            <a href="https://x.com/YourHandle" target="_blank"><i class="fab fa-twitter"></i></a>
+    <nav>
+        <img src="" id="siteLogo" class="logo" alt="ARK LOGO">
+        <div style="font-size: 12px; font-weight: 700; color: var(--primary);">
+            <i class="fas fa-circle" style="font-size: 8px; margin-right: 5px; animation: pulse 1s infinite;"></i> LIVE NETWORK
         </div>
-    </header>
+    </nav>
 
     <section class="hero">
-        <h1>BEYOND BORDERS: <span>HEALING OUR EARTH</span></h1>
-        <p>Nature knows no boundaries, and neither does our responsibility. Today, the world faces a silent crisis—rising temperatures and thinning forests. "The Eternal Ark" is a global initiative to restore the balance. We don't plant just for a country, we plant for the breath of every living soul.</p>
+        <div class="badge">Official Global Reforestation Portal</div>
+        <h1>THE EARTH'S LAST <span>SURVIVAL ARK</span></h1>
+        <p>Beyond politics, beyond borders—Nature is our shared heritage. As we face record-breaking global warming, our mission is simple: 1 Billion Trees to secure the oxygen for generations to come. Join the silent revolution.</p>
         
-        <div class="stats-container">
-            <div class="stat-box">
-                <h3 id="totalTrees">0</h3>
-                <p>Trees Donated</p>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h2 id="totalTrees">0</h2>
+                <p>Trees Planted</p>
             </div>
-            <div class="stat-box">
-                <h3>1,000,000,000</h3>
-                <p>Mission Target</p>
+            <div class="stat-item">
+                <h2>1,000,000,000</h2>
+                <p>Target Goal</p>
             </div>
         </div>
 
-        <button class="btn-main" onclick="openModal()">Donate A Tree</button>
+        <button class="btn-prime" onclick="openModal()">Secure Your Tree</button>
     </section>
 
-    <div class="ticker-wrap">
-        <p style="text-align: center; color: #555; font-size: 10px; margin-bottom: 15px; text-transform: uppercase;">Real-time Ark Guardians</p>
-        <div class="ticker-move" id="donorTicker">
+    <div class="ticker-container">
+        <div class="ticker-track" id="donorTicker">
             </div>
     </div>
 
-    <section class="mission-section">
-        <h2 style="font-family: 'Cinzel'; margin-bottom: 40px;">MISSION UPDATES</h2>
-        <div class="update-ticker-wrap">
-            <div class="update-move" id="missionTicker">
-                <div class="mission-card"><i class="fas fa-image" style="color:#222; font-size: 40px;"></i></div>
-                <div class="mission-card"><i class="fas fa-image" style="color:#222; font-size: 40px;"></i></div>
-                <div class="mission-card"><i class="fas fa-image" style="color:#222; font-size: 40px;"></i></div>
-                <div class="mission-card"><i class="fas fa-image" style="color:#222; font-size: 40px;"></i></div>
+    <section class="mission-gallery">
+        <div class="gallery-head">
+            <div>
+                <p style="color: var(--primary); font-weight: 700; text-transform: uppercase; font-size: 12px;">Live Evidence</p>
+                <h2>MISSION UPDATES</h2>
             </div>
+            <p style="color: var(--text-muted); max-width: 400px; font-size: 14px;">Every donation is tracked. See the impact of your contribution through our live reforestation gallery.</p>
+        </div>
+
+        <div class="gallery-scroll" id="missionTicker">
+            <div class="gallery-card"><div class="card-overlay"><h4>Zone 01</h4><p>Pending Update</p></div></div>
+            <div class="gallery-card"><div class="card-overlay"><h4>Zone 02</h4><p>Pending Update</p></div></div>
+            <div class="gallery-card"><div class="card-overlay"><h4>Zone 03</h4><p>Pending Update</p></div></div>
+            <div class="gallery-card"><div class="card-overlay"><h4>Zone 04</h4><p>Pending Update</p></div></div>
         </div>
     </section>
 
-    <div class="float-support">
-        <a href="https://wa.me/8801756206213" target="_blank" class="support-icon wa"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://x.com/YourHandle" target="_blank" class="support-icon tw"><i class="fab fa-x-twitter"></i></a>
+    <section class="cta-box">
+        <h3 style="font-family: 'Cinzel'; font-size: 1.8rem; margin-bottom: 20px;">READY TO SAVE THE FUTURE?</h3>
+        <p style="color: var(--text-muted); margin-bottom: 40px;">100% Transparency. No service fees. Just pure impact.</p>
+        <button class="btn-prime" onclick="openModal()">Donate via Payoneer</button>
+        
+        <div class="trust-badges">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg">
+        </div>
+    </section>
+
+    <div class="support-float">
+        <a href="https://wa.me/8801756206213" target="_blank" class="s-icon wa"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://x.com/YourHandle" target="_blank" class="s-icon tw"><i class="fab fa-x-twitter"></i></a>
     </div>
 
     <div class="modal" id="donateModal">
-        <div class="modal-content">
-            <h2 style="color:var(--gold); margin-bottom: 20px;">Support Life</h2>
-            <input type="text" id="dName" placeholder="Guardian Name" style="width:100%; padding:15px; margin-bottom:15px; background:#000; border:1px solid #444; color:#fff; border-radius:10px;">
-            <input type="number" id="dCount" placeholder="Number of Trees" style="width:100%; padding:15px; margin-bottom:20px; background:#000; border:1px solid #444; color:#fff; border-radius:10px;">
-            <button class="btn-main" style="width:100%;" onclick="alert('Redirecting...')">Pay via Payoneer</button>
-            <button onclick="closeModal()" style="background:none; border:none; color:#555; margin-top:15px; cursor:pointer;">Close</button>
+        <div class="modal-box">
+            <h2 style="font-family: 'Cinzel'; margin-bottom: 30px;">BECOME A GUARDIAN</h2>
+            <input type="text" id="dName" placeholder="Guardian Name">
+            <input type="number" id="dCount" placeholder="Number of Trees ($1/Tree)">
+            <button class="btn-prime" style="width: 100%;" onclick="alert('Redirecting to Payment...')">Proceed to Checkout</button>
+            <p onclick="closeModal()" style="margin-top: 20px; cursor: pointer; color: #555; font-size: 13px;">Cancel Transaction</p>
         </div>
     </div>
+
+    <footer>
+        THE ETERNAL ARK MISSION © 2026 | ALL CONTRIBUTIONS ARE DIRECTLY INVESTED IN REFORESTATION
+    </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -157,46 +264,31 @@
         function openModal() { document.getElementById('donateModal').style.display='flex'; }
         function closeModal() { document.getElementById('donateModal').style.display='none'; }
 
-        // Load Logo
+        // Live Logic
         db.ref('siteSettings/logo').on('value', s => { if(s.val()) document.getElementById('siteLogo').src=s.val(); });
 
-        // Load Donors in Ticker
         db.ref('donors').on('value', snap => {
             const ticker = document.getElementById('donorTicker');
             const counter = document.getElementById('totalTrees');
-            ticker.innerHTML = "";
-            let total = 0;
-            let list = "";
-
+            let total = 0; let list = "";
             if(snap.exists()){
-                const data = Object.values(snap.val());
-                data.forEach(d => {
+                Object.values(snap.val()).forEach(d => {
                     total += parseInt(d.trees);
-                    list += `
-                        <div class="donor-card">
-                            <img src="${d.image || 'https://via.placeholder.com/50'}">
-                            <div class="donor-info">
-                                <b>${d.name}</b>
-                                <span>${d.trees} TREES</span>
-                            </div>
-                        </div>
-                    `;
+                    list += `<div class="ticker-item"><img src="${d.image || 'https://via.placeholder.com/50'}"><b>${d.name}</b><span>${d.trees} TREES</span></div>`;
                 });
-                // Duplicate for smooth loop
                 ticker.innerHTML = list + list;
                 counter.innerText = total.toLocaleString();
             }
         });
 
-        // Load Mission Updates in Ticker
         db.ref('missionUpdates').on('value', snap => {
             const mTicker = document.getElementById('missionTicker');
             if(snap.exists()){
                 let mList = "";
                 Object.values(snap.val()).forEach(m => {
-                    mList += `<div class="mission-card"><img src="${m.url}"></div>`;
+                    mList += `<div class="gallery-card"><img src="${m.url}"><div class="card-overlay"><h4>IMPACT ZONE</h4><p>Verified Reforestation</p></div></div>`;
                 });
-                mTicker.innerHTML = mList + mList;
+                mTicker.innerHTML = mList;
             }
         });
     </script>
